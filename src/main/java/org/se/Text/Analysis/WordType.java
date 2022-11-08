@@ -1,4 +1,4 @@
-package org.se;
+package org.se.Text.Analysis;
 
 public enum WordType {
 	Noun,
