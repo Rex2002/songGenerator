@@ -2,15 +2,17 @@ package org.se;
 
 public class Word {
 	String word;
-	Integer[] syllables; // List of indices
-	WordType type;
+	Integer[] syllables = {0}; // List of indices
+	WordType type = WordType.Other;
+
+
 
 	public Word(String s) {
-
+		word = s;
 	}
 
-	public String lemmatize() {
-		return "Test";
+	public Lemma lemmatize() {
+		return new Lemma("Test");
 	}
 
 	public Boolean isNSFW() {
