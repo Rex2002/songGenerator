@@ -3,8 +3,8 @@ package org.se;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import org.se.Text.Analysis.Analyzer;
 import org.se.Text.Analysis.Term;
+import org.se.Text.Analysis.Archive.Analyzer;
 
 public class Main {
     public static void main(String[] args) throws IOException {

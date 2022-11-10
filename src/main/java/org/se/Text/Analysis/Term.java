@@ -1,14 +1,17 @@
 package org.se.Text.Analysis;
 
 public class Term {
-	Integer frequency;
-	Word[] words;
+	public Integer[] syllables;
+	public String[] words;
+	public Boolean isPlural;
+	public GrammaticalCase grammaticalCase;
+	public Gender gender;
 
 	public Term() {
 		// TODO
 	}
 
-	public static Boolean isTerm(Word[] words) {
-		return false;
+	public String toString() {
+		return String.join(" ", words);
 	}
 }

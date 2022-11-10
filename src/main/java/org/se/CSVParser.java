@@ -21,8 +21,11 @@ public class CSVParser {
 
 	public static ArrayList<HashMap<String, String>>parse(String csv, String colDelimiter, String rowDelimiter) {
 		ArrayList<HashMap<String, String>> res = new ArrayList<HashMap<String, String>>();
+		ArrayList<String> header = new ArrayList<String>();
 		Boolean doubleQuoted = false;
 		Boolean singleQuoted = false;
+
+
 
 		return res;
 	}

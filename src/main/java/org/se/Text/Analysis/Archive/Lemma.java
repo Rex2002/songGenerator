@@ -1,4 +1,4 @@
-package org.se.Text.Analysis;
+package org.se.Text.Analysis.Archive;
 
 public class Lemma {
 	String str;

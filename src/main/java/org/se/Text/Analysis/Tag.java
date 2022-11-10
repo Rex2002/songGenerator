@@ -1,8 +1,6 @@
 package org.se.Text.Analysis;
 
-public enum WordType {
+public enum Tag {
 	Noun,
-	Adjective,
-	Verb,
 	Other
 }

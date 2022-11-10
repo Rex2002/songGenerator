@@ -1,4 +1,4 @@
-package org.se.Text.Analysis;
+package org.se.Text.Analysis.Archive;
 
 import java.io.IOException;
 import java.nio.file.Files;

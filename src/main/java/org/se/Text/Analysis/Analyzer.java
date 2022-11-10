@@ -1,29 +1,32 @@
 package org.se.Text.Analysis;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.stream.Stream;
+import java.util.ArrayList;
 
 public class Analyzer {
-	public String loadFile(Path filepath) throws IOException {
-		return Files.readString(filepath);
+	String text = "";
+	ArrayList<ArrayList<Word>> sentences = new ArrayList<ArrayList<Word>>();
+	ArrayList<ArrayList<Tag>> tags = new ArrayList<ArrayList<Tag>>();
+
+	public Analyzer(String text) {
+		this.text = text;
 	}
 
-	public Term[] analyzeText(String text) {
-		HashMap<String, Integer> BoW = new HashMap<String, Integer>();
-		String punctuation = ".,;!?:";
-		Stream.of(Stream.of(text.split("")).filter(s -> !punctuation.contains(s)).reduce((a, b) -> a + b).get().split("\\s+")).forEach(word -> {
-			word = word.toLowerCase();
-			if (BoW.keySet().contains(word)) {
-				BoW.put(word, BoW.get(word) + 1);
-			} else {
-				BoW.put(word, 1);
-			}
-		});
-
-		Term terms[] = {new Term()};
-		return terms;
+	public TermCollection analyze() {
+		this.preprocess();
+		this.tag();
+		return this.buildTerms();
 	}
+
+	void preprocess() {
+
+	}
+
+	void tag() {
+
+	}
+
+	TermCollection buildTerms() {
+		return new TermCollection();
+	}
+
 }
