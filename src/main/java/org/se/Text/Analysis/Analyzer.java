@@ -1,31 +1,33 @@
 package org.se.Text.Analysis;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class Analyzer {
-	String text = "";
-	ArrayList<ArrayList<Word>> sentences = new ArrayList<ArrayList<Word>>();
-	ArrayList<ArrayList<Tag>> tags = new ArrayList<ArrayList<Tag>>();
-
-	public Analyzer(String text) {
-		this.text = text;
+	public static TermCollection analyze(Path filepath) throws IOException {
+		String text = Analyzer.readFile(filepath);
+		ArrayList<ArrayList<String>> sentences = Analyzer.preprocess(text);
+		ArrayList<ArrayList<Tag>> tags = Analyzer.tag(sentences);
+		return Analyzer.buildTerms(tags);
 	}
 
-	public TermCollection analyze() {
-		this.preprocess();
-		this.tag();
-		return this.buildTerms();
+	public static String readFile(Path filepath) throws IOException {
+		return Files.readString(filepath);
 	}
 
-	void preprocess() {
-
+	static ArrayList<ArrayList<String>> preprocess(String text) {
+		ArrayList<ArrayList<String>> sentences = new ArrayList<ArrayList<String>>();
+		return sentences;
 	}
 
-	void tag() {
-
+	static ArrayList<ArrayList<Tag>> tag(ArrayList<ArrayList<String>> sentences) {
+		ArrayList<ArrayList<Tag>> tags = new ArrayList<ArrayList<Tag>>();
+		return tags;
 	}
 
-	TermCollection buildTerms() {
+	static TermCollection buildTerms(ArrayList<ArrayList<Tag>> tags) {
 		return new TermCollection();
 	}
 
