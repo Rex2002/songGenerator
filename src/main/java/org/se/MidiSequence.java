@@ -3,6 +3,7 @@ package org.se;
 import javax.sound.midi.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class MidiSequence {
     private String key = "Am";
@@ -12,8 +13,7 @@ public class MidiSequence {
     private final int PPQresolution = 24;
     private boolean endIsSet = false;
 
-    public MidiSequence (String key, int trackNumber){
-        this.key = key;
+    public MidiSequence (int trackNumber){
 
         try {
             seq = new Sequence(Sequence.PPQ, PPQresolution);
@@ -28,50 +28,73 @@ public class MidiSequence {
         }
     }
 
-    public boolean setBPM(int BPM, int trackNumber){
+    public void setBPM(int BPM, int trackNumber){
+        // speed calculation:
+        // midi tempo message consists of three bytes, which contain the number of microseconds per quarter (mpq)
+        // 60_000_000 / mpq = BPM
+        // mpq = 60_000_000 / BPM
+        // masking is done to split the value to its three 2-byte pairs
         try {
+            BPM = 60_000_000 / BPM;
             MetaMessage mt = new MetaMessage();
-            byte[] bt = {0x07, (byte) 0xA1, 0x20};
+        // byte[] bt = {0x07, (byte) 0xA1, 0x20}; 120 BPM
+            byte[] bt = {(byte)((BPM & 0xFF0000) >> 16),(byte)((BPM & 0x00FF00) >> 8), (byte)((BPM & 0x0000FF))};
             mt.setMessage(0x51, bt, 3);
             MidiEvent me = new MidiEvent(mt, (long) 0);
            t[trackNumber].add(me);
 
         }catch (InvalidMidiDataException e){
             e.printStackTrace();
-            return false;
         }
-        return true;
 
     }
 
-    public boolean setTrackName(String name) {
+    public void setKey(String key, String scale, int trackNumber) {
+        // s: 0 -> major, 1 -> minor
+        // for detailed information about the key-value mapping for the key see: https://www.recordingblogs.com/wiki/midi-key-signature-meta-message
+        if (!(MusicalKey.musicalKeyMinor.containsKey(key))){
+            throw new RuntimeException("illegal key");
+        }
+        byte s = (byte) (Objects.equals(scale, "m") ? 1 :0);
+        byte k = s==1 ? MusicalKey.musicalKeyMinor.get(key) : MusicalKey.musicalKeyMajor.get(key);
+        System.out.println("s: " + s);
+        System.out.println("k: " + k);
+        try {
+            MetaMessage mt = new MetaMessage();
+
+            mt.setMessage(0x59, new byte[]{k, s}, 0x02);
+            MidiEvent me = new MidiEvent(mt, 0);
+            t[trackNumber].add(me);
+        }catch (InvalidMidiDataException e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    public void setTrackName(String name) {
         try {
             MetaMessage mt = new MetaMessage();
             mt.setMessage(0x03, name.getBytes(), name.length());
         }catch (InvalidMidiDataException e){
             e.printStackTrace();
-            return false;
         }
-        return true;
     }
 
-    public boolean setInstrument(int instrument, int trackNumber){
+    public void setInstrument(int instrument, int trackNumber){
         try{
             ShortMessage mm = new ShortMessage();
 
             mm.setMessage(0xC0, instrument, 0x00);
-            MidiEvent me = new MidiEvent(mm,(long)0);
+            MidiEvent me = new MidiEvent(mm, 0);
            t[trackNumber].add(me);
 
         }catch (InvalidMidiDataException e){
             e.printStackTrace();
-            return false;
         }
-        return true;
     }
 
-    public boolean setEnd(int bars, int trackNumber){
-        // length of the track in bars, converted to ticks with 4 quartes per bar and 24 ticks per quarter
+    public void setEnd(int bars, int trackNumber){
+        // length of the track in bars, converted to ticks with 4 quarters per bar and 24 ticks per quarter
         try {
             MetaMessage mt = new MetaMessage();
             byte[] bet = {}; // empty array
@@ -80,15 +103,25 @@ public class MidiSequence {
            t[trackNumber].add(me);
         } catch (InvalidMidiDataException e) {
             e.printStackTrace();
-            return false;
+            return;
         }
         endIsSet = true;
-        return true;
-
-
     }
 
-    public boolean addNote(int note, long start, long length, int trackNumber){
+    public void addText(int position, int trackNumber, String text){
+        try{
+            MetaMessage mt = new MetaMessage();
+            mt.setMessage(0x01, text.getBytes(), text.length());
+            MidiEvent me = new MidiEvent(mt, position* 24L);
+            t[trackNumber].add(me);
+        }catch (InvalidMidiDataException e){
+            e.printStackTrace();
+            return;
+        }
+        return;
+    }
+
+    public void addNote(int note, long start, long length, int trackNumber){
         // currently start and length are in ticks
         try {
             // note on event (0x90)
@@ -104,22 +137,22 @@ public class MidiSequence {
            t[trackNumber].add(me);
         }catch (InvalidMidiDataException e){
             e.printStackTrace();
-            return false;
         }
-        return true;
     }
 
-    public boolean createFile(String filename){
+    public void playChord(Chord chord, long start, long length, int trackNumber){
+        Chor
+    }
+
+    public void createFile(String filename){
         if (!endIsSet){
-            return false;
+            return;
         }
         try{
-            File f = new File("midifile.mid");
+            File f = new File("midi-file.mid");
             MidiSystem.write(seq,1,f);
         }catch (IOException e){
             e.printStackTrace();
-            return false;
         }
-        return true;
     }
 }

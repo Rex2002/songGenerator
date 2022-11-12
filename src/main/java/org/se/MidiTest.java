@@ -1,7 +1,6 @@
 package org.se;
 import javax.sound.midi.*;
 import java.io.*;
-import java.util.*;
 import java.util.Random;
 
 public class MidiTest {
@@ -9,6 +8,22 @@ public class MidiTest {
     public static Random ran = new Random();
     public static int[] keyM = {0,2,3,5,7,8,10,12};
     public static void main(String[] args) throws InterruptedException {
+        MidiSequence m = new MidiSequence( 1);
+        m.setKey("Db", "m", 0);
+
+        m.setBPM(150, 0);
+        m.setEnd(40, 0);
+        m.setInstrument(1, 0);
+        m.setTrackName("testTrack");
+        m.addText(0, 0, "epic triangle showdown ");
+        for(int i = 0; i<12*24; i+=24){
+            m.addNote(30+i/24, i, 24, 0);
+        }
+
+        m.createFile("midi test");
+    }
+
+    public static void testTrack() throws InterruptedException{
         System.out.println("midifile begin ");
         try {
 //****  Create a new MIDI sequence with 24 ticks per beat  ****
@@ -26,7 +41,7 @@ public class MidiTest {
 
 //****  set tempo (meta event)  ****
             MetaMessage mt = new MetaMessage();
-            byte[] bt = {0x02, (byte)0x00, 0x00};
+            byte[] bt = {0x07, (byte) 0xA1, 0x20};
             mt.setMessage(0x51 ,bt, 3);
             me = new MidiEvent(mt,(long)0);
             t.add(me);
@@ -75,7 +90,7 @@ public class MidiTest {
 
             mm = new ShortMessage();
             mm.setMessage(0x80,0x3C,0x40);
-            me = new MidiEvent(mm,(long)121);
+            me = new MidiEvent(mm,(long)25);
             t.add(me);
 
 //****  set end of track (meta event) 19 ticks later  ****
@@ -95,7 +110,7 @@ public class MidiTest {
         } //catch
         System.out.println("midifile end ");
 
-        playMidiSounds();
+//        playMidiSounds();
     } //main
 
     public static void playMidiSounds() throws InterruptedException{
