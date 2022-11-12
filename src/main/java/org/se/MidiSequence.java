@@ -3,6 +3,7 @@ package org.se;
 import javax.sound.midi.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class MidiSequence {
@@ -140,8 +141,13 @@ public class MidiSequence {
         }
     }
 
-    public void playChord(Chord chord, long start, long length, int trackNumber){
-        Chor
+    public void addChord(Chord chord, long start, long length, int trackNumber){
+        System.out.println("chord: " + chord.getBaseNote() + ", modifiers: " + Arrays.toString(chord.getChordModifier()));
+
+        for (int modifier: chord.getChordModifier()) {
+            System.out.println("modifier: " + modifier);
+            addNote(chord.getBaseNote() + modifier, start, length, trackNumber);
+        }
     }
 
     public void createFile(String filename){
