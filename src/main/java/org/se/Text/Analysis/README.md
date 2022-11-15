@@ -63,15 +63,13 @@ As a last word on preprocessing, I want to mention normalizing unicode to ascii.
 
 ### Tagging
 
-Tagging in our context means to map each word in the text to a tag (often also called token), which hold certain metadata about the word. For now, the only information stored in the tag will be the type of the specified word (e.g. "noun", "adjective" etc.). This tag is crucial for building terms in the next step.
+Tagging in our context means to map each word in the text to a tag (often also called token), which hold certain metadata about the word. For now, the only information stored in the tag will be the type of the specified word (e.g. "noun", "adjective" etc.). This tag is crucial for building terms in the next step. Specifically, since we initially only plan to build terms out of nouns, we only need to tag if a word is a "noun" or "other".
 
 To figure out the correct tag for any one word, we use several techniques based in grammatical rules and dictionary-lookups. The simplest of these is to simply look the word up in a preconfigured dictionary, which stores a list of common german words with their specified tag. In many cases, however, this lookup will fail, even for very large dictionaries, as almost all german words change based on their case, gender, tempus, etc.
 
-Thus, instead of only using a dictionary, we also build in some simple and common grammatical rules of the german language.
+Thus, instead of only using a dictionary, we also build in some simple and common grammatical rules of the german language, to recognize a word's type.
 
-The simplest of these rules tells us that capitalized words (at least if they're not at the start of the sentence) are usually nouns.
-
-(TBD: What rules can we use?)
+The simplest of these rules tells us that capitalized words (at least if they're not at the start of the sentence) are usually nouns. Another rule tries to categorize words based on their pre- and suffixes. For example, in german, words ending in "-ung" or "-heit" are always nouns. More sophisticated rules would be nice, but are currently not planned.
 
 ### Term-building
 
@@ -95,4 +93,4 @@ Firstly, as in the last step, we want to have different variations of a single t
 
 Further, we want to know the amount of syllables for each variation of a term. Specifically, the syllables should be stored as a list of indices, so we know where each syllable starts and ends. This information is rather independent from all other steps and should thus be done when amount of words to iterate over is as small as possible. Thus we will collect said information at the end, after collecting variations of terms and counting their variations.
 
-Additionally, we also want to know the grammatical differences between variations of a term, to know when to use which, since lyrics should be mostly grammatically correct. To find what case a certain noun is in, we can again check for its suffixes. This can be done directly when comparing terms with possible variations. We aim to be more correct than complete here, meaning that we favor checking such cases then trying to declinate a given word into a new case. This preference protects us from building completely wrong words in the language.
+Additionally, we also want to know the grammatical differences between variations of a term, to know when to use which, since lyrics should be mostly grammatically correct. To find what case a certain noun is in, we can again check for its suffixes. This can be done directly when comparing terms with possible variations. We aim to be more correct than complete here, meaning that we favor checking such cases than trying to declinate a given word into a new case. This preference protects us from building completely wrong words in the language.
