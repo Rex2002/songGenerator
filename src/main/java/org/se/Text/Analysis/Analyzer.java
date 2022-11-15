@@ -68,13 +68,51 @@ public class Analyzer {
 		return sentences;
 	}
 
+	static int caitalizedCount(String str) {
+		int count = 0;
+		for (char c : str.toCharArray()) {
+			if (Character.isUpperCase(c)) count++;
+		}
+		return count;
+	}
+
+	static boolean hasSuffix(String str, String[] suffixes) {
+		for (String p : suffixes) {
+			if (str.endsWith(p)) return true;
+		}
+		return false;
+	}
+
+	static boolean hasPrefix(String str, String[] prefixes) {
+		for (String p : prefixes) {
+			if (str.startsWith(p)) return true;
+		}
+		return false;
+	}
+
 	static ArrayList<ArrayList<Tag>> tag(ArrayList<ArrayList<String>> sentences) {
 		ArrayList<ArrayList<Tag>> tags = new ArrayList<ArrayList<Tag>>();
+		String[] nounSuffixes = {"ung", "heit", "keit"};
+		for (ArrayList<String> sentence : sentences) {
+			ArrayList<Tag> currentTags = new ArrayList<Tag>();
+			for (int i = 0; i < sentence.size(); i++) {
+				String word = sentence.get(i);
+				Tag tag;
+				if (i != 0 && Analyzer.caitalizedCount(word) == 1) tag = Tag.Noun;
+				else if (Analyzer.hasSuffix(word, nounSuffixes)) tag = Tag.Noun;
+				// TODO: Add dictionary lookup
+				else tag = Tag.Other;
+				currentTags.add(tag);
+			}
+			tags.add(currentTags);
+		}
 		return tags;
 	}
 
 	static TermCollection buildTerms(ArrayList<ArrayList<Tag>> tags) {
-		return new TermCollection();
+		TermCollection TC = new TermCollection();
+		// TODO
+		return TC;
 	}
 
 }
