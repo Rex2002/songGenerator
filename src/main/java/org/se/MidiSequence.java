@@ -3,33 +3,40 @@ package org.se;
 import javax.sound.midi.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class MidiSequence {
     private String key = "Am";
     private Sequence seq;
     private Track[] t;
+    private int drumTrack;
     //potentially turn into Track array to handle multiple tracks
     private final int PPQresolution = 24;
     private boolean endIsSet = false;
 
-    public MidiSequence (int trackNumber){
+    public MidiSequence(int trackNumber){
+        this(trackNumber+1, trackNumber);
+    }
+    public MidiSequence (int trackNumber, int drumTrackNumber){
 
         try {
             seq = new Sequence(Sequence.PPQ, PPQresolution);
             t = new Track[trackNumber];
             for(int i =0; i<t.length; i++){
                 t[i] = seq.createTrack();
-
             }
+            drumTrack = drumTrackNumber;
+            setInstrument(116, drumTrack);
         }
         catch (InvalidMidiDataException e) {
             e.printStackTrace();
         }
     }
 
-    public void setBPM(int BPM, int trackNumber){
+    public void setBPM(int BPM){
         // speed calculation:
         // midi tempo message consists of three bytes, which contain the number of microseconds per quarter (mpq)
         // 60_000_000 / mpq = BPM
@@ -42,7 +49,9 @@ public class MidiSequence {
             byte[] bt = {(byte)((BPM & 0xFF0000) >> 16),(byte)((BPM & 0x00FF00) >> 8), (byte)((BPM & 0x0000FF))};
             mt.setMessage(0x51, bt, 3);
             MidiEvent me = new MidiEvent(mt, (long) 0);
-           t[trackNumber].add(me);
+            for(Track track : t){
+                track.add(me);
+            }
 
         }catch (InvalidMidiDataException e){
             e.printStackTrace();
@@ -94,14 +103,17 @@ public class MidiSequence {
         }
     }
 
-    public void setEnd(int bars, int trackNumber){
+    public void setEnd(int bars){
         // length of the track in bars, converted to ticks with 4 quarters per bar and 24 ticks per quarter
         try {
             MetaMessage mt = new MetaMessage();
             byte[] bet = {}; // empty array
             mt.setMessage(0x2F,bet,0);
             MidiEvent me = new MidiEvent(mt, (long)bars*24*4);
-           t[trackNumber].add(me);
+            for(Track track : t){
+                track.add(me);
+            }
+
         } catch (InvalidMidiDataException e) {
             e.printStackTrace();
             return;
@@ -142,12 +154,23 @@ public class MidiSequence {
     }
 
     public void addChord(Chord chord, long start, long length, int trackNumber){
-        System.out.println("chord: " + chord.getBaseNote() + ", modifiers: " + Arrays.toString(chord.getChordModifier()));
+        //System.out.println("chord: " + chord.getBaseNote() + ", modifiers: " + Arrays.toString(chord.getChordModifier()));
 
         for (int modifier: chord.getChordModifier()) {
-            System.out.println("modifier: " + modifier);
             addNote(chord.getBaseNote() + modifier, start, length, trackNumber);
         }
+    }
+
+    public void addBeat(DrumBeat beat, int bar){
+        HashMap<Integer, ArrayList> beatContent = beat.getContent();
+        for(int drumNo : beatContent.keySet()){
+            System.out.println(beatContent.get(drumNo));
+            for(Object o : beatContent.get(drumNo)){
+                addNote(drumNo,bar* 96L +((Integer) ((ArrayList<?>) o).get(0)).longValue(), ((Integer) ((ArrayList<?>) o).get(1)).longValue(), drumTrack);
+            }
+
+        }
+
     }
 
     public void createFile(String filename){

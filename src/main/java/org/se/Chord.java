@@ -5,12 +5,14 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Chord {
     private int baseNote;
-    private int[] chordModifier;
-    public static HashMap<String, int[]> chordModifiers;
+    private ArrayList<Integer> chordModifier;
+    public static HashMap<String, ArrayList<Integer>> chordModifiers;
     static {
         /*chordModifiers.put("maj",new int[]{0,4,7});
         chordModifiers.put("m",new int[]{0,3,7});
@@ -22,13 +24,14 @@ public class Chord {
         //below code is not tested, not sure whether relative path works that way
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         try {
-            chordModifiers = mapper.readValue(new File("resources/chord_modifiers.yml"), HashMap.class);
+            chordModifiers = mapper.readValue(new File("./src/main/resources/chord_modifiers.yml"), HashMap.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public Chord(int baseNote, String chordModifier){
+    public Chord(int baseNote, String chordMod
+    ){
         if (0 <= baseNote && baseNote < 128){
             this.baseNote = baseNote;
         }
@@ -36,8 +39,9 @@ public class Chord {
             System.out.println("invalid baseNote, change to 60 (C)");
             this.baseNote = 60;
         }
-        if (chordModifiers.containsKey(chordModifier)){
-            this.chordModifier = chordModifiers.get(chordModifier);
+
+        if (chordModifiers.containsKey(chordMod)){
+            this.chordModifier = chordModifiers.get(chordMod);
         }
         else{
             this.chordModifier = chordModifiers.get("maj");
@@ -48,7 +52,7 @@ public class Chord {
         return baseNote;
     }
 
-    public int[] getChordModifier(){
+    public ArrayList<Integer> getChordModifier(){
         return chordModifier;
     }
 }
