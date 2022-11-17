@@ -1,20 +1,80 @@
 package org.se.Text.Analysis;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class TermCollection {
-	public ArrayList<TermVariations> terms;
+	public HashMap<String, TermVariations> terms;
 
 	public TermCollection() {
-		this.terms = new ArrayList<TermVariations>();
+		this.terms = new HashMap<String, TermVariations>();
 	}
 
 	public TermCollection(ArrayList<TermVariations> terms) {
+		this.terms = new HashMap<String, TermVariations>();
+		for (TermVariations term : terms) this.terms.put(term.getLemma(), term);
+	}
+
+
+	public HashMap<String,TermVariations> getTerms() {
+		return this.terms;
+	}
+
+	public void setTerms(HashMap<String,TermVariations> terms) {
 		this.terms = terms;
 	}
 
+	public TermCollection terms(HashMap<String,TermVariations> terms) {
+		setTerms(terms);
+		return this;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this)
+			return true;
+		if (!(o instanceof TermCollection)) {
+			return false;
+		}
+		TermCollection termCollection = (TermCollection) o;
+		return Objects.equals(terms, termCollection.terms);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(terms);
+	}
+
+	@Override
+	public String toString() {
+		return "{" +
+			" terms='" + getTerms() + "'" +
+			"}";
+	}
+
+
 	public void add(TermVariations variations) {
-		terms.add(variations);
+		if (has(variations)) {
+			this.terms.get(variations.getLemma()).add(variations);
+		} else {
+			terms.put(variations.getLemma(), variations);
+		}
+	}
+
+	public void add(Term t) {
+		TermVariations v = new TermVariations(t);
+		if (has(v)) {
+			terms.get(v).add(t);
+		} else {
+			terms.put(v.getLemma(), v);
+		}
+	}
+
+	public Boolean has(TermVariations variations) {
+		return terms.containsKey(variations.getLemma());
+	}
+
+	public Boolean has(Term t) {
+		return terms.containsKey(t.getLemma());
 	}
 
 	// public ArrayList<TermVariations> query(@Nullable GrammaticalCase grammaticalCase, @Nullable Gender gender, @Nullable Boolean isPlural, @Nullable Integer syllableMin, @Nullable Integer syllableMax) {}
