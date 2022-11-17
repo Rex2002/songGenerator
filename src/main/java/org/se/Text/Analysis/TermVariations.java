@@ -110,13 +110,13 @@ public class TermVariations {
 		this.variations.put(term.hashData(), term);
 	}
 
-	public boolean hasType(GrammaticalCase grammaticalCase, Boolean isPlural) {
-		int hash = Term.hashData(grammaticalCase, isPlural);
+	public boolean hasType(Gender gender, GrammaticalCase grammaticalCase, Boolean isPlural) {
+		int hash = Term.hashData(gender, grammaticalCase, isPlural);
 		return variations.containsKey(hash);
 	}
 
-	public Term getTerm(GrammaticalCase grammaticalCase, Boolean iPlural) {
-		int hash = Term.hashData(grammaticalCase, iPlural);
+	public Term getTerm(Gender gender, GrammaticalCase grammaticalCase, Boolean iPlural) {
+		int hash = Term.hashData(gender, grammaticalCase, iPlural);
 		if (variations.containsKey(hash)) return this.variations.get(hash);
 		// TODO
 		Term newTerm = new Term(this.lemma);

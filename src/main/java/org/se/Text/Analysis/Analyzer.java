@@ -32,12 +32,14 @@ public class Analyzer {
 		String currentWord = "";
 		for (int i = 0; i < chars.length; i++) {
 			char c = chars[i];
+			// ignore whitespace
 			if (Character.isWhitespace(c)) {
 				if (currentWord != "" && !splitLastWord) {
 					currentSentence.add(currentWord);
 					currentWord = "";
 				}
 			}
+			// End sentence at specific punctuation (e.g. at .!?)
 			else if (sentenceEnds.indexOf(c) != -1) {
 				if (currentWord != "") {
 					currentSentence.add(currentWord);
@@ -48,16 +50,20 @@ public class Analyzer {
 				sentences.add(copiedSentence);
 				currentSentence.clear();
 			}
-			else if (currentWord != "" && wordSplitter.indexOf(c) != -1) {
+			// Current word gets split
+			else if (currentWord != "" && !splitLastWord && wordSplitter.indexOf(c) != -1) {
 				splitLastWord = true;
 			}
+			// punctuation that doesn't end a sentence
 			else if (otherPunctuation.indexOf(c) != -1) {
 				if (currentWord != "") {
 					currentSentence.add(currentWord);
 					currentWord = "";
 				}
 				splitLastWord = false;
-			} else {
+			}
+			// otherwise we just have another character for the word
+			else {
 				currentWord += c;
 				splitLastWord = false;
 			}
@@ -111,7 +117,6 @@ public class Analyzer {
 	}
 
 	static TermCollection buildTerms(ArrayList<ArrayList<Tag>> tags) {
-		TermCollection TC = new TermCollection();
 		HashMap<String, TermVariations> variationsMap = new HashMap<String, TermVariations>();
 
 		for (ArrayList<Tag> sentenceTags : tags) {
@@ -126,7 +131,7 @@ public class Analyzer {
 				}
 			}
 		}
-		return TC;
+		return new TermCollection(variationsMap);
 	}
 
 }

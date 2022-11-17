@@ -11,6 +11,15 @@ public class Term {
 	public String lemma;
 
 	public Term(String[] words) {
+		constructorHelper(words);
+	}
+
+	public Term(String word) {
+		String[] words = {word};
+		constructorHelper(words);
+	}
+
+	private void constructorHelper(String[] words) {
 		this.words = words;
 
 		String[] pluralEndings = {"en", "s"};
@@ -42,12 +51,6 @@ public class Term {
 			lemmas.add(s);
 		}
 		this.lemma = String.join(" ", lemmas);
-	}
-
-	public Term(String word) {
-		String[] words = {word};
-		new Term(words);
-		this.words = words;
 	}
 
 	public Term(String[] words, Integer[] syllables, Boolean isPlural, GrammaticalCase grammaticalCase, Gender gender, String lemma) {
@@ -175,13 +178,14 @@ public class Term {
 	}
 
 	public int hashData() {
-		return Term.hashData(grammaticalCase, isPlural);
+		return Term.hashData(gender, grammaticalCase, isPlural);
 	}
 
-	public static int hashData(GrammaticalCase grammaticalCase, Boolean isPlural) {
+	public static int hashData(Gender gender, GrammaticalCase grammaticalCase, Boolean isPlural) {
+		int genderNum = gender.ordinal();
 		int caseNum = grammaticalCase.ordinal();
 		int pluralNum = isPlural ? 1 : 0;
-		return caseNum * 10 + pluralNum;
+		return genderNum * 100 + caseNum * 10 + pluralNum;
 	}
 
 	private static List<Integer> syllables(String word) {

@@ -14,6 +14,9 @@ public class TermCollection {
 		for (TermVariations term : terms) this.terms.put(term.getLemma(), term);
 	}
 
+	public TermCollection(HashMap<String, TermVariations> map) {
+		this.terms = map;
+	}
 
 	public HashMap<String,TermVariations> getTerms() {
 		return this.terms;
@@ -63,7 +66,7 @@ public class TermCollection {
 	public void add(Term t) {
 		TermVariations v = new TermVariations(t);
 		if (has(v)) {
-			terms.get(v).add(t);
+			terms.get(v.getLemma()).add(t);
 		} else {
 			terms.put(v.getLemma(), v);
 		}
