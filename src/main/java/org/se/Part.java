@@ -7,9 +7,12 @@ public class Part {
     private int length;
     private List<Chord> chords;
     private List<InstrumentEnum> instruments;
+    private Genre genre;
+    private Beat beat;
 
-    Part(int length){
+    Part(int length, Genre genre){
         this.length=length;
+        this.genre=genre;
         chords = new ArrayList<>();
         instruments = new ArrayList<>();
     }
@@ -25,10 +28,13 @@ public class Part {
     }
 
     public void fillPart(Part basePart, MusicalKey key, int variation){
-        //implementation of variation still has to be designed
+        //variation class = (List<Chord> reqChords, reqInsts, optInsts)
     }
 
-    private void selectChords(MusicalKey key, Genre genre, String someKindOfRestriction){
+    private void selectChords(MusicalKey key, List<Chord> reqChords){
         //implementation of restriction still has to be designed
+    }
+    private void selectBeat(){
+        //selects beat from template
     }
 }
