@@ -3,7 +3,19 @@ package org.se.Text.Analysis;
 import java.util.ArrayList;
 
 public class TermCollection {
-	public ArrayList<TermVariations> terms = new ArrayList<TermVariations>();
+	public ArrayList<TermVariations> terms;
+
+	public TermCollection() {
+		this.terms = new ArrayList<TermVariations>();
+	}
+
+	public TermCollection(ArrayList<TermVariations> terms) {
+		this.terms = terms;
+	}
+
+	public void add(TermVariations variations) {
+		terms.add(variations);
+	}
 
 	// public ArrayList<TermVariations> query(@Nullable GrammaticalCase grammaticalCase, @Nullable Gender gender, @Nullable Boolean isPlural, @Nullable Integer syllableMin, @Nullable Integer syllableMax) {}
 

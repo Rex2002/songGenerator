@@ -3,7 +3,7 @@ package org.se.Text.Analysis;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.*;
 
 public class Analyzer {
 	public static TermCollection analyze(Path filepath) throws IOException {
@@ -97,12 +97,13 @@ public class Analyzer {
 			ArrayList<Tag> currentTags = new ArrayList<Tag>();
 			for (int i = 0; i < sentence.size(); i++) {
 				String word = sentence.get(i);
-				Tag tag;
-				if (i != 0 && Analyzer.caitalizedCount(word) == 1) tag = Tag.Noun;
-				else if (Analyzer.hasSuffix(word, nounSuffixes)) tag = Tag.Noun;
+				TagType type;
+				if (i != 0 && Analyzer.caitalizedCount(word) == 1) type = TagType.Noun;
+				else if (Analyzer.hasSuffix(word, nounSuffixes)) type = TagType.Noun;
 				// TODO: Add dictionary lookup
-				else tag = Tag.Other;
-				currentTags.add(tag);
+				else type = TagType.Other;
+
+				currentTags.add(new Tag(word, type));
 			}
 			tags.add(currentTags);
 		}
@@ -111,7 +112,20 @@ public class Analyzer {
 
 	static TermCollection buildTerms(ArrayList<ArrayList<Tag>> tags) {
 		TermCollection TC = new TermCollection();
-		// TODO
+		HashMap<String, TermVariations> variationsMap = new HashMap<String, TermVariations>();
+
+		for (ArrayList<Tag> sentenceTags : tags) {
+			for (Tag t : sentenceTags) {
+				if (t.is(TagType.Noun)) {
+					Term term = new Term(t.word);
+					if (variationsMap.containsKey(term.lemma)) {
+						variationsMap.get(term.lemma).add(term);
+					} else {
+						variationsMap.put(term.lemma, new TermVariations(term));
+					}
+				}
+			}
+		}
 		return TC;
 	}
 
