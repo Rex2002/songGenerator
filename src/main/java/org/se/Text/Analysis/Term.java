@@ -47,10 +47,7 @@ public class Term {
 	public Term(String word) {
 		String[] words = {word};
 		new Term(words);
-	}
-
-
-	public Term() {
+		this.words = words;
 	}
 
 	public Term(String[] words, Integer[] syllables, Boolean isPlural, GrammaticalCase grammaticalCase, Gender gender, String lemma) {
