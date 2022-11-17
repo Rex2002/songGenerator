@@ -1,31 +1,30 @@
 package org.se;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Objects;
+import java.util.*;
 
 
 public class DrumBeat {
     public static HashMap<String, Integer> drumPrograms;
-    public static ArrayList drumBeats;
+    public static List<Beat> drumBeats;
 
-    private LinkedHashMap beat;
-    private LinkedHashMap instruments;
 
     static{
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        YAMLFactory yaml = new YAMLFactory();
+        ObjectMapper mapper = new ObjectMapper(yaml);
         System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
         try {
+            YAMLParser yamlParser = yaml.createParser("./src/main/resources/drum_patterns.yml");
+            drumBeats = mapper.readValues(yamlParser, Beat.class).readAll();
             drumPrograms = mapper.readValue(new File("./src/main/resources/drum_prog_no.yml"), HashMap.class);
 
-            drumBeats = mapper.readValue(new File("./src/main/resources/drum_patterns.yml"), ArrayList.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,16 +36,12 @@ public class DrumBeat {
     }
 
     public DrumBeat(int beatNo){
-        System.out.println(drumBeats.toString());
-        beat = (LinkedHashMap) drumBeats.get(beatNo);
-        instruments = (LinkedHashMap) (beat.get("instruments"));
+
     }
 
     public HashMap<Integer, ArrayList> getContent(){
         HashMap<Integer, ArrayList> content = new HashMap<>();
-        for(Object o : instruments.keySet()){
-            content.put(drumPrograms.get(o.toString()), (ArrayList) instruments.get(o));
-        }
+        // returns a hashmap, that has the drum instrument as key and another arraylist that contains playtime and duration in the bar of the drum
         return content;
     }
 }

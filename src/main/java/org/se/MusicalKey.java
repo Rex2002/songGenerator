@@ -4,6 +4,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MusicalKey {
+
+    public static int[] keyMin = {0,2,3,5,7,8,10};
+    public static int[] keyMaj = {0,2,4,5,7,9,11};
+    private final int baseNote;
+    private final String scale;
+
+    public static int[] getKeyNotes(int baseNote, String scale){
+        int[] k = new int[6];
+        for (int i = 0; i < keyMaj.length; i++) {
+            k[i] = baseNote + (scale.equals("min") ? keyMin[i] : keyMaj[i]);
+        }
+        return k;
+    }
+
+    public MusicalKey(int baseNote, String scale){
+        this.baseNote = baseNote;
+        this.scale = scale;
+    }
     public static final Map<String, Byte> musicalKeyMajor= new HashMap<>();
     static {
         musicalKeyMajor.put("Cb", (byte) -7);
