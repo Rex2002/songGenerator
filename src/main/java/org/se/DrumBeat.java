@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class DrumBeat {
     public static HashMap<String, Integer> drumPrograms;
-    public static HashMap drumBeats;
+    public static ArrayList drumBeats;
 
     private LinkedHashMap beat;
     private LinkedHashMap instruments;
@@ -25,7 +25,7 @@ public class DrumBeat {
         try {
             drumPrograms = mapper.readValue(new File("./src/main/resources/drum_prog_no.yml"), HashMap.class);
 
-            drumBeats = mapper.readValue(new File("./src/main/resources/drum_patterns.yml"), HashMap.class);
+            drumBeats = mapper.readValue(new File("./src/main/resources/drum_patterns.yml"), ArrayList.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,9 +37,9 @@ public class DrumBeat {
     }
 
     public DrumBeat(int beatNo){
-
-        beat = (LinkedHashMap) (((ArrayList) drumBeats.get("beat")).get(beatNo));
-        instruments = (LinkedHashMap) ((ArrayList)beat.get("instruments")).get(0);
+        System.out.println(drumBeats.toString());
+        beat = (LinkedHashMap) drumBeats.get(beatNo);
+        instruments = (LinkedHashMap) (beat.get("instruments"));
     }
 
     public HashMap<Integer, ArrayList> getContent(){
