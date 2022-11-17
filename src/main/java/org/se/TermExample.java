@@ -36,7 +36,7 @@ public class TermExample {
 	public static TermCollection getExample() throws IOException {
 		TermCollection c = new TermCollection();
 
-		String csvFile = Files.readString(Path.of("C:\\Users\\Administrator\\Documents\\Studium\\Software Engineering\\SongGenerator\\src\\main\\java\\org\\se\\example.csv"));
+		String csvFile = Files.readString(Path.of("", "example.csv"));
 		Stream.of(csvFile.split("\r?\n")).skip(1).map(s -> s.split(",")).forEach(row -> {
 			Term t = new Term(row[1]);
 			t.setLemma(row[0]);
