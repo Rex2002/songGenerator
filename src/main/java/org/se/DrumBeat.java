@@ -1,6 +1,5 @@
 package org.se;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
@@ -21,7 +20,7 @@ public class DrumBeat {
         System.out.println("Working Directory = " + System.getProperty("user.dir"));
 
         try {
-            YAMLParser yamlParser = yaml.createParser("./src/main/resources/drum_patterns.yml");
+            YAMLParser yamlParser = yaml.createParser(new File("./src/main/resources/beats_template.yml"));
             drumBeats = mapper.readValues(yamlParser, Beat.class).readAll();
             drumPrograms = mapper.readValue(new File("./src/main/resources/drum_prog_no.yml"), HashMap.class);
 

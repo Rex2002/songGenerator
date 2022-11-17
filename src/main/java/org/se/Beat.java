@@ -1,7 +1,6 @@
 package org.se;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -17,9 +16,9 @@ public class Beat {
 
     public Beat(){}
     @JsonCreator
-    public Beat(HashMap<String, ArrayList<ArrayList<Integer>>> mainPattern,
-                HashMap<String, ArrayList<ArrayList<Integer>>> bigFill,
-                HashMap<String, ArrayList<ArrayList<Integer>>> smallFill) {
+    public Beat(@JsonProperty("mainPattern") HashMap<String, ArrayList<ArrayList<Integer>>> mainPattern,
+                @JsonProperty("bigFill") HashMap<String, ArrayList<ArrayList<Integer>>> bigFill,
+                @JsonProperty("smallFill") HashMap<String, ArrayList<ArrayList<Integer>>> smallFill) {
 
         this.mainPattern = mainPattern;
         this.bigFill = bigFill;
