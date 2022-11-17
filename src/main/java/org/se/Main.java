@@ -9,6 +9,6 @@ import org.se.Text.Analysis.TermCollection;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-		TermCollection x = Analyzer.analyze(Path.of("C:\\Users\\Administrator\\Documents\\Studium\\Software Engineering\\SongGenerator\\test.txt"));
+		TermCollection x = Analyzer.analyze(Path.of("", "test.txt"));
     }
 }
