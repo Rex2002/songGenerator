@@ -1,10 +1,13 @@
-package org.se;
+package org.se.logic;
+
+import org.se.model.Chord;
+import org.se.model.DrumBeat;
+import org.se.model.MusicalKey;
 
 import javax.sound.midi.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 

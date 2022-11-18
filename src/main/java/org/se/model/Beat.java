@@ -1,4 +1,4 @@
-package org.se;
+package org.se.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

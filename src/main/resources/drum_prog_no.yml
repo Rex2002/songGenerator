@@ -1,5 +1,5 @@
 # mapping for drum <=> midi note
-
+#
 bass   : 36       # confirmed very low bass
 snare  : 38       # confirmed
 snare2 : 40

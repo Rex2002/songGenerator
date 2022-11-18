@@ -1,6 +1,5 @@
 # beat specification:
-#  instrument: [[start, length],...]
-#   ...
+# instrument: [[start, length],...]
 # start and length are specified in 96th from bar start
 mainPattern:
     bass    : [[0,24], [48,24]]
@@ -31,3 +30,4 @@ smallFill:
     bass: [ [ 0,24 ], [ 48,24 ] ]
     ride: [ [ 0,24 ], [ 24,24 ], [ 48,24 ], [ 72,24 ] ]
     snare: [ [ 24,24 ],[ 72,12 ], [ 84, 6 ], [90, 6] ]
+---

@@ -1,4 +1,4 @@
-package org.se;
+package org.se.model;
 
 public enum Genre {
     POP,

@@ -1,4 +1,4 @@
-package org.se;
+package org.se.model;
 
 import java.util.List;
 

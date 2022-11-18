@@ -1,7 +1,8 @@
-package org.se;
+package org.se.logic;
+import org.se.model.Chord;
+import org.se.model.DrumBeat;
+
 import javax.sound.midi.*;
-import java.io.*;
-import java.util.Arrays;
 import java.util.Random;
 
 public class MidiTest {
