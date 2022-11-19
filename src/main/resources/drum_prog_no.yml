@@ -1,12 +1,14 @@
 # mapping for drum <=> midi note
 #
 bass   : 36       # confirmed very low bass
+bass2  : 42       # confirmed, slightly higher bass
 snare  : 38       # confirmed
-snare2 : 40
 sideStick: 37     # confirmed
 woodClick: 39     # confirmed
-hiHat  : 42
+hiHat  : 46
 ride   : 30       # confirmed
-lTom   : 45
-hTom   : 32
-mTom   : 33
+mTom   : 47
+hTom   : 50
+lTom   : 45       # confirmed
+click  : 32       # tongue clicking
+chimes  : 33       # confirmed

@@ -12,12 +12,11 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class MidiSequence {
-    private String key = "Am";
+    private static final int PPQ_RESOLUTION = 24;
     private Sequence seq;
     private Track[] t;
     private int drumTrack;
     //potentially turn into Track array to handle multiple tracks
-    private final int PPQresolution = 24;
     private boolean endIsSet = false;
 
     public MidiSequence(int trackNumber){
@@ -26,11 +25,12 @@ public class MidiSequence {
     public MidiSequence (int trackNumber, int drumTrackNumber){
 
         try {
-            seq = new Sequence(Sequence.PPQ, PPQresolution);
-            t = new Track[trackNumber];
-            for(int i =0; i<t.length; i++){
-                t[i] = seq.createTrack();
+            seq = new Sequence(Sequence.PPQ, PPQ_RESOLUTION);
+
+            for(int i =0; i<trackNumber; i++){
+                seq.createTrack();
             }
+            t = seq.getTracks();
             drumTrack = drumTrackNumber;
             setInstrument(116, drumTrack);
         }
@@ -51,7 +51,7 @@ public class MidiSequence {
         // byte[] bt = {0x07, (byte) 0xA1, 0x20}; 120 BPM
             byte[] bt = {(byte)((BPM & 0xFF0000) >> 16),(byte)((BPM & 0x00FF00) >> 8), (byte)((BPM & 0x0000FF))};
             mt.setMessage(0x51, bt, 3);
-            MidiEvent me = new MidiEvent(mt, (long) 0);
+            MidiEvent me = new MidiEvent(mt, 0);
             for(Track track : t){
                 track.add(me);
             }
@@ -132,9 +132,7 @@ public class MidiSequence {
             t[trackNumber].add(me);
         }catch (InvalidMidiDataException e){
             e.printStackTrace();
-            return;
         }
-        return;
     }
 
     public void addNote(int note, long start, long length, int trackNumber){
@@ -165,11 +163,11 @@ public class MidiSequence {
     }
 
     public void addBeat(DrumBeat beat, int bar){
-        HashMap<Integer, ArrayList> beatContent = beat.getContent();
+        HashMap<Integer, ArrayList<ArrayList<Integer>>> beatContent = beat.getContent();
         for(int drumNo : beatContent.keySet()){
             System.out.println(beatContent.get(drumNo));
-            for(Object o : beatContent.get(drumNo)){
-                addNote(drumNo,bar* 96L +((Integer) ((ArrayList<?>) o).get(0)).longValue(), ((Integer) ((ArrayList<?>) o).get(1)).longValue(), drumTrack);
+            for(ArrayList<Integer> o : beatContent.get(drumNo)){
+                addNote(drumNo,bar* 96L +o.get(0).longValue(), o.get(1).longValue(), drumTrack);
             }
 
         }
@@ -181,7 +179,7 @@ public class MidiSequence {
             return;
         }
         try{
-            File f = new File("midi-file.mid");
+            File f = new File(filename+".mid");
             MidiSystem.write(seq,1,f);
         }catch (IOException e){
             e.printStackTrace();
