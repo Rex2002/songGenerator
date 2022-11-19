@@ -1,31 +1,31 @@
 order: [intro, verse, chorus, verse, chorus, chorus]
 intro:
   length: 8
-  isBasePart: true # only one basePart per structure template
+  isBasePart: true # only one base part per structure
   req:
-    - piano
+    - chords
     - drums
   opt:
-    - violin
-    - guitar
+    - melody1
+    - chords2
 verse:
   length: 16
   isBasePart: false
   randomizationLevel: 0 #0: no variation, 1: keep 2 most important chords, 2: stay in key
   req:
-    - piano
+    - chords
     - bass
     - drums
   opt:
-    - guitar
+    - chords2
 chorus:
   length: 8
   isBasePart: false
   randomizationLevel: 2
   req:
-    - piano
-    - bass
+    - chords
+    - bass2
     - drums
   opt:
-    - synth
+    - melody1
 ---
