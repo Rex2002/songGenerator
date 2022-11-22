@@ -1,8 +1,8 @@
 package org.se.logic;
-import org.se.model.Chord;
-import org.se.model.DrumBeat;
+import org.se.model.*;
 
 import javax.sound.midi.*;
+import java.util.HashMap;
 import java.util.Random;
 
 public class MidiTest {
@@ -10,9 +10,13 @@ public class MidiTest {
     public static Random ran = new Random();
     public static int[] keyM = {0,2,3,5,7,8,10,12};
     public static void main(String[] args) throws InterruptedException {
-        DrumBeat k1 = new DrumBeat(1);
+        Structure d = new Structure(new MusicalKey(60, "m"), Genre.POP);
+
+
 
         MidiSequence m = new MidiSequence( 10);
+        int drumTrackNo = 9;
+        m.setInstrument(118, drumTrackNo);
         m.setBPM(80);
         m.setEnd(40);
         m.setTrackName("testTrack");
@@ -23,18 +27,17 @@ public class MidiTest {
             m.addChord(new Chord(69, "m"), 24 * 4 * i + 24,24,0);
             m.addChord(new Chord(67, "maj"), 24 * 4 * i + 48,12,0);
             m.addChord(new Chord(62, "maj"), 24 * 4 * i + 72,24,0);
+
             if(i % 4 == 3){
-                k1.setFill(1);
+                m.addMidiPlayable(new DrumBeat(1, i, 1, drumTrackNo));
             }
             else if(i % 2 == 1){
-                k1.setFill(0);
+                m.addMidiPlayable(new DrumBeat(1, i, 0, drumTrackNo));
             }
             else{
-                k1.setFill(-1);
+                m.addMidiPlayable(new DrumBeat(1, i, -1, drumTrackNo));
             }
-            m.addBeat(k1, i);
 
-            //    m.addNote(30+i/24, i, 24, 0);
         }
         int noteOffset = 0;
         int baseNote = 60;

@@ -9,18 +9,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Chord {
-    private int baseNote;
-    private ArrayList<Integer> chordModifier;
+    private final int baseNote;
+    private final ArrayList<Integer> chordModifier;
     public static HashMap<String, ArrayList<Integer>> chordModifiers;
     static {
-        /*chordModifiers.put("maj",new int[]{0,4,7});
-        chordModifiers.put("m",new int[]{0,3,7});
-        chordModifiers.put("maj7",new int[]{0,4,7,11});
-        chordModifiers.put("m7",new int[]{0,3,7,11});
-        chordModifiers.put("dim",new int[]{0,3,6});
-        chordModifiers.put("add9",new int[]{0,4,7, 14}); */
-
-        //below code is not tested, not sure whether relative path works that way
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
         try {
             chordModifiers = mapper.readValue(new File("./src/main/resources/chord_modifiers.yml"), HashMap.class);
