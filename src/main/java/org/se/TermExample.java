@@ -18,7 +18,7 @@ public class TermExample {
 
 	private static Gender parseGender(String s) {
 		s = s.toLowerCase();
-		return s == "m" ? Gender.male : s == "f" ? Gender.female : Gender.neutral;
+		return s.startsWith("m") ? Gender.male : s.startsWith("f") ? Gender.female : Gender.neutral;
 	}
 
 	private static Boolean parseIsPlural(String s) {
