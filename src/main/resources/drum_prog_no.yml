@@ -11,4 +11,5 @@ mTom   : 47
 hTom   : 50
 lTom   : 45       # confirmed
 click  : 32       # tongue clicking
-chimes  : 33       # confirmed
+chimes : 33       # confirmed
+crash  : 0
