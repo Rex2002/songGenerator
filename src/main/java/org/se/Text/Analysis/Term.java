@@ -1,8 +1,10 @@
 package org.se.Text.Analysis;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Term {
+	public int frequency;
 	public String[] words;
 	public Integer[] syllables = {};
 	public Boolean isPlural;
@@ -20,6 +22,7 @@ public class Term {
 	}
 
 	private void constructorHelper(String[] words) {
+		this.frequency = 1;
 		this.words = words;
 
 		String[] pluralEndings = {"en", "s"};
@@ -36,7 +39,7 @@ public class Term {
 		Integer lastEndCounter = 0;
 		for (String w : words) {
 			List<Integer> wordSyllables = Term.syllables(w);
-			wordSyllables = wordSyllables.stream().map(start -> start + lastEndCounter).toList();
+			wordSyllables = wordSyllables.stream().map(start -> start + lastEndCounter).collect(Collectors.toList());
 			syllables.addAll(wordSyllables);
 		}
 		syllables.toArray(this.syllables);
@@ -60,6 +63,14 @@ public class Term {
 		this.grammaticalCase = grammaticalCase;
 		this.gender = gender;
 		this.lemma = lemma;
+	}
+
+	public void increaseFrequency() {
+		this.frequency++;
+	}
+
+	public int getFrequency() {
+		return this.frequency;
 	}
 
 	public String[] getWords() {
@@ -99,6 +110,10 @@ public class Term {
 		return this.lemma;
 	}
 
+
+	public void setFrequency(int frequency) {
+		this.frequency = frequency;
+	}
 
 	public void setIsPlural(Boolean isPlural) {
 		this.isPlural = isPlural;
