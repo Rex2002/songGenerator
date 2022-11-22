@@ -14,22 +14,23 @@ public class TermCollection {
 
 	public TermCollection(ArrayList<TermVariations> terms) {
 		this.terms = new HashMap<String, TermVariations>();
-		for (TermVariations term : terms) this.terms.put(term.getLemma(), term);
+		for (TermVariations term : terms)
+			this.terms.put(term.getLemma(), term);
 	}
 
 	public TermCollection(HashMap<String, TermVariations> map) {
 		this.terms = map;
 	}
 
-	public HashMap<String,TermVariations> getTerms() {
+	public HashMap<String, TermVariations> getTerms() {
 		return this.terms;
 	}
 
-	public void setTerms(HashMap<String,TermVariations> terms) {
+	public void setTerms(HashMap<String, TermVariations> terms) {
 		this.terms = terms;
 	}
 
-	public TermCollection terms(HashMap<String,TermVariations> terms) {
+	public TermCollection terms(HashMap<String, TermVariations> terms) {
 		setTerms(terms);
 		return this;
 	}
@@ -53,10 +54,9 @@ public class TermCollection {
 	@Override
 	public String toString() {
 		return "{" +
-			" terms='" + getTerms() + "'" +
-			"}";
+				" terms='" + getTerms() + "'" +
+				"}";
 	}
-
 
 	public void add(TermVariations variations) {
 		if (has(variations)) {
@@ -83,15 +83,18 @@ public class TermCollection {
 		return terms.containsKey(t.getLemma());
 	}
 
-	public List<Term> query(GrammaticalCase grammaticalCase, Gender gender, Boolean isPlural, Integer syllableMin, Integer syllableMax) {
+	public List<Term> query(GrammaticalCase grammaticalCase, Gender gender, Boolean isPlural, Integer syllableMin,
+			Integer syllableMax) {
 		List<Term> existing = new ArrayList<Term>();
 		List<Term> created = new ArrayList<Term>();
 
 		this.terms.values().forEach(x -> {
 			Term t = x.getTerm(gender, grammaticalCase, isPlural);
 			if (syllableMin <= t.syllables.length && t.syllables.length <= syllableMax) {
-				if (x.hasType(gender, grammaticalCase, isPlural)) existing.add(t);
-				else created.add(t);
+				if (x.hasType(gender, grammaticalCase, isPlural))
+					existing.add(t);
+				else
+					created.add(t);
 			}
 		});
 
@@ -131,9 +134,10 @@ public class TermCollection {
 		return TermCollection.getRandomTerm(terms.values().stream().collect(Collectors.toList()));
 	}
 
-
-	public static List<Term> queryBySyllableRange(HashMap<String, TermVariations> terms, Integer minSyllableAmount, Integer maxSyllableAmount) {
-		return TermCollection.queryBy(terms, x -> minSyllableAmount <= x.syllables.length && x.syllables.length <= maxSyllableAmount);
+	public static List<Term> queryBySyllableRange(HashMap<String, TermVariations> terms, Integer minSyllableAmount,
+			Integer maxSyllableAmount) {
+		return TermCollection.queryBy(terms,
+				x -> minSyllableAmount <= x.syllables.length && x.syllables.length <= maxSyllableAmount);
 	}
 
 	public static List<Term> queryBySyllableAmount(HashMap<String, TermVariations> terms, Integer syllableAmount) {
@@ -159,9 +163,10 @@ public class TermCollection {
 		return res;
 	}
 
-
 	public static List<Term> mostCommonTerms(HashMap<String, TermVariations> terms) {
-		List<Term> res = terms.values().stream().map(x -> x.variations.values().stream()).flatMap(Function.identity()).collect(Collectors.toList());;
+		List<Term> res = terms.values().stream().map(x -> x.variations.values().stream()).flatMap(Function.identity())
+				.collect(Collectors.toList());
+		;
 		res.sort(new Comp(terms));
 		return res.subList(0, 10);
 	}

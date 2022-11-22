@@ -60,9 +60,9 @@ public class Tag {
 	@Override
 	public String toString() {
 		return "{" +
-			" type='" + getType() + "'" +
-			", word='" + getWord() + "'" +
-			"}";
+				" type='" + getType() + "'" +
+				", word='" + getWord() + "'" +
+				"}";
 	}
 
 }

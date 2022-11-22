@@ -1,8 +1,5 @@
 package org.se.Text.Analysis;
 
 public enum GrammaticalCase {
-	Nominative,
-	Genitive,
-	Dative,
-	Accusative,
+	Nominative, Genitive, Dative, Accusative,
 }

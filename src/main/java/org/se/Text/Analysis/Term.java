@@ -17,7 +17,7 @@ public class Term {
 	}
 
 	public Term(String word) {
-		String[] words = {word};
+		String[] words = { word };
 		constructorHelper(words);
 	}
 
@@ -25,11 +25,11 @@ public class Term {
 		this.frequency = 1;
 		this.words = words;
 
-		String[] pluralEndings = {"en", "s"};
+		String[] pluralEndings = { "en", "s" };
 		String word = words[words.length - 1];
 		for (String pe : pluralEndings) {
 			if (word.endsWith(pe)) {
-				word = word.substring(0, word.length()-pe.length());
+				word = word.substring(0, word.length() - pe.length());
 
 				break;
 			}
@@ -56,7 +56,8 @@ public class Term {
 		this.lemma = String.join(" ", lemmas);
 	}
 
-	public Term(String[] words, Integer[] syllables, Boolean isPlural, GrammaticalCase grammaticalCase, Gender gender, String lemma) {
+	public Term(String[] words, Integer[] syllables, Boolean isPlural, GrammaticalCase grammaticalCase, Gender gender,
+			String lemma) {
 		this.words = words;
 		this.syllables = syllables;
 		this.isPlural = isPlural;
@@ -105,11 +106,9 @@ public class Term {
 		return this.gender;
 	}
 
-
 	public String getLemma() {
 		return this.lemma;
 	}
-
 
 	public void setFrequency(int frequency) {
 		this.frequency = frequency;
@@ -126,9 +125,11 @@ public class Term {
 	public void setGrammaticalCase(GrammaticalCase grammaticalCase) {
 		this.grammaticalCase = grammaticalCase;
 	}
+
 	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
+
 	public void setLemma(String lemma) {
 		this.lemma = lemma;
 	}
@@ -161,7 +162,9 @@ public class Term {
 			return false;
 		}
 		Term term = (Term) o;
-		return Objects.equals(words, term.words) && Objects.equals(syllables, term.syllables) && Objects.equals(isPlural, term.isPlural) && Objects.equals(grammaticalCase, term.grammaticalCase) && Objects.equals(gender, term.gender) && Objects.equals(lemma, term.lemma);
+		return Objects.equals(words, term.words) && Objects.equals(syllables, term.syllables)
+				&& Objects.equals(isPlural, term.isPlural) && Objects.equals(grammaticalCase, term.grammaticalCase)
+				&& Objects.equals(gender, term.gender) && Objects.equals(lemma, term.lemma);
 	}
 
 	@Override
@@ -172,13 +175,13 @@ public class Term {
 	@Override
 	public String toString() {
 		return "{" +
-			" words='" + getWords() + "'" +
-			", syllables='" + getSyllables() + "'" +
-			", isPlural='" + isIsPlural() + "'" +
-			", grammaticalCase='" + getGrammaticalCase() + "'" +
-			", gender='" + this.gender + "'" +
-			", lemma='" + this.lemma + "'" +
-			"}";
+				" words='" + getWords() + "'" +
+				", syllables='" + getSyllables() + "'" +
+				", isPlural='" + isIsPlural() + "'" +
+				", grammaticalCase='" + getGrammaticalCase() + "'" +
+				", gender='" + this.gender + "'" +
+				", lemma='" + this.lemma + "'" +
+				"}";
 	}
 
 	public String[] syllableStrings() {
@@ -186,7 +189,7 @@ public class Term {
 		String[] res = new String[syllables.length];
 		for (int i = 0; i < syllables.length; i++) {
 			Integer start = syllables[i];
-			Integer end = i + 1 == syllables.length ? words.length() : syllables[i+1];
+			Integer end = i + 1 == syllables.length ? words.length() : syllables[i + 1];
 			res[i] = words.substring(start, end);
 		}
 		return res;

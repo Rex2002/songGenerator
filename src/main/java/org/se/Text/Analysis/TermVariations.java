@@ -9,11 +9,15 @@ public class TermVariations {
 	public Integer frequency;
 	public String lemma;
 
-	// public HashMap<Term> getVariations(@Nullable GrammaticalCase grammaticalCase, @Nullable Gender gender, @Nullable Boolean isPlural, @Nullable Integer syllableMin, @Nullable Integer syllableMax) {}
+	// public HashMap<Term> getVariations(@Nullable GrammaticalCase grammaticalCase,
+	// @Nullable Gender gender, @Nullable Boolean isPlural, @Nullable Integer
+	// syllableMin, @Nullable Integer syllableMax) {}
 
-	// Gets the term of the specified variation if it's stored and otherwise creates it based on simple rules
+	// Gets the term of the specified variation if it's stored and otherwise creates
+	// it based on simple rules
 	// Careful, created variations might be pretty bad
-	// public Term createVariation(GrammaticalCase grammaticalCase, Boolean isPlural) {}
+	// public Term createVariation(GrammaticalCase grammaticalCase, Boolean
+	// isPlural) {}
 
 	public TermVariations() {
 		this.variations = new HashMap<Integer, Term>();
@@ -41,17 +45,17 @@ public class TermVariations {
 		return this.lemma;
 	}
 
-	public TermVariations(HashMap<Integer,Term> variations, Integer frequency, String lemma) {
+	public TermVariations(HashMap<Integer, Term> variations, Integer frequency, String lemma) {
 		this.variations = variations;
 		this.frequency = frequency;
 		this.lemma = lemma;
 	}
 
-	public HashMap<Integer,Term> getVariations() {
+	public HashMap<Integer, Term> getVariations() {
 		return this.variations;
 	}
 
-	public void setVariations(HashMap<Integer,Term> variations) {
+	public void setVariations(HashMap<Integer, Term> variations) {
 		this.variations = variations;
 	}
 
@@ -62,11 +66,12 @@ public class TermVariations {
 	public void setFrequency(Integer frequency) {
 		this.frequency = frequency;
 	}
+
 	public void setLemma(String lemma) {
 		this.lemma = lemma;
 	}
 
-	public TermVariations variations(HashMap<Integer,Term> variations) {
+	public TermVariations variations(HashMap<Integer, Term> variations) {
 		setVariations(variations);
 		return this;
 	}
@@ -94,24 +99,27 @@ public class TermVariations {
 			return false;
 		}
 		TermVariations termVariations = (TermVariations) o;
-		return Objects.equals(variations, termVariations.variations) && Objects.equals(frequency, termVariations.frequency) && Objects.equals(lemma, termVariations.lemma);
+		return Objects.equals(variations, termVariations.variations)
+				&& Objects.equals(frequency, termVariations.frequency) && Objects.equals(lemma, termVariations.lemma);
 	}
 
 	@Override
 	public String toString() {
 		return "{" +
-			" variations='" + getVariations() + "'" +
-			", frequency='" + getFrequency() + "'" +
-			", lemma='" + getLemma() + "'" +
-			"}";
+				" variations='" + getVariations() + "'" +
+				", frequency='" + getFrequency() + "'" +
+				", lemma='" + getLemma() + "'" +
+				"}";
 	}
 
-
 	public void add(Term term) {
-		if (this.lemma.isEmpty()) this.lemma = term.lemma;
+		if (this.lemma.isEmpty())
+			this.lemma = term.lemma;
 
-		if (this.has(term)) this.variations.get(term.hashCode()).increaseFrequency();
-		else this.variations.put(term.hashData(), term);
+		if (this.has(term))
+			this.variations.get(term.hashCode()).increaseFrequency();
+		else
+			this.variations.put(term.hashData(), term);
 	}
 
 	public boolean has(Term term) {
@@ -145,7 +153,8 @@ public class TermVariations {
 
 	public Term getTerm(Gender gender, GrammaticalCase grammaticalCase, Boolean iPlural) {
 		int hash = Term.hashData(gender, grammaticalCase, iPlural);
-		if (variations.containsKey(hash)) return this.variations.get(hash);
+		if (variations.containsKey(hash))
+			return this.variations.get(hash);
 		// TODO
 		Term newTerm = new Term(this.lemma);
 		this.variations.put(hash, newTerm); // Should we have this here or not?

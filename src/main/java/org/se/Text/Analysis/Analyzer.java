@@ -21,7 +21,8 @@ public class Analyzer {
 		// I'm sure there must be a better way to do this
 		// Maybe there's something you could do with streams to make this more readable
 		// but Java certainly doesn't make it easy to do any of this shit ffs
-		// I hate Java so fucking much, I'd rather be using C at this point aaaaaaaaaaaarrrrrgggggghhhhhhhhh
+		// I hate Java so fucking much, I'd rather be using C at this point
+		// aaaaaaaaaaaarrrrrgggggghhhhhhhhh
 		String wordSplitter = "-_";
 		Boolean splitLastWord = false;
 		String sentenceEnds = ".!?";
@@ -30,6 +31,7 @@ public class Analyzer {
 		ArrayList<String> currentSentence = new ArrayList<String>();
 		char[] chars = text.toCharArray();
 		String currentWord = "";
+
 		for (int i = 0; i < chars.length; i++) {
 			char c = chars[i];
 			// ignore whitespace
@@ -69,45 +71,53 @@ public class Analyzer {
 			}
 		}
 
-		if (currentWord != "") currentSentence.add(currentWord);
-		if (!currentSentence.isEmpty()) sentences.add(currentSentence);
+		if (currentWord != "")
+			currentSentence.add(currentWord);
+		if (!currentSentence.isEmpty())
+			sentences.add(currentSentence);
 		return sentences;
 	}
 
-	static int caitalizedCount(String str) {
+	static int capitalizedCount(String str) {
 		int count = 0;
 		for (char c : str.toCharArray()) {
-			if (Character.isUpperCase(c)) count++;
+			if (Character.isUpperCase(c))
+				count++;
 		}
 		return count;
 	}
 
 	static boolean hasSuffix(String str, String[] suffixes) {
 		for (String p : suffixes) {
-			if (str.endsWith(p)) return true;
+			if (str.endsWith(p))
+				return true;
 		}
 		return false;
 	}
 
 	static boolean hasPrefix(String str, String[] prefixes) {
 		for (String p : prefixes) {
-			if (str.startsWith(p)) return true;
+			if (str.startsWith(p))
+				return true;
 		}
 		return false;
 	}
 
 	static ArrayList<ArrayList<Tag>> tag(ArrayList<ArrayList<String>> sentences) {
 		ArrayList<ArrayList<Tag>> tags = new ArrayList<ArrayList<Tag>>();
-		String[] nounSuffixes = {"ung", "heit", "keit"};
+		String[] nounSuffixes = { "ung", "heit", "keit" };
 		for (ArrayList<String> sentence : sentences) {
 			ArrayList<Tag> currentTags = new ArrayList<Tag>();
 			for (int i = 0; i < sentence.size(); i++) {
 				String word = sentence.get(i);
 				TagType type;
-				if (i != 0 && Analyzer.caitalizedCount(word) == 1) type = TagType.Noun;
-				else if (Analyzer.hasSuffix(word, nounSuffixes)) type = TagType.Noun;
+				if (i != 0 && Analyzer.capitalizedCount(word) == 1)
+					type = TagType.Noun;
+				else if (Analyzer.hasSuffix(word, nounSuffixes))
+					type = TagType.Noun;
 				// TODO: Add dictionary lookup
-				else type = TagType.Other;
+				else
+					type = TagType.Other;
 
 				currentTags.add(new Tag(word, type));
 			}
