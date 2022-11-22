@@ -27,12 +27,12 @@ public class Part {
         return instruments;
     }
 
-    public void fillPart(Part basePart, MusicalKey key, int variation){
-        //variation class = (List<Chord> reqChords, reqInsts, optInsts)
+    public void fillPart(Part basePart, MusicalKey key, Variation variation){
+
     }
 
     private void selectChords(MusicalKey key, List<Chord> reqChords){
-        //implementation of restriction still has to be designed
+
     }
     private void selectBeat(){
         //selects beat from template
