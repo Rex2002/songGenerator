@@ -1,6 +1,8 @@
 package org.se.Text.Analysis;
 
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class TermVariations {
 	public HashMap<Integer, Term> variations;
@@ -115,6 +117,26 @@ public class TermVariations {
 		return variations.containsKey(hash);
 	}
 
+	public List<Term> queryBy(Predicate<? super Term> f) {
+		return this.variations.values().stream().filter(f).collect(Collectors.toList());
+	}
+
+	public List<Term> queryBy(Gender gender) {
+		return this.queryBy(x -> x.gender == gender);
+	}
+
+	public List<Term> queryBy(GrammaticalCase grammaticalCase) {
+		return this.queryBy(x -> x.grammaticalCase == grammaticalCase);
+	}
+
+	public List<Term> queryBy(Boolean isPlural) {
+		return this.queryBy(x -> x.isPlural == isPlural);
+	}
+
+	public List<Term> queryBySyllableRange(int minSyllableAmount, int maxSyllableAmount) {
+		return this.queryBy(x -> minSyllableAmount <= x.syllables.length && x.syllables.length >= maxSyllableAmount);
+	}
+
 	public Term getTerm(Gender gender, GrammaticalCase grammaticalCase, Boolean iPlural) {
 		int hash = Term.hashData(gender, grammaticalCase, iPlural);
 		if (variations.containsKey(hash)) return this.variations.get(hash);
@@ -128,8 +150,14 @@ public class TermVariations {
 		variations.variations.forEach((key, term) -> {
 			if (!this.variations.containsKey(key)) {
 				this.variations.put(key, term);
+			} else {
+				this.variations.get(key).increaseFrequency();
 			}
-			this.frequency++;
+			this.increaseFrequency();
 		});
+	}
+
+	public void increaseFrequency() {
+		this.frequency++;
 	}
 }
