@@ -7,6 +7,9 @@ import java.util.stream.Stream;
 
 import org.se.Text.Analysis.*;
 
+/**
+ * @author Val Richter
+ */
 public class TermExample {
 	private static GrammaticalCase parseCase(String s) {
 		s = s.toLowerCase();

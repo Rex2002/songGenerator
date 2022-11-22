@@ -5,6 +5,9 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * @author Val Richter
+ */
 public class TermCollection {
 	public HashMap<String, TermVariations> terms;
 

@@ -4,6 +4,9 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * @author Val Richter
+ */
 public class TermVariations {
 	public HashMap<Integer, Term> variations;
 	public Integer frequency;

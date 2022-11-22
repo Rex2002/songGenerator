@@ -3,6 +3,9 @@ package org.se.Text.Analysis;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author Val Richter
+ */
 public class Term {
 	public int frequency;
 	public String[] words;

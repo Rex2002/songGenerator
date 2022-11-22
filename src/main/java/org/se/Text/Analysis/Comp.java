@@ -3,6 +3,9 @@ package org.se.Text.Analysis;
 import java.util.Comparator;
 import java.util.HashMap;
 
+/**
+ * @author Val Richter
+ */
 class Comp implements Comparator<Term> {
 	private HashMap<String, TermVariations> terms;
 	private int generalTermBias = 1;

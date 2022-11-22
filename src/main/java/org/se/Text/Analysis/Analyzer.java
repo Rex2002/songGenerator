@@ -5,6 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
+/**
+ * @author Val Richter
+ */
 public class Analyzer {
 	public static TermCollection analyze(Path filepath) throws IOException {
 		String text = Analyzer.readFile(filepath);
