@@ -109,7 +109,13 @@ public class TermVariations {
 
 	public void add(Term term) {
 		if (this.lemma.isEmpty()) this.lemma = term.lemma;
-		this.variations.put(term.hashData(), term);
+
+		if (this.has(term)) this.variations.get(term.hashCode()).increaseFrequency();
+		else this.variations.put(term.hashData(), term);
+	}
+
+	public boolean has(Term term) {
+		return this.variations.containsKey(term.hashCode());
 	}
 
 	public boolean hasType(Gender gender, GrammaticalCase grammaticalCase, Boolean isPlural) {

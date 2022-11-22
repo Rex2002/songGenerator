@@ -23,7 +23,7 @@ public class TermExample {
 
 	private static Boolean parseIsPlural(String s) {
 		s = s.toLowerCase();
-		if (s == "t" || s == "p") return true;
+		if (s.startsWith("t")) return true;
 		else return false;
 	}
 

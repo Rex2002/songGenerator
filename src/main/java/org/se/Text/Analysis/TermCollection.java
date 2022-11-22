@@ -89,7 +89,7 @@ public class TermCollection {
 
 		this.terms.values().forEach(x -> {
 			Term t = x.getTerm(gender, grammaticalCase, isPlural);
-			if (syllableMin < t.syllables.length && t.syllables.length > syllableMax) {
+			if (syllableMin <= t.syllables.length && t.syllables.length <= syllableMax) {
 				if (x.hasType(gender, grammaticalCase, isPlural)) existing.add(t);
 				else created.add(t);
 			}
