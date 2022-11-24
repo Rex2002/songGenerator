@@ -18,9 +18,12 @@ public class WordList {
 		while (end - start > 1) {
 			mid = (int) end / 2 + start;
 			int x = store.get(mid).compareTo(s);
-			if (x == 0) return mid;
-			else if (x < 0) end = mid;
-			else start = mid;
+			if (x == 0)
+				return mid;
+			else if (x < 0)
+				end = mid;
+			else
+				start = mid;
 		}
 		return mid;
 	}
@@ -35,7 +38,8 @@ public class WordList {
 	}
 
 	public void insertAll(String[] strings) {
-		for (String s : strings) insert(s);
+		for (String s : strings)
+			insert(s);
 	}
 
 	public boolean has(String s) {

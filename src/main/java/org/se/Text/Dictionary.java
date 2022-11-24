@@ -16,6 +16,39 @@ public class Dictionary {
 		this.nouns = nouns;
 	}
 
+	public Dictionary(Path filepath) throws IOException {
+		this.nouns = new WordList();
+		this.prefixes = new WordList();
+		this.suffixes = new WordList();
+
+		String[] rows = Files.readString(filepath).split("\\r?\\n");
+		String[] firstRow = rows[0].split(",");
+
+		for (int i = 1; i < rows.length; i++) {
+			String[] col = rows[0].split(",");
+			HashMap<String, String> data = new HashMap<String, String>();
+			for (int j = 0; j < col.length; j++) {
+				data.put(firstRow[j], col[j]);
+			}
+
+			if (data.containsKey("type") && data.containsKey("lemma")) {
+				switch (data.get("type")) {
+					case "noun":
+						this.nouns.insert(data.get("lemma"));
+						break;
+
+					case "suffix":
+						this.suffixes.insert(data.get("lemma"));
+						break;
+
+					case "prefix":
+						this.suffixes.insert(data.get("lemma"));
+						break;
+				}
+			}
+		}
+	}
+
 	public boolean isSuffix(String s) {
 		return suffixes.has(s);
 	}
@@ -26,25 +59,6 @@ public class Dictionary {
 
 	public boolean isNoun(String s) {
 		return nouns.has(s);
-	}
-
-	public WordList loadFile(Path path, String delimiter) throws IOException {
-		String[] words = Files.readString(path).split(delimiter);
-		WordList list = new WordList();
-		list.insertAll(words);
-		return list;
-	}
-
-	public void loadSuffixes(Path path, String delimiter) throws IOException {
-		suffixes = loadFile(path, delimiter);
-	}
-
-	public void loadPrefixes(Path path, String delimiter) throws IOException {
-		prefixes = loadFile(path, delimiter);
-	}
-
-	public void loadNouns(Path path, String delimiter) throws IOException {
-		nouns = loadFile(path, delimiter);
 	}
 
 	public WordList getSuffixes() {
@@ -94,7 +108,8 @@ public class Dictionary {
 			return false;
 		}
 		Dictionary dictionary = (Dictionary) o;
-		return Objects.equals(suffixes, dictionary.suffixes) && Objects.equals(prefixes, dictionary.prefixes) && Objects.equals(nouns, dictionary.nouns);
+		return Objects.equals(suffixes, dictionary.suffixes) && Objects.equals(prefixes, dictionary.prefixes)
+				&& Objects.equals(nouns, dictionary.nouns);
 	}
 
 	@Override
@@ -105,10 +120,10 @@ public class Dictionary {
 	@Override
 	public String toString() {
 		return "{" +
-			" suffixes='" + getSuffixes() + "'" +
-			", prefixes='" + getPrefixes() + "'" +
-			", nouns='" + getNouns() + "'" +
-			"}";
+				" suffixes='" + getSuffixes() + "'" +
+				", prefixes='" + getPrefixes() + "'" +
+				", nouns='" + getNouns() + "'" +
+				"}";
 	}
 
 }
