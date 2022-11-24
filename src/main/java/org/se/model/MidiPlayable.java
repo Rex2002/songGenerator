@@ -25,7 +25,9 @@ public abstract class MidiPlayable {
         return trackNo;
     }
 
-    public int getBar() {
-        return bar;
+    public int getBar() { return bar; }
+
+    public void setBar(int bar){
+        this.bar = bar;
     }
 }

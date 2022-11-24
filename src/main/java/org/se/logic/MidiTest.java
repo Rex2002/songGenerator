@@ -2,17 +2,13 @@ package org.se.logic;
 import org.se.model.*;
 
 import javax.sound.midi.*;
-import java.util.HashMap;
 import java.util.Random;
 
 public class MidiTest {
 
     public static Random ran = new Random();
     public static int[] keyM = {0,2,3,5,7,8,10,12};
-    public static void main(String[] args) throws InterruptedException {
-        Structure d = new Structure(new MusicalKey(60, "m"), Genre.POP);
-
-
+    public static void main(String[] args){
 
         MidiSequence m = new MidiSequence( 10);
         int drumTrackNo = 9;
@@ -22,20 +18,22 @@ public class MidiTest {
         m.setTrackName("testTrack");
         m.addText(0, 0, "epic triangle showdown ");
 
+        MidiPlayable midiPlayable = new ChordContainer(0,0,60,new String[]{"0maj7", "6min"});
+        m.addMidiPlayable(midiPlayable);
         for(int i = 0; i<12; i++){
-            m.addChord(new Chord(60, "maj"), 24 * 4 * i,12,0);
-            m.addChord(new Chord(69, "m"), 24 * 4 * i + 24,24,0);
-            m.addChord(new Chord(67, "maj"), 24 * 4 * i + 48,12,0);
-            m.addChord(new Chord(62, "maj"), 24 * 4 * i + 72,24,0);
+//            m.addChord(new Chord(60, "maj"), 24 * 4 * i,12,0);
+//            m.addChord(new Chord(69, "m"), 24 * 4 * i + 24,24,0);
+//            m.addChord(new Chord(67, "maj"), 24 * 4 * i + 48,12,0);
+//            m.addChord(new Chord(62, "maj"), 24 * 4 * i + 72,24,0);
 
             if(i % 4 == 3){
-                m.addMidiPlayable(new DrumBeat(1, i, 1, drumTrackNo));
+                m.addMidiPlayable(new BeatContainer(1, i, 1, drumTrackNo));
             }
             else if(i % 2 == 1){
-                m.addMidiPlayable(new DrumBeat(1, i, 0, drumTrackNo));
+                m.addMidiPlayable(new BeatContainer(1, i, 0, drumTrackNo));
             }
             else{
-                m.addMidiPlayable(new DrumBeat(1, i, -1, drumTrackNo));
+                m.addMidiPlayable(new BeatContainer(1, i, -1, drumTrackNo));
             }
 
         }

@@ -1,7 +1,6 @@
 package org.se.logic;
 
 import org.se.model.Chord;
-import org.se.model.DrumBeat;
 import org.se.model.MidiPlayable;
 import org.se.model.MusicalKey;
 
@@ -155,9 +154,9 @@ public class MidiSequence {
         HashMap<Integer, ArrayList<ArrayList<Integer>>> content = m.getContent();
         int bar = m.getBar();
         int track = m.getTrackNo();
-        for(int drumNo : content.keySet()){
-            for(ArrayList<Integer> o : content.get(drumNo)){
-                addNote(drumNo,bar * 96L +o.get(0).longValue(), o.get(1).longValue(), track);
+        for(int instrNo : content.keySet()){
+            for(ArrayList<Integer> o : content.get(instrNo)){
+                addNote(instrNo,bar * 96L +o.get(0).longValue(), o.get(1).longValue(), track);
             }
         }
     }
@@ -165,7 +164,7 @@ public class MidiSequence {
     /**
      * deprecated
      */
-    public void addBeat(DrumBeat beat, int bar){
+    public void addBeat(BeatContainer beat, int bar){
         HashMap<Integer, ArrayList<ArrayList<Integer>>> beatContent = beat.getContent();
         for(int drumNo : beatContent.keySet()){
             for(ArrayList<Integer> o : beatContent.get(drumNo)){

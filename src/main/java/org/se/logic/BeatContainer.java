@@ -1,15 +1,17 @@
-package org.se.model;
+package org.se.logic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
+import org.se.model.Beat;
+import org.se.model.MidiPlayable;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
 
-public class DrumBeat extends MidiPlayable {
+public class BeatContainer extends MidiPlayable {
     public static HashMap<String, Integer> drumPrograms;
     public static List<Beat> drumBeats;
 
@@ -17,33 +19,32 @@ public class DrumBeat extends MidiPlayable {
     static{
         YAMLFactory yaml = new YAMLFactory();
         ObjectMapper mapper = new ObjectMapper(yaml);
-
         try {
             YAMLParser yamlParser = yaml.createParser(new File("./src/main/resources/beat_templates_pop.yml"));
             drumBeats = mapper.readValues(yamlParser, Beat.class).readAll();
             drumPrograms = mapper.readValue(new File("./src/main/resources/drum_prog_no.yml"), HashMap.class);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println(drumPrograms.toString());
+        System.out.println(drumBeats.toString());
     }
 
-    public DrumBeat(int beatNo, int bar, int trackNo){
+    public BeatContainer(int beatNo, int bar, int trackNo){
         this(beatNo, bar, -1, trackNo);
     }
-    public DrumBeat(int beatNo, int bar, int fill, int trackNo){
+    public BeatContainer(int beatNo, int bar, int fill, int trackNo){
         super(trackNo, bar);        // 118 is drumset instrument
         Beat beat = drumBeats.get(beatNo);
-
         HashMap<String, ArrayList<ArrayList<Integer>>> beatShape;
         if (fill == 0){
-            beatShape = beat.smallFill;
+            beatShape = beat.getSmallFill();
         }
         else if (fill == 1){
-            beatShape = beat.bigFill;
+            beatShape = beat.getBigFill();
         }
         else{
-            beatShape = beat.mainPattern;
+            beatShape = beat.getMainPattern();
         }
         HashMap<Integer, ArrayList<ArrayList<Integer>>> c = new HashMap<>();
         for(String instr : beatShape.keySet()){

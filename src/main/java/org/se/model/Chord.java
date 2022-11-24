@@ -21,8 +21,7 @@ public class Chord {
         }
     }
 
-    public Chord(int baseNote, String chordMod
-    ){
+    public Chord(int baseNote, String chordMod){
         if (0 <= baseNote && baseNote < 128){
             this.baseNote = baseNote;
         }
@@ -45,5 +44,13 @@ public class Chord {
 
     public ArrayList<Integer> getChordModifier(){
         return chordModifier;
+    }
+
+    public ArrayList<Integer> getChord(){
+        ArrayList<Integer> k = new ArrayList<>();
+        for (int modifier: chordModifier) {
+            k.add(baseNote + modifier);
+        }
+        return k;
     }
 }
