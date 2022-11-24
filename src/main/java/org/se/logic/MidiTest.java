@@ -9,34 +9,34 @@ public class MidiTest {
     public static Random ran = new Random();
     public static int[] keyM = {0,2,3,5,7,8,10,12};
     public static void main(String[] args){
+        Config.loadConfig();
 
-        MidiSequence m = new MidiSequence( 10);
+        MidiSequence m = new MidiSequence(10);
         int drumTrackNo = 9;
         m.setInstrument(118, drumTrackNo);
+        m.setInstrument(1, 0);
         m.setBPM(80);
         m.setEnd(40);
         m.setTrackName("testTrack");
-        m.addText(0, 0, "epic triangle showdown ");
-
-        MidiPlayable midiPlayable = new ChordContainer(0,0,60,new String[]{"0maj7", "6min"});
-        m.addMidiPlayable(midiPlayable);
-        for(int i = 0; i<12; i++){
+        testDrumBeats(m, drumTrackNo);
+        addRandomMelody(m, 0);
+        addRandomMelody(m, 1);
+//        MidiPlayable midiPlayable = new ChordContainer(0,0,60,new String[]{"0maj7", "6min"});
+//        m.addMidiPlayable(midiPlayable);
+//        for(int i = 0; i<12; i++){
 //            m.addChord(new Chord(60, "maj"), 24 * 4 * i,12,0);
 //            m.addChord(new Chord(69, "m"), 24 * 4 * i + 24,24,0);
 //            m.addChord(new Chord(67, "maj"), 24 * 4 * i + 48,12,0);
 //            m.addChord(new Chord(62, "maj"), 24 * 4 * i + 72,24,0);
+//
+//
+//        }
+//
+//        m.addBeat(k1, 0);
+        m.createFile("midi test");
+    }
 
-            if(i % 4 == 3){
-                m.addMidiPlayable(new BeatContainer(1, i, 1, drumTrackNo));
-            }
-            else if(i % 2 == 1){
-                m.addMidiPlayable(new BeatContainer(1, i, 0, drumTrackNo));
-            }
-            else{
-                m.addMidiPlayable(new BeatContainer(1, i, -1, drumTrackNo));
-            }
-
-        }
+    public static void addRandomMelody(MidiSequence m, int trackNo){
         int noteOffset = 0;
         int baseNote = 60;
         for (int i = 0; i< 12 * 8; i+=1) {
@@ -44,13 +44,23 @@ public class MidiTest {
                 if (!(ran.nextBoolean() && ran.nextBoolean())) {
                     noteOffset = keyM[ran.nextInt(keyM.length)];
                 }
-                m.addNote(baseNote + noteOffset, i*12, 8L * ran.nextInt(1,4),1);
+                m.addNote(baseNote + noteOffset, i*12, 8L * ran.nextInt(1,4), trackNo);
             }
         }
-        //m.addBeat(k1, 0);
-        m.createFile("midi test");
     }
 
+    public static void testDrumBeats(MidiSequence m, int drumTrackNo){
+        m.setInstrument(118, drumTrackNo);
+        m.setEnd(BeatContainer.getDrumBeats().size()*3+1);
+        for(int i = 0; i < BeatContainer.getDrumBeats().size()-1; i++){
+            MidiPlayable beat = new BeatContainer(i,3*i, drumTrackNo);
+            m.addMidiPlayable(beat);
+            beat = new BeatContainer(i, 3*i+1, 0, drumTrackNo);
+            m.addMidiPlayable(beat);
+            beat = new BeatContainer(i, 3*i+2, 1, drumTrackNo);
+            m.addMidiPlayable(beat);
+        }
+    }
     public static void playMidiSounds() throws InterruptedException{
         try{
             Synthesizer midiSynth = MidiSystem.getSynthesizer();

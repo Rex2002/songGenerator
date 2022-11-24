@@ -31,6 +31,12 @@ public class MidiSequence {
         }
     }
 
+    /**
+     * the formula to get the midi-format speed-values is 60_000_000 / BPM = microsecondsPerQuarter = mps.
+     * The mps value is stored in three bytes as part of a meta-midi-message.
+     * the weird line byte[] bt = ... does not have to be understood.
+     * @param BPM specifies the BPM for the final file
+     */
     public void setBPM(int BPM){
         // speed calculation:
         // midi tempo message consists of three bytes, which contain the number of microseconds per quarter (mpq)
@@ -54,9 +60,14 @@ public class MidiSequence {
 
     }
 
+    /**
+     * for detailed information about the key-value mapping for the key see: <a href="https://www.recordingblogs.com/wiki/midi-key-signature-meta-message">...</a>
+     * @param key - the musical key
+     * @param scale - the scale, minor or major, 0 -> major, 1 -> minor
+     * @param trackNumber - the track number, for which the key is meant to be set
+     */
     public void setKey(String key, String scale, int trackNumber) {
-        // s: 0 -> major, 1 -> minor
-        // for detailed information about the key-value mapping for the key see: https://www.recordingblogs.com/wiki/midi-key-signature-meta-message
+
         if (!(MusicalKey.musicalKeyMinor.containsKey(key))){
             throw new RuntimeException("illegal key");
         }
@@ -98,6 +109,10 @@ public class MidiSequence {
 
     public void setEnd(int bars){
         // length of the track in bars, converted to ticks with 4 quarters per bar and 24 ticks per quarter
+        if (endIsSet){
+            System.out.println("end is already set");
+            return;
+        }
         try {
             MetaMessage mt = new MetaMessage();
             byte[] bet = {}; // empty array
@@ -144,6 +159,7 @@ public class MidiSequence {
         }
     }
 
+    @Deprecated
     public void addChord(Chord chord, long start, long length, int trackNumber){
         for (int modifier: chord.getChordModifier()) {
             addNote(chord.getBaseNote() + modifier, start, length, trackNumber);
@@ -161,9 +177,7 @@ public class MidiSequence {
         }
     }
 
-    /**
-     * deprecated
-     */
+    @Deprecated
     public void addBeat(BeatContainer beat, int bar){
         HashMap<Integer, ArrayList<ArrayList<Integer>>> beatContent = beat.getContent();
         for(int drumNo : beatContent.keySet()){

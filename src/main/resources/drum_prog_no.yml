@@ -6,6 +6,7 @@ snare  : 38       # confirmed
 sideStick: 37     # confirmed
 woodClick: 39     # confirmed
 hiHat  : 46
+oHiHat : 27
 ride   : 30       # confirmed
 mTom   : 47
 hTom   : 50
