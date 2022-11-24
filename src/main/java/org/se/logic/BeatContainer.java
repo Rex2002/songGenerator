@@ -1,34 +1,14 @@
 package org.se.logic;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
 import org.se.model.Beat;
 import org.se.model.MidiPlayable;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 
 public class BeatContainer extends MidiPlayable {
     public static HashMap<String, Integer> drumPrograms;
     public static List<Beat> drumBeats;
-
-
-    static{
-        YAMLFactory yaml = new YAMLFactory();
-        ObjectMapper mapper = new ObjectMapper(yaml);
-        try {
-            YAMLParser yamlParser = yaml.createParser(new File("./src/main/resources/beat_templates_pop.yml"));
-            drumBeats = mapper.readValues(yamlParser, Beat.class).readAll();
-            drumPrograms = mapper.readValue(new File("./src/main/resources/drum_prog_no.yml"), HashMap.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println(drumPrograms.toString());
-        System.out.println(drumBeats.toString());
-    }
 
     public BeatContainer(int beatNo, int bar, int trackNo){
         this(beatNo, bar, -1, trackNo);
@@ -51,5 +31,21 @@ public class BeatContainer extends MidiPlayable {
             c.put(drumPrograms.get(instr), beatShape.get(instr));
         }
         setContent(c);
+    }
+
+    public static HashMap<String, Integer> getDrumPrograms() {
+        return drumPrograms;
+    }
+
+    public static void setDrumPrograms(HashMap<String, Integer> drumPrograms) {
+        BeatContainer.drumPrograms = drumPrograms;
+    }
+
+    public static List<Beat> getDrumBeats() {
+        return drumBeats;
+    }
+
+    public static void setDrumBeats(List<Beat> drumBeats) {
+        BeatContainer.drumBeats = drumBeats;
     }
 }

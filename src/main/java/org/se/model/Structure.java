@@ -1,35 +1,28 @@
 package org.se.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
-
-import java.io.File;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.*;
 
 public class Structure {
-    private List<Part> parts;
+    @JsonProperty
+    private Map<String, Map<String,Object>> parts;
+    @JsonProperty
+    private List<String> order;
     private MusicalKey key;
     private Genre genre;
 
+    @Deprecated
     private static List<HashMap> structures_pop;
     private static Random ran = new Random();
 
-    static{
-        YAMLFactory yaml = new YAMLFactory();
-        ObjectMapper mapper = new ObjectMapper(yaml);
-        try{
-            YAMLParser parser = yaml.createParser(new File("./src/main/resources/structure_templates_pop.yml"));
-
-            structures_pop = mapper.readValues(parser, HashMap.class).readAll();
-            System.out.println(structures_pop);
-            System.out.println(structures_pop.get(0).getClass());
-
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+    @JsonCreator
+    public Structure(@JsonProperty("order") List<String> order,
+                     @JsonProperty("parts") Map<String, Map<String,Object>> parts){
+        this.order = order;
+        this.parts = parts;
     }
+    @Deprecated
     public Structure(MusicalKey key, Genre genre){
         this.key = key;
         this.genre = genre;
@@ -47,7 +40,7 @@ public class Structure {
 
     }
 
-    public List<Part> getParts() {
+    public Map<String, Map<String, Object>> getParts() {
         return parts;
     }
     public MusicalKey getKey() {

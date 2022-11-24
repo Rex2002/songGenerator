@@ -1,10 +1,5 @@
 package org.se.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -12,14 +7,6 @@ public class Chord {
     private final int baseNote;
     private final ArrayList<Integer> chordModifier;
     public static HashMap<String, ArrayList<Integer>> chordModifiers;
-    static {
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-        try {
-            chordModifiers = mapper.readValue(new File("./src/main/resources/chord_modifiers.yml"), HashMap.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public Chord(int baseNote, String chordMod){
         if (0 <= baseNote && baseNote < 128){
@@ -52,5 +39,13 @@ public class Chord {
             k.add(baseNote + modifier);
         }
         return k;
+    }
+
+    public static void setChordModifiers(HashMap<String, ArrayList<Integer>> chordModifiers) {
+        Chord.chordModifiers = chordModifiers;
+    }
+
+    public static HashMap<String, ArrayList<Integer>> getChordModifiers() {
+        return chordModifiers;
     }
 }
