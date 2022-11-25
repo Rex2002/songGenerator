@@ -4,10 +4,10 @@ import java.util.List;
 
 public class Variation {
     private final List<Chord> reqChords;
-    private final List<String> reqInstruments;
-    private final List<String> optInstruments;
+    private final List<InstrumentEnum> reqInstruments;
+    private final List<InstrumentEnum> optInstruments;
 
-    public Variation(List<Chord> reqChords, List<String> reqInstruments, List<String> optInstruments) {
+    public Variation(List<Chord> reqChords, List<InstrumentEnum> reqInstruments, List<InstrumentEnum> optInstruments) {
         this.reqChords = reqChords;
         this.reqInstruments = reqInstruments;
         this.optInstruments = optInstruments;
@@ -16,10 +16,10 @@ public class Variation {
     public List<Chord> getReqChords() {
         return reqChords;
     }
-    public List<String> getReqInstruments() {
+    public List<InstrumentEnum> getReqInstruments() {
         return reqInstruments;
     }
-    public List<String> getOptInstruments() {
+    public List<InstrumentEnum> getOptInstruments() {
         return optInstruments;
     }
 }

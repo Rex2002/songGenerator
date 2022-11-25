@@ -6,21 +6,25 @@ import java.util.*;
 
 public class Structure {
     @JsonProperty
-    private Map<String, Map<String,Object>> parts;
+    private Map<String, Part> parts;
     @JsonProperty
     private List<String> order;
+    @JsonProperty
+    private String basePartKey;
     private MusicalKey key;
     private Genre genre;
+    private int tempo;
 
     @Deprecated
     private static List<HashMap> structures_pop;
     private static Random ran = new Random();
 
     @JsonCreator
-    public Structure(@JsonProperty("order") List<String> order,
-                     @JsonProperty("parts") Map<String, Map<String,Object>> parts){
+    public Structure(@JsonProperty("order") List<String> order, @JsonProperty("parts") Map<String, Part> parts,
+                     @JsonProperty("basePart") String basePartKey){
         this.order = order;
         this.parts = parts;
+        this.basePartKey = basePartKey;
     }
     @Deprecated
     public Structure(MusicalKey key, Genre genre){
@@ -40,7 +44,7 @@ public class Structure {
 
     }
 
-    public Map<String, Map<String, Object>> getParts() {
+    public Map<String, Part> getParts() {
         return parts;
     }
     public MusicalKey getKey() {
@@ -48,5 +52,21 @@ public class Structure {
     }
     public Genre getGenre() {
         return genre;
+    }
+    public int getTempo() {
+        return tempo;
+    }
+    public String getBasePartKey() {
+        return basePartKey;
+    }
+
+    public void setKey(MusicalKey key) {
+        this.key = key;
+    }
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+    public void setTempo(int tempo) {
+        this.tempo = tempo;
     }
 }

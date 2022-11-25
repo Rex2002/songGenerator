@@ -2,6 +2,7 @@ package org.se.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class MusicalKey {
 
@@ -18,9 +19,15 @@ public class MusicalKey {
         return k;
     }
 
+    @Deprecated
     public MusicalKey(int baseNote, String scale){
         this.baseNote = baseNote;
         this.scale = scale;
+    }
+    public MusicalKey(){
+        this.baseNote = 60 + new Random().nextInt(12);
+        String[] scales = {"min", "maj"};
+        this.scale = scales[new Random().nextInt(2)];
     }
     public static final Map<String, Byte> musicalKeyMajor= new HashMap<>();
     static {
