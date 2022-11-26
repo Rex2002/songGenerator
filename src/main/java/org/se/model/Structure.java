@@ -47,6 +47,8 @@ public class Structure {
     public Map<String, Part> getParts() {
         return parts;
     }
+
+    public Part getPart(String partName){ return parts.get(partName);}
     public MusicalKey getKey() {
         return key;
     }
@@ -56,6 +58,9 @@ public class Structure {
     public int getTempo() {
         return tempo;
     }
+
+    public List<String> getOrder() {return order;}
+
     public String getBasePartKey() {
         return basePartKey;
     }

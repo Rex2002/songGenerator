@@ -1,5 +1,5 @@
 # I, IV, V in major, others minor
 # each list in the list describes one bar, when there are multiple elements in the inner list, the bar is split equally
 - [["0"], ["4"], ["3"], ["0"]] # -1 der Stufen, wg. Index
-#- [[5], [3], [0], [4]]
-#- [[5], [3], [0, 3], [4]]
+- [["5"], ["3"], ["0"], ["4"]]
+- [["5"], ["3min"], ["0", "3min"], ["4"]]
