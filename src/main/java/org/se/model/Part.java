@@ -2,8 +2,12 @@ package org.se.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.se.logic.BeatContainer;
+import org.se.logic.ChordContainer;
+import org.se.logic.Config;
+import org.se.logic.MidiSequence;
 
-import java.util.List;
+import java.util.*;
 
 public class Part {
     @JsonProperty
@@ -16,9 +20,10 @@ public class Part {
     private boolean isBasePart;
     @JsonProperty
     private int randomizationLevel;
-    private List<Chord> chords;
+    private List<ChordContainer> chords;
     private Genre genre;
     private Beat beat;
+    private Random ran = new Random();
 
     @JsonCreator
     public Part(@JsonProperty("length") int length, @JsonProperty("req") List<InstrumentEnum> reqInsts,
@@ -32,8 +37,32 @@ public class Part {
         this.randomizationLevel = randomizationLevel;
     }
 
-    public void fillPart(Part basePart, MusicalKey key, Variation variation){
+    public void fillPart(Part basePart, MusicalKey key, Variation variation, MidiSequence seq){
+    }
 
+
+    public void fillAsBasePart(MusicalKey key, MidiSequence seq, Map<Integer, Integer> trackMapping) {
+        List<List<String>> progression = Config.getChordProgressions().get(ran.nextInt(Config.getChordProgressions().size()));
+        chords = new ArrayList<>();
+        int beatNo = ran.nextInt(BeatContainer.getDrumBeats().size());
+        MidiPlayable m;
+        for(int bar = 0; bar < length; bar++){
+            for(InstrumentEnum instr : reqInsts){
+                if(instr == InstrumentEnum.chords) {
+                    m = new ChordContainer(trackMapping.get(Config.getInstrumentMapping().get(InstrumentEnum.chords.toString())),bar, key.getBaseNote(), progression.get(bar % progression.size()) );
+                    seq.addMidiPlayable(m);
+                }
+                if(instr == InstrumentEnum.drums){
+                    m = new BeatContainer(beatNo, bar, trackMapping.get(Config.getInstrumentMapping().get(InstrumentEnum.drums.toString())));
+                    seq.addMidiPlayable(m);
+                }
+                if(instr == InstrumentEnum.bass){
+                    m = new ChordContainer(trackMapping.get(Config.getInstrumentMapping().get(InstrumentEnum.bass.toString())),bar, key.getBaseNote(), progression.get(bar % progression.size()), true );
+                    seq.addMidiPlayable(m);
+                }
+            }
+
+        }
     }
 
     private void selectChords(MusicalKey key, List<Chord> reqChords){
@@ -43,6 +72,19 @@ public class Part {
         //selects beat from template
     }
 
+    @Override
+    public String toString() {
+        return "Part{" +
+                "length=" + length +
+                ", reqInsts=" + reqInsts +
+                ", optInsts=" + optInsts +
+                ", isBasePart=" + isBasePart +
+                ", randomizationLevel=" + randomizationLevel +
+                ", chords=" + chords +
+                ", genre=" + genre +
+                ", beat=" + beat +
+                '}';
+    }
 
     public int getLength() {
         return length;
@@ -59,7 +101,7 @@ public class Part {
     public int getRandomizationLevel() {
         return randomizationLevel;
     }
-    public List<Chord> getChords() {
+    public List<ChordContainer> getChords() {
         return chords;
     }
     public Genre getGenre() {
@@ -69,7 +111,7 @@ public class Part {
         return beat;
     }
 
-    public void setChords(List<Chord> chords) {
+    public void setChords(List<ChordContainer> chords) {
         this.chords = chords;
     }
     public void setGenre(Genre genre) {
@@ -78,4 +120,5 @@ public class Part {
     public void setBeat(Beat beat) {
         this.beat = beat;
     }
+
 }

@@ -29,6 +29,11 @@ public class MusicalKey {
         String[] scales = {"min", "maj"};
         this.scale = scales[new Random().nextInt(2)];
     }
+
+    public int getBaseNote() {
+        return baseNote;
+    }
+
     public static final Map<String, Byte> musicalKeyMajor= new HashMap<>();
     static {
         musicalKeyMajor.put("Cb", (byte) -7);

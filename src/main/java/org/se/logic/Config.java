@@ -15,7 +15,7 @@ import java.util.List;
 
 public class Config {
     private static List<Structure> structures;
-    private static List<List<List<Integer>>> chordProgressions;
+    private static List<List<List<String>>> chordProgressions;
     private static HashMap<String, Integer> instrumentMapping;
 
     public static void loadConfig(){
@@ -69,7 +69,7 @@ public class Config {
     public static List<Structure> getStructures() {
         return structures;
     }
-    public static List<List<List<Integer>>> getChordProgressions() {
+    public static List<List<List<String>>> getChordProgressions() {
         return chordProgressions;
     }
     public static HashMap<String, Integer> getInstrumentMapping() {
