@@ -23,41 +23,31 @@ public class StructureGenerator {
         structure = Config.getStructures().get(ran.nextInt(Config.getStructures().size()));
         structure.setGenre((Genre) settings.get("genre"));
         structure.setKey(new MusicalKey());
-
-        MidiSequence seq = initMidiSequence(structure);
-
         if (settings.get("tempo") != null){
             structure.setTempo((int) settings.get("tempo"));
         } else {
             structure.setTempo(metrics.get("tempo"));
         }
-        seq.setBPM(structure.getTempo());
 
-        structure.getParts().get(structure.getBasePartKey()).fillAsBasePart(structure.getKey(), trackMapping);
+        MidiSequence seq = initMidiSequence(structure);
+
+        structure.getParts().get(structure.getBasePartKey()).fillRandomly(structure.getKey(), trackMapping);
         for (String key: structure.getParts().keySet()) {
             Part part = structure.getPart(key);
-            //Variation variation;
 
             if (part.getRandomizationLevel()==0){
-                //variation = new Variation(structure.getParts().get(structure.getBasePartKey()).getChords(), part.getReqInsts(), part.getOptInsts());
                 List<List<String>> progression = structure.getPart(structure.getBasePartKey()).getChords();
-                part.setChords(progression);
                 part.fillPart(progression, structure.getKey(), trackMapping);
             } else if (part.getRandomizationLevel() == 1) {
                 List<List<String>> reqChords = new ArrayList<>();
                 reqChords.add(structure.getPart(structure.getBasePartKey()).getChords().get(0));
                 reqChords.add(structure.getPart(structure.getBasePartKey()).getChords().get(1));
-                part.fillAsBasePart(structure.getKey(), trackMapping);
+                part.fillRandomly(structure.getKey(), trackMapping);
                 //TODO pick two most important chords instead of first two
-                // TODO pick chord progressions matching reqChords
-                //variation = new Variation(reqChords, part.getReqInsts(), part.getOptInsts());
+                // TODO pick chord progressions matching reqChords instead of picking any randomly
             } else {
-                part.fillAsBasePart(structure.getKey(), trackMapping);
-                //variation = new Variation(new ArrayList<>(), part.getReqInsts(), part.getOptInsts());
+                part.fillRandomly(structure.getKey(), trackMapping);
             }
-            //hatten wir schon ne Lösung wie wir herausfinden was der basePart ist?
-            //Quick Fix: zusätzliche basePart property im Structure Template, die den key vom basePart enthält. Damit wäre isBasePart obsolet
-            //part.fillPart(structure.getParts().get(structure.getBasePartKey()), structure.getKey(),variation, seq);
         }
 
 
@@ -116,6 +106,7 @@ public class StructureGenerator {
             seq.setInstrument(instr, trackMapping.get(instr));
             seq.addNote(60, 0, 24, trackMapping.get(instr));
         }
+        seq.setBPM(structure.getTempo());
         return seq;
     }
 

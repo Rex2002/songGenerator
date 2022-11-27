@@ -17,8 +17,6 @@ public class Part {
     @JsonProperty
     private List<InstrumentEnum> optInsts;
     @JsonProperty
-    private boolean isBasePart;
-    @JsonProperty
     private int randomizationLevel;
     private List<List<String>> chordProgression;
     private Genre genre;
@@ -29,12 +27,10 @@ public class Part {
     @JsonCreator
     public Part(@JsonProperty("length") int length, @JsonProperty("req") List<InstrumentEnum> reqInsts,
                 @JsonProperty("opt") List<InstrumentEnum> optInsts,
-                @JsonProperty(value = "isBasePart", defaultValue = "false") boolean isBasePart,
                 @JsonProperty(value = "randomizationLevel", defaultValue = "0") int randomizationLevel) {
         this.length = length;
         this.reqInsts = reqInsts;
         this.optInsts = optInsts;
-        this.isBasePart = isBasePart;
         this.randomizationLevel = randomizationLevel;
     }
 
@@ -44,10 +40,9 @@ public class Part {
     }
 
 
-    public void fillPart(Part basePart, MusicalKey key, Variation variation, MidiSequence seq){
+    public void fillPart(Part basePart, MusicalKey key, MidiSequence seq){
         // TODO select chords according to variation
         //  fill part more or less like it is done in fillAsBasePart???
-
     }
 
     private void fillPart(MusicalKey key, Map<Integer,Integer> trackMapping){
@@ -73,7 +68,7 @@ public class Part {
     }
 
 
-    public void fillAsBasePart(MusicalKey key, Map<Integer, Integer> trackMapping) {
+    public void fillRandomly(MusicalKey key, Map<Integer, Integer> trackMapping) {
         chordProgression = Config.getChordProgressions().get(ran.nextInt(Config.getChordProgressions().size()));
         fillPart(key, trackMapping);
     }
@@ -82,9 +77,6 @@ public class Part {
     private void selectChords(MusicalKey key, List<Chord> reqChords){
 
     }
-    private void selectBeat(){
-        //selects beat from template
-    }
 
     @Override
     public String toString() {
@@ -92,7 +84,6 @@ public class Part {
                 "length=" + length +
                 ", reqInsts=" + reqInsts +
                 ", optInsts=" + optInsts +
-                ", isBasePart=" + isBasePart +
                 ", randomizationLevel=" + randomizationLevel +
                 ", chords=" + chordProgression +
                 ", genre=" + genre +
@@ -113,9 +104,6 @@ public class Part {
     }
     public List<InstrumentEnum> getOptInsts() {
         return optInsts;
-    }
-    public boolean isBasePart() {
-        return isBasePart;
     }
     public int getRandomizationLevel() {
         return randomizationLevel;

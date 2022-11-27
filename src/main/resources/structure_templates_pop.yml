@@ -1,10 +1,8 @@
-# when isBasePart is not specified, it is implied as false
 order: [intro, verse, chorus, verse, chorus, chorus]
 basePart: intro
 parts:
   intro:
     length: 8
-    isBasePart: true # only one base part per structure
     req:
       - chords
       - drums
