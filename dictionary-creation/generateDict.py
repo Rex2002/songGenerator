@@ -78,7 +78,7 @@ with open(dir + "verbsDict.csv", encoding="utf8", mode="w") as csvFile:
 	writer.writerow(["lemma", "infinitv", "1.pers-singular-präsens", "2.pers-singular-präsens", "3.pers-singular-präsens", "1.pers-singular-präteritum", "partizip 2", "1.pers-konjunktiv 2", "imperativ-singular", "imperativ-plural", "hilfsverb"])
 	writer.writerows(verbs)
 
-with open(dir + "partsDict.csv", encoding="utf8", mode="w") as csvFile:
+with open(dir + "affixDict.csv", encoding="utf8", mode="w") as csvFile:
 	writer = csv.writer(csvFile, delimiter=",", lineterminator="\n")
 	writer.writerow(["lemma", "type"])
 	writer.writerows(suffixes)
