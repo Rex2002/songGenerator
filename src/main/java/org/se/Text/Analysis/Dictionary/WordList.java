@@ -1,4 +1,4 @@
-package org.se.Text;
+package org.se.Text.Analysis.Dictionary;
 
 import java.util.*;
 
@@ -38,8 +38,15 @@ public class WordList {
 	}
 
 	public void insertAll(String[] strings) {
-		for (String s : strings)
+		for (String s : strings) {
 			insert(s);
+		}
+	}
+
+	public void insertAll(WordList list) {
+		for (String s : list.store) {
+			insert(s);
+		}
 	}
 
 	public boolean has(String s) {
