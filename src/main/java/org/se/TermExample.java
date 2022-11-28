@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
 import java.util.stream.Stream;
-
 import org.se.Text.Analysis.*;
 
 /**
@@ -55,7 +54,7 @@ public class TermExample {
 			t.setIsPlural(TermExample.parseIsPlural(row[4]));
 			t.setSyllables(TermExample.parseSyllables(row[5]).toArray(t.syllables));
 			TermVariations v = new TermVariations(t);
-			c.add(v);
+			c.addNouns(v);
 		});
 		;
 
