@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Consumer;
+import org.se.Util;
 
 public class Dict {
 	WordList nounSuffixes;
@@ -13,25 +14,28 @@ public class Dict {
 	WordList verbSuffixes;
 	WordList verbPrefixes;
 	WordList verbs;
+	WordList diphtongs;
+	final String baseKey = "lemma";
 
 	public Dict(WordList nounSuffixes, WordList nounPrefixes,
-			WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs) {
+			WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs, WordList diphtongs) {
 		this.nounSuffixes = nounSuffixes;
 		this.nounPrefixes = nounPrefixes;
 		this.nouns = nouns;
 		this.verbSuffixes = verbSuffixes;
 		this.verbPrefixes = verbPrefixes;
 		this.verbs = verbs;
+		this.diphtongs = diphtongs;
 	}
 
-	private static void readCSV(Path filepath, Consumer<? super HashMap<String, String>> forEachRow)
+	private static void readCSV(Path filepath, Consumer<? super WordWithData> forEachRow)
 			throws IOException {
 		String[] rows = Files.readString(filepath).split("\\r?\\n");
 		String[] firstRow = rows[0].split(",");
 
 		for (int i = 1; i < rows.length; i++) {
 			String[] col = rows[0].split(",");
-			HashMap<String, String> data = new HashMap<String, String>();
+			WordWithData data = new WordWithData();
 			for (int j = 0; j < col.length; j++) {
 				data.put(firstRow[j], col[j]);
 			}
@@ -39,13 +43,15 @@ public class Dict {
 		}
 	}
 
-	private static WordList[] readDictionaryFromFiles(Path affixCSV, Path nounsCSV, Path verbsCSV) throws IOException {
+	private static WordList[] readDictionaryFromFiles(Path affixCSV, Path nounsCSV, Path verbsCSV, Path diphtongsCSV)
+			throws IOException {
 		WordList nouns = new WordList("lemma");
 		WordList nounPrefixes = new WordList("lemma");
 		WordList nounSuffixes = new WordList("lemma");
 		WordList verbs = new WordList("lemma");
 		WordList verbPrefixes = new WordList("lemma");
 		WordList verbSuffixes = new WordList("lemma");
+		WordList diphtongs = new WordList("lemma");
 
 		readCSV(affixCSV, data -> {
 			switch (data.get("type")) {
@@ -72,32 +78,38 @@ public class Dict {
 		readCSV(verbsCSV, data -> {
 			verbs.insert(data);
 		});
+		readCSV(diphtongsCSV, data -> {
+			diphtongs.insert(data);
+		});
 
-		WordList[] res = { nounSuffixes, nounPrefixes, nouns, verbSuffixes, verbPrefixes, verbs };
+		WordList[] res = { nounSuffixes, nounPrefixes, nouns, verbSuffixes, verbPrefixes, verbs, diphtongs };
 		return res;
 	}
 
-	public Dict(Path affixCSV, Path nounsCSV, Path verbsCSV) throws IOException {
-		WordList[] res = readDictionaryFromFiles(affixCSV, nounsCSV, verbsCSV);
+	public Dict(Path affixCSV, Path nounsCSV, Path verbsCSV, Path diphtongsCSV) throws IOException {
+		WordList[] res = readDictionaryFromFiles(affixCSV, nounsCSV, verbsCSV, diphtongsCSV);
 		this.nounSuffixes = res[0];
 		this.nounPrefixes = res[1];
 		this.nouns = res[2];
 		this.verbSuffixes = res[3];
 		this.verbPrefixes = res[4];
 		this.verbs = res[5];
+		this.diphtongs = res[6];
 	}
 
 	public Dict(Path dirPath) throws IOException {
 		Path affixCSV = dirPath.resolve("affixesDict.csv");
 		Path nounsCSV = dirPath.resolve("nounsDict.csv");
 		Path verbsCSV = dirPath.resolve("verbsDict.csv");
-		WordList[] res = readDictionaryFromFiles(affixCSV, nounsCSV, verbsCSV);
+		Path diphtongsCSV = dirPath.resolve("diphtongs.csv");
+		WordList[] res = readDictionaryFromFiles(affixCSV, nounsCSV, verbsCSV, diphtongsCSV);
 		this.nounSuffixes = res[0];
 		this.nounPrefixes = res[1];
 		this.nouns = res[2];
 		this.verbSuffixes = res[3];
 		this.verbPrefixes = res[4];
 		this.verbs = res[5];
+		this.diphtongs = res[6];
 	}
 
 	public Dict addDictionary(Dict dict) {
@@ -112,80 +124,91 @@ public class Dict {
 
 	// Make word into a term
 
-	// Returns a list of strings, where the strings are in order of appearance in
-	// the string, meaning that the wordstem comes first
-	public static List<String> removeSuffixes(String s, WordList suffixes, int minStemLength) {
-		List<String> res = new LinkedList<String>();
-		String currentStringPart = new String();
-		char[] chars = s.toCharArray();
-		int j = chars.length;
-		for (int i = chars.length - 1; i > minStemLength; i--) {
-			currentStringPart += chars[i];
-			if (suffixes.has(currentStringPart.toString())) {
-				res.add(0, currentStringPart);
-				currentStringPart = "";
-				j = i;
-			}
+	// If the word is a noun, a WordStemmer-object will be returned
+	// Otherwise, an empty Optional will be returned
+	public Optional<WordStemmer> tryNounStem(String s) {
+		// TODO: Add declination
+		WordStemmer w = WordStemmer.removeSuffixes(s, nounSuffixes, 2, diphtongs, baseKey);
+		w.removePrefixes(nounPrefixes, 2, diphtongs);
+
+		if (nouns.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.Any(w.getSuffixes(), data -> {
+			return data.containsKey("certain") && data.getBoolean("certain");
+		}))) {
+			return Optional.of(w);
+		} else {
+			return Optional.empty();
 		}
-		res.add(0, s.substring(0, j));
-		return res;
 	}
 
-	// Returns a list of strings, where the strings are in order of appearance in
-	// the string, meaning that the wordstem comes last
-	public static List<String> removePrefixes(String s, WordList prefixes, int minStemLength) {
-		List<String> res = new LinkedList<String>();
-		String currentStringPart = new String();
-		char[] chars = s.toCharArray();
-		int j = chars.length;
-		for (int i = 0; i < chars.length - minStemLength; i++) {
-			currentStringPart += chars[i];
-			if (prefixes.has(currentStringPart.toString())) {
-				res.add(currentStringPart);
-				currentStringPart = "";
-				j = i + 1;
-			}
+	public Optional<WordStemmer> tryVerbStem(String s) {
+		// TODO: Add conjugation
+		WordStemmer w = WordStemmer.removeSuffixes(s, verbSuffixes, 2, diphtongs, baseKey);
+		w.removePrefixes(verbPrefixes, 2, diphtongs);
+
+		if (verbs.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.Any(w.getSuffixes(), data -> {
+			return data.containsKey("certain") && data.getBoolean("certain");
+		}))) {
+			return Optional.of(w);
+		} else {
+			return Optional.empty();
 		}
-		res.add(s.substring(j));
-		return res;
-	}
-
-	public boolean isNoun(String s) {
-		List<String> suffixSplit = removeSuffixes(s, nounSuffixes, 2);
-		List<String> prefixSplit = removePrefixes(suffixSplit.get(0), nounPrefixes, 2);
-		String stem = prefixSplit.get(prefixSplit.size() - 1);
-
-		// TODO: Include declination changes to the word
-
-		return nouns.has(stem);
-	}
-
-	public boolean isVerb(String s) {
-		List<String> suffixSplit = removeSuffixes(s, verbSuffixes, 2);
-		List<String> prefixSplit = removePrefixes(suffixSplit.get(0), verbPrefixes, 2);
-		String stem = prefixSplit.get(prefixSplit.size() - 1);
-
-		// TODO: Include conjugation changes to the word
-
-		return verbs.has(stem);
 	}
 
 	// TODO: Optimize by changing Tag-Class and storing the suffixes/prefixes that
 	// have already been split in the Tag-object
 
 	public Tag tagWord(String s) {
-		if (this.isNoun(s)) {
-			return new Tag(s, TagType.Noun);
-		} else if (this.isVerb(s)) {
-			return new Tag(s, TagType.Verb);
-		} else {
-			return new Tag(s, TagType.Other);
+		Optional<WordStemmer> data = tryNounStem(s);
+		if (data.isPresent()) {
+			return new Tag(s, TagType.Noun, data.get());
+		}
+
+		data = tryVerbStem(s);
+		if (data.isPresent()) {
+			return new Tag(s, TagType.Verb, data.get());
+		}
+
+		return new Tag(s, TagType.Other);
+	}
+
+	private void addWordStemmerData(Tag t, WordList suffixes, WordList prefixes) {
+		// Add WordStemmer data,
+		// in case it wasn't produced when tagging the word already
+		// This can happen, when the Analyzer tags the word before giving it to the
+		// Dictionary (for example because of capitalization of word)
+		if (t.getData().isEmpty()) {
+			WordStemmer w = WordStemmer.removeSuffixes(t.getWord(), suffixes, 2, diphtongs, baseKey);
+			w.removePrefixes(prefixes, 2, diphtongs);
+			t.setData(Optional.of(w));
 		}
 	}
 
-	public Term buildTerm(Tag t) {
-		// TODO: Put some actual logic here
+	public Term buildNounTerm(Tag t) {
+		addWordStemmerData(t, nounSuffixes, nounPrefixes);
+
+		// TODO: Add logic here
+		// Specifically move the logic of determining metadata for the term here instead
+		// of in the Term-class
+
 		return new Term(t.word);
+	}
+
+	public Term buildVerbTerm(Tag t) {
+		addWordStemmerData(t, verbSuffixes, verbPrefixes);
+
+		// TODO: Add logic here
+		// Specifically move the logic of determining metadata for the term here instead
+		// of in the Term-class
+
+		return new Term(t.word);
+	}
+
+	public Term buildTerm(Tag t) {
+		if (t.is(TagType.Noun)) {
+			return buildNounTerm(t);
+		} else {
+			return buildVerbTerm(t);
+		}
 	}
 
 	// Getters, Setters & other Boilerplate

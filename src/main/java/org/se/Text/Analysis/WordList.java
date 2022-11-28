@@ -3,10 +3,11 @@ package org.se.Text.Analysis;
 import java.util.*;
 
 public class WordList {
-	private List<HashMap<String, String>> store = new ArrayList<HashMap<String, String>>();
-	private String baseKey = "lemma";
+	private List<WordWithData> store = new ArrayList<WordWithData>();
+	final String baseKey;
 
 	public WordList() {
+		this.baseKey = "lemma";
 	}
 
 	public WordList(String baseKey) {
@@ -14,8 +15,9 @@ public class WordList {
 	}
 
 	public WordList(Iterable<String> strings) {
+		this.baseKey = "lemma";
 		for (String s : strings) {
-			HashMap<String, String> h = new HashMap<String, String>();
+			WordWithData h = new WordWithData();
 			h.put(baseKey, s);
 			this.insert(h);
 		}
@@ -48,7 +50,7 @@ public class WordList {
 		return binSearch(s, 0, size());
 	}
 
-	public boolean insert(HashMap<String, String> h) {
+	public boolean insert(WordWithData h) {
 		if (!h.containsKey(baseKey)) {
 			return false;
 		}
@@ -58,13 +60,13 @@ public class WordList {
 	}
 
 	public boolean insert(String s) {
-		HashMap<String, String> h = new HashMap<String, String>();
+		WordWithData h = new WordWithData();
 		return insert(h);
 	}
 
-	public boolean insertAll(HashMap<String, String>[] list) {
+	public boolean insertAll(WordWithData[] list) {
 		boolean res = true;
-		for (HashMap<String, String> hashMap : list) {
+		for (WordWithData hashMap : list) {
 			if (!insert(hashMap)) {
 				res = false;
 			}
@@ -84,7 +86,7 @@ public class WordList {
 
 	public boolean insertAll(WordList list) {
 		boolean res = true;
-		for (HashMap<String, String> h : list.store) {
+		for (WordWithData h : list.store) {
 			if (list.baseKey != this.baseKey) {
 				h.put(this.baseKey, h.get(list.baseKey));
 			}
@@ -97,20 +99,24 @@ public class WordList {
 
 	public Optional<String> get(String s, String key) {
 		int i = binSearch(s);
-		HashMap<String, String> h = store.get(i);
+		WordWithData h = store.get(i);
 		if (h.get(baseKey) == s) {
 			return Optional.ofNullable(h.get(key));
 		}
 		return Optional.empty();
 	}
 
-	public Optional<HashMap<String, String>> get(String s) {
+	public Optional<WordWithData> get(String s) {
 		int i = binSearch(s);
-		HashMap<String, String> h = store.get(i);
+		WordWithData h = store.get(i);
 		if (h.get(baseKey) == s) {
 			return Optional.of(h);
 		}
 		return Optional.empty();
+	}
+
+	public Optional<String> getDefault(String s) {
+		return get(s, baseKey);
 	}
 
 	public boolean has(String s) {
@@ -118,23 +124,7 @@ public class WordList {
 		if (store.isEmpty()) {
 			return false;
 		}
-		HashMap<String, String> h = store.get(i);
+		WordWithData h = store.get(i);
 		return h != null && h.get(baseKey) == s;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (o == this)
-			return true;
-		if (!(o instanceof WordList)) {
-			return false;
-		}
-		WordList wordList = (WordList) o;
-		return Objects.equals(store, wordList.store);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(store);
 	}
 }
