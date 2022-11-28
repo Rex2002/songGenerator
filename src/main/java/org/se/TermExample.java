@@ -4,16 +4,19 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
 import java.util.stream.Stream;
-
 import org.se.Text.Analysis.*;
 
 public class TermExample {
 	private static GrammaticalCase parseCase(String s) {
 		s = s.toLowerCase();
-		if (s.startsWith("nom")) return GrammaticalCase.Nominative;
-		else if (s.startsWith("gen")) return GrammaticalCase.Genitive;
-		else if (s.startsWith("dat")) return GrammaticalCase.Dative;
-		else return GrammaticalCase.Accusative;
+		if (s.startsWith("nom"))
+			return GrammaticalCase.Nominative;
+		else if (s.startsWith("gen"))
+			return GrammaticalCase.Genitive;
+		else if (s.startsWith("dat"))
+			return GrammaticalCase.Dative;
+		else
+			return GrammaticalCase.Accusative;
 	}
 
 	private static Gender parseGender(String s) {
@@ -23,13 +26,16 @@ public class TermExample {
 
 	private static Boolean parseIsPlural(String s) {
 		s = s.toLowerCase();
-		if (s.startsWith("t")) return true;
-		else return false;
+		if (s.startsWith("t"))
+			return true;
+		else
+			return false;
 	}
 
 	private static List<Integer> parseSyllables(String s) {
 		List<Integer> l = new ArrayList<Integer>();
-		Stream.of(s.split("-")).map(n -> Integer.decode(n)).forEach(n -> l.add(n));;
+		Stream.of(s.split("-")).map(n -> Integer.decode(n)).forEach(n -> l.add(n));
+		;
 		return l;
 	}
 
@@ -45,8 +51,9 @@ public class TermExample {
 			t.setIsPlural(TermExample.parseIsPlural(row[4]));
 			t.setSyllables(TermExample.parseSyllables(row[5]).toArray(t.syllables));
 			TermVariations v = new TermVariations(t);
-			c.add(v);
-		});;
+			c.addNouns(v);
+		});
+		;
 
 		return c;
 	}

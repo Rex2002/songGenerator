@@ -6,92 +6,92 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class TermCollection {
-	public HashMap<String, TermVariations> terms;
+	public HashMap<String, TermVariations> nouns;
+	public HashMap<String, TermVariations> verbs;
 
 	public TermCollection() {
-		this.terms = new HashMap<String, TermVariations>();
+		this.nouns = new HashMap<String, TermVariations>();
+		this.verbs = new HashMap<String, TermVariations>();
 	}
 
-	public TermCollection(ArrayList<TermVariations> terms) {
-		this.terms = new HashMap<String, TermVariations>();
-		for (TermVariations term : terms) this.terms.put(term.getLemma(), term);
-	}
-
-	public TermCollection(HashMap<String, TermVariations> map) {
-		this.terms = map;
-	}
-
-	public HashMap<String,TermVariations> getTerms() {
-		return this.terms;
-	}
-
-	public void setTerms(HashMap<String,TermVariations> terms) {
-		this.terms = terms;
-	}
-
-	public TermCollection terms(HashMap<String,TermVariations> terms) {
-		setTerms(terms);
-		return this;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (o == this)
-			return true;
-		if (!(o instanceof TermCollection)) {
-			return false;
+	public TermCollection(ArrayList<TermVariations> nouns, ArrayList<TermVariations> verbs) {
+		this.nouns = new HashMap<String, TermVariations>();
+		this.verbs = new HashMap<String, TermVariations>();
+		for (TermVariations term : nouns) {
+			this.nouns.put(term.getLemma(), term);
 		}
-		TermCollection termCollection = (TermCollection) o;
-		return Objects.equals(terms, termCollection.terms);
+		for (TermVariations term : verbs) {
+			this.verbs.put(term.getLemma(), term);
+		}
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(terms);
+	public TermCollection(HashMap<String, TermVariations> nouns, HashMap<String, TermVariations> verbs) {
+		this.nouns = nouns;
+		this.verbs = verbs;
 	}
 
-	@Override
-	public String toString() {
-		return "{" +
-			" terms='" + getTerms() + "'" +
-			"}";
-	}
-
-
-	public void add(TermVariations variations) {
-		if (has(variations)) {
-			this.terms.get(variations.getLemma()).add(variations);
+	public void addNouns(TermVariations variations) {
+		if (hasNoun(variations)) {
+			nouns.get(variations.getLemma()).add(variations);
 		} else {
-			terms.put(variations.getLemma(), variations);
+			nouns.put(variations.getLemma(), variations);
 		}
 	}
 
-	public void add(Term t) {
+	public void addVerbs(TermVariations variations) {
+		if (hasVerb(variations)) {
+			verbs.get(variations.getLemma()).add(variations);
+		} else {
+			verbs.put(variations.getLemma(), variations);
+		}
+	}
+
+	public void addNoun(Term t) {
 		TermVariations v = new TermVariations(t);
-		if (has(v)) {
-			terms.get(v.getLemma()).add(t);
+		if (hasNoun(v)) {
+			nouns.get(v.getLemma()).add(t);
 		} else {
-			terms.put(v.getLemma(), v);
+			nouns.put(v.getLemma(), v);
 		}
 	}
 
-	public Boolean has(TermVariations variations) {
-		return terms.containsKey(variations.getLemma());
+	public void addVerb(Term t) {
+		TermVariations v = new TermVariations(t);
+		if (hasVerb(v)) {
+			verbs.get(v.getLemma()).add(t);
+		} else {
+			verbs.put(v.getLemma(), v);
+		}
 	}
 
-	public Boolean has(Term t) {
-		return terms.containsKey(t.getLemma());
+	public Boolean hasNoun(TermVariations variations) {
+		return nouns.containsKey(variations.getLemma());
 	}
 
-	public List<Term> query(GrammaticalCase grammaticalCase, Gender gender, Boolean isPlural, Integer syllableMin, Integer syllableMax) {
+	public Boolean hasNoun(Term t) {
+		return nouns.containsKey(t.getLemma());
+	}
+
+	public Boolean hasVerb(TermVariations variations) {
+		return verbs.containsKey(variations.getLemma());
+	}
+
+	public Boolean hasVerb(Term t) {
+		return verbs.containsKey(t.getLemma());
+	}
+
+	public List<Term> query(GrammaticalCase grammaticalCase, Gender gender, Boolean isPlural, Integer syllableMin,
+			Integer syllableMax) {
 		List<Term> existing = new ArrayList<Term>();
 		List<Term> created = new ArrayList<Term>();
 
-		this.terms.values().forEach(x -> {
+		nouns.values().forEach(x -> {
 			Term t = x.getTerm(gender, grammaticalCase, isPlural);
 			if (syllableMin <= t.syllables.length && t.syllables.length <= syllableMax) {
-				if (x.hasType(gender, grammaticalCase, isPlural)) existing.add(t);
-				else created.add(t);
+				if (x.hasType(gender, grammaticalCase, isPlural))
+					existing.add(t);
+				else
+					created.add(t);
 			}
 		});
 
@@ -99,41 +99,78 @@ public class TermCollection {
 		return existing;
 	}
 
-	public List<Term> queryBy(Predicate<? super Term> f) {
-		return TermCollection.queryBy(terms, f);
+	// Query Functions
+
+	public List<Term> queryNounsBy(Predicate<? super Term> f) {
+		return TermCollection.queryBy(nouns, f);
 	}
 
-	public List<Term> queryBySyllableRange(Integer minSyllableAmount, Integer maxSyllableAmount) {
-		return TermCollection.queryBySyllableRange(terms, minSyllableAmount, maxSyllableAmount);
+	public List<Term> queryVerbsBy(Predicate<? super Term> f) {
+		return TermCollection.queryBy(verbs, f);
 	}
 
-	public List<Term> queryBySyllableAmount(Integer syllableAmount) {
-		return TermCollection.queryBySyllableAmount(terms, syllableAmount);
+	public List<Term> queryNounsBySyllableRange(Integer minSyllableAmount, Integer maxSyllableAmount) {
+		return TermCollection.queryBySyllableRange(nouns, minSyllableAmount, maxSyllableAmount);
 	}
 
-	public List<Term> queryBy(GrammaticalCase grammaticalCase) {
-		return TermCollection.queryBy(terms, grammaticalCase);
+	public List<Term> queryVerbsBySyllableRange(Integer minSyllableAmount, Integer maxSyllableAmount) {
+		return TermCollection.queryBySyllableRange(verbs, minSyllableAmount, maxSyllableAmount);
 	}
 
-	public List<Term> queryBy(Boolean onlyPluralTerms) {
-		return TermCollection.queryBy(terms, onlyPluralTerms);
+	public List<Term> queryNounsBySyllableAmount(Integer syllableAmount) {
+		return TermCollection.queryBySyllableAmount(nouns, syllableAmount);
 	}
 
-	public List<Term> queryBy(Gender gender) {
-		return TermCollection.queryBy(terms, gender);
+	public List<Term> queryVerbsBySyllableAmount(Integer syllableAmount) {
+		return TermCollection.queryBySyllableAmount(verbs, syllableAmount);
 	}
 
-	public List<Term> mostCommonTerms() {
-		return TermCollection.mostCommonTerms(terms);
+	public List<Term> queryNounsBy(GrammaticalCase grammaticalCase) {
+		return TermCollection.queryBy(nouns, grammaticalCase);
 	}
 
-	public Term getRandomTerm() {
-		return TermCollection.getRandomTerm(terms.values().stream().collect(Collectors.toList()));
+	public List<Term> queryVerbsBy(GrammaticalCase grammaticalCase) {
+		return TermCollection.queryBy(verbs, grammaticalCase);
 	}
 
+	public List<Term> queryNounsBy(Boolean onlyPluralTerms) {
+		return TermCollection.queryBy(nouns, onlyPluralTerms);
+	}
 
-	public static List<Term> queryBySyllableRange(HashMap<String, TermVariations> terms, Integer minSyllableAmount, Integer maxSyllableAmount) {
-		return TermCollection.queryBy(terms, x -> minSyllableAmount <= x.syllables.length && x.syllables.length <= maxSyllableAmount);
+	public List<Term> queryVerbsBy(Boolean onlyPluralTerms) {
+		return TermCollection.queryBy(verbs, onlyPluralTerms);
+	}
+
+	public List<Term> queryNounsBy(Gender gender) {
+		return TermCollection.queryBy(nouns, gender);
+	}
+
+	public List<Term> queryVerbsBy(Gender gender) {
+		return TermCollection.queryBy(verbs, gender);
+	}
+
+	public List<Term> mostCommonNouns() {
+		return TermCollection.mostCommonTerms(nouns);
+	}
+
+	public List<Term> mostCommonVerbs() {
+		return TermCollection.mostCommonTerms(verbs);
+	}
+
+	public Term getRandomNoun() {
+		return TermCollection.getRandomTerm(nouns.values().stream().collect(Collectors.toList()));
+	}
+
+	public Term getRandomVerb() {
+		return TermCollection.getRandomTerm(verbs.values().stream().collect(Collectors.toList()));
+	}
+
+	// Static Query Functions
+
+	public static List<Term> queryBySyllableRange(HashMap<String, TermVariations> terms, Integer minSyllableAmount,
+			Integer maxSyllableAmount) {
+		return TermCollection.queryBy(terms,
+				x -> minSyllableAmount <= x.syllables.length && x.syllables.length <= maxSyllableAmount);
 	}
 
 	public static List<Term> queryBySyllableAmount(HashMap<String, TermVariations> terms, Integer syllableAmount) {
@@ -159,9 +196,10 @@ public class TermCollection {
 		return res;
 	}
 
-
 	public static List<Term> mostCommonTerms(HashMap<String, TermVariations> terms) {
-		List<Term> res = terms.values().stream().map(x -> x.variations.values().stream()).flatMap(Function.identity()).collect(Collectors.toList());;
+		List<Term> res = terms.values().stream().map(x -> x.variations.values().stream()).flatMap(Function.identity())
+				.collect(Collectors.toList());
+		;
 		res.sort(new Comp(terms));
 		return res.subList(0, 10);
 	}
@@ -173,4 +211,57 @@ public class TermCollection {
 		int j = rand.nextInt(ts.size());
 		return ts.stream().collect(Collectors.toList()).get(j);
 	}
+
+	// Boilerplate:
+
+	public HashMap<String, TermVariations> getNouns() {
+		return this.nouns;
+	}
+
+	public void setNouns(HashMap<String, TermVariations> nouns) {
+		this.nouns = nouns;
+	}
+
+	public HashMap<String, TermVariations> getVerbs() {
+		return this.verbs;
+	}
+
+	public void setVerbs(HashMap<String, TermVariations> verbs) {
+		this.verbs = verbs;
+	}
+
+	public TermCollection nouns(HashMap<String, TermVariations> nouns) {
+		setNouns(nouns);
+		return this;
+	}
+
+	public TermCollection verbs(HashMap<String, TermVariations> verbs) {
+		setVerbs(verbs);
+		return this;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this)
+			return true;
+		if (!(o instanceof TermCollection)) {
+			return false;
+		}
+		TermCollection termCollection = (TermCollection) o;
+		return Objects.equals(nouns, termCollection.nouns) && Objects.equals(verbs, termCollection.verbs);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(nouns, verbs);
+	}
+
+	@Override
+	public String toString() {
+		return "{" +
+				" nouns='" + getNouns() + "'" +
+				", verbs='" + getVerbs() + "'" +
+				"}";
+	}
+
 }

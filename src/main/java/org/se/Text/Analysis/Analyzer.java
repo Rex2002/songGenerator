@@ -7,10 +7,11 @@ import java.util.*;
 
 public class Analyzer {
 	public static TermCollection analyze(Path filepath) throws IOException {
+		Dict dict = new Dict(Path.of("", "Dictionary"));
 		String text = Analyzer.readFile(filepath);
 		ArrayList<ArrayList<String>> sentences = Analyzer.preprocess(text);
-		ArrayList<ArrayList<Tag>> tags = Analyzer.tag(sentences);
-		return Analyzer.buildTerms(tags);
+		ArrayList<ArrayList<Tag>> tags = Analyzer.tag(sentences, dict);
+		return Analyzer.buildTerms(tags, dict);
 	}
 
 	public static String readFile(Path filepath) throws IOException {
@@ -21,7 +22,8 @@ public class Analyzer {
 		// I'm sure there must be a better way to do this
 		// Maybe there's something you could do with streams to make this more readable
 		// but Java certainly doesn't make it easy to do any of this shit ffs
-		// I hate Java so fucking much, I'd rather be using C at this point aaaaaaaaaaaarrrrrgggggghhhhhhhhh
+		// I hate Java so fucking much, I'd rather be using C at this point
+		// aaaaaaaaaaaarrrrrgggggghhhhhhhhh
 		String wordSplitter = "-_";
 		Boolean splitLastWord = false;
 		String sentenceEnds = ".!?";
@@ -69,69 +71,78 @@ public class Analyzer {
 			}
 		}
 
-		if (currentWord != "") currentSentence.add(currentWord);
-		if (!currentSentence.isEmpty()) sentences.add(currentSentence);
+		if (currentWord != "") {
+			currentSentence.add(currentWord);
+		}
+		if (!currentSentence.isEmpty()) {
+			sentences.add(currentSentence);
+		}
 		return sentences;
 	}
 
 	static int caitalizedCount(String str) {
 		int count = 0;
 		for (char c : str.toCharArray()) {
-			if (Character.isUpperCase(c)) count++;
+			if (Character.isUpperCase(c)) {
+				count++;
+			}
 		}
 		return count;
 	}
 
-	static boolean hasSuffix(String str, String[] suffixes) {
-		for (String p : suffixes) {
-			if (str.endsWith(p)) return true;
-		}
-		return false;
-	}
-
-	static boolean hasPrefix(String str, String[] prefixes) {
-		for (String p : prefixes) {
-			if (str.startsWith(p)) return true;
-		}
-		return false;
-	}
-
-	static ArrayList<ArrayList<Tag>> tag(ArrayList<ArrayList<String>> sentences) {
+	static ArrayList<ArrayList<Tag>> tag(ArrayList<ArrayList<String>> sentences, Dict dict) {
 		ArrayList<ArrayList<Tag>> tags = new ArrayList<ArrayList<Tag>>();
-		String[] nounSuffixes = {"ung", "heit", "keit"};
+
 		for (ArrayList<String> sentence : sentences) {
 			ArrayList<Tag> currentTags = new ArrayList<Tag>();
+
 			for (int i = 0; i < sentence.size(); i++) {
 				String word = sentence.get(i);
-				TagType type;
-				if (i != 0 && Analyzer.caitalizedCount(word) == 1) type = TagType.Noun;
-				else if (Analyzer.hasSuffix(word, nounSuffixes)) type = TagType.Noun;
-				// TODO: Add dictionary lookup
-				else type = TagType.Other;
+				Tag tag;
 
-				currentTags.add(new Tag(word, type));
+				// If it's not the first word in the sentence and is capitalized, it's a noun
+				// this check can only be trusted on, if not every word is capitalized
+				if (i != 0 && Analyzer.caitalizedCount(word) == 1) {
+					tag = new Tag(word, TagType.Noun);
+				} // Otherwise, let the dictionary tag the word
+				else {
+					tag = dict.tagWord(word);
+				}
+
+				currentTags.add(tag);
 			}
 			tags.add(currentTags);
 		}
 		return tags;
 	}
 
-	static TermCollection buildTerms(ArrayList<ArrayList<Tag>> tags) {
-		HashMap<String, TermVariations> variationsMap = new HashMap<String, TermVariations>();
+	static TermCollection buildTerms(ArrayList<ArrayList<Tag>> tags, Dict dict) {
+		HashMap<String, TermVariations> nounVariations = new HashMap<String, TermVariations>();
+		HashMap<String, TermVariations> verbVariations = new HashMap<String, TermVariations>();
 
 		for (ArrayList<Tag> sentenceTags : tags) {
 			for (Tag t : sentenceTags) {
-				if (t.is(TagType.Noun)) {
-					Term term = new Term(t.word);
-					if (variationsMap.containsKey(term.lemma)) {
-						variationsMap.get(term.lemma).add(term);
+				if (!t.is(TagType.Other)) {
+					Term term = dict.buildTerm(t);
+
+					// TODO: There must be better syntax for this
+					// maybe something similar to Rust's match syntax?
+					HashMap<String, TermVariations> tmp;
+					if (t.is(TagType.Noun)) {
+						tmp = nounVariations;
 					} else {
-						variationsMap.put(term.lemma, new TermVariations(term));
+						tmp = verbVariations;
+					}
+
+					if (tmp.containsKey(term.lemma)) {
+						tmp.get(term.lemma).add(term);
+					} else {
+						tmp.put(term.lemma, new TermVariations(term));
 					}
 				}
 			}
 		}
-		return new TermCollection(variationsMap);
+		return new TermCollection(nounVariations, verbVariations);
 	}
 
 }
