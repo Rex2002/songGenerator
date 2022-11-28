@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
+import org.se.Text.Analysis.dict.Dict;
+
 /**
  * @author Val Richter
  */
@@ -121,17 +123,17 @@ public class Analyzer {
 	}
 
 	static TermCollection buildTerms(ArrayList<ArrayList<Tag>> tags, Dict dict) {
-		HashMap<String, TermVariations> nounVariations = new HashMap<String, TermVariations>();
-		HashMap<String, TermVariations> verbVariations = new HashMap<String, TermVariations>();
+		Map<String, TermVariations> nounVariations = new HashMap<String, TermVariations>();
+		Map<String, TermVariations> verbVariations = new HashMap<String, TermVariations>();
 
 		for (ArrayList<Tag> sentenceTags : tags) {
 			for (Tag t : sentenceTags) {
 				if (!t.is(TagType.Other)) {
-					Term term = dict.buildTerm(t);
+					NounTerm term = dict.buildTerm(t);
 
 					// TODO: There must be better syntax for this
 					// maybe something similar to Rust's match syntax?
-					HashMap<String, TermVariations> tmp;
+					Map<String, TermVariations> tmp;
 					if (t.is(TagType.Noun)) {
 						tmp = nounVariations;
 					} else {

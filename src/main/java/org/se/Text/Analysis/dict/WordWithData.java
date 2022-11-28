@@ -1,6 +1,8 @@
-package org.se.Text.Analysis;
+package org.se.Text.Analysis.dict;
 
 import java.util.*;
+
+import org.se.Text.Analysis.dict.dynamic.DynamicType;
 
 public class WordWithData extends HashMap<String, String> {
 	private String baseKey = "lemma";
@@ -12,27 +14,8 @@ public class WordWithData extends HashMap<String, String> {
 		this.baseKey = baseKey;
 	}
 
-	public static Optional<Integer> parseInt(String s) {
-		try {
-			return Optional.of(Integer.parseInt(s.trim()));
-		} catch (Exception e) {
-			return Optional.empty();
-		}
-	}
-
-	public static boolean parseBool(String s) {
-		if (s.toLowerCase().startsWith("t")) {
-			return true;
-		}
-		return false;
-	}
-
-	public static String[] parseList(String s) {
-		return s.split("-");
-	}
-
 	public boolean getBoolean(String key) {
-		return parseBool(get(key));
+		return CSVReader.parseBool(get(key));
 	}
 
 	public boolean getBoolean() {
@@ -40,7 +23,7 @@ public class WordWithData extends HashMap<String, String> {
 	}
 
 	public String[] getList(String key) {
-		return parseList(get(key));
+		return CSVReader.parseList(get(key));
 	}
 
 	public String[] getList() {
@@ -48,7 +31,7 @@ public class WordWithData extends HashMap<String, String> {
 	}
 
 	public Optional<Integer> getInt(String key) {
-		return parseInt(get(key));
+		return CSVReader.parseInt(get(key));
 	}
 
 	public Optional<Integer> getInt() {

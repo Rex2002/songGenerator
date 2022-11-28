@@ -1,3 +1,9 @@
+ending,gender,case,numerus,toUmlaut
+,male,nominativ,singular,f
+,female,nominativ,singular,f
+,neutral,nominativ,singular,f
+
+
 gender,nominativ-singular,gentive-singular,dative-singular,accusative-singular,nominativ-plural,gentive-plural,dative-plural,accusative-plural
 male,,es,-e,,er$,e$-er$,en$-ern$,e$-er$
 female,,,,,en-$,en-$,en-n$,en-$

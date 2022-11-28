@@ -2,6 +2,8 @@ package org.se.Text.Analysis;
 
 import java.util.*;
 
+import org.se.Text.Analysis.dict.WordStemmer;
+
 /**
  * @author Val Richter
  */

@@ -1,12 +1,15 @@
-package org.se.Text.Analysis;
+package org.se.Text.Analysis.dict;
 
 import java.util.*;
 
 public class WordStemmer {
 	private String stem = "";
+	private List<WordWithData> caseEndings = new LinkedList<WordWithData>();
 	private List<WordWithData> prefixes = new LinkedList<WordWithData>();
 	private List<WordWithData> suffixes = new LinkedList<WordWithData>();
 	final String baseKey;
+
+	// Constructors:
 
 	public WordStemmer() {
 		this.baseKey = "lemma";
@@ -35,6 +38,17 @@ public class WordStemmer {
 		this.prefixes = prefixes;
 		this.suffixes = suffixes;
 	}
+
+	public WordStemmer(String stem, List<WordWithData> caseEndings, List<WordWithData> prefixes,
+			List<WordWithData> suffixes, String baseKey) {
+		this.stem = stem;
+		this.caseEndings = caseEndings;
+		this.prefixes = prefixes;
+		this.suffixes = suffixes;
+		this.baseKey = baseKey;
+	}
+
+	// Actual Logic:
 
 	public void removeSuffixes(WordList suffixes, int minStemLength, WordList diphtongs) {
 		WordStemmer res = removeSuffixes(this.stem, suffixes, minStemLength, diphtongs, this.baseKey);
@@ -81,7 +95,9 @@ public class WordStemmer {
 		}
 
 		String stem = s.substring(0, j);
-		return new WordStemmer(baseKey, stem, new LinkedList<WordWithData>(), occuredSuffixes);
+		WordStemmer w = new WordStemmer(baseKey, stem);
+		w.setSuffixes(occuredSuffixes);
+		return w;
 	}
 
 	// Returns a list of strings, where the strings are in order of appearance in
@@ -114,7 +130,15 @@ public class WordStemmer {
 		}
 
 		String stem = s.substring(j);
-		return new WordStemmer(baseKey, stem, occuredPrefixes, new LinkedList<WordWithData>());
+		WordStemmer w = new WordStemmer(baseKey, stem);
+		w.setPrefixes(occuredPrefixes);
+		return w;
+	}
+
+	public static WordStemmer removeCaseEndings(String s, WordList cases, int minStemLength, WordList diphtongs,
+			String baseKey) {
+		// TODO:
+		return new WordStemmer();
 	}
 
 	// Boilerplate
@@ -125,6 +149,14 @@ public class WordStemmer {
 
 	public void setStem(String stem) {
 		this.stem = stem;
+	}
+
+	public List<WordWithData> getCaseEndings() {
+		return this.caseEndings;
+	}
+
+	public void setCaseEndings(List<WordWithData> caseEndings) {
+		this.caseEndings = caseEndings;
 	}
 
 	public List<WordWithData> getPrefixes() {
@@ -143,8 +175,17 @@ public class WordStemmer {
 		this.suffixes = suffixes;
 	}
 
+	public String getBaseKey() {
+		return this.baseKey;
+	}
+
 	public WordStemmer stem(String stem) {
 		setStem(stem);
+		return this;
+	}
+
+	public WordStemmer caseEndings(List<WordWithData> caseEndings) {
+		setCaseEndings(caseEndings);
 		return this;
 	}
 
@@ -166,21 +207,24 @@ public class WordStemmer {
 			return false;
 		}
 		WordStemmer wordStemmer = (WordStemmer) o;
-		return Objects.equals(stem, wordStemmer.stem) && Objects.equals(prefixes, wordStemmer.prefixes)
-				&& Objects.equals(suffixes, wordStemmer.suffixes);
+		return Objects.equals(stem, wordStemmer.stem) && Objects.equals(caseEndings, wordStemmer.caseEndings)
+				&& Objects.equals(prefixes, wordStemmer.prefixes) && Objects.equals(suffixes, wordStemmer.suffixes)
+				&& Objects.equals(baseKey, wordStemmer.baseKey);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(stem, prefixes, suffixes);
+		return Objects.hash(stem, caseEndings, prefixes, suffixes, baseKey);
 	}
 
 	@Override
 	public String toString() {
 		return "{" +
 				" stem='" + getStem() + "'" +
+				", caseEndings='" + getCaseEndings() + "'" +
 				", prefixes='" + getPrefixes() + "'" +
 				", suffixes='" + getSuffixes() + "'" +
+				", baseKey='" + getBaseKey() + "'" +
 				"}";
 	}
 

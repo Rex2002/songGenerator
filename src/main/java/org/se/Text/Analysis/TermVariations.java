@@ -4,15 +4,17 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.se.Text.Analysis.dict.Dict;
+
 /**
  * @author Val Richter
  */
 public class TermVariations {
-	public HashMap<Integer, Term> variations;
+	public Map<Integer, NounTerm> variations;
 	public Integer frequency;
 	public String lemma;
 
-	// public HashMap<Term> getVariations(@Nullable GrammaticalCase grammaticalCase,
+	// public Map<Term> getVariations(@Nullable GrammaticalCase grammaticalCase,
 	// @Nullable Gender gender, @Nullable Boolean isPlural, @Nullable Integer
 	// syllableMin, @Nullable Integer syllableMax) {}
 
@@ -23,21 +25,21 @@ public class TermVariations {
 	// isPlural) {}
 
 	public TermVariations() {
-		this.variations = new HashMap<Integer, Term>();
+		this.variations = new HashMap<Integer, NounTerm>();
 		this.frequency = 0;
 		this.lemma = "";
 	}
 
-	public TermVariations(Term term) {
-		this.variations = new HashMap<Integer, Term>();
+	public TermVariations(NounTerm term) {
+		this.variations = new HashMap<Integer, NounTerm>();
 		this.variations.put(term.hashData(), term);
 		this.frequency = 1;
 		this.lemma = term.lemma;
 	}
 
-	public TermVariations(List<Term> terms) {
-		this.variations = new HashMap<Integer, Term>();
-		for (Term term : terms) {
+	public TermVariations(List<NounTerm> terms) {
+		this.variations = new HashMap<Integer, NounTerm>();
+		for (NounTerm term : terms) {
 			variations.put(term.hashData(), term);
 		}
 		this.frequency = terms.size();
@@ -48,17 +50,17 @@ public class TermVariations {
 		return this.lemma;
 	}
 
-	public TermVariations(HashMap<Integer, Term> variations, Integer frequency, String lemma) {
+	public TermVariations(Map<Integer, NounTerm> variations, Integer frequency, String lemma) {
 		this.variations = variations;
 		this.frequency = frequency;
 		this.lemma = lemma;
 	}
 
-	public HashMap<Integer, Term> getVariations() {
+	public Map<Integer, NounTerm> getVariations() {
 		return this.variations;
 	}
 
-	public void setVariations(HashMap<Integer, Term> variations) {
+	public void setVariations(Map<Integer, NounTerm> variations) {
 		this.variations = variations;
 	}
 
@@ -74,7 +76,7 @@ public class TermVariations {
 		this.lemma = lemma;
 	}
 
-	public TermVariations variations(HashMap<Integer, Term> variations) {
+	public TermVariations variations(Map<Integer, NounTerm> variations) {
 		setVariations(variations);
 		return this;
 	}
@@ -115,7 +117,7 @@ public class TermVariations {
 				"}";
 	}
 
-	public void add(Term term) {
+	public void add(NounTerm term) {
 		if (this.lemma.isEmpty())
 			this.lemma = term.lemma;
 
@@ -125,43 +127,50 @@ public class TermVariations {
 			this.variations.put(term.hashData(), term);
 	}
 
-	public boolean has(Term term) {
+	public boolean has(NounTerm term) {
 		return this.variations.containsKey(term.hashCode());
 	}
 
 	public boolean hasType(Gender gender, GrammaticalCase grammaticalCase, Boolean isPlural) {
-		int hash = Term.hashData(gender, grammaticalCase, isPlural);
+		int hash = NounTerm.hashData(gender, grammaticalCase, isPlural);
 		return variations.containsKey(hash);
 	}
 
-	public List<Term> queryBy(Predicate<? super Term> f) {
+	public List<NounTerm> queryBy(Predicate<? super NounTerm> f) {
 		return this.variations.values().stream().filter(f).collect(Collectors.toList());
 	}
 
-	public List<Term> queryBy(Gender gender) {
+	public List<NounTerm> queryBy(Gender gender) {
 		return this.queryBy(x -> x.gender == gender);
 	}
 
-	public List<Term> queryBy(GrammaticalCase grammaticalCase) {
+	public List<NounTerm> queryBy(GrammaticalCase grammaticalCase) {
 		return this.queryBy(x -> x.grammaticalCase == grammaticalCase);
 	}
 
-	public List<Term> queryBy(Boolean isPlural) {
+	public List<NounTerm> queryBy(Boolean isPlural) {
 		return this.queryBy(x -> x.isPlural == isPlural);
 	}
 
-	public List<Term> queryBySyllableRange(int minSyllableAmount, int maxSyllableAmount) {
+	public List<NounTerm> queryBySyllableRange(int minSyllableAmount, int maxSyllableAmount) {
 		return this.queryBy(x -> minSyllableAmount <= x.syllables.length && x.syllables.length >= maxSyllableAmount);
 	}
 
-	public Term getTerm(Gender gender, GrammaticalCase grammaticalCase, Boolean iPlural) {
-		int hash = Term.hashData(gender, grammaticalCase, iPlural);
-		if (variations.containsKey(hash))
-			return this.variations.get(hash);
-		// TODO
-		Term newTerm = new Term(this.lemma);
-		this.variations.put(hash, newTerm); // Should we have this here or not?
-		return newTerm;
+	public Optional<NounTerm> getTerm(Gender gender, GrammaticalCase grammaticalCase, Boolean isPlural) {
+		int hash = NounTerm.hashData(gender, grammaticalCase, isPlural);
+		if (variations.containsKey(hash)) {
+			return Optional.of(this.variations.get(hash));
+		}
+		return Optional.empty();
+	}
+
+	public NounTerm createTerm(Gender gender, GrammaticalCase grammaticalCase, Boolean isPlural, Dict dict) {
+		Optional<NounTerm> res = getTerm(gender, grammaticalCase, isPlural);
+		if (res.isPresent()) {
+			return res.get();
+		}
+
+		return dict.createNounTerm(this, gender, grammaticalCase, isPlural);
 	}
 
 	public void add(TermVariations variations) {

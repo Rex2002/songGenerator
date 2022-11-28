@@ -1,28 +1,27 @@
 package org.se.Text.Analysis;
 
-import java.util.Comparator;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * @author Val Richter
  */
-class Comp implements Comparator<Term> {
-	private HashMap<String, TermVariations> terms;
+class TermComp implements Comparator<NounTerm> {
+	private Map<String, TermVariations> terms;
 	private int generalTermBias = 1;
 	private int specialVariationBias = 1;
 
-	public Comp(HashMap<String, TermVariations> terms, int generalTermBias, int specialVariationBias) {
+	public TermComp(Map<String, TermVariations> terms, int generalTermBias, int specialVariationBias) {
 		this.terms = terms;
 		this.generalTermBias = generalTermBias;
 		this.specialVariationBias = specialVariationBias;
 	}
 
-	public Comp(HashMap<String, TermVariations> terms) {
+	public TermComp(Map<String, TermVariations> terms) {
 		this.terms = terms;
 	}
 
 	@Override
-	public int compare(Term o1, Term o2) {
+	public int compare(NounTerm o1, NounTerm o2) {
 		TermVariations l1 = terms.get(o1.getLemma());
 		TermVariations l2 = terms.get(o2.getLemma());
 		int x1 = o1.getFrequency() * specialVariationBias + l1.getFrequency() * generalTermBias;
