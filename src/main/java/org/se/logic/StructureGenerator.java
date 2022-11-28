@@ -39,11 +39,8 @@ public class StructureGenerator {
                 List<List<String>> progression = structure.getPart(structure.getBasePartKey()).getChords();
                 part.fillPart(progression, structure.getKey(), trackMapping);
             } else if (part.getRandomizationLevel() == 1) {
-                List<List<String>> reqChords = new ArrayList<>();
-                reqChords.add(structure.getPart(structure.getBasePartKey()).getChords().get(0));
-                reqChords.add(structure.getPart(structure.getBasePartKey()).getChords().get(1));
+                List<String> reqChords = getImportantChords(structure.getPart(structure.getBasePartKey()).getChords());
                 part.fillRandomly(structure.getKey(), trackMapping);
-                //TODO pick two most important chords instead of first two
                 // TODO pick chord progressions matching reqChords instead of picking any randomly
             } else {
                 part.fillRandomly(structure.getKey(), trackMapping);
@@ -110,11 +107,32 @@ public class StructureGenerator {
         return seq;
     }
 
-    public static int calculateLength(){
+    private static int calculateLength(){
         int length = 0;
         for(String i: structure.getOrder()){
             length += structure.getParts().get(i).getLength();
         }
         return length;
     }
+
+    private static List<String> getImportantChords(List<List<String>> basePartChords){
+        //Idee: Stufen ranken nach Wichtigkeit: 0,4,3,2,1,5,6
+        Map<String, Integer> chordImportanceMap = Map.of("0", 0, "4", 1, "3", 2,
+                "2", 3, "1", 4, "5", 5, "6", 6);
+        List<String> importantChords = new ArrayList<>();
+        for (List<String> bar : basePartChords) {
+            for (String chord : bar) {
+                if (importantChords.isEmpty()){
+                    importantChords.add(chord);
+                } else if (chordImportanceMap.get(chord.substring(0,1)) < chordImportanceMap.get(importantChords.get(0))) {
+                    importantChords.add(1, importantChords.get(0));
+                    importantChords.add(0, chord);
+                } else if (chordImportanceMap.get(chord.substring(0, 1)) < chordImportanceMap.get(importantChords.get(1))) {
+                    importantChords.add(1, chord);
+                }
+            }
+        }
+        return importantChords;
+    }
+
 }
