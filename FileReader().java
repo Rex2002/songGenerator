@@ -11,24 +11,41 @@ import java.util.stream.Stream;
 //Reurn ist string!!!
 
 public class FileReader{
-    public static void main(String[] args){
+    public String main(String path){
         
         //Bekomme Pfad von UI und speicher den in var p
         String p = path;
 
         //Unterschied zwischen pdf und txt Datei
-        if(/*pdf datei*/){
-            pdfReader(p);
+        checkFormate(p);
+        if(formate==pdf){
+            readPdf(p);
         }
-        if(/*txt datei */){
-            txtReader(p);
+        if(formate==text){
+            readTxt(p);
         }
         else{
             return("Path does not meet requirements");
         }
     }
 
-public String PdfReader(path p){
+public String checkFormate(String p){
+
+/*prüfen ob datei existiert?? */
+
+    String formate = 'unknown';
+    String[] elements = p.split('.');
+    String cText = "text,txt,java,log";
+    String cPdf = "pdf";
+    
+    if (cText.entails elements.last().toLowerCase)
+    {formate='text';}
+    if (cPdf.entails elements.last().toLowerCase)
+    {formate ='pdf';}
+    return formate;
+}
+
+public StringBuffer readPdf(String p){
     StringBuffer buff = new StringBuffer();
     try {
         PdfReader reader = new PdfReader(p); //konstrukter mit pfad p
@@ -41,20 +58,22 @@ public String PdfReader(path p){
         catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(buff.toString()); //Can i use a return instead??
+        StringBuffer content = (buff.toString()); 
+        return content;
     }
 }
 
-public String TextReader(path p){
+public String readTxt(String p){
     try{
         Path path = Paths.get(p);
         Stream<String> lines = Files.lines(path);
 
             String content = lines.collect(Collectors.joining(System.lineSeparator()));
-            System.out.println(content); //Can i use a return instead??
+            return (content); 
             lines.close();
       }catch(IOException e){
         e.printStackTrace();
       }
 }
 }
+
