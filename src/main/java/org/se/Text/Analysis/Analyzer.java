@@ -106,7 +106,7 @@ public class Analyzer {
 
 				// If it's not the first word in the sentence and is capitalized, it's a noun
 				// this check can only be trusted on, if not every word is capitalized
-				if (i != 0 && Analyzer.caitalizedCount(word) == 1) {
+				if (i != 0 && Analyzer.capitalizedCount(word) == 1) {
 					tag = new Tag(word, TagType.Noun);
 				} // Otherwise, let the dictionary tag the word
 				else {
