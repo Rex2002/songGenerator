@@ -15,32 +15,31 @@ public class FileReader{
         
         //Bekomme Pfad von UI und speicher den in var p
         String p = path;
-
+        String formate = '';
         //Unterschied zwischen pdf und txt Datei
         checkFormate(p);
         if(formate==pdf){
-            readPdf(p);
+           return  readPdf(p);
         }
         if(formate==text){
-            readTxt(p);
+            return readTxt(p);
         }
         else{
-            return("Path does not meet requirements");
+            return("Path does not meet requirements"); //Need error management because the code would still use this as data input
         }
     }
 
 public String checkFormate(String p){
 
-/*prüfen ob datei existiert?? */
 
     String formate = 'unknown';
     String[] elements = p.split('.');
-    String cText = "text,txt,java,log";
+    String[] cText = new String[] {"text", "txt", "java", "log"};
     String cPdf = "pdf";
     
-    if (cText.entails elements.last().toLowerCase)
+    if (cText.contains(elements.last().toLowerCase))
     {formate='text';}
-    if (cPdf.entails elements.last().toLowerCase)
+    if (cPdf.contains(elements.last().toLowerCase))
     {formate ='pdf';}
     return formate;
 }
