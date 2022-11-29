@@ -12,7 +12,7 @@ import org.se.Text.Analysis.dict.Dict;
  */
 public class Analyzer {
 	public static TermCollection analyze(Path filepath) throws IOException {
-		Dict dict = new Dict(Path.of("", "Dictionary"));
+		Dict dict = new Dict(Path.of("", "./src/main/ressources/dictionary"));
 		String text = Analyzer.readFile(filepath);
 		ArrayList<ArrayList<String>> sentences = Analyzer.preprocess(text);
 		ArrayList<ArrayList<Tag>> tags = Analyzer.tag(sentences, dict);
