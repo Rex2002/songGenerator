@@ -68,8 +68,8 @@ public String readTxt(String p){
         Stream<String> lines = Files.lines(path);
 
             String content = lines.collect(Collectors.joining(System.lineSeparator()));
-            return (content); 
             lines.close();
+            return (content); 
       }catch(IOException e){
         e.printStackTrace();
       }
