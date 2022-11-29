@@ -3,7 +3,9 @@ package org.se.logic;
 import org.se.model.Chord;
 import org.se.model.MidiPlayable;
 
+import java.sql.SQLOutput;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ChordContainer extends MidiPlayable {
     private final int baseNote;
@@ -22,6 +24,26 @@ public class ChordContainer extends MidiPlayable {
     public ChordContainer(int trackNo, int bar, int baseNote, List<String> chords){
         this(trackNo,bar, baseNote, chords, false);
     }
+
+    public static List<List<List<String>>> getMatchingProgressions(List<String> reqChords) {
+        List<List<List<String>>> returnProgressions = new ArrayList<>();
+        boolean flag;
+        for(List<List<String>> progression : Config.getChordProgressions()){
+            flag = true;
+            List<String> l = progression.stream().flatMap(Collection::stream).toList();
+            for(String chord : reqChords){
+                if(!l.contains(chord)){
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag){
+                returnProgressions.add(progression);
+            }
+        }
+        return returnProgressions;
+    }
+
     public void parseChordString(List<String> chords){
         for (int i = 0; i < chords.size(); i++) {
             int stair = Integer.parseInt(String.valueOf(chords.get(i).charAt(0)));

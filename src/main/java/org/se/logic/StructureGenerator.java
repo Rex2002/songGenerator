@@ -31,10 +31,10 @@ public class StructureGenerator {
                 part.fillPart(progression, structure.getKey(), trackMapping);
             } else if (part.getRandomizationLevel() == 1) {
                 List<String> reqChords = getImportantChords(structure.getPart(structure.getBasePartKey()).getChords());
-                System.out.println("required chords: " + reqChords);
-                part.fillRandomly(structure.getKey(), trackMapping);
-                // Config.getChordProgressions().get(iterator).contains(reqChords.get(0)) ==>
+                List<List<List<String>>> progression = ChordContainer.getMatchingProgressions(reqChords);
+                part.fillPart(progression.get(ran.nextInt(progression.size())), structure.getKey(), trackMapping);
                 // TODO pick chord progressions matching reqChords instead of picking any randomly
+                //  I believe this should be done now, ready for review
             } else {
                 part.fillRandomly(structure.getKey(), trackMapping);
             }
@@ -111,7 +111,6 @@ public class StructureGenerator {
         //Idee: Stufen ranken nach Wichtigkeit: 0,4,3,2,1,5,6
         Map<String, Integer> chordImportanceMap = Map.of("0", 0, "4", 1, "3", 2,
                 "2", 3, "1", 4, "5", 5, "6", 6);
-        System.out.println("basePartChords: " + basePartChords);
         List<String> importantChords = new ArrayList<>();
         for (List<String> bar : basePartChords) {
             for (String chord : bar) {
@@ -121,13 +120,11 @@ public class StructureGenerator {
                 if (importantChords.isEmpty()){
                     importantChords.add(chord);
                 }
-                else if (chordImportanceMap.get(chord.substring(0,1)) < chordImportanceMap.get(importantChords.get(0))) {
-                    importantChords.add(1, importantChords.get(0));
-                    importantChords.remove(0);
+                else if (chordImportanceMap.get(chord.substring(0,1)) < chordImportanceMap.get(importantChords.get(0).substring(0,1))) {
                     importantChords.add(0, chord);
-
+                    importantChords.remove(importantChords.size()-1);
                 }
-                else if (importantChords.size() < 2 || chordImportanceMap.get(chord.substring(0, 1)) < chordImportanceMap.get(importantChords.get(1))) {
+                else if (importantChords.size() < 2 || chordImportanceMap.get(chord.substring(0, 1)) < chordImportanceMap.get(importantChords.get(1).substring(0,1))) {
                     if(importantChords.size() > 1 ){importantChords.remove(1);}
                     importantChords.add(1, chord);
 

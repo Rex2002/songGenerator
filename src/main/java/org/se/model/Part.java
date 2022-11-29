@@ -50,7 +50,28 @@ public class Part {
                     // TODO make chords always with bass-line (like current bass)
                 }
                 if(instrEnumBeginsWith(instr,"drum")){
-                    m = new BeatContainer(beatNo, bar, trackMapping.get(Config.getInstrumentMapping().get(instr.toString())));
+                    // adds fills add the following positions with chances:
+                    //   every second bar:
+                    //      small fill: 50%
+                    //   every fourth bar:
+                    //      big fill: 33%
+                    //      small fill: 33%
+                    //  last bar of the part:
+                    //      big fill: 100%
+                    int fill;
+                    if (bar == length - 1){
+                        fill = 1;
+                    }
+                    else if(bar % 4 == 3){
+                        fill = ran.nextInt(2);
+                    }
+                    else if(bar % 2 == 1){
+                        fill = ran.nextInt(2) - 1;
+                    }
+                    else{
+                        fill = 2;
+                    }
+                    m = new BeatContainer(beatNo, bar, fill, trackMapping.get(Config.getInstrumentMapping().get(instr.toString())));
                     midiPlayables.add(m);
                 }
                 if(instrEnumBeginsWith(instr, "bass")){
