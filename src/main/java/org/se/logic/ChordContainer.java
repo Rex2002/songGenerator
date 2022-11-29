@@ -31,7 +31,6 @@ public class ChordContainer extends MidiPlayable {
     }
 
     private void inflateChordList(){
-        // TODO someone needs to check that I think...
         inflatedChords = new Chord[4];
         for(int chordNo = 0; chordNo < chords.length; chordNo ++){
             for(int i = 0; i < 4/chords.length; i ++){

@@ -1,4 +1,4 @@
-order: [intro, verse, chorus, verse, chorus, chorus]
+order: [intro, verse, chorus, verse, chorus, bridge, chorus]
 basePart: intro
 parts:
   intro:
@@ -28,3 +28,11 @@ parts:
       - drums
     opt:
       - melody
+  bridge:
+    length: 8
+    randomizationLevel: 1 #0: no variation, 1: keep 2 most important chords, 2: stay in key
+    req:
+      - chords
+      - bass
+    opt:
+      - chords2

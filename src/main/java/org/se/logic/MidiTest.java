@@ -2,6 +2,8 @@ package org.se.logic;
 import org.se.model.*;
 
 import javax.sound.midi.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 public class MidiTest {
@@ -9,6 +11,9 @@ public class MidiTest {
     public static Random ran = new Random();
     public static int[] keyM = {0,2,3,5,7,8,10,12};
     public static void main(String[] args){
+
+        playMidiSeq();
+        System.exit(0);
         Config.loadConfig();
 
         MidiSequence m = new MidiSequence(10);
@@ -59,6 +64,25 @@ public class MidiTest {
             m.addMidiPlayable(beat);
             beat = new BeatContainer(i, 3*i+2, 1, drumTrackNo);
             m.addMidiPlayable(beat);
+        }
+    }
+
+    public static void playMidiSeq(){
+        try {
+            Sequencer sequencer = MidiSystem.getSequencer(); // Get the default Sequencer
+            if (sequencer==null) {
+                System.err.println("Sequencer device not supported");
+                return;
+            }
+            sequencer.open(); // Open device
+            // Create sequence, the File must contain MIDI file data.
+            System.out.println(System.getProperties());
+            Sequence sequence = MidiSystem.getSequence(new File("./structureTest.mid"));
+            sequencer.setSequence(sequence); // load it into sequencer
+            sequencer.start();  // start the playback
+            Thread.sleep(10000);
+        } catch (MidiUnavailableException | InvalidMidiDataException | IOException | InterruptedException ex) {
+            ex.printStackTrace();
         }
     }
     public static void playMidiSounds() throws InterruptedException{

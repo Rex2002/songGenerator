@@ -1,7 +1,7 @@
 # maps chord modifiers to their notes.
 # Every note is given as the number of half-steps above the root, e.g. [0,4,7] for maj.
 maj: [0,4,7]
-m: [0,3,7]
+min: [0,3,7]
 maj7: [0,4,7,11]
 m7: [0,3,7,11]
 dim: [0,3,6]

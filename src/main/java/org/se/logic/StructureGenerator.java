@@ -7,19 +7,9 @@ import java.util.*;
 public class StructureGenerator {
     private static final Random ran = new Random();
     private static Structure structure;
-    private static Map<String, Object> settings;
-    private static Map<String, Integer> metrics;
     private static Map<Integer, Integer> trackMapping = new HashMap<>();
 
-
-
-    public static void main(String[] args) {
-        //these are test values that will eventually be passed by UI and TextAnalyzer
-        settings = Map.of("genre", Genre.POP, "nsfw", false, "tempo", 120);
-        metrics = Map.of("tempo", 70);
-
-        Config.loadConfig();
-
+    public static void generateStructure(Map<String, Object> settings, Map<String, Integer> metrics){
         structure = Config.getStructures().get(ran.nextInt(Config.getStructures().size()));
         structure.setGenre((Genre) settings.get("genre"));
         structure.setKey(new MusicalKey());
@@ -31,7 +21,8 @@ public class StructureGenerator {
 
         MidiSequence seq = initMidiSequence(structure);
 
-        structure.getParts().get(structure.getBasePartKey()).fillRandomly(structure.getKey(), trackMapping);
+        structure.getPart(structure.getBasePartKey()).fillRandomly(structure.getKey(), trackMapping);
+
         for (String key: structure.getParts().keySet()) {
             Part part = structure.getPart(key);
 
@@ -40,13 +31,14 @@ public class StructureGenerator {
                 part.fillPart(progression, structure.getKey(), trackMapping);
             } else if (part.getRandomizationLevel() == 1) {
                 List<String> reqChords = getImportantChords(structure.getPart(structure.getBasePartKey()).getChords());
+                System.out.println("required chords: " + reqChords);
                 part.fillRandomly(structure.getKey(), trackMapping);
+                // Config.getChordProgressions().get(iterator).contains(reqChords.get(0)) ==>
                 // TODO pick chord progressions matching reqChords instead of picking any randomly
             } else {
                 part.fillRandomly(structure.getKey(), trackMapping);
             }
         }
-
 
         seq.setEnd(calculateLength());
         int barOffset = 0;
@@ -119,16 +111,26 @@ public class StructureGenerator {
         //Idee: Stufen ranken nach Wichtigkeit: 0,4,3,2,1,5,6
         Map<String, Integer> chordImportanceMap = Map.of("0", 0, "4", 1, "3", 2,
                 "2", 3, "1", 4, "5", 5, "6", 6);
+        System.out.println("basePartChords: " + basePartChords);
         List<String> importantChords = new ArrayList<>();
         for (List<String> bar : basePartChords) {
             for (String chord : bar) {
+                if (importantChords.contains(chord)){
+                    continue;
+                }
                 if (importantChords.isEmpty()){
                     importantChords.add(chord);
-                } else if (chordImportanceMap.get(chord.substring(0,1)) < chordImportanceMap.get(importantChords.get(0))) {
+                }
+                else if (chordImportanceMap.get(chord.substring(0,1)) < chordImportanceMap.get(importantChords.get(0))) {
                     importantChords.add(1, importantChords.get(0));
+                    importantChords.remove(0);
                     importantChords.add(0, chord);
-                } else if (chordImportanceMap.get(chord.substring(0, 1)) < chordImportanceMap.get(importantChords.get(1))) {
+
+                }
+                else if (importantChords.size() < 2 || chordImportanceMap.get(chord.substring(0, 1)) < chordImportanceMap.get(importantChords.get(1))) {
+                    if(importantChords.size() > 1 ){importantChords.remove(1);}
                     importantChords.add(1, chord);
+
                 }
             }
         }

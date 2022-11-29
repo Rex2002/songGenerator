@@ -39,12 +39,6 @@ public class Part {
         fillPart(key, trackMapping);
     }
 
-
-    public void fillPart(Part basePart, MusicalKey key, MidiSequence seq){
-        // TODO select chords according to variation
-        //  fill part more or less like it is done in fillAsBasePart???
-    }
-
     private void fillPart(MusicalKey key, Map<Integer,Integer> trackMapping){
         int beatNo = ran.nextInt(BeatContainer.getDrumBeats().size());
         MidiPlayable m;
@@ -53,7 +47,7 @@ public class Part {
                 if(instrEnumBeginsWith(instr, "chords")) {
                     m = new ChordContainer(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())),bar, key.getBaseNote(), chordProgression.get(bar % chordProgression.size()) );
                     midiPlayables.add(m);
-
+                    // TODO make chords always with bass-line (like current bass)
                 }
                 if(instrEnumBeginsWith(instr,"drum")){
                     m = new BeatContainer(beatNo, bar, trackMapping.get(Config.getInstrumentMapping().get(instr.toString())));
