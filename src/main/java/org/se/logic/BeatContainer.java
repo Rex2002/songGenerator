@@ -7,7 +7,7 @@ import java.util.*;
 
 
 public class BeatContainer extends MidiPlayable {
-    public static HashMap<String, Integer> drumPrograms;
+    public static Map<String, Integer> drumPrograms;
     public static List<Beat> drumBeats;
 
     public BeatContainer(int beatNo, int bar, int trackNo){
@@ -16,7 +16,7 @@ public class BeatContainer extends MidiPlayable {
     public BeatContainer(int beatNo, int bar, int fill, int trackNo){
         super(trackNo, bar);        // 118 is drumset instrument
         Beat beat = drumBeats.get(beatNo);
-        HashMap<String, ArrayList<ArrayList<Integer>>> beatShape;
+        Map<String, List<List<Integer>>> beatShape;
         if (fill == 0){
             beatShape = beat.getSmallFill();
         }
@@ -26,18 +26,14 @@ public class BeatContainer extends MidiPlayable {
         else{
             beatShape = beat.getMainPattern();
         }
-        HashMap<Integer, ArrayList<ArrayList<Integer>>> c = new HashMap<>();
+        Map<Integer, List<List<Integer>>> c = new HashMap<>();
         for(String instr : beatShape.keySet()){
             c.put(drumPrograms.get(instr), beatShape.get(instr));
         }
         setContent(c);
     }
 
-    public static HashMap<String, Integer> getDrumPrograms() {
-        return drumPrograms;
-    }
-
-    public static void setDrumPrograms(HashMap<String, Integer> drumPrograms) {
+    public static void setDrumPrograms(Map<String, Integer> drumPrograms) {
         BeatContainer.drumPrograms = drumPrograms;
     }
 

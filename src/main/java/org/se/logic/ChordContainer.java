@@ -2,10 +2,9 @@ package org.se.logic;
 
 import org.se.model.Chord;
 import org.se.model.MidiPlayable;
+import org.se.model.MusicalKey;
 
-import java.sql.SQLOutput;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ChordContainer extends MidiPlayable {
     private final int baseNote;
@@ -48,7 +47,7 @@ public class ChordContainer extends MidiPlayable {
         for (int i = 0; i < chords.size(); i++) {
             int stair = Integer.parseInt(String.valueOf(chords.get(i).charAt(0)));
             String modifier = chords.get(i).substring(1);
-            this.chords[i] = new Chord(baseNote + stair, modifier);
+            this.chords[i] = new Chord(MusicalKey.getNotesInKey(baseNote, "maj")[stair], modifier);
         }
     }
 
@@ -62,29 +61,29 @@ public class ChordContainer extends MidiPlayable {
     }
 
     private void setContent(){
-        HashMap<Integer, ArrayList<ArrayList<Integer>>> content = new HashMap<>();
+        Map<Integer, List<List<Integer>>> content = new HashMap<>();
         inflateChordList();
-        for (int chordNo = 0; chordNo < inflatedChords.length; chordNo++){
-            ArrayList<Integer> singleChord = inflatedChords[chordNo].getChord();
-            for (Integer integer : singleChord) {
-                ArrayList<Integer> tmp = new ArrayList<>();
-                tmp.add(chordNo * 24);
+        for (int count = 0; count < 4; count++){
+            List<Integer> singleChord = inflatedChords[count].getChord();
+            for (Integer rootNote : singleChord) {
+                List<Integer> tmp = new ArrayList<>();
+                tmp.add(count * 24);
                 tmp.add(24);
-                if(isBassTrack){ integer = integer-26;}
-                if (content.containsKey(integer)) {
-                    content.get(integer).add(tmp);
+                if(isBassTrack){ rootNote = rootNote-24;}
+                if (content.containsKey(rootNote)) {
+                    content.get(rootNote).add(tmp);
                     if(isBassTrack){
                         break;
                     }
                 } else {
-                    ArrayList<ArrayList<Integer>> tmp2 = new ArrayList<>();
+                    List<List<Integer>> tmp2 = new ArrayList<>();
                     tmp2.add(tmp);
                     if(isBassTrack){
-                        content.put(integer, tmp2);
+                        content.put(rootNote, tmp2);
                         break;
                     }
 
-                    content.put(integer, tmp2);
+                    content.put(rootNote, tmp2);
                 }
             }
         }

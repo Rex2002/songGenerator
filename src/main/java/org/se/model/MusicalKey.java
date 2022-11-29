@@ -13,12 +13,12 @@ public class MusicalKey {
     private String base;
     private final String scale;
 
-    public static int[] getKeyNotes(int baseNote, String scale){
-        int[] k = new int[6];
-        for (int i = 0; i < keyMaj.length; i++) {
-            k[i] = baseNote + (scale.equals("min") ? keyMin[i] : keyMaj[i]);
+    public static int[] getNotesInKey(int baseNote, String scale){
+        int[] notesInKey = new int[7];
+        for (int i = 0; i < 7; i++) {
+            notesInKey[i] = baseNote + (scale.equals("min") ? keyMin[i] : keyMaj[i]);
         }
-        return k;
+        return notesInKey;
     }
 
     @Deprecated
@@ -28,7 +28,8 @@ public class MusicalKey {
     }
 
     public MusicalKey(){
-        this.scale = scales[new Random().nextInt(2)];
+        //this.scale = scales[new Random().nextInt(2)];
+        this.scale = "maj"; //TODO decide whether minor scales are necessary and map them to their maj parallel
         if(scale.equals("min")){
             base = (String) musicalKeyMinor.keySet().toArray()[new Random().nextInt(musicalKeyMinor.keySet().size())];
         }

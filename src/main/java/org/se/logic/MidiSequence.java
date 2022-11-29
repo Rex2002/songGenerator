@@ -7,9 +7,7 @@ import org.se.model.MusicalKey;
 import javax.sound.midi.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
 public class MidiSequence {
     private static final int PPQ_RESOLUTION = 24;
@@ -167,11 +165,11 @@ public class MidiSequence {
     }
 
     public void addMidiPlayable(MidiPlayable m){
-        HashMap<Integer, ArrayList<ArrayList<Integer>>> content = m.getContent();
+        Map<Integer, List<List<Integer>>> content = m.getContent();
         int bar = m.getBar();
         int track = m.getTrackNo();
         for(int instrNo : content.keySet()){
-            for(ArrayList<Integer> o : content.get(instrNo)){
+            for(List<Integer> o : content.get(instrNo)){
                 addNote(instrNo,bar * 96L +o.get(0).longValue(), o.get(1).longValue(), track);
             }
         }
@@ -179,9 +177,9 @@ public class MidiSequence {
 
     @Deprecated
     public void addBeat(BeatContainer beat, int bar){
-        HashMap<Integer, ArrayList<ArrayList<Integer>>> beatContent = beat.getContent();
+        Map<Integer, List<List<Integer>>> beatContent = beat.getContent();
         for(int drumNo : beatContent.keySet()){
-            for(ArrayList<Integer> o : beatContent.get(drumNo)){
+            for(List<Integer> o : beatContent.get(drumNo)){
                 addNote(drumNo,bar * 96L +o.get(0).longValue(), o.get(1).longValue(), 0);
             }
         }

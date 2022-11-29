@@ -1,23 +1,24 @@
 package org.se.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class MidiPlayable {
     private final int trackNo;
     private int bar;
-    private HashMap<Integer, ArrayList<ArrayList<Integer>>> content;
+    private Map<Integer, List<List<Integer>>> content = new HashMap<>();
 
     public MidiPlayable(int trackNo, int bar){
         this.bar = bar;
         this.trackNo = trackNo;
     }
 
-    public void setContent(HashMap<Integer, ArrayList<ArrayList<Integer>>> content) {
+    public void setContent(Map<Integer, List<List<Integer>>> content) {
         this.content = content;
     }
 
-    public HashMap<Integer, ArrayList<ArrayList<Integer>>> getContent(){
+    public Map<Integer, List<List<Integer>>> getContent(){
         return content;
     }
 

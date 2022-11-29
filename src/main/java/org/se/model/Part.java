@@ -2,10 +2,7 @@ package org.se.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.se.logic.BeatContainer;
-import org.se.logic.ChordContainer;
-import org.se.logic.Config;
-import org.se.logic.MidiSequence;
+import org.se.logic.*;
 
 import java.util.*;
 
@@ -21,7 +18,7 @@ public class Part {
     private List<List<String>> chordProgression;
     private Genre genre;
     private Beat beat;
-    private Random ran = new Random();
+    private final Random ran = new Random();
     private final List<MidiPlayable> midiPlayables = new ArrayList<>();
 
     @JsonCreator
@@ -45,12 +42,16 @@ public class Part {
         for(int bar = 0; bar < length; bar++){
             for(InstrumentEnum instr : reqInsts){
                 if(instrEnumBeginsWith(instr, "chords")) {
-                    m = new ChordContainer(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())),bar, key.getBaseNote(), chordProgression.get(bar % chordProgression.size()) );
+                    m = new ChordContainer(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())),bar,
+                            key.getBaseNote(), chordProgression.get(bar % chordProgression.size()) );
                     midiPlayables.add(m);
-                    // TODO make chords always with bass-line (like current bass)
+                    m = new ChordContainer(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())),bar,
+                            key.getBaseNote(), chordProgression.get(bar % chordProgression.size()), true );
+                    midiPlayables.add(m);
+                    //TODO: put left hand into second midi-track
                 }
                 if(instrEnumBeginsWith(instr,"drum")){
-                    // adds fills add the following positions with chances:
+                    // adds fills at the following positions with chances:
                     //   every second bar:
                     //      small fill: 50%
                     //   every fourth bar:
@@ -75,7 +76,9 @@ public class Part {
                     midiPlayables.add(m);
                 }
                 if(instrEnumBeginsWith(instr, "bass")){
-                    m = new ChordContainer(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())),bar, key.getBaseNote(), chordProgression.get(bar % chordProgression.size()), true );
+                    m = new BassContainer(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())),bar,
+                            key.getBaseNote(), chordProgression.get(bar % chordProgression.size()),
+                            chordProgression.get((bar+1) % chordProgression.size()));
                     midiPlayables.add(m);
                 }
             }
@@ -120,22 +123,6 @@ public class Part {
     }
     public List<List<String>> getChords() {
         return chordProgression;
-    }
-    public Genre getGenre() {
-        return genre;
-    }
-    public Beat getBeat() {
-        return beat;
-    }
-
-    public void setChords(List<List<String>> chords) {
-        this.chordProgression = chords;
-    }
-    public void setGenre(Genre genre) {
-        this.genre = genre;
-    }
-    public void setBeat(Beat beat) {
-        this.beat = beat;
     }
 
 }
