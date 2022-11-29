@@ -88,11 +88,6 @@ public class Part {
         fillPart(key, trackMapping);
     }
 
-
-    private void selectChords(MusicalKey key, List<Chord> reqChords){
-
-    }
-
     @Override
     public String toString() {
         return "Part{" +

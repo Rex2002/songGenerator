@@ -68,10 +68,10 @@ public class MidiSequence {
      */
     public void setKey(String key, String scale, int trackNumber) {
 
-        if (!(MusicalKey.musicalKeyMinor.containsKey(key))){
-            throw new RuntimeException("illegal key");
+        if (!(MusicalKey.musicalKeyMinor.containsKey(key) || MusicalKey.musicalKeyMajor.containsKey(key))){
+            throw new RuntimeException("illegal key" + key);
         }
-        byte s = (byte) (Objects.equals(scale, "m") ? 1 :0);
+        byte s = (byte) (Objects.equals(scale, "min") ? 1 :0);
         byte k = s==1 ? MusicalKey.musicalKeyMinor.get(key) : MusicalKey.musicalKeyMajor.get(key);
         try {
             MetaMessage mt = new MetaMessage();

@@ -8,7 +8,9 @@ public class MusicalKey {
 
     public static int[] keyMin = {0,2,3,5,7,8,10};
     public static int[] keyMaj = {0,2,4,5,7,9,11};
+    static String[] scales = {"min", "maj"};
     private final int baseNote;
+    private String base;
     private final String scale;
 
     public static int[] getKeyNotes(int baseNote, String scale){
@@ -24,14 +26,33 @@ public class MusicalKey {
         this.baseNote = baseNote;
         this.scale = scale;
     }
+
     public MusicalKey(){
-        this.baseNote = 60 + new Random().nextInt(12);
-        String[] scales = {"min", "maj"};
         this.scale = scales[new Random().nextInt(2)];
+        if(scale.equals("min")){
+            base = (String) musicalKeyMinor.keySet().toArray()[new Random().nextInt(musicalKeyMinor.keySet().size())];
+        }
+        else{
+            base = (String) musicalKeyMajor.keySet().toArray()[new Random().nextInt(musicalKeyMajor.keySet().size())];
+        }
+        this.baseNote = translateNoteStringToValue(base);
     }
 
     public int getBaseNote() {
         return baseNote;
+    }
+
+    public String getBase() {
+        return base;
+    }
+
+    public String getScale() {
+        return scale;
+    }
+
+    public static int translateNoteStringToValue(String s){
+        return musicalStringToNoteValue.get(s.charAt(0)) + (s.length() == 1 ? 0 :
+                (s.charAt(1) == 'b' ? -1 : 1));
     }
 
     public static final Map<String, Byte> musicalKeyMajor= new HashMap<>();
@@ -70,6 +91,27 @@ public class MusicalKey {
         musicalKeyMinor.put("Gs", (byte) 5);
         musicalKeyMinor.put("Ds", (byte) 6);
         musicalKeyMinor.put("As", (byte) 7);
+    }
 
+    public static final Map<Character, Integer> musicalStringToNoteValue = new HashMap<>();
+    static {
+        musicalStringToNoteValue.put('C', 60);
+        musicalStringToNoteValue.put('D', 62);
+        musicalStringToNoteValue.put('E', 64);
+        musicalStringToNoteValue.put('F', 65);
+        musicalStringToNoteValue.put('G', 67);
+        musicalStringToNoteValue.put('A', 69);
+        musicalStringToNoteValue.put('B', 71);
+
+
+    }
+
+    @Override
+    public String toString() {
+        return "MusicalKey{" +
+                ", \nbaseNote=" + baseNote +
+                ", \nbase='" + base + '\'' +
+                ", \nscale='" + scale + '\'' +
+                '}';
     }
 }

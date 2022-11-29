@@ -29,23 +29,11 @@ public class Beat {
         return mainPattern;
     }
 
-    public void setMainPattern(HashMap<String, ArrayList<ArrayList<Integer>>> mainPattern) {
-        this.mainPattern = mainPattern;
-    }
-
     public HashMap<String, ArrayList<ArrayList<Integer>>> getBigFill() {
         return bigFill;
     }
 
-    public void setBigFill(HashMap<String, ArrayList<ArrayList<Integer>>> bigFill) {
-        this.bigFill = bigFill;
-    }
-
     public HashMap<String, ArrayList<ArrayList<Integer>>> getSmallFill() {
         return smallFill;
-    }
-
-    public void setSmallFill(HashMap<String, ArrayList<ArrayList<Integer>>> smallFill) {
-        this.smallFill = smallFill;
     }
 }

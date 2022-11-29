@@ -53,6 +53,7 @@ public class StructureGenerator {
             barOffset += structure.getPart(partName).getLength();
         }
         seq.createFile("structureTest");
+        System.out.println(structure);
     }
 
     public static MidiSequence initMidiSequence(Structure s){
@@ -93,6 +94,7 @@ public class StructureGenerator {
         MidiSequence seq = new MidiSequence(currentTrackNo);
         for(Integer instr : trackMapping.keySet()){
             seq.setInstrument(instr, trackMapping.get(instr));
+            seq.setKey(structure.getKey().getBase(), structure.getKey().getScale(),trackMapping.get(instr));
             seq.addNote(60, 0, 24, trackMapping.get(instr));
         }
         seq.setBPM(structure.getTempo());

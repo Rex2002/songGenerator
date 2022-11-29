@@ -53,4 +53,16 @@ public class Structure {
     public void setTempo(int tempo) {
         this.tempo = tempo;
     }
+
+    @Override
+    public String toString() {
+        return "Structure{" +
+                "\nparts=" + parts +
+                ", \norder=" + order +
+                ", \nbasePartKey='" + basePartKey + '\'' +
+                ", \nkey=" + key +
+                ", \ngenre=" + genre +
+                ", \ntempo=" + tempo +
+                '}';
+    }
 }
