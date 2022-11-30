@@ -1,4 +1,6 @@
 public class metricAnalyzer{
+  
+ 
   public int main(String content, String[] hyphen){
     //Find Average length for sentences and hyphen in order to determine text speed
       int averageH = averageHyphen(hyphen[]);
