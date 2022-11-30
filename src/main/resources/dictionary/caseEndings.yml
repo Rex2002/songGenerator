@@ -1,0 +1,155 @@
+# Male Singular
+---
+lemma: ''
+grammaticalCase: 'nominative'
+gender: 'male'
+numerus: 'singular'
+toUmlaut: false
+---
+lemma: ''
+grammaticalCase: 'genitive'
+gender: 'male'
+numerus: 'singular'
+toUmlaut: false
+---
+lemma: ''
+grammaticalCase: 'dative'
+gender: 'male'
+numerus: 'singular'
+toUmlaut: false
+---
+lemma: ''
+grammaticalCase: 'accusative'
+gender: 'male'
+numerus: 'singular'
+toUmlaut: false
+
+# Female Singular
+---
+lemma: ''
+grammaticalCase: 'nominative'
+gender: 'female'
+numerus: 'singular'
+toUmlaut: false
+---
+lemma: ''
+grammaticalCase: 'genitive'
+gender: 'female'
+numerus: 'singular'
+toUmlaut: false
+---
+lemma: ''
+grammaticalCase: 'dative'
+gender: 'female'
+numerus: 'singular'
+toUmlaut: false
+---
+lemma: ''
+grammaticalCase: 'accusative'
+gender: 'female'
+numerus: 'singular'
+toUmlaut: false
+
+# Neutral Singular
+---
+lemma: ''
+grammaticalCase: 'nominative'
+gender: 'neutral'
+numerus: 'singular'
+toUmlaut: false
+---
+lemma: ''
+grammaticalCase: 'genitive'
+gender: 'neutral'
+numerus: 'singular'
+toUmlaut: false
+---
+lemma: ''
+grammaticalCase: 'dative'
+gender: 'neutral'
+numerus: 'singular'
+toUmlaut: false
+---
+lemma: ''
+grammaticalCase: 'accusative'
+gender: 'neutral'
+numerus: 'singular'
+toUmlaut: false
+
+# Male Plural
+---
+lemma: ''
+grammaticalCase: 'nominative'
+gender: 'male'
+numerus: 'plural'
+toUmlaut: false
+---
+lemma: ''
+grammaticalCase: 'genitive'
+gender: 'male'
+numerus: 'plural'
+toUmlaut: false
+---
+lemma: ''
+grammaticalCase: 'dative'
+gender: 'male'
+numerus: 'plural'
+toUmlaut: false
+---
+lemma: ''
+grammaticalCase: 'accusative'
+gender: 'male'
+numerus: 'plural'
+toUmlaut: false
+
+# Female Plural
+---
+lemma: ''
+grammaticalCase: 'nominative'
+gender: 'female'
+numerus: 'plural'
+toUmlaut: false
+---
+lemma: ''
+grammaticalCase: 'genitive'
+gender: 'female'
+numerus: 'plural'
+toUmlaut: false
+---
+lemma: ''
+grammaticalCase: 'dative'
+gender: 'female'
+numerus: 'plural'
+toUmlaut: false
+---
+lemma: ''
+grammaticalCase: 'accusative'
+gender: 'female'
+numerus: 'plural'
+toUmlaut: false
+
+# Neutral Plural
+---
+lemma: ''
+grammaticalCase: 'nominative'
+gender: 'neutral'
+numerus: 'plural'
+toUmlaut: false
+---
+lemma: ''
+grammaticalCase: 'genitive'
+gender: 'neutral'
+numerus: 'plural'
+toUmlaut: false
+---
+lemma: ''
+grammaticalCase: 'dative'
+gender: 'neutral'
+numerus: 'plural'
+toUmlaut: false
+---
+lemma: ''
+grammaticalCase: 'accusative'
+gender: 'neutral'
+numerus: 'plural'
+toUmlaut: false

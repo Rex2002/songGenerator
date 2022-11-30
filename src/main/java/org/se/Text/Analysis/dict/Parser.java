@@ -1,5 +1,6 @@
 package org.se.Text.Analysis.dict;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,7 +10,13 @@ import java.util.function.Consumer;
 
 import org.se.Text.Analysis.*;
 
-public class CSVReader {
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
+
+public class Parser {
 	public static GrammaticalCase parseCase(String s) {
 		s = s.toLowerCase();
 		switch (s.charAt(0)) {
@@ -32,7 +39,7 @@ public class CSVReader {
 
 	public static Gender parseGender(String s) {
 		s = s.toLowerCase();
-		return s.startsWith("m") ? Gender.male : s.startsWith("f") ? Gender.female : Gender.neutral;
+		return s.startsWith("m") ? Gender.Male : s.startsWith("f") ? Gender.Female : Gender.Neutral;
 	}
 
 	public static Numerus parseNumerus(String s) {
@@ -68,7 +75,7 @@ public class CSVReader {
 
 	public static void readCSV(Path filepath, Consumer<? super WordWithData> forEachRow)
 			throws IOException {
-		if (!filepath.endsWith(".csv") && !Files.exists(filepath)) {
+		if (!filepath.toString().endsWith(".csv") && !Files.exists(filepath)) {
 			filepath = Path.of(filepath.toString() + ".csv");
 		}
 
@@ -91,5 +98,13 @@ public class CSVReader {
 
 	public static void readCSV(Path filepath, WordList list) throws IOException {
 		readCSV(filepath, data -> list.insert(data));
+	}
+
+	public static <T> List<T> readYAML(Path filepath, Class<T> valueType) throws IOException {
+		YAMLFactory yaml = new YAMLFactory();
+		ObjectMapper mapper = new ObjectMapper(yaml);
+
+		YAMLParser parser = yaml.createParser(filepath.toFile());
+		return mapper.readValues(parser, valueType).readAll();
 	}
 }

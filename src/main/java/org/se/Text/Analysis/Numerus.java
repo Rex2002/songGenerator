@@ -1,5 +1,9 @@
 package org.se.Text.Analysis;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum Numerus {
-	Plural, Singular
+	@JsonProperty("plural")
+	Plural, @JsonProperty("singular")
+	Singular
 }
