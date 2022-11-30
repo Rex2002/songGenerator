@@ -1,9 +1,9 @@
 public class metricAnalyzer{
   
  
-  public int main(String content, String[] hyphen){
+  public int main(String content, String terms){
     //Find Average length for sentences and hyphen in order to determine text speed
-      int averageH = averageHyphen(hyphen[]);
+      int averageH = averageHyphen(terms);
       int averageS = averageSentence(content);
       int bpm = 0;
 
@@ -42,12 +42,26 @@ public class metricAnalyzer{
 
   }
 
-  public int averageHyphen(String[] hyphen){
-    //i want to die
+  public int averageHyphen(String terms){
+    int hyphenTotal = CountSyllabes(String terms);
+    int[] termAndSentences = countWords(String terms);
+    int termAmount = termAndSentences[0];
+    int averageH = hyphenTotal\termAmount;
+    return averageH;
   }
+  
 
   public int averageSentence(String content){
-    String c = content;
+    int countWords(content);
+    int wordsTotal = wordArray[0];
+    int cTcSTotal = wordArray[1];
+  int sentenceAverage = wordsTotal/sentenceParts.length;
+  return sentenceAverage;
+}
+  
+  
+  public int[] countWords(String content){
+      String c = content;
 
     /*Rules for sentences if done properly ig? Only stuck to punctuation for now
      * 1. Upper Case for every new sentence
@@ -61,25 +75,19 @@ public class metricAnalyzer{
     int sentenceAverage = 0;
     
     for(int i = 0; i<sententenceParts.length; i++){
-      //TELL ME WHYYYYYYYYYYY
 
       String currentSentence = sentenceParts[i];
 
-      /*iteration durch strings, also einzelne sätze im array
-       * neues wort bei absatz, nächste zeile, oder tab
-      */
       int j = 0;
       for(int j=0; j<currentSentence.lenght[j];j++){ 
         
-        //this is stupid is it too late to leave
         
         int words = 0;
         int state = 0;
         if(currentSentence[j] == ' ' || currentSentence[j] == '\n' ||currentSentence[j] == '\t'){
           int state = 1;
         }
-        
-      //this just took way too long and i want to die more than ever
+
         
         if(state==1){
           int state=0;
@@ -88,11 +96,13 @@ public class metricAnalyzer{
 
       }
       int wordsTotal = wordsTotal + words;
-      //I feel so stupid also i want pizza
+
     }
-
+      int ctCsTotal = sentenceParts.length;
+      int[2] wordArray;
+      wordArray[0] = wordsTotal;
+      wordArray[1] = ctCsTotal;
+      
+      return int[]wordArray;
   }
-
-  int sentenceAverage = wordsTotal/sentenceParts.length;
-  return sentenceAverage;
 }
