@@ -1,6 +1,7 @@
 package org.se.Text.Analysis;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -46,14 +47,20 @@ public class TermVariations {
 		this.lemma = terms.get(0).lemma;
 	}
 
-	public String getLemma() {
-		return this.lemma;
-	}
-
 	public TermVariations(Map<Integer, NounTerm> variations, Integer frequency, String lemma) {
 		this.variations = variations;
 		this.frequency = frequency;
 		this.lemma = lemma;
+	}
+
+	public void forEach(Consumer<? super NounTerm> f) {
+		variations.forEach((key, term) -> {
+			f.accept(term);
+		});
+	}
+
+	public String getLemma() {
+		return this.lemma;
 	}
 
 	public Map<Integer, NounTerm> getVariations() {

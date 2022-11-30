@@ -1,6 +1,7 @@
 package org.se.Text.Analysis;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -83,6 +84,44 @@ public class TermCollection {
 		return verbs.containsKey(t.getLemma());
 	}
 
+	// Iterators
+
+	public void iter(Consumer<? super TermVariations> f) {
+		iterNouns(f);
+		iterVerbs(f);
+	}
+
+	public void iterNouns(Consumer<? super TermVariations> f) {
+		nouns.forEach((key, variations) -> {
+			f.accept(variations);
+		});
+	}
+
+	public void iterVerbs(Consumer<? super TermVariations> f) {
+		verbs.forEach((key, variations) -> {
+			f.accept(variations);
+		});
+	}
+
+	public void flatIter(Consumer<? super NounTerm> f) {
+		flatIterNouns(f);
+		flatIterVerbs(f);
+	}
+
+	public void flatIterNouns(Consumer<? super NounTerm> f) {
+		nouns.forEach((key, variations) -> {
+			variations.forEach(f);
+		});
+	}
+
+	public void flatIterVerbs(Consumer<? super NounTerm> f) {
+		verbs.forEach((key, variations) -> {
+			variations.forEach(f);
+		});
+	}
+
+	// Query Functions
+
 	public List<NounTerm> query(GrammaticalCase grammaticalCase, Gender gender, Boolean isPlural, Integer syllableMin,
 			Integer syllableMax) {
 		List<NounTerm> existing = new ArrayList<NounTerm>();
@@ -104,8 +143,6 @@ public class TermCollection {
 		existing.addAll(created);
 		return existing;
 	}
-
-	// Query Functions
 
 	public List<NounTerm> queryNounsBy(Predicate<? super NounTerm> f) {
 		return TermCollection.queryBy(nouns, f);
