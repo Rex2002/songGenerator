@@ -37,7 +37,7 @@ public class WordList implements Iterable<WordWithData> {
 	}
 
 	private int binSearch(String s, int start, int end) {
-		int mid = (int) end / 2 + start;
+		int mid = (int) (end + start) / 2;
 		while (end - start > 1) {
 			mid = (int) (end + start) / 2;
 			int x = store.get(mid).get(baseKey).compareTo(s);
@@ -114,7 +114,7 @@ public class WordList implements Iterable<WordWithData> {
 	public Optional<WordWithData> get(String s) {
 		int i = binSearch(s);
 		WordWithData h = store.get(i);
-		if (h.get(baseKey) == s) {
+		if (h.get(baseKey).equalsIgnoreCase(s)) {
 			return Optional.of(h);
 		}
 		return Optional.empty();
@@ -125,11 +125,11 @@ public class WordList implements Iterable<WordWithData> {
 	}
 
 	public boolean has(String s) {
-		int i = binSearch(s);
 		if (store.isEmpty()) {
 			return false;
 		}
+		int i = binSearch(s);
 		WordWithData h = store.get(i);
-		return h != null && h.get(baseKey) == s;
+		return h != null && h.get(baseKey).compareTo(s) == 0;
 	}
 }

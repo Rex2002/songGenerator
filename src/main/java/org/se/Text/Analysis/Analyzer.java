@@ -131,7 +131,7 @@ public class Analyzer {
 				if (!t.is(TagType.Other)) {
 					Optional<NounTerm> term = dict.buildTerm(t);
 					if (term.isPresent()) {
-						System.out.println(term.get());
+						// System.out.println(term.get());
 
 						// TODO: There must be better syntax for this
 						// maybe something similar to Rust's match syntax?

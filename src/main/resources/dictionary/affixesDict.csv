@@ -41,7 +41,7 @@ algie,nounSuffix,female,0-2,f
 ette,nounSuffix,female,0-2,f
 nis,nounSuffix,neutral,,t
 lein,nounSuffix,neutral,,t
-tel.nounSuffix,neutral,,f
+tel,nounSuffix,neutral,,f
 ment,nounSuffix,neutral,,f
 ma,nounSuffix,neutral,,f
 ing,nounSuffix,neutral,,t
@@ -99,14 +99,14 @@ zu,verbPrefix,,,f
 auseinander,verbPrefix,,0-3-5-8,f
 empor,verbPrefix,,0-2,f
 entgegen,verbPrefix,,0-3-5,f
-entlang,,verbPrefix,,0-3,f
+entlang,verbPrefix,,0-3,f
 entzwei,verbPrefix,,0-3,f
 fern,verbPrefix,,,f
 fest,verbPrefix,,,f
 für,verbPrefix,,,f
 gegen,verbPrefix,,0-2,f
 heim,verbPrefix,,,f
-los,,verbPrefix,,,f
+los,verbPrefix,,,f
 neben,verbPrefix,,0-2,f
 nieder,verbPrefix,,0-3,f
 weiter,verbPrefix,,0-3,f

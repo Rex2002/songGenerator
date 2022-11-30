@@ -9,6 +9,7 @@ public class Main {
 
 		TermCollection tc = Analyzer.analyze(Path.of("test.txt"));
 		System.out.println(tc);
+		System.out.println(tc.nouns.size());
 
 		// TermCollection tc = TermExample.getExample();
 		// List<Term> res =

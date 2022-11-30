@@ -123,7 +123,7 @@ public class WordStemmer {
 		List<WordWithData> occuredPrefixes = new LinkedList<>();
 		String currentStringPart = new String();
 		char[] chars = s.toCharArray();
-		int j = chars.length;
+		int j = 0;
 		boolean wasLastCharPartOfDiphtong = false;
 
 		for (int i = 0; i < chars.length - minStemLength; i++) {
@@ -207,8 +207,7 @@ public class WordStemmer {
 		}
 
 		WordStemmer[] res = {};
-		l.toArray(res);
-		return res;
+		return l.toArray(res);
 	}
 
 	// Boilerplate

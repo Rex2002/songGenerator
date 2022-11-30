@@ -83,9 +83,9 @@ public class Parser {
 		String[] firstRow = rows[0].split(",");
 
 		for (int i = 1; i < rows.length; i++) {
-			String[] col = rows[0].split(",");
+			String[] col = rows[i].split(",");
 			WordWithData data = new WordWithData();
-			for (int j = 0; j < col.length; j++) {
+			for (int j = 0; j < firstRow.length && j < col.length; j++) {
 				data.put(firstRow[j], col[j]);
 			}
 			forEachRow.accept(data);
