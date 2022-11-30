@@ -45,7 +45,7 @@ public class Part {
                     m = new ChordContainer(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())),bar,
                             key.getBaseNote(), chordProgression.get(bar % chordProgression.size()) );
                     midiPlayables.add(m);
-                    m = new ChordContainer(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())),bar,
+                    m = new ChordContainer(trackMapping.get(Config.getInstrumentMapping().get(instr.toString()))+1,bar,
                             key.getBaseNote(), chordProgression.get(bar % chordProgression.size()), true );
                     midiPlayables.add(m);
                     //TODO: put left hand into second midi-track

@@ -36,3 +36,24 @@ parts:
       - bass
     opt:
       - chords2
+---
+# tryout structure
+order: [intro, chorus]
+basePart: intro
+parts:
+  intro:
+    length: 8
+    req:
+      - chords
+      - drums
+      - bass
+    opt:
+      - melody
+  chorus:
+    length: 8
+    randomizationLevel: 2
+    req:
+      - chords
+      - bass
+    opt:
+      - melody

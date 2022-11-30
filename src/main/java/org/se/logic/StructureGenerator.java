@@ -10,7 +10,7 @@ public class StructureGenerator {
     private static Map<Integer, Integer> trackMapping = new HashMap<>();
 
     public static void generateStructure(Map<String, Object> settings, Map<String, Integer> metrics){
-        structure = Config.getStructures().get(ran.nextInt(Config.getStructures().size()));
+        structure = Config.getStructures().get(0);//Config.getStructures().get(ran.nextInt(Config.getStructures().size()));
         structure.setGenre((Genre) settings.get("genre"));
         structure.setKey(new MusicalKey());
         if (settings.get("tempo") != null){
@@ -48,8 +48,7 @@ public class StructureGenerator {
                 seq.addMidiPlayable(m);
                 m.setBar(m.getBar() - barOffset);
             }
-            System.out.println("partName: " + partName);
-            seq.addText(barOffset*4, 1, partName);
+            seq.addText(barOffset*4, 0, partName);
             barOffset += structure.getPart(partName).getLength();
         }
         seq.createFile("structureTest");
@@ -58,14 +57,9 @@ public class StructureGenerator {
 
     public static MidiSequence initMidiSequence(Structure s){
         int currentTrackNo = 0;
-        int drumTrackNo = 0;
         for (String partName: s.getParts().keySet()) {
             for(InstrumentEnum instrument : s.getParts().get(partName).getReqInsts()){
                 if(!trackMapping.containsKey(Config.getInstrumentMapping().get(instrument.toString()))){
-                    if(instrument == InstrumentEnum.drums || instrument == InstrumentEnum.drums2){
-                        drumTrackNo++;
-                        continue;
-                    }
                     trackMapping.put(Config.getInstrumentMapping().get(instrument.toString()), currentTrackNo);
                     if(instrument.equals(InstrumentEnum.chords) || instrument.equals(InstrumentEnum.chords2)){
                         currentTrackNo++;
@@ -76,10 +70,6 @@ public class StructureGenerator {
             for(InstrumentEnum instrument : s.getParts().get(partName).getOptInsts()){
                 if(!trackMapping.containsKey(Config.getInstrumentMapping().get(instrument.toString()))){
                     trackMapping.put(Config.getInstrumentMapping().get(instrument.toString()), currentTrackNo);
-                    if(instrument == InstrumentEnum.drums || instrument == InstrumentEnum.drums2){
-                        drumTrackNo++;
-                        continue;
-                    }
                     if(instrument.equals(InstrumentEnum.chords) || instrument.equals(InstrumentEnum.chords2)){
                         currentTrackNo++;
                     }
@@ -87,14 +77,18 @@ public class StructureGenerator {
                 }
             }
         }
-        if(drumTrackNo != 0){
-            trackMapping.put(Config.getInstrumentMapping().get(InstrumentEnum.drums.toString()), currentTrackNo);
-            currentTrackNo++;
-        }
+
         MidiSequence seq = new MidiSequence(currentTrackNo);
+        List<Integer> drumInstrs = getDrumInstrNo();
         for(Integer instr : trackMapping.keySet()){
-            seq.setInstrument(instr, trackMapping.get(instr));
+            if(drumInstrs.contains(instr)){
+                seq.setInstrument(instr, trackMapping.get(instr), true);
+            }
+            else{
+                seq.setInstrument(instr, trackMapping.get(instr));
+            }
             seq.setKey(structure.getKey().getBase(), structure.getKey().getScale(),trackMapping.get(instr));
+            seq.addText(2, trackMapping.get(instr), instr.toString());
             seq.addNote(60, 0, 24, trackMapping.get(instr));
         }
         seq.setBPM(structure.getTempo());
@@ -134,6 +128,16 @@ public class StructureGenerator {
             }
         }
         return importantChords;
+    }
+
+    public static List<Integer> getDrumInstrNo(){
+        List<Integer> d = new ArrayList<>();
+        for(InstrumentEnum instr : InstrumentEnum.values()){
+            if(instr.toString().startsWith("drum")){
+                d.add(Config.getInstrumentMapping().get(instr.toString()));
+            }
+        }
+        return d;
     }
 
 }

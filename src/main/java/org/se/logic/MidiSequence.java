@@ -93,12 +93,19 @@ public class MidiSequence {
     }
 
     public void setInstrument(int instrument, int trackNumber){
+        setInstrument(instrument,trackNumber, false);
+    }
+
+    public void setInstrument(int instrument, int trackNumber, boolean drumTrack){
         try{
             ShortMessage mm = new ShortMessage();
-
-            mm.setMessage(0xC0, instrument, 0x00);
+            if(drumTrack){
+                mm.setMessage(0xC9, instrument, 0x00);
+            }else {
+                mm.setMessage(0xC0, instrument, 0x00);
+            }
             MidiEvent me = new MidiEvent(mm, 0);
-           t[trackNumber].add(me);
+            t[trackNumber].add(me);
 
         }catch (InvalidMidiDataException e){
             e.printStackTrace();
