@@ -2,8 +2,6 @@ package org.se.Text.Analysis.dict;
 
 import java.util.*;
 
-import org.se.Text.Analysis.dict.dynamic.DynamicType;
-
 public class WordWithData extends HashMap<String, String> {
 	private String baseKey = "lemma";
 
@@ -15,7 +13,7 @@ public class WordWithData extends HashMap<String, String> {
 	}
 
 	public boolean getBoolean(String key) {
-		return CSVReader.parseBool(get(key));
+		return Parser.parseBool(get(key));
 	}
 
 	public boolean getBoolean() {
@@ -23,7 +21,7 @@ public class WordWithData extends HashMap<String, String> {
 	}
 
 	public String[] getList(String key) {
-		return CSVReader.parseList(get(key));
+		return Parser.parseList(get(key));
 	}
 
 	public String[] getList() {
@@ -31,7 +29,7 @@ public class WordWithData extends HashMap<String, String> {
 	}
 
 	public Optional<Integer> getInt(String key) {
-		return CSVReader.parseInt(get(key));
+		return Parser.parseInt(get(key));
 	}
 
 	public Optional<Integer> getInt() {

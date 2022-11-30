@@ -1,29 +1,31 @@
 package org.se.Text.Analysis.dict;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.function.Consumer;
+import org.se.Tuple;
 import org.se.Util;
 import org.se.Text.Analysis.*;
-import org.se.Text.Analysis.dict.*;
 
 public class Dict {
 	WordList nounSuffixes;
 	WordList nounPrefixes;
 	WordList nouns;
-	// TODO: Remove verbs?
 	WordList verbSuffixes;
 	WordList verbPrefixes;
 	WordList verbs;
 	WordList diphtongs;
 	WordList umlautChanges;
-	final String baseKey = "lemma";
+	List<Declination> caseEndings;
+	final String baseKey;
+
+	public static String getDefaultBaseKey() {
+		return "lemma";
+	}
 
 	public Dict(WordList nounSuffixes, WordList nounPrefixes,
 			WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs, WordList diphtongs,
-			WordList umlautChanges) {
+			WordList umlautChanges, List<Declination> caseEndings) {
 		this.nounSuffixes = nounSuffixes;
 		this.nounPrefixes = nounPrefixes;
 		this.nouns = nouns;
@@ -32,21 +34,25 @@ public class Dict {
 		this.verbs = verbs;
 		this.diphtongs = diphtongs;
 		this.umlautChanges = umlautChanges;
+		this.caseEndings = caseEndings;
+		this.baseKey = getDefaultBaseKey();
 	}
 
-	private static WordList[] readDictionaryFromFiles(Path affixCSV, Path nounsCSV, Path verbsCSV, Path diphtongsCSV,
-			Path umlautChangesCSV)
+	private static Tuple<WordList[], List<Declination>> readDictionaryFromFiles(Path affixCSV, Path nounsCSV,
+			Path verbsCSV, Path diphtongsCSV,
+			Path umlautChangesCSV, Path caseEndingsCSV)
 			throws IOException {
-		WordList nouns = new WordList("lemma");
-		WordList nounPrefixes = new WordList("lemma");
-		WordList nounSuffixes = new WordList("lemma");
-		WordList verbs = new WordList("lemma");
-		WordList verbPrefixes = new WordList("lemma");
-		WordList verbSuffixes = new WordList("lemma");
-		WordList diphtongs = new WordList("lemma");
-		WordList umlautChanges = new WordList("without");
+		String baseKey = getDefaultBaseKey();
+		WordList nouns = new WordList(baseKey);
+		WordList nounPrefixes = new WordList(baseKey);
+		WordList nounSuffixes = new WordList(baseKey);
+		WordList verbs = new WordList(baseKey);
+		WordList verbPrefixes = new WordList(baseKey);
+		WordList verbSuffixes = new WordList(baseKey);
+		WordList diphtongs = new WordList(baseKey);
+		WordList umlautChanges = new WordList(baseKey);
 
-		CSVReader.readCSV(affixCSV, data -> {
+		Parser.readCSV(affixCSV, data -> {
 			switch (data.get("type")) {
 				case "nounSuffix":
 					nounSuffixes.insert(data);
@@ -65,27 +71,33 @@ public class Dict {
 					break;
 			}
 		});
-		CSVReader.readCSV(nounsCSV, nouns);
-		CSVReader.readCSV(verbsCSV, verbs);
-		CSVReader.readCSV(diphtongsCSV, diphtongs);
-		CSVReader.readCSV(umlautChangesCSV, umlautChanges);
+		Parser.readCSV(nounsCSV, nouns);
+		Parser.readCSV(verbsCSV, verbs);
+		Parser.readCSV(diphtongsCSV, diphtongs);
+		Parser.readCSV(umlautChangesCSV, umlautChanges);
+		List<Declination> caseEndings = Parser.readYAML(caseEndingsCSV, Declination.class);
 
 		WordList[] res = { nounSuffixes, nounPrefixes, nouns, verbSuffixes, verbPrefixes, verbs, diphtongs,
 				umlautChanges };
-		return res;
+		return new Tuple<>(res, caseEndings);
 	}
 
-	public Dict(Path affixCSV, Path nounsCSV, Path verbsCSV, Path diphtongsCSV, Path umlautChangesCSV)
+	public Dict(Path affixCSV, Path nounsCSV, Path verbsCSV, Path diphtongsCSV, Path umlautChangesCSV,
+			Path caseEndingsCSV)
 			throws IOException {
-		WordList[] res = readDictionaryFromFiles(affixCSV, nounsCSV, verbsCSV, diphtongsCSV, umlautChangesCSV);
-		this.nounSuffixes = res[0];
-		this.nounPrefixes = res[1];
-		this.nouns = res[2];
-		this.verbSuffixes = res[3];
-		this.verbPrefixes = res[4];
-		this.verbs = res[5];
-		this.diphtongs = res[6];
-		this.umlautChanges = res[7];
+		Tuple<WordList[], List<Declination>> res = readDictionaryFromFiles(affixCSV, nounsCSV, verbsCSV, diphtongsCSV,
+				umlautChangesCSV,
+				caseEndingsCSV);
+		this.nounSuffixes = res.x[0];
+		this.nounPrefixes = res.x[1];
+		this.nouns = res.x[2];
+		this.verbSuffixes = res.x[3];
+		this.verbPrefixes = res.x[4];
+		this.verbs = res.x[5];
+		this.diphtongs = res.x[6];
+		this.umlautChanges = res.x[7];
+		this.caseEndings = res.y;
+		this.baseKey = getDefaultBaseKey();
 	}
 
 	public Dict(Path dirPath) throws IOException {
@@ -94,15 +106,20 @@ public class Dict {
 		Path verbsCSV = dirPath.resolve("verbsDict.csv");
 		Path diphtongsCSV = dirPath.resolve("diphtongs.csv");
 		Path umlautChangesCSV = dirPath.resolve("umlautChanges.csv");
-		WordList[] res = readDictionaryFromFiles(affixCSV, nounsCSV, verbsCSV, diphtongsCSV, umlautChangesCSV);
-		this.nounSuffixes = res[0];
-		this.nounPrefixes = res[1];
-		this.nouns = res[2];
-		this.verbSuffixes = res[3];
-		this.verbPrefixes = res[4];
-		this.verbs = res[5];
-		this.diphtongs = res[6];
-		this.umlautChanges = res[7];
+		Path caseEndingsYAML = dirPath.resolve("caseEndings.yml");
+		Tuple<WordList[], List<Declination>> res = readDictionaryFromFiles(affixCSV, nounsCSV, verbsCSV, diphtongsCSV,
+				umlautChangesCSV,
+				caseEndingsYAML);
+		this.nounSuffixes = res.x[0];
+		this.nounPrefixes = res.x[1];
+		this.nouns = res.x[2];
+		this.verbSuffixes = res.x[3];
+		this.verbPrefixes = res.x[4];
+		this.verbs = res.x[5];
+		this.diphtongs = res.x[6];
+		this.umlautChanges = res.x[7];
+		this.caseEndings = res.y;
+		this.baseKey = getDefaultBaseKey();
 	}
 
 	public Dict addDictionary(Dict dict) {
@@ -112,25 +129,28 @@ public class Dict {
 		this.verbSuffixes.insertAll(dict.getVerbSuffixes());
 		this.verbSuffixes.insertAll(dict.getVerbSuffixes());
 		this.verbs.insertAll(dict.getVerbs());
+		this.umlautChanges.insertAll(dict.getUmlautChanges());
+		this.caseEndings.addAll(dict.getCaseEndings());
 		return this;
 	}
 
 	// Make word into a term
 
-	// If the word is a noun, a WordStemmer-object will be returned
-	// Otherwise, an empty Optional will be returned
-	public Optional<WordStemmer> tryNounStem(String s) {
-		// TODO: Add declination
-		WordStemmer w = WordStemmer.removeSuffixes(s, nounSuffixes, 2, diphtongs, baseKey);
-		w.removePrefixes(nounPrefixes, 2, diphtongs);
+	public List<WordStemmer> tryNounStem(String s) {
+		List<WordStemmer> res = new ArrayList<>();
+		WordStemmer[] l = WordStemmer.from(s, caseEndings, nounSuffixes, nounPrefixes, 2, diphtongs, umlautChanges,
+				baseKey);
 
-		if (nouns.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.Any(w.getSuffixes(), data -> {
-			return data.containsKey("certain") && data.getBoolean("certain");
-		}))) {
-			return Optional.of(w);
-		} else {
-			return Optional.empty();
+		// TODO: Fix this
+		for (WordStemmer w : l) {
+			if (nouns.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.Any(w.getSuffixes(), data -> {
+				return data.containsKey("certain") && data.getBoolean("certain");
+			}))) {
+				res.add(w);
+			}
 		}
+
+		return res;
 	}
 
 	public Optional<WordStemmer> tryVerbStem(String s) {
@@ -153,14 +173,14 @@ public class Dict {
 		// TODO: Maybe filter based on the tag of the last word (i.e. there can't be a
 		// noun directly after a verb in the same sentence)
 
-		Optional<WordStemmer> data = tryNounStem(s);
-		if (data.isPresent()) {
-			return new Tag(s, TagType.Noun, data.get());
+		List<WordStemmer> nouns = tryNounStem(s);
+		if (!nouns.isEmpty()) {
+			return new Tag(s, TagType.Noun, nouns.get(0));
 		}
 
-		data = tryVerbStem(s);
-		if (data.isPresent()) {
-			return new Tag(s, TagType.Verb, data.get());
+		Optional<WordStemmer> verb = tryVerbStem(s);
+		if (verb.isPresent()) {
+			return new Tag(s, TagType.Verb, verb.get());
 		}
 
 		return new Tag(s, TagType.Other);
@@ -172,23 +192,42 @@ public class Dict {
 		// This can happen, when the Analyzer tags the word before giving it to the
 		// Dictionary (for example because of capitalization of word)
 		if (t.getData().isEmpty()) {
-			WordStemmer w = WordStemmer.removeSuffixes(t.getWord(), suffixes, 2, diphtongs, baseKey);
-			w.removePrefixes(prefixes, 2, diphtongs);
-			t.setData(Optional.of(w));
+			WordStemmer[] res = WordStemmer.from(t.word, caseEndings, suffixes, prefixes, 2, diphtongs, umlautChanges,
+					baseKey);
+
+			for (WordStemmer w : res) {
+				if (nouns.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.Any(w.getSuffixes(),
+						data -> data.containsKey("certain") && data.getBoolean("certain")))) {
+					t.setData(Optional.of(w));
+					break;
+				}
+			}
 		}
 	}
 
-	public NounTerm buildNounTerm(Tag t) {
+	public Optional<NounTerm> buildNounTerm(Tag t) {
 		addWordStemmerData(t, nounSuffixes, nounPrefixes);
 
-		// TODO: Add logic here
-		// Specifically move the logic of determining metadata for the term here instead
-		// of in the Term-class
+		if (t.getData().isEmpty()) {
+			return Optional.empty();
+		}
 
-		return new NounTerm(lemma, t.word, syllables, isPlural, grammaticalCase, gender);
+		WordStemmer data = t.getData().get();
+		Declination caseEnding = data.getCaseEnding();
+
+		// System.out.println(t);
+		// System.out.println(data);
+
+		String lemma = data.getStem();
+		Integer[] syllables = { 0 };
+		boolean isPlural = caseEnding.getNumerus() == Numerus.Plural;
+		GrammaticalCase grammaticalCase = caseEnding.getGrammaticalCase();
+		Gender gender = caseEnding.getGender();
+
+		return Optional.of(new NounTerm(lemma, t.word, syllables, isPlural, grammaticalCase, gender));
 	}
 
-	public NounTerm buildVerbTerm(Tag t) {
+	public Optional<NounTerm> buildVerbTerm(Tag t) {
 		addWordStemmerData(t, verbSuffixes, verbPrefixes);
 
 		// TODO: Add logic here
@@ -201,11 +240,11 @@ public class Dict {
 
 		// TODO
 		Integer[] syllables = { 0 };
-		return new NounTerm(t.getWord(), t.getWord(), syllables, false, GrammaticalCase.Nominative,
-				Gender.female);
+		return Optional.of(new NounTerm(t.getWord(), t.getWord(), syllables, false, GrammaticalCase.Nominative,
+				Gender.Female));
 	}
 
-	public NounTerm buildTerm(Tag t) {
+	public Optional<NounTerm> buildTerm(Tag t) {
 		if (t.is(TagType.Noun)) {
 			return buildNounTerm(t);
 		} else {
@@ -218,7 +257,7 @@ public class Dict {
 		// TODO
 		Integer[] syllables = { 0 };
 		return new NounTerm(variations.getLemma(), variations.getLemma(), syllables, false, GrammaticalCase.Nominative,
-				Gender.female);
+				Gender.Female);
 	}
 
 	// Getters, Setters & other Boilerplate
@@ -298,6 +337,65 @@ public class Dict {
 
 	public Dict verbs(WordList verbs) {
 		setVerbs(verbs);
+		return this;
+	}
+
+	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes,
+			WordList verbPrefixes, WordList verbs, WordList diphtongs, WordList umlautChanges,
+			List<Declination> caseEndings,
+			String baseKey) {
+		this.nounSuffixes = nounSuffixes;
+		this.nounPrefixes = nounPrefixes;
+		this.nouns = nouns;
+		this.verbSuffixes = verbSuffixes;
+		this.verbPrefixes = verbPrefixes;
+		this.verbs = verbs;
+		this.diphtongs = diphtongs;
+		this.umlautChanges = umlautChanges;
+		this.caseEndings = caseEndings;
+		this.baseKey = baseKey;
+	}
+
+	public WordList getDiphtongs() {
+		return this.diphtongs;
+	}
+
+	public void setDiphtongs(WordList diphtongs) {
+		this.diphtongs = diphtongs;
+	}
+
+	public WordList getUmlautChanges() {
+		return this.umlautChanges;
+	}
+
+	public void setUmlautChanges(WordList umlautChanges) {
+		this.umlautChanges = umlautChanges;
+	}
+
+	public List<Declination> getCaseEndings() {
+		return this.caseEndings;
+	}
+
+	public void setCaseEndings(List<Declination> caseEndings) {
+		this.caseEndings = caseEndings;
+	}
+
+	public String getBaseKey() {
+		return this.baseKey;
+	}
+
+	public Dict diphtongs(WordList diphtongs) {
+		setDiphtongs(diphtongs);
+		return this;
+	}
+
+	public Dict umlautChanges(WordList umlautChanges) {
+		setUmlautChanges(umlautChanges);
+		return this;
+	}
+
+	public Dict caseEndings(List<Declination> caseEndings) {
+		setCaseEndings(caseEndings);
 		return this;
 	}
 

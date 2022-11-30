@@ -2,7 +2,7 @@ package org.se.Text.Analysis.dict;
 
 import java.util.*;
 
-public class WordList {
+public class WordList implements Iterable<WordWithData> {
 	private List<WordWithData> store = new ArrayList<WordWithData>();
 	final String baseKey;
 
@@ -23,6 +23,11 @@ public class WordList {
 		}
 	}
 
+	@Override
+	public Iterator<WordWithData> iterator() {
+		return store.iterator();
+	}
+
 	public boolean isEmpty() {
 		return store.isEmpty();
 	}
@@ -38,7 +43,7 @@ public class WordList {
 			int x = store.get(mid).get(baseKey).compareTo(s);
 			if (x == 0)
 				return mid;
-			else if (x < 0)
+			else if (x > 0)
 				end = mid;
 			else
 				start = mid;

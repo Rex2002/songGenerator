@@ -24,6 +24,7 @@ public class NounTerm {
 		this.isPlural = isPlural;
 		this.grammaticalCase = grammaticalCase;
 		this.gender = gender;
+		System.out.println(this);
 	}
 
 	public NounTerm(String lemma, String word, Integer[] syllables, Boolean isPlural, GrammaticalCase grammaticalCase,
@@ -47,7 +48,7 @@ public class NounTerm {
 		this.syllables = syllables;
 		this.isPlural = false;
 		this.grammaticalCase = GrammaticalCase.Nominative;
-		this.gender = Gender.female;
+		this.gender = Gender.Female;
 	}
 
 	public void increaseFrequency() {

@@ -12,7 +12,7 @@ import org.se.Text.Analysis.dict.Dict;
  */
 public class Analyzer {
 	public static TermCollection analyze(Path filepath) throws IOException {
-		Dict dict = new Dict(Path.of("", "./src/main/ressources/dictionary"));
+		Dict dict = new Dict(Path.of("", "./src/main/resources/dictionary"));
 		String text = Analyzer.readFile(filepath);
 		ArrayList<ArrayList<String>> sentences = Analyzer.preprocess(text);
 		ArrayList<ArrayList<Tag>> tags = Analyzer.tag(sentences, dict);
@@ -129,21 +129,24 @@ public class Analyzer {
 		for (ArrayList<Tag> sentenceTags : tags) {
 			for (Tag t : sentenceTags) {
 				if (!t.is(TagType.Other)) {
-					NounTerm term = dict.buildTerm(t);
+					Optional<NounTerm> term = dict.buildTerm(t);
+					if (term.isPresent()) {
+						System.out.println(term.get());
 
-					// TODO: There must be better syntax for this
-					// maybe something similar to Rust's match syntax?
-					Map<String, TermVariations> tmp;
-					if (t.is(TagType.Noun)) {
-						tmp = nounVariations;
-					} else {
-						tmp = verbVariations;
-					}
+						// TODO: There must be better syntax for this
+						// maybe something similar to Rust's match syntax?
+						Map<String, TermVariations> tmp;
+						if (t.is(TagType.Noun)) {
+							tmp = nounVariations;
+						} else {
+							tmp = verbVariations;
+						}
 
-					if (tmp.containsKey(term.lemma)) {
-						tmp.get(term.lemma).add(term);
-					} else {
-						tmp.put(term.lemma, new TermVariations(term));
+						if (tmp.containsKey(term.get().lemma)) {
+							tmp.get(term.get().lemma).add(term.get());
+						} else {
+							tmp.put(term.get().lemma, new TermVariations(term.get()));
+						}
 					}
 				}
 			}
