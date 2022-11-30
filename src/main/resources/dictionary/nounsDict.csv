@@ -1,19 +1,4 @@
 lemma,nominativ-singular
-"0,2-Liter-Flasche","0,2-Liter-Flasche"
-"0,33-Liter-Flasche","0,33-Liter-Flasche"
-"0,5-Liter-Flasche","0,5-Liter-Flasche"
-"0,7-Liter-Flasche","0,7-Liter-Flasche"
-"0,75-Liter-Flasche","0,75-Liter-Flasche"
-"1,2,3-Propentricarbonsäure","1,2,3-Propentricarbonsäure"
-"1,2-Benzoldicarbonsäure","1,2-Benzoldicarbonsäure"
-"1,2-Butandiol","1,2-Butandiol"
-"1,2-Dihydroxypropan","1,2-Dihydroxypropan"
-"1,2-Propandiol","1,2-Propandiol"
-"1,2-Propylenglycol","1,2-Propylenglycol"
-"1,4-Benzoldicarbonsäure","1,4-Benzoldicarbonsäure"
-"1,4-Butandiol","1,4-Butandiol"
-"1,5-Grad-Ziel","1,5-Grad-Ziel"
-"1,6-Liter-Benziner","1,6-Liter-Benziner"
 1-Benzolethansäure,1-Benzolethansäure
 1-Butanol,1-Butanol
 1-Cent-Münze,1-Cent-Münze
@@ -29,12 +14,12 @@ lemma,nominativ-singular
 1-Raum-Wohnung,1-Raum-Wohnung
 1-Zimmer-Wohnung,1-Zimmer-Wohnung
 1-m-Brett,1-m-Brett
-1. Johannesbrief,
-1. Korintherbrief,1. Korintherbrief
-1. Petrusbrief,
-1. Thessalonicherbrief,
-1. Timotheusbrief,
-1. Weltkrieg,1. Weltkrieg
+Johannesbrief,
+Korintherbrief,Korintherbrief
+Petrusbrief,
+Thessalonicherbrief,
+Timotheusbrief,
+Weltkrieg,Weltkrieg
 10-Cent-Münze,10-Cent-Münze
 10-Cent-Stück,10-Cent-Stück
 10-Euro-Schein,10-Euro-Schein
@@ -60,16 +45,10 @@ lemma,nominativ-singular
 1000-Mark-Schein,1000-Mark-Schein
 102-Jährige,
 102-Jähriger,
-11. September,11. September
+September,September
 110-Meter-Hürdenlauf,110-Meter-Hürdenlauf
 110-m-Hürdenlauf,110-m-Hürdenlauf
 1G-Regel,1G-Regel
-"2,3,4,5,6-Pentahydroxyhexansäure","2,3,4,5,6-Pentahydroxyhexansäure"
-"2,3-Dihydroxybernsteinsäure","2,3-Dihydroxybernsteinsäure"
-"2,3-Dihydroxybutandisäure","2,3-Dihydroxybutandisäure"
-"2,4,6-Trihydroxypyrimidin","2,4,6-Trihydroxypyrimidin"
-"2,4,6-Trinitrophenol","2,4,6-Trinitrophenol"
-"2,6,8-Trihydroxypurin","2,6,8-Trihydroxypurin"
 2-Acetoxybenzoesäure,2-Acetoxybenzoesäure
 2-Amino-3-methylbutansäure,2-Amino-3-methylbutansäure
 2-Aminobutandisäure,2-Aminobutandisäure
@@ -93,12 +72,12 @@ lemma,nominativ-singular
 2-Propenal,2-Propenal
 2-Propenol,2-Propenol
 2-Zimmer-Wohnung,2-Zimmer-Wohnung
-2. Johannesbrief,
-2. Korintherbrief,2. Korintherbrief
-2. Petrusbrief,
-2. Thessalonicherbrief,
-2. Timotheusbrief,
-2. Weltkrieg,2. Weltkrieg
+Johannesbrief,
+Korintherbrief,Korintherbrief
+Petrusbrief,
+Thessalonicherbrief,
+Timotheusbrief,
+Weltkrieg,Weltkrieg
 20-Cent-Münze,20-Cent-Münze
 20-Cent-Stück,20-Cent-Stück
 20-DM-Schein,20-DM-Schein
@@ -113,7 +92,6 @@ lemma,nominativ-singular
 24-Stunden-Rennen,24-Stunden-Rennen
 24-Stunden-Tankstelle,24-Stunden-Tankstelle
 2G-Regel,2G-Regel
-"3,4,5-Trihydroxybenzoesäure","3,4,5-Trihydroxybenzoesäure"
 3-D-Drucker,3-D-Drucker
 3-Hexanol,3-Hexanol
 3-Meter-Brett,3-Meter-Brett
@@ -122,7 +100,7 @@ lemma,nominativ-singular
 3-Uhr-Zug,3-Uhr-Zug
 3-Zimmer-Wohnung,3-Zimmer-Wohnung
 3-m-Brett,3-m-Brett
-3. Johannesbrief,
+Johannesbrief,
 30-jähriger Krieg,
 30er,
 3D-Gestaltung,3D-Gestaltung
@@ -862,7 +840,6 @@ Abiasaph,
 Abiball,Abiball
 Abidjan,
 Abies,
-"Abieta-7,14-dien-19-carbonsäure","Abieta-7,14-dien-19-carbonsäure"
 Abietinsäure,Abietinsäure
 Abigail,
 Abigeat,Abigeat
@@ -14874,7 +14851,6 @@ Busunglück,Busunglück
 Buswendeschleife,Buswendeschleife
 Butadien,Butadien
 Butan,Butan
-"Butan-1,4-diol","Butan-1,4-diol"
 Butanal,Butanal
 Butandisäure,Butandisäure
 Butangas,Butangas
@@ -59459,7 +59435,6 @@ Müßiggänger,Müßiggänger
 Müßiggängerin,Müßiggängerin
 Müßigkeit,Müßigkeit
 N,N
-"N,N’-Malonylharnstoff","N,N’-Malonylharnstoff"
 N-Acetylneuraminsäure,N-Acetylneuraminsäure
 N-Gramm,N-Gramm
 N-Wort,N-Wort
@@ -66841,7 +66816,7 @@ Plattling,
 Platz,Platz
 Platz der Göttinger Sieben,Platz der Göttinger Sieben
 Platz der Vereinten Nationen,Platz der Vereinten Nationen
-Platz des 18. März,Platz des 18. März
+Platz des März,Platz des März
 Platz des Himmlischen Friedens,Platz des Himmlischen Friedens
 Platzangebot,Platzangebot
 Platzangst,Platzangst
@@ -95537,7 +95512,7 @@ Wayapopihíwi,Wayapopihíwi
 Wealden,Wealden
 Wearable Computer,Wearable Computer
 Web,Web
-Web 2.0,Web 2.0
+Web-2.0,Web-2.0
 Web-Seminar,Web-Seminar
 Web-Service,
 Webadresse,Webadresse
@@ -102393,17 +102368,3 @@ zweite Lautverschiebung,
 Ćevapčići,
 ČSSR,ČSSR
 Čevapčići,
-Œuvre,Œuvre
-Šeqel,Šeqel
-Živinice,
-ǃXóõ,
-α-Tolylsäure,α-Tolylsäure
-α-Zerfall,α-Zerfall
-β-Hydroxyaldehyd,
-β-Ketobuttersäure,β-Ketobuttersäure
-γ-Aminobuttersäure,γ-Aminobuttersäure
-Ḫāriǧit,
-’Ndrangheta,’Ndrangheta
-’Sgebengu,’Sgebengu
-’s-Gravenhage,
-’s-Hertogenbosch,
