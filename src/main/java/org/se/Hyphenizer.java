@@ -1,11 +1,11 @@
 public class Hyphenizer{
-    public int SyllableCountComplete{
-        static public int CountSyllabes(String terms) {
+     public static int CountSyllabes(String terms) {
          int count = 0;
             terms = terms.toLowerCase(); 
      
-            for (int i = 0; i < terms.length(); i++) { 
+            for (int i = 0; i < terms.length(); i++) { // traversing till length of string
                 if (terms.charAt(i) == '\"' || terms.charAt(i) == '\'' || terms.charAt(i) == '-' || terms.charAt(i) == ',' || terms.charAt(i) == ')' || terms.charAt(i) == '(') {
+                    // if at any point, we encounter any such expression, we substring the string from start till that point and further.
                     terms = terms.substring(0,i) + terms.substring(i+1, terms.length());
                 }
             }
@@ -31,12 +31,12 @@ public class Hyphenizer{
             return count;
         }
     
-        static public boolean isVowel(char c) {
+         public static boolean isVowel(char c) {
             if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u') {
                 return true;
             } else {
                 return false;
             }
-        }   
+          
     }
 }
