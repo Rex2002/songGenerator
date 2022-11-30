@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
 import org.se.model.Beat;
+import org.se.model.BeatData;
 import org.se.model.Chord;
 import org.se.model.Structure;
 
@@ -22,11 +23,24 @@ public class Config {
         YAMLFactory yaml = new YAMLFactory();
         ObjectMapper mapper = new ObjectMapper(yaml);
 
+        // load drum program config into BeatContainer
+        try {
+            BeatContainer.setDrumPrograms(mapper.readValue(new File("./src/main/resources/drum_prog_no.yml"), HashMap.class));
+        } catch (IOException e) {
+            System.out.println("Encountered exception while trying to read drum_prog config.");
+            e.printStackTrace();
+        }
+
         //load beat templates into BeatContainer
         try {
             YAMLParser yamlParser = yaml.createParser(new File("./src/main/resources/beat_templates_pop.yml"));
-            BeatContainer.setDrumBeats(mapper.readValues(yamlParser, Beat.class).readAll());
-            BeatContainer.setDrumPrograms(mapper.readValue(new File("./src/main/resources/drum_prog_no.yml"), HashMap.class));
+            List<BeatData> beatDataList = mapper.readValues(yamlParser, BeatData.class).readAll();
+
+            List<Beat> outBeats = new ArrayList<>();
+            for (BeatData beatData : beatDataList) {
+                outBeats.add(beatData.toBeat());
+            }
+            BeatContainer.setDrumBeats(outBeats);
         } catch (IOException e) {
             System.out.println("Encountered exception while trying to read Beat template.");
             e.printStackTrace();

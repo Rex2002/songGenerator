@@ -1,72 +1,78 @@
-# beat specification:
-# instrument: [[start, length],...]
-# start and length are specified in 96th from bar start
+# readable beat specification:
+# one line per drum/cymbal. x is a note, - is a rest
+# resolution holds length of each char, specified in 96th from bar start
 # quarter: 24
 # eighth: 12
 # sixteenth: 6
+# There has to be exactly one mainPart, bigFill and smallFill for every beat
+# Feel free to change resolution and go crazy with 32ths, triplets or whatever your heart desires!
 #
 # 1:
+resolution: 6
 mainPattern:
-    bass    : [[0,12], [48,12]]
-    hiHat   : [[0,12], [12,12], [24,12], [36,12], [48,12], [60,12], [72,12], [84,12]]
-    snare   : [[24,12], [72,12]]
+    hiHat:  x-x-x-x-x-x-x-x-
+    snare:  ----x-------x---
+    bass:   x-------x-------
 bigFill:
-    bass    : [[0,12]]
-    hiHat   : [[0,12], [12,12], [24,12], [36,12]]
-    snare   : [[24,12], [48,6], [54,6]]
-    hTom    : [[60,6], [66,6]]
-    mTom    : [[72,6], [78,6]]
-    lTom    : [[84,6], [90,6]]
+    hiHat:  x-x-x-x---------
+    hTom:   ----------xx----
+    mTom:   ------------xx--
+    snare:  ----x---xx------
+    lTom:   --------------xx
+    bass:   x-------x-------
 smallFill:
-    bass    : [[0,12], [48,12]]
-    hiHat   : [[0,12], [12,12], [24,12], [36,12], [48,12], [60,12], [72,12], [84,12]]
-    snare   : [[24,12], [72,12], [84,12]]
+    hiHat:  x-x-x-x-x-x-x-x-
+    snare:  ----x-------x-x-
+    bass:   x-------x-------
 ---
 # 1ride:
+resolution: 6
 mainPattern:
-    bass    : [[0,12], [48,12]]
-    ride    : [[0,12], [12,12], [24,12], [36,12], [48,12], [60,12], [72,12], [84,12]]
-    snare   : [[24,12], [72,12]]
+    ride:   x-x-x-x-x-x-x-x-
+    snare:  ----x-------x---
+    bass:   x-------x-------
 bigFill:
-    bass    : [[0,24], [48,18]]
-    ride    : [[0,24], [24,24], [48,18]]
-    snare   : [[24,24], [66,6], [72,12], [84,6], [90,6]]
+    ride:   x---x---x-------
+    snare:  ----x------xx-xx
+    bass:   x-------x-------
 smallFill:
-    bass    : [[0,12], [48,12]]
-    ride    : [[0,12], [12,12], [24,12], [36,12], [48,12], [60,12], [72,12], [84,6]]
-    snare   : [[24,12], [72,12], [84,6], [90,6]]
+    ride:   x-x-x-x-x-x-x-x-
+    snare:  ----x-------x-xx
+    bass:   x-------x-------
 ---
 # B2:
+resolution: 6
 mainPattern:
-    bass    : [[0,12], [24,12], [48,12], [72,12]]
-    hiHat   : [[0,12], [12,12], [24,12], [36,12], [48,12], [60,12], [72,12], [84,12]]
-    snare   : [[24,12], [72,12]]
+    hiHat:  x-x-x-x-x-x-x-x-
+    snare:  ----x-------x---
+    bass:   x---x---x---x---
 bigFill:
-    bass    : [[0,12], [24,12], [48,12], [72,12]]
-    hiHat   : [[0,12], [12,12], [24,12], [36,12], [48,12]]
-    snare   : [[24,12], [60,12]]
-    hTom    : [[84,12]]
-    lTom    : [[72,12]]
+    hiHat:  x-x-x-x-x-------
+    hTom:   --------------x-
+    snare:  ----x-----x-----
+    lTom:   ------------x---
+    bass:   x---x---x---x---
 smallFill:
-    bass    : [[0,12], [24,12], [48,12], [72,12]]
-    hiHat   : [[0,12], [12,12], [24,12], [36,12], [48,12], [60,12], [72,24]]
-    snare   : [[24,12], [72,24]]
+    hiHat:  x-x-x-x-x-x-x---
+    snare:  ----x-------x---
+    bass:   x---x---x---x---
 ---
 # B3:
+resolution: 6
 mainPattern:
-    bass    : [[0,12], [18,6], [48,12]]
-    hiHat   : [[0,12], [12,6], [24,12], [36,12], [48,12], [60,12], [72,12], [84,12]]
-    snare   : [[24,12], [72,12]]
+    hiHat:  x-x-x-x-x-x-x-x-
+    snare:  ----x-------x---
+    bass:   x--x----x-------
 bigFill:
-    bass    : [[0,12], [18,6], [48,12]]
-    hiHat   : [[0,12], [12,6], [24,12]]
-    oHiHat  : [[36,12]]
-    snare   : [[24,12], [48,12]]
-    hTom    : [[72,6], [78,6]]
-    mTom    : [[84,12]]
-    lTom    : [[60,12]]
+    oHiHat: ------x---------
+    hiHat:  x-x-x-----------
+    hTom:   ------------xx--
+    mTom:   --------------x-
+    snare:  ----x---x-------
+    lTom:   ----------x-----
+    bass:   x--x----x-------
 smallFill:
-    bass    : [[0,12], [18,6], [48,12]]
-    hiHat   : [[0,12], [12,6], [24,12], [36,12], [48,12], [60,12], [72,12]]
-    oHiHat  : [[84,12]]
-    snare   : [[24,12], [72,12]]
+    oHiHat: --------------x-
+    hiHat:  x-x-x-x-x-x-x---
+    snare:  ----x-------x---
+    bass:   x--x----x-------
