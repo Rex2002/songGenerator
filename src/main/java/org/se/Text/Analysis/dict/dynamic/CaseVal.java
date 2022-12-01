@@ -3,8 +3,39 @@ package org.se.Text.Analysis.dict.dynamic;
 import java.util.*;
 import org.se.Text.Analysis.GrammaticalCase;
 
-public class CaseVal implements DynamicType {
+public class CaseVal implements WordData {
 	private GrammaticalCase grammaticalCase;
+
+	@Override
+	public WordData fromStr(String s) {
+		s = s.toLowerCase();
+		switch (s.charAt(0)) {
+			case 'n':
+				return new CaseVal(GrammaticalCase.Nominative);
+
+			case 'g':
+				return new CaseVal(GrammaticalCase.Genitive);
+
+			case 'd':
+				return new CaseVal(GrammaticalCase.Dative);
+
+			case 'a':
+				return new CaseVal(GrammaticalCase.Accusative);
+
+			default:
+				return new CaseVal(GrammaticalCase.Nominative);
+		}
+	}
+
+	@Override
+	public String getStr() {
+		return grammaticalCase.toString();
+	}
+
+	@Override
+	public GrammaticalCase getVal() {
+		return grammaticalCase;
+	}
 
 	public CaseVal(GrammaticalCase grammaticalCase) {
 		this.grammaticalCase = grammaticalCase;

@@ -2,8 +2,25 @@ package org.se.Text.Analysis.dict.dynamic;
 
 import java.util.*;
 
-public class IntVal implements DynamicType {
+public class IntVal implements WordData {
 	private Integer i;
+
+	@Override
+	public WordData fromStr(String s) {
+		// TODO: Decide whether to add error handling
+		// For example, we could default to some integer (like 0) on error
+		return new IntVal(Integer.parseInt(s));
+	}
+
+	@Override
+	public String getStr() {
+		return i.toString();
+	}
+
+	@Override
+	public Integer getVal() {
+		return i;
+	}
 
 	public IntVal(Integer i) {
 		this.i = i;

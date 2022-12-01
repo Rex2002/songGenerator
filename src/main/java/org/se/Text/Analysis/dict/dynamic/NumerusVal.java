@@ -2,14 +2,24 @@ package org.se.Text.Analysis.dict.dynamic;
 
 import java.util.*;
 import org.se.Text.Analysis.Numerus;
-import org.se.Text.Analysis.dict.CSVReader;
 
-public class NumerusVal implements DynamicType {
+public class NumerusVal implements WordData {
 	private Numerus numerus;
 
 	@Override
-	public static DynamicType fromStr(String s) {
-		return new NumerusVal(CSVReader.parseNumerus(s));
+	public NumerusVal fromStr(String s) {
+		switch (s.toLowerCase().charAt(0)) {
+			// t for true
+			case 't':
+				return new NumerusVal(Numerus.Plural);
+
+			// p for plural
+			case 'p':
+				return new NumerusVal(Numerus.Plural);
+
+			default:
+				return new NumerusVal(Numerus.Singular);
+		}
 	}
 
 	@Override
@@ -18,7 +28,7 @@ public class NumerusVal implements DynamicType {
 	}
 
 	@Override
-	public Object getVal() {
+	public Numerus getVal() {
 		return numerus;
 	}
 

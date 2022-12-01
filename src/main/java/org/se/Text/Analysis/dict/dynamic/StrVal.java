@@ -2,10 +2,10 @@ package org.se.Text.Analysis.dict.dynamic;
 
 import java.util.Objects;
 
-public class StrVal implements DynamicType {
+public class StrVal implements WordData {
 	private String str;
 
-	public static DynamicType fromStr(String s) {
+	public WordData fromStr(String s) {
 		return new StrVal(s);
 	}
 
@@ -13,7 +13,7 @@ public class StrVal implements DynamicType {
 		return str;
 	}
 
-	public Object getVal() {
+	public String getVal() {
 		return str;
 	}
 

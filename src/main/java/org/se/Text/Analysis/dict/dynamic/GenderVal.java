@@ -3,8 +3,30 @@ package org.se.Text.Analysis.dict.dynamic;
 import java.util.*;
 import org.se.Text.Analysis.Gender;
 
-public class GenderVal implements DynamicType {
+public class GenderVal implements WordData {
 	private Gender gender;
+
+	@Override
+	public WordData fromStr(String s) {
+		s = s.toLowerCase();
+		if (s.startsWith("m")) {
+			return new GenderVal(Gender.Male);
+		} else if (s.startsWith("f")) {
+			return new GenderVal(Gender.Female);
+		} else {
+			return new GenderVal(Gender.Neutral);
+		}
+	}
+
+	@Override
+	public String getStr() {
+		return gender.toString().toLowerCase();
+	}
+
+	@Override
+	public Gender getVal() {
+		return gender;
+	}
 
 	public GenderVal(Gender gender) {
 		this.gender = gender;

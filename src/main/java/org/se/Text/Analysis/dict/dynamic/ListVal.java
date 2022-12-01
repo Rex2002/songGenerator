@@ -1,45 +1,49 @@
 package org.se.Text.Analysis.dict.dynamic;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.se.Text.Analysis.dict.CSVReader;
+public class ListVal implements WordData {
+	private List<WordData> store;
 
-public class ListVal implements DynamicType {
-	private List<DynamicType> store;
-
-	public static DynamicType fromStr(String s) {
-		ListVal l = new ListVal();
-		for (String x : CSVReader.parseList(s)) {
-			l.store.add();
-		}
+	@Override
+	public WordData fromStr(String s) {
+		return new ListVal(Stream.of(s.split("-")).map(str -> new StrVal(str)).collect(Collectors.toList()));
 	}
 
 	public String getStr() {
-
+		// int lastIndex = store.size() - 1;
+		// String s = "[";
+		// for (int i = 0; i < lastIndex; i++) {
+		// s += store.get(i).getStr() + ", ";
+		// }
+		// s += store.get(lastIndex).getStr() + "]";
+		// return s;
+		return store.toString();
 	}
 
-	public Object getVal() {
-
+	public List<WordData> getVal() {
+		return store;
 	}
 
 	public ListVal() {
 		store = new ArrayList<>();
 	}
 
-	public ListVal(List<DynamicType> store) {
+	public ListVal(List<WordData> store) {
 		this.store = store;
 	}
 
-	public List<DynamicType> getStore() {
+	public List<WordData> getStore() {
 		return this.store;
 	}
 
-	public void setStore(List<DynamicType> store) {
+	public void setStore(List<WordData> store) {
 		this.store = store;
 	}
 
-	public ListVal store(List<DynamicType> store) {
+	public ListVal store(List<WordData> store) {
 		setStore(store);
 		return this;
 	}
