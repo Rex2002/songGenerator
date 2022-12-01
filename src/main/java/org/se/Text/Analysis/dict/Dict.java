@@ -138,7 +138,8 @@ public class Dict {
 
 	public List<WordStemmer> tryNounStem(String s) {
 		List<WordStemmer> res = new ArrayList<>();
-		WordStemmer[] l = WordStemmer.from(s, caseEndings, nounSuffixes, nounPrefixes, 2, diphtongs, umlautChanges,
+		WordStemmer[] l = WordStemmer.radicalize(s, caseEndings, nounSuffixes, nounPrefixes, 2, diphtongs,
+				umlautChanges,
 				baseKey);
 
 		// TODO: Fix this
@@ -192,7 +193,8 @@ public class Dict {
 		// This can happen, when the Analyzer tags the word before giving it to the
 		// Dictionary (for example because of capitalization of word)
 		if (t.getData().isEmpty()) {
-			WordStemmer[] res = WordStemmer.from(t.word, caseEndings, suffixes, prefixes, 2, diphtongs, umlautChanges,
+			WordStemmer[] res = WordStemmer.radicalize(t.word, caseEndings, suffixes, prefixes, 2, diphtongs,
+					umlautChanges,
 					baseKey);
 
 			for (WordStemmer w : res) {

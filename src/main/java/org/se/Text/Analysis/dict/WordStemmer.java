@@ -56,7 +56,7 @@ public class WordStemmer {
 
 	// Actual Logic:
 
-	public static WordStemmer[] from(String s, List<Declination> caseEnding, WordList suffixes, WordList prefixes,
+	public static WordStemmer[] radicalize(String s, List<Declination> caseEnding, WordList suffixes, WordList prefixes,
 			int minStemLength, WordList diphtongs, WordList umlautChanges, String baseKey) {
 		WordStemmer[] x = findCaseEndings(s, caseEnding, umlautChanges, minStemLength, diphtongs, baseKey);
 		for (WordStemmer w : x) {
