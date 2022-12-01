@@ -125,13 +125,17 @@ public class TermVariations {
 	}
 
 	public void add(NounTerm term) {
-		if (this.lemma.isEmpty())
+		if (this.lemma.isEmpty()) {
 			this.lemma = term.lemma;
+		}
 
-		if (this.has(term))
-			this.variations.get(term.hashCode()).increaseFrequency();
-		else
+		if (this.has(term)) {
+			this.variations.get(term.hashData()).increaseFrequency();
+		} else {
 			this.variations.put(term.hashData(), term);
+		}
+
+		increaseFrequency();
 	}
 
 	public boolean has(NounTerm term) {
