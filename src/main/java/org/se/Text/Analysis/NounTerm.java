@@ -169,6 +169,10 @@ public class NounTerm {
 				"}";
 	}
 
+	public String show() {
+		return String.join(" ", this.words);
+	}
+
 	public String[] syllableStrings() {
 		String words = String.join("", this.words);
 		String[] res = new String[syllables.length];

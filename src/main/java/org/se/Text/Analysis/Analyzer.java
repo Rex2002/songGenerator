@@ -1,6 +1,7 @@
 package org.se.Text.Analysis;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -20,7 +21,7 @@ public class Analyzer {
 	}
 
 	public static String readFile(Path filepath) throws IOException {
-		return Files.readString(filepath);
+		return Files.readString(filepath, StandardCharsets.ISO_8859_1);
 	}
 
 	static ArrayList<ArrayList<String>> preprocess(String text) {
