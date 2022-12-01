@@ -12,11 +12,11 @@ public class WordStemmer {
 	// Constructors:
 
 	public WordStemmer() {
-		this.baseKey = "lemma";
+		this.baseKey = "radix";
 	}
 
 	public WordStemmer(String stem) {
-		this.baseKey = "lemma";
+		this.baseKey = "radix";
 		this.stem = stem;
 	}
 
@@ -32,7 +32,7 @@ public class WordStemmer {
 	}
 
 	public WordStemmer(String stem, List<WordWithData> prefixes, List<WordWithData> suffixes) {
-		this.baseKey = "lemma";
+		this.baseKey = "radix";
 		this.stem = stem;
 		this.prefixes = prefixes;
 		this.suffixes = suffixes;
@@ -153,11 +153,11 @@ public class WordStemmer {
 
 	// TODO: Optimize caseEndings storage
 	// Currently all caseEndings are stored in a list
-	// where many objects have the same lemma
+	// where many objects have the same radix
 	// specifically this means, that we have many duplicate calculations
-	// This could be optimized by storing a list of lemmas
+	// This could be optimized by storing a list of radixes
 	// mapping to a list of Declinations
-	// where no duplicate lemmas are stored and the result is flattened
+	// where no duplicate radixes are stored and the result is flattened
 	public static WordStemmer[] findCaseEndings(String s, List<Declination> caseEnding, WordList umlautChanges,
 			int minStemLength,
 			WordList diphtongs,
@@ -167,11 +167,11 @@ public class WordStemmer {
 		// Check all endings if they apply to the stem
 		for (Declination ending : caseEnding) {
 			String scopy = s;
-			if (scopy.endsWith(ending.getLemma())) {
+			if (scopy.endsWith(ending.getRadix())) {
 				// Update Umlaut sequences if necessary
 				if (ending.getToUmlaut()) {
 					char[] chars = scopy.toCharArray();
-					int len = chars.length - ending.getLemma().length();
+					int len = chars.length - ending.getRadix().length();
 
 					// Update umlaute if necessary
 					// Check every character if it's part of an umlaut sequence

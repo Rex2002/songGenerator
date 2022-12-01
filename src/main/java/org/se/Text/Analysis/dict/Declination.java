@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Declination {
 	@JsonProperty
-	String lemma;
+	String radix;
 	@JsonProperty
 	GrammaticalCase grammaticalCase;
 	@JsonProperty
@@ -22,12 +22,12 @@ public class Declination {
 	boolean toUmlaut;
 
 	@JsonCreator
-	public Declination(@JsonProperty("lemma") String lemma,
+	public Declination(@JsonProperty("radix") String radix,
 			@JsonProperty("grammaticalCase") GrammaticalCase grammaticalCase,
 			@JsonProperty("gender") Gender gender,
 			@JsonProperty("numerus") Numerus numerus,
 			@JsonProperty("toUmlaut") boolean toUmlaut) {
-		this.lemma = lemma;
+		this.radix = radix;
 		this.grammaticalCase = grammaticalCase;
 		this.gender = gender;
 		this.numerus = numerus;
@@ -38,12 +38,12 @@ public class Declination {
 	public Declination() {
 	}
 
-	public String getLemma() {
-		return this.lemma;
+	public String getRadix() {
+		return this.radix;
 	}
 
-	public void setLemma(String lemma) {
-		this.lemma = lemma;
+	public void setRadix(String radix) {
+		this.radix = radix;
 	}
 
 	public GrammaticalCase getGrammaticalCase() {
@@ -82,8 +82,8 @@ public class Declination {
 		this.toUmlaut = toUmlaut;
 	}
 
-	public Declination lemma(String lemma) {
-		setLemma(lemma);
+	public Declination radix(String radix) {
+		setRadix(radix);
 		return this;
 	}
 
@@ -115,20 +115,20 @@ public class Declination {
 			return false;
 		}
 		Declination declination = (Declination) o;
-		return Objects.equals(lemma, declination.lemma) && Objects.equals(grammaticalCase, declination.grammaticalCase)
+		return Objects.equals(radix, declination.radix) && Objects.equals(grammaticalCase, declination.grammaticalCase)
 				&& Objects.equals(gender, declination.gender) && Objects.equals(numerus, declination.numerus)
 				&& toUmlaut == declination.toUmlaut;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(lemma, grammaticalCase, gender, numerus, toUmlaut);
+		return Objects.hash(radix, grammaticalCase, gender, numerus, toUmlaut);
 	}
 
 	@Override
 	public String toString() {
 		return "{" +
-				" lemma='" + getLemma() + "'" +
+				" radix='" + getRadix() + "'" +
 				", grammaticalCase='" + getGrammaticalCase() + "'" +
 				", gender='" + getGender() + "'" +
 				", numerus='" + getNumerus() + "'" +

@@ -48,7 +48,7 @@ public class TermExample {
 		String csvFile = Files.readString(Path.of("", "example.csv"));
 		Stream.of(csvFile.split("\r?\n")).skip(1).map(s -> s.split(",")).forEach(row -> {
 			NounTerm t = new NounTerm(row[1]);
-			t.setLemma(row[0]);
+			t.setRadix(row[0]);
 			t.setGender(TermExample.parseGender(row[2]));
 			t.setGrammaticalCase(TermExample.parseCase(row[3]));
 			t.setIsPlural(TermExample.parseIsPlural(row[4]));

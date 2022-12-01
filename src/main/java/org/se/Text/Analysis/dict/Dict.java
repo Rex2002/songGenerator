@@ -20,7 +20,7 @@ public class Dict {
 	final String baseKey;
 
 	public static String getDefaultBaseKey() {
-		return "lemma";
+		return "radix";
 	}
 
 	public Dict(WordList nounSuffixes, WordList nounPrefixes,
@@ -46,7 +46,7 @@ public class Dict {
 		WordList nouns = new WordList(baseKey);
 		WordList nounPrefixes = new WordList(baseKey);
 		WordList nounSuffixes = new WordList(baseKey);
-		WordList verbs = new WordList(baseKey);
+		WordList verbs = new WordList("Infinitiv");
 		WordList verbPrefixes = new WordList(baseKey);
 		WordList verbSuffixes = new WordList(baseKey);
 		WordList diphtongs = new WordList(baseKey);
@@ -218,13 +218,13 @@ public class Dict {
 		// System.out.println(t);
 		// System.out.println(data);
 
-		String lemma = data.getStem();
+		String radix = data.getStem();
 		Integer[] syllables = { 0 };
 		boolean isPlural = caseEnding.getNumerus() == Numerus.Plural;
 		GrammaticalCase grammaticalCase = caseEnding.getGrammaticalCase();
 		Gender gender = caseEnding.getGender();
 
-		return Optional.of(new NounTerm(lemma, t.word, syllables, isPlural, grammaticalCase, gender));
+		return Optional.of(new NounTerm(radix, t.word, syllables, isPlural, grammaticalCase, gender));
 	}
 
 	public Optional<NounTerm> buildVerbTerm(Tag t) {
@@ -256,7 +256,7 @@ public class Dict {
 			boolean isPlural) {
 		// TODO
 		Integer[] syllables = { 0 };
-		return new NounTerm(variations.getLemma(), variations.getLemma(), syllables, false, GrammaticalCase.Nominative,
+		return new NounTerm(variations.getRadix(), variations.getRadix(), syllables, false, GrammaticalCase.Nominative,
 				Gender.Female);
 	}
 

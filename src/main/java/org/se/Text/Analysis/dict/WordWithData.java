@@ -3,7 +3,7 @@ package org.se.Text.Analysis.dict;
 import java.util.*;
 
 public class WordWithData extends HashMap<String, String> {
-	private String baseKey = "lemma";
+	private String baseKey = "radix";
 
 	public WordWithData() {
 	}

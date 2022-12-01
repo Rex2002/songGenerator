@@ -1,24 +1,24 @@
 # Male Singular
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'nominative'
 gender: 'male'
 numerus: 'singular'
 toUmlaut: false
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'genitive'
 gender: 'male'
 numerus: 'singular'
 toUmlaut: false
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'dative'
 gender: 'male'
 numerus: 'singular'
 toUmlaut: false
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'accusative'
 gender: 'male'
 numerus: 'singular'
@@ -26,25 +26,25 @@ toUmlaut: false
 
 # Female Singular
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'nominative'
 gender: 'female'
 numerus: 'singular'
 toUmlaut: false
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'genitive'
 gender: 'female'
 numerus: 'singular'
 toUmlaut: false
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'dative'
 gender: 'female'
 numerus: 'singular'
 toUmlaut: false
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'accusative'
 gender: 'female'
 numerus: 'singular'
@@ -52,25 +52,25 @@ toUmlaut: false
 
 # Neutral Singular
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'nominative'
 gender: 'neutral'
 numerus: 'singular'
 toUmlaut: false
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'genitive'
 gender: 'neutral'
 numerus: 'singular'
 toUmlaut: false
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'dative'
 gender: 'neutral'
 numerus: 'singular'
 toUmlaut: false
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'accusative'
 gender: 'neutral'
 numerus: 'singular'
@@ -78,25 +78,25 @@ toUmlaut: false
 
 # Male Plural
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'nominative'
 gender: 'male'
 numerus: 'plural'
 toUmlaut: false
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'genitive'
 gender: 'male'
 numerus: 'plural'
 toUmlaut: false
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'dative'
 gender: 'male'
 numerus: 'plural'
 toUmlaut: false
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'accusative'
 gender: 'male'
 numerus: 'plural'
@@ -104,25 +104,25 @@ toUmlaut: false
 
 # Female Plural
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'nominative'
 gender: 'female'
 numerus: 'plural'
 toUmlaut: false
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'genitive'
 gender: 'female'
 numerus: 'plural'
 toUmlaut: false
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'dative'
 gender: 'female'
 numerus: 'plural'
 toUmlaut: false
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'accusative'
 gender: 'female'
 numerus: 'plural'
@@ -130,25 +130,25 @@ toUmlaut: false
 
 # Neutral Plural
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'nominative'
 gender: 'neutral'
 numerus: 'plural'
 toUmlaut: false
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'genitive'
 gender: 'neutral'
 numerus: 'plural'
 toUmlaut: false
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'dative'
 gender: 'neutral'
 numerus: 'plural'
 toUmlaut: false
 ---
-lemma: ''
+radix: ''
 grammaticalCase: 'accusative'
 gender: 'neutral'
 numerus: 'plural'

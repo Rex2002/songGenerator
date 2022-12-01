@@ -13,7 +13,7 @@ import org.se.Text.Analysis.dict.Dict;
 public class TermVariations {
 	public Map<Integer, NounTerm> variations;
 	public Integer frequency;
-	public String lemma;
+	public String radix;
 
 	// public Map<Term> getVariations(@Nullable GrammaticalCase grammaticalCase,
 	// @Nullable Gender gender, @Nullable Boolean isPlural, @Nullable Integer
@@ -28,14 +28,14 @@ public class TermVariations {
 	public TermVariations() {
 		this.variations = new HashMap<Integer, NounTerm>();
 		this.frequency = 0;
-		this.lemma = "";
+		this.radix = "";
 	}
 
 	public TermVariations(NounTerm term) {
 		this.variations = new HashMap<Integer, NounTerm>();
 		this.variations.put(term.hashData(), term);
 		this.frequency = 1;
-		this.lemma = term.lemma;
+		this.radix = term.radix;
 	}
 
 	public TermVariations(List<NounTerm> terms) {
@@ -44,13 +44,13 @@ public class TermVariations {
 			variations.put(term.hashData(), term);
 		}
 		this.frequency = terms.size();
-		this.lemma = terms.get(0).lemma;
+		this.radix = terms.get(0).radix;
 	}
 
-	public TermVariations(Map<Integer, NounTerm> variations, Integer frequency, String lemma) {
+	public TermVariations(Map<Integer, NounTerm> variations, Integer frequency, String radix) {
 		this.variations = variations;
 		this.frequency = frequency;
-		this.lemma = lemma;
+		this.radix = radix;
 	}
 
 	public void forEach(Consumer<? super NounTerm> f) {
@@ -59,8 +59,8 @@ public class TermVariations {
 		});
 	}
 
-	public String getLemma() {
-		return this.lemma;
+	public String getRadix() {
+		return this.radix;
 	}
 
 	public Map<Integer, NounTerm> getVariations() {
@@ -79,8 +79,8 @@ public class TermVariations {
 		this.frequency = frequency;
 	}
 
-	public void setLemma(String lemma) {
-		this.lemma = lemma;
+	public void setRadix(String radix) {
+		this.radix = radix;
 	}
 
 	public TermVariations variations(Map<Integer, NounTerm> variations) {
@@ -93,14 +93,14 @@ public class TermVariations {
 		return this;
 	}
 
-	public TermVariations lemma(String lemma) {
-		setLemma(lemma);
+	public TermVariations radix(String radix) {
+		setRadix(radix);
 		return this;
 	}
 
 	@Override
 	public int hashCode() {
-		return this.lemma.hashCode();
+		return this.radix.hashCode();
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class TermVariations {
 		}
 		TermVariations termVariations = (TermVariations) o;
 		return Objects.equals(variations, termVariations.variations)
-				&& Objects.equals(frequency, termVariations.frequency) && Objects.equals(lemma, termVariations.lemma);
+				&& Objects.equals(frequency, termVariations.frequency) && Objects.equals(radix, termVariations.radix);
 	}
 
 	@Override
@@ -120,13 +120,13 @@ public class TermVariations {
 		return "{" +
 				" variations='" + getVariations() + "'" +
 				", frequency='" + getFrequency() + "'" +
-				", lemma='" + getLemma() + "'" +
+				", radix='" + getRadix() + "'" +
 				"}";
 	}
 
 	public void add(NounTerm term) {
-		if (this.lemma.isEmpty()) {
-			this.lemma = term.lemma;
+		if (this.radix.isEmpty()) {
+			this.radix = term.radix;
 		}
 
 		if (this.has(term)) {

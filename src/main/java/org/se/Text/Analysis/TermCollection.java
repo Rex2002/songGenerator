@@ -22,10 +22,10 @@ public class TermCollection {
 		this.nouns = new HashMap<String, TermVariations>();
 		this.verbs = new HashMap<String, TermVariations>();
 		for (TermVariations term : nouns) {
-			this.nouns.put(term.getLemma(), term);
+			this.nouns.put(term.getRadix(), term);
 		}
 		for (TermVariations term : verbs) {
-			this.verbs.put(term.getLemma(), term);
+			this.verbs.put(term.getRadix(), term);
 		}
 	}
 
@@ -36,52 +36,52 @@ public class TermCollection {
 
 	public void addNouns(TermVariations variations) {
 		if (hasNoun(variations)) {
-			nouns.get(variations.getLemma()).add(variations);
+			nouns.get(variations.getRadix()).add(variations);
 		} else {
-			nouns.put(variations.getLemma(), variations);
+			nouns.put(variations.getRadix(), variations);
 		}
 	}
 
 	public void addVerbs(TermVariations variations) {
 		if (hasVerb(variations)) {
-			verbs.get(variations.getLemma()).add(variations);
+			verbs.get(variations.getRadix()).add(variations);
 		} else {
-			verbs.put(variations.getLemma(), variations);
+			verbs.put(variations.getRadix(), variations);
 		}
 	}
 
 	public void addNoun(NounTerm t) {
 		TermVariations v = new TermVariations(t);
 		if (hasNoun(v)) {
-			nouns.get(v.getLemma()).add(t);
+			nouns.get(v.getRadix()).add(t);
 		} else {
-			nouns.put(v.getLemma(), v);
+			nouns.put(v.getRadix(), v);
 		}
 	}
 
 	public void addVerb(NounTerm t) {
 		TermVariations v = new TermVariations(t);
 		if (hasVerb(v)) {
-			verbs.get(v.getLemma()).add(t);
+			verbs.get(v.getRadix()).add(t);
 		} else {
-			verbs.put(v.getLemma(), v);
+			verbs.put(v.getRadix(), v);
 		}
 	}
 
 	public Boolean hasNoun(TermVariations variations) {
-		return nouns.containsKey(variations.getLemma());
+		return nouns.containsKey(variations.getRadix());
 	}
 
 	public Boolean hasNoun(NounTerm t) {
-		return nouns.containsKey(t.getLemma());
+		return nouns.containsKey(t.getRadix());
 	}
 
 	public Boolean hasVerb(TermVariations variations) {
-		return verbs.containsKey(variations.getLemma());
+		return verbs.containsKey(variations.getRadix());
 	}
 
 	public Boolean hasVerb(NounTerm t) {
-		return verbs.containsKey(t.getLemma());
+		return verbs.containsKey(t.getRadix());
 	}
 
 	// Iterators

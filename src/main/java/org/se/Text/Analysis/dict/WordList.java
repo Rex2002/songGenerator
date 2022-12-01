@@ -7,7 +7,7 @@ public class WordList implements Iterable<WordWithData> {
 	final String baseKey;
 
 	public WordList() {
-		this.baseKey = "lemma";
+		this.baseKey = "radix";
 	}
 
 	public WordList(String baseKey) {
@@ -15,7 +15,7 @@ public class WordList implements Iterable<WordWithData> {
 	}
 
 	public WordList(Iterable<String> strings) {
-		this.baseKey = "lemma";
+		this.baseKey = "radix";
 		for (String s : strings) {
 			WordWithData h = new WordWithData();
 			h.put(baseKey, s);

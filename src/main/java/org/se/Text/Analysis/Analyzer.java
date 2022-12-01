@@ -143,10 +143,10 @@ public class Analyzer {
 							tmp = verbVariations;
 						}
 
-						if (tmp.containsKey(term.get().lemma)) {
-							tmp.get(term.get().lemma).add(term.get());
+						if (tmp.containsKey(term.get().radix)) {
+							tmp.get(term.get().radix).add(term.get());
 						} else {
-							tmp.put(term.get().lemma, new TermVariations(term.get()));
+							tmp.put(term.get().radix, new TermVariations(term.get()));
 						}
 					}
 				}
