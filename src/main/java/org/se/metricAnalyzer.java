@@ -1,4 +1,4 @@
-public int metricsGet(String content, String terms){
+public static int metricsGet(String content, String terms){
     //Find Average length for sentences and hyphen in order to determine text speed
       int averageH = averageHyphen(terms);
       int averageS = averageSentence(content);
@@ -23,23 +23,23 @@ public int metricsGet(String content, String terms){
       180 bpm short short
      */
     if(averageH <= 1 & averageS<=9)
-      {return bpm = 180;}
+      {bpm = 180;}
     if(averageH ==2 | averageH==3 & averageS<=9)
-      {return bpm = 160;}
+      {bpm = 160;}
     if(averageH ==2 | averageH==3 & averageS>=9 & averageS <=18)
-      {return bpm = 140;}
+      {bpm = 140;}
     if(averageH ==2 | averageH==3 & averageS>=19)
-      {return bpm = 120;}
+      {bpm = 120;}
     if(averageH>=4 & averageS<=9)
-      {return bpm = 100;}
+      {bpm = 100;}
     if(averageH>=4 & averageS>=9 & averageS <=18)
-      {return bpm = 80;}
+      {bpm = 80;}
     if(averageH>=4 & averageS>=19)
-      {return bpm = 60;}
-
+      {bpm = 60;}
+return bpm;
   }
 
-  public int averageHyphen(String terms){
+  public static int averageHyphen(String terms){
     String term = terms;
     int hyphenTotal = CountSyllabes(term);
     int[] termAndSentences = countWords(term);
@@ -49,7 +49,7 @@ public int metricsGet(String content, String terms){
   }
   
 
-  public int averageSentence(String content){
+  public static int averageSentence(String content){
     String c = content;
     int[] termAndSentences = countWords(c);
     int wordsTotal = termAndSentences[0];
@@ -59,7 +59,7 @@ public int metricsGet(String content, String terms){
 }
   
   
-  public int[] countWords(String content){
+  public static int[] countWords(String content){
       String c = content;
 
     /*Rules for sentences if done properly ig? Only stuck to punctuation for now
@@ -68,33 +68,31 @@ public int metricsGet(String content, String terms){
      * 3. Free space between punctiation and new word
      * 4. New sentence for .!? and new paragraph
      */
-    String[] killTheSentence = {".!?"};
     String[] sentenceParts = c.split(".!?");
+    int ctCsTotal = sentenceParts.length;
     int wordsTotal = 0;
+    int words = 0;
     int sentenceAverage = 0;
     
     for(int i = 0; i<sentenceParts.length; i++){
 
       String currentSentence = sentenceParts[i];
-
+        words = 0;
       for(int j=0; j<currentSentence.length();j++){ 
-        int words = 0;
+
         int state = 0;
-        if(currentSentence[j] == ' ' | currentSentence[j] == '\n' |currentSentence[j] == '\t'){
+        if(currentSentence.charAt(j) == ' ' | currentSentence.charAt(j) == '\n' |currentSentence.charAt(j) == '\t'){
           state = 1;
         }
         if(state==1){
           words = words+1;
         }
-
       }
       wordsTotal = wordsTotal + words;
 
     }
-      int ctCsTotal = sentenceParts.length;
-      int[] wordArray;
-      wordArray[0] = wordsTotal;
-      wordArray[1] = ctCsTotal;
+
+      int[] wordArray = {wordsTotal, ctCsTotal};
       
       return wordArray;
   }
