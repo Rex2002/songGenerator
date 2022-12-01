@@ -69,32 +69,26 @@ public int metricsGet(String content, String terms){
      * 4. New sentence for .!? and new paragraph
      */
     String[] killTheSentence = {".!?"};
-    String[] sentenceParts = c.split(killTheSentence);
+    String[] sentenceParts = c.split(".!?");
     int wordsTotal = 0;
     int sentenceAverage = 0;
     
-    for(int i = 0; i<sententenceParts.length; i++){
+    for(int i = 0; i<sentenceParts.length; i++){
 
       String currentSentence = sentenceParts[i];
 
-      int j = 0;
-      for(int j=0; j<currentSentence.lenght[j];j++){ 
-        
-        
+      for(int j=0; j<currentSentence.length();j++){ 
         int words = 0;
         int state = 0;
-        if(currentSentence[j] == ' ' || currentSentence[j] == '\n' ||currentSentence[j] == '\t'){
-          int state = 1;
+        if(currentSentence[j] == ' ' | currentSentence[j] == '\n' |currentSentence[j] == '\t'){
+          state = 1;
         }
-
-        
         if(state==1){
-          state=0;
           words = words+1;
         }
 
       }
-      int wordsTotal = wordsTotal + words;
+      wordsTotal = wordsTotal + words;
 
     }
       int ctCsTotal = sentenceParts.length;
