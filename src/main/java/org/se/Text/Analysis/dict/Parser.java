@@ -1,23 +1,15 @@
 package org.se.Text.Analysis.dict;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-
 import org.se.Text.Analysis.*;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
-
 public class Parser {
-	public static GrammaticalCase parseCase(String s) {
+	public static GrammaticalCase parseGrammaticalCase(String s) {
 		s = s.toLowerCase();
 		switch (s.charAt(0)) {
 			case 'n':
@@ -83,28 +75,20 @@ public class Parser {
 		String[] firstRow = rows[0].split(",");
 
 		for (int i = 1; i < rows.length; i++) {
-			String[] col = rows[i].split(",");
-			WordWithData data = new WordWithData();
-			for (int j = 0; j < firstRow.length && j < col.length; j++) {
-				data.put(firstRow[j], col[j]);
+			String[] cols = rows[i].split(",");
+			WordWithData row = new WordWithData();
+			for (int j = 0; j < firstRow.length && j < cols.length; j++) {
+				row.put(firstRow[j], cols[j]);
 			}
-			forEachRow.accept(data);
+			forEachRow.accept(row);
 		}
 	}
 
 	public static void readCSV(Path filepath, List<WordWithData> list) throws IOException {
-		readCSV(filepath, data -> list.add(data));
+		readCSV(filepath, row -> list.add(row));
 	}
 
 	public static void readCSV(Path filepath, WordList list) throws IOException {
-		readCSV(filepath, data -> list.insert(data));
-	}
-
-	public static <T> List<T> readYAML(Path filepath, Class<T> valueType) throws IOException {
-		YAMLFactory yaml = new YAMLFactory();
-		ObjectMapper mapper = new ObjectMapper(yaml);
-
-		YAMLParser parser = yaml.createParser(filepath.toFile());
-		return mapper.readValues(parser, valueType).readAll();
+		readCSV(filepath, row -> list.insert(row));
 	}
 }

@@ -51,23 +51,24 @@ public class Dict {
 		WordList verbSuffixes = new WordList(baseKey);
 		WordList diphtongs = new WordList(baseKey);
 		WordList umlautChanges = new WordList(baseKey);
+		List<Declination> caseEndings = new ArrayList<>();
 
-		Parser.readCSV(affixCSV, data -> {
-			switch (data.get("type")) {
+		Parser.readCSV(affixCSV, row -> {
+			switch (row.get("type")) {
 				case "nounSuffix":
-					nounSuffixes.insert(data);
+					nounSuffixes.insert(row);
 					break;
 
 				case "nounPrefix":
-					nounPrefixes.insert(data);
+					nounPrefixes.insert(row);
 					break;
 
 				case "verbSuffix":
-					verbSuffixes.insert(data);
+					verbSuffixes.insert(row);
 					break;
 
 				case "verbPrefix":
-					verbPrefixes.insert(data);
+					verbPrefixes.insert(row);
 					break;
 			}
 		});
@@ -75,7 +76,15 @@ public class Dict {
 		Parser.readCSV(verbsCSV, verbs);
 		Parser.readCSV(diphtongsCSV, diphtongs);
 		Parser.readCSV(umlautChangesCSV, umlautChanges);
-		List<Declination> caseEndings = Parser.readYAML(caseEndingsCSV, Declination.class);
+		Parser.readCSV(caseEndingsCSV, row -> {
+			Declination dec = new Declination();
+			dec.setGender(row.getGender("gender"));
+			dec.setGrammaticalCase(row.getGrammaticalCase("grammaticalCase"));
+			dec.setNumerus(row.getNumerus("numerus"));
+			dec.setRadix(row.get("radix"));
+			dec.setToUmlaut(row.getBool("toUmlaut"));
+			caseEndings.add(dec);
+		});
 
 		WordList[] res = { nounSuffixes, nounPrefixes, nouns, verbSuffixes, verbPrefixes, verbs, diphtongs,
 				umlautChanges };
@@ -101,12 +110,12 @@ public class Dict {
 	}
 
 	public Dict(Path dirPath) throws IOException {
-		Path affixCSV = dirPath.resolve("affixesDict.csv");
-		Path nounsCSV = dirPath.resolve("nounsDict.csv");
-		Path verbsCSV = dirPath.resolve("verbsDict.csv");
-		Path diphtongsCSV = dirPath.resolve("diphtongs.csv");
-		Path umlautChangesCSV = dirPath.resolve("umlautChanges.csv");
-		Path caseEndingsYAML = dirPath.resolve("caseEndings.yml");
+		Path affixCSV = dirPath.resolve("affixesDict");
+		Path nounsCSV = dirPath.resolve("nounsDict");
+		Path verbsCSV = dirPath.resolve("verbsDict");
+		Path diphtongsCSV = dirPath.resolve("diphtongs");
+		Path umlautChangesCSV = dirPath.resolve("umlautChanges");
+		Path caseEndingsYAML = dirPath.resolve("caseEndings");
 		Tuple<WordList[], List<Declination>> res = readDictionaryFromFiles(affixCSV, nounsCSV, verbsCSV, diphtongsCSV,
 				umlautChangesCSV,
 				caseEndingsYAML);
@@ -145,7 +154,7 @@ public class Dict {
 		// TODO: Fix this
 		for (WordStemmer w : l) {
 			if (nouns.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.Any(w.getSuffixes(), data -> {
-				return data.containsKey("certain") && data.getBoolean("certain");
+				return data.containsKey("certain") && data.getBool("certain");
 			}))) {
 				res.add(w);
 			}
@@ -160,7 +169,7 @@ public class Dict {
 		w.removePrefixes(verbPrefixes, 2, diphtongs);
 
 		if (verbs.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.Any(w.getSuffixes(), data -> {
-			return data.containsKey("certain") && data.getBoolean("certain");
+			return data.containsKey("certain") && data.getBool("certain");
 		}))) {
 			return Optional.of(w);
 		} else {
@@ -199,7 +208,7 @@ public class Dict {
 
 			for (WordStemmer w : res) {
 				if (nouns.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.Any(w.getSuffixes(),
-						data -> data.containsKey("certain") && data.getBoolean("certain")))) {
+						data -> data.containsKey("certain") && data.getBool("certain")))) {
 					t.setData(Optional.of(w));
 					break;
 				}

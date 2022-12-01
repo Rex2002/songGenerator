@@ -1,6 +1,7 @@
 package org.se.Text.Analysis.dict;
 
 import java.util.*;
+import org.se.Text.Analysis.*;
 
 public class WordWithData extends HashMap<String, String> {
 	private String baseKey = "radix";
@@ -12,12 +13,36 @@ public class WordWithData extends HashMap<String, String> {
 		this.baseKey = baseKey;
 	}
 
-	public boolean getBoolean(String key) {
+	public Gender getGender(String key) {
+		return Parser.parseGender(get(key));
+	}
+
+	public Gender getGender() {
+		return Parser.parseGender(baseKey);
+	}
+
+	public GrammaticalCase getGrammaticalCase(String key) {
+		return Parser.parseGrammaticalCase(get(key));
+	}
+
+	public GrammaticalCase getGrammaticalCase() {
+		return Parser.parseGrammaticalCase(baseKey);
+	}
+
+	public Numerus getNumerus(String key) {
+		return Parser.parseNumerus(get(key));
+	}
+
+	public Numerus getNumerus() {
+		return Parser.parseNumerus(baseKey);
+	}
+
+	public boolean getBool(String key) {
 		return Parser.parseBool(get(key));
 	}
 
-	public boolean getBoolean() {
-		return getBoolean(baseKey);
+	public boolean getBool() {
+		return Parser.parseBool(baseKey);
 	}
 
 	public String[] getList(String key) {
@@ -25,7 +50,7 @@ public class WordWithData extends HashMap<String, String> {
 	}
 
 	public String[] getList() {
-		return getList(baseKey);
+		return Parser.parseList(baseKey);
 	}
 
 	public Optional<Integer> getInt(String key) {
@@ -33,7 +58,7 @@ public class WordWithData extends HashMap<String, String> {
 	}
 
 	public Optional<Integer> getInt() {
-		return getInt(baseKey);
+		return Parser.parseInt(baseKey);
 	}
 
 	public String get() {

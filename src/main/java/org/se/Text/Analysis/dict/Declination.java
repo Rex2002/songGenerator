@@ -6,27 +6,18 @@ import org.se.Text.Analysis.Gender;
 import org.se.Text.Analysis.GrammaticalCase;
 import org.se.Text.Analysis.Numerus;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class Declination {
-	@JsonProperty
 	String radix;
-	@JsonProperty
 	GrammaticalCase grammaticalCase;
-	@JsonProperty
 	Gender gender;
-	@JsonProperty
 	Numerus numerus;
-	@JsonProperty
 	boolean toUmlaut;
 
-	@JsonCreator
-	public Declination(@JsonProperty("radix") String radix,
-			@JsonProperty("grammaticalCase") GrammaticalCase grammaticalCase,
-			@JsonProperty("gender") Gender gender,
-			@JsonProperty("numerus") Numerus numerus,
-			@JsonProperty("toUmlaut") boolean toUmlaut) {
+	public Declination(String radix,
+			GrammaticalCase grammaticalCase,
+			Gender gender,
+			Numerus numerus,
+			boolean toUmlaut) {
 		this.radix = radix;
 		this.grammaticalCase = grammaticalCase;
 		this.gender = gender;
