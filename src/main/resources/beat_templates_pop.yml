@@ -1,3 +1,4 @@
+# @author Malte Richert
 # readable beat specification:
 # one line per drum/cymbal. x is a note, - is a rest
 # resolution holds length of each char, specified in 96th from bar start
@@ -14,12 +15,13 @@ mainPattern:
     snare:  ----x-------x---
     bass:   x-------x-------
 bigFill:
-    hiHat:  x-x-x-x---------
-    hTom:   ----------xx----
-    mTom:   ------------xx--
-    snare:  ----x---xx------
-    lTom:   --------------xx
-    bass:   x-------x-------
+    hiHat:  x-x-x-x-----------
+    hTom:   ----------xx------
+    mTom:   ------------xx----
+    snare:  ----x---xx--------
+    lTom:   --------------xx--
+    bass:   x-------x---------
+    crash:  ----------------x-
 smallFill:
     hiHat:  x-x-x-x-x-x-x-x-
     snare:  ----x-------x-x-
@@ -32,7 +34,7 @@ mainPattern:
     snare:  ----x-------x---
     bass:   x-------x-------
 bigFill:
-    ride:   x---x---x-------
+    ride:   x-x-x---x-------
     snare:  ----x------xx-xx
     bass:   x-------x-------
 smallFill:

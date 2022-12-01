@@ -3,6 +3,11 @@ package org.se.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
+/**
+ * @author Benjamin Frahm
+ */
+
 public class Chord {
     private final int baseNote;
     private final ArrayList<Integer> chordModifier;
@@ -39,6 +44,7 @@ public class Chord {
             k.add(baseNote + modifier);
         }
         return k;
+
     }
 
     public static void setChordModifiers(HashMap<String, ArrayList<Integer>> chordModifiers) {

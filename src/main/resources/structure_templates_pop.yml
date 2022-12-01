@@ -1,3 +1,4 @@
+# @author Malte Richert
 order: [intro, verse, chorus, verse, chorus, bridge, chorus]
 basePart: intro
 parts:
@@ -7,8 +8,8 @@ parts:
       - chords
       - drums
       - bass
-    opt:
       - melody
+    opt:
       - chords2
   verse:
     length: 16
@@ -24,7 +25,7 @@ parts:
     randomizationLevel: 2
     req:
       - chords
-      - bass2
+      - bass
       - drums
     opt:
       - melody
@@ -34,6 +35,7 @@ parts:
     req:
       - chords
       - bass
+      - melody
     opt:
       - chords2
 ---
@@ -55,5 +57,6 @@ parts:
     req:
       - chords
       - bass
-    opt:
       - melody
+    opt:
+      - melody2

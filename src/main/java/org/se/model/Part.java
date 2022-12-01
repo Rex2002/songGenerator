@@ -6,6 +6,12 @@ import org.se.logic.*;
 
 import java.util.*;
 
+
+/**
+ * @author Malte Richert
+ * @author Benjamin Frahm
+ */
+
 public class Part {
     @JsonProperty
     private int length;
@@ -16,14 +22,12 @@ public class Part {
     @JsonProperty
     private int randomizationLevel;
     private List<List<String>> chordProgression;
-    private Genre genre;
-    private Beat beat;
     private final Random ran = new Random();
     private final List<MidiPlayable> midiPlayables = new ArrayList<>();
 
     @JsonCreator
     public Part(@JsonProperty("length") int length, @JsonProperty("req") List<InstrumentEnum> reqInsts,
-                @JsonProperty("opt") List<InstrumentEnum> optInsts,
+                @JsonProperty(value = "opt", defaultValue = "[]") List<InstrumentEnum> optInsts,
                 @JsonProperty(value = "randomizationLevel", defaultValue = "0") int randomizationLevel) {
         this.length = length;
         this.reqInsts = reqInsts;
@@ -31,6 +35,12 @@ public class Part {
         this.randomizationLevel = randomizationLevel;
     }
 
+    /**
+     * method for filling a part based on a given chord progression
+     * @param chordProgression - the chord progression that is meant to be used
+     * @param key - the key of the part
+     * @param trackMapping - the Instrument-track-mapping of the sequence
+     */
     public void fillPart(List<List<String>> chordProgression, MusicalKey key, Map<Integer,Integer> trackMapping){
         this.chordProgression = chordProgression;
         fillPart(key, trackMapping);
@@ -43,20 +53,19 @@ public class Part {
             for(InstrumentEnum instr : reqInsts){
                 if(instrEnumBeginsWith(instr, "chords")) {
                     m = new ChordContainer(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())),bar,
-                            key.getBaseNote(), chordProgression.get(bar % chordProgression.size()) );
+                            key, chordProgression.get(bar % chordProgression.size()) );
                     midiPlayables.add(m);
                     m = new ChordContainer(trackMapping.get(Config.getInstrumentMapping().get(instr.toString()))+1,bar,
-                            key.getBaseNote(), chordProgression.get(bar % chordProgression.size()), true );
+                            key, chordProgression.get(bar % chordProgression.size()), true );
                     midiPlayables.add(m);
-                    //TODO: put left hand into second midi-track
                 }
-                if(instrEnumBeginsWith(instr,"drum")){
+                else if(instrEnumBeginsWith(instr,"drum")){
                     // adds fills at the following positions with chances:
                     //   every second bar:
                     //      small fill: 50%
                     //   every fourth bar:
-                    //      big fill: 33%
-                    //      small fill: 33%
+                    //      big fill: 50%
+                    //      small fill: 50%
                     //  last bar of the part:
                     //      big fill: 100%
                     int fill;
@@ -70,22 +79,30 @@ public class Part {
                         fill = ran.nextInt(2) - 1;
                     }
                     else{
-                        fill = 2;
+                        fill = -1;
                     }
                     m = new BeatContainer(beatNo, bar, fill, trackMapping.get(Config.getInstrumentMapping().get(instr.toString())));
                     midiPlayables.add(m);
                 }
-                if(instrEnumBeginsWith(instr, "bass")){
+                else if(instrEnumBeginsWith(instr, "bass")){
                     m = new BassContainer(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())),bar,
-                            key.getBaseNote(), chordProgression.get(bar % chordProgression.size()),
+                            key, chordProgression.get(bar % chordProgression.size()),
                             chordProgression.get((bar+1) % chordProgression.size()));
+                    midiPlayables.add(m);
+                }
+                else{
+                    m = new Melody(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar, key, chordProgression.get(bar % chordProgression.size()));
                     midiPlayables.add(m);
                 }
             }
         }
     }
 
-
+    /**
+     * Method to fill a new part with a random chord progression
+     * @param key - the key of the part
+     * @param trackMapping - the Instrument-track-mapping of the sequence
+     */
     public void fillRandomly(MusicalKey key, Map<Integer, Integer> trackMapping) {
         chordProgression = Config.getChordProgressions().get(ran.nextInt(Config.getChordProgressions().size()));
         fillPart(key, trackMapping);
@@ -99,8 +116,6 @@ public class Part {
                 ", optInsts=" + optInsts +
                 ", randomizationLevel=" + randomizationLevel +
                 ", chords=" + chordProgression +
-                ", genre=" + genre +
-                ", beat=" + beat +
                 '}';
     }
     private boolean instrEnumBeginsWith(InstrumentEnum instr, String startPhrase){

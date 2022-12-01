@@ -4,39 +4,28 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+
+/**
+ * @author Benjamin Frahm
+ */
+
 public class MusicalKey {
 
-    public static int[] keyMin = {0,2,3,5,7,8,10};
     public static int[] keyMaj = {0,2,4,5,7,9,11};
-    static String[] scales = {"min", "maj"};
     private final int baseNote;
     private String base;
-    private final String scale;
 
-    public static int[] getNotesInKey(int baseNote, String scale){
+    public static int[] getNotesInKey(int baseNote){
         int[] notesInKey = new int[7];
         for (int i = 0; i < 7; i++) {
-            notesInKey[i] = baseNote + (scale.equals("min") ? keyMin[i] : keyMaj[i]);
+            notesInKey[i] = baseNote + keyMaj[i];
         }
         return notesInKey;
     }
 
-    @Deprecated
-    public MusicalKey(int baseNote, String scale){
-        this.baseNote = baseNote;
-        this.scale = scale;
-    }
-
     public MusicalKey(){
-        //this.scale = scales[new Random().nextInt(2)];
-        this.scale = "maj"; //TODO decide whether minor scales are necessary and map them to their maj parallel
-        if(scale.equals("min")){
-            base = (String) musicalKeyMinor.keySet().toArray()[new Random().nextInt(musicalKeyMinor.keySet().size())];
-        }
-        else{
-            base = (String) musicalKeyMajor.keySet().toArray()[new Random().nextInt(musicalKeyMajor.keySet().size())];
-        }
-        this.baseNote = translateNoteStringToValue(base);
+        base = (String) musicalKeyMajor.keySet().toArray()[new Random().nextInt(musicalKeyMajor.keySet().size())];
+        baseNote = translateNoteStringToValue(base);
     }
 
     public int getBaseNote() {
@@ -45,10 +34,6 @@ public class MusicalKey {
 
     public String getBase() {
         return base;
-    }
-
-    public String getScale() {
-        return scale;
     }
 
     public static int translateNoteStringToValue(String s){
@@ -75,25 +60,6 @@ public class MusicalKey {
         musicalKeyMajor.put("Cs", (byte) 7);
 
     }
-    public static final Map<String, Byte> musicalKeyMinor = new HashMap<>();
-    static {
-        musicalKeyMinor.put("Ab", (byte) -7);
-        musicalKeyMinor.put("Eb", (byte) -6);
-        musicalKeyMinor.put("Bb", (byte) -5);
-        musicalKeyMinor.put("F", (byte) -4);
-        musicalKeyMinor.put("C", (byte) -3);
-        musicalKeyMinor.put("G", (byte) -2);
-        musicalKeyMinor.put("D", (byte) -1);
-        musicalKeyMinor.put("A", (byte) 0);
-        musicalKeyMinor.put("E", (byte) 1);
-        musicalKeyMinor.put("B", (byte) 2);
-        musicalKeyMinor.put("Fs", (byte) 3);
-        musicalKeyMinor.put("Cs", (byte) 4);
-        musicalKeyMinor.put("Gs", (byte) 5);
-        musicalKeyMinor.put("Ds", (byte) 6);
-        musicalKeyMinor.put("As", (byte) 7);
-    }
-
     public static final Map<Character, Integer> musicalStringToNoteValue = new HashMap<>();
     static {
         musicalStringToNoteValue.put('C', 60);
@@ -112,7 +78,6 @@ public class MusicalKey {
         return "MusicalKey{" +
                 ", \nbaseNote=" + baseNote +
                 ", \nbase='" + base + '\'' +
-                ", \nscale='" + scale + '\'' +
                 '}';
     }
 }

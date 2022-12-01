@@ -4,6 +4,12 @@ import org.se.model.*;
 
 import java.util.*;
 
+
+/**
+ * @author Malte Richert
+ * @author Benjamin Frahm
+ */
+
 public class StructureGenerator {
     private static final Random ran = new Random();
     private static Structure structure;
@@ -24,6 +30,9 @@ public class StructureGenerator {
         structure.getPart(structure.getBasePartKey()).fillRandomly(structure.getKey(), trackMapping);
 
         for (String key: structure.getParts().keySet()) {
+            if(key.equals(structure.getBasePartKey())){
+                continue;
+            }
             Part part = structure.getPart(key);
 
             if (part.getRandomizationLevel()==0){
@@ -87,9 +96,9 @@ public class StructureGenerator {
             else{
                 seq.setInstrument(instr, trackMapping.get(instr));
             }
-            seq.setKey(structure.getKey().getBase(), structure.getKey().getScale(),trackMapping.get(instr));
+            seq.setKey(structure.getKey().getBase(),trackMapping.get(instr));
             seq.addText(2, trackMapping.get(instr), instr.toString());
-            seq.addNote(60, 0, 24, trackMapping.get(instr));
+            //seq.addNote(60, 0, 24, trackMapping.get(instr));
         }
         seq.setBPM(structure.getTempo());
         return seq;

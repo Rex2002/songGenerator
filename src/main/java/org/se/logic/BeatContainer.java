@@ -5,6 +5,10 @@ import org.se.model.MidiPlayable;
 
 import java.util.*;
 
+/**
+ * @author Benjamin Frahm
+ */
+
 
 public class BeatContainer extends MidiPlayable {
     public static Map<String, Integer> drumPrograms;

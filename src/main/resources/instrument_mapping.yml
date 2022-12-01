@@ -1,9 +1,10 @@
+# @author Benjamin Frahm
 chords  : 1
 chords2 : 2
-melody  : 16
+melody  : 40
 melody2 : 3
 drums   : 114
 drums2  : 118
-bass    : 67 #52
+bass    : 36 #52
 bass2   : 53
 bariSax : 67

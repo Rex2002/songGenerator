@@ -6,22 +6,25 @@ import org.se.model.MusicalKey;
 
 import java.util.*;
 
+/**
+ * @author Benjamin Frahm
+ */
 public class ChordContainer extends MidiPlayable {
-    private final int baseNote;
+    private final MusicalKey key;
     private final boolean isBassTrack;
     Chord[] chords;
     Chord[] inflatedChords;
-    public ChordContainer(int trackNo, int bar, int baseNote, List<String> chords, boolean isBassTrack) {
+    public ChordContainer(int trackNo, int bar, MusicalKey key, List<String> chords, boolean isBassTrack) {
         super(trackNo, bar);
         this.chords = new Chord[chords.size()];
-        this.baseNote = baseNote;
+        this.key = key;
         this.isBassTrack = isBassTrack;
         this.parseChordString(chords);
         setContent();
     }
 
-    public ChordContainer(int trackNo, int bar, int baseNote, List<String> chords){
-        this(trackNo,bar, baseNote, chords, false);
+    public ChordContainer(int trackNo, int bar, MusicalKey key, List<String> chords){
+        this(trackNo,bar, key, chords, false);
     }
 
     public static List<List<List<String>>> getMatchingProgressions(List<String> reqChords) {
@@ -47,7 +50,7 @@ public class ChordContainer extends MidiPlayable {
         for (int i = 0; i < chords.size(); i++) {
             int stair = Integer.parseInt(String.valueOf(chords.get(i).charAt(0)));
             String modifier = chords.get(i).substring(1);
-            this.chords[i] = new Chord(MusicalKey.getNotesInKey(baseNote, "maj")[stair], modifier);
+            this.chords[i] = new Chord(MusicalKey.getNotesInKey(key.getBaseNote())[stair], modifier);
         }
     }
 
@@ -66,24 +69,24 @@ public class ChordContainer extends MidiPlayable {
         for (int count = 0; count < 4; count++){
             List<Integer> singleChord = inflatedChords[count].getChord();
             for (Integer rootNote : singleChord) {
-                List<Integer> tmp = new ArrayList<>();
-                tmp.add(count * 24);
-                tmp.add(24);
+                List<Integer> posAndLen = new ArrayList<>();
+                posAndLen.add(count * 24);
+                posAndLen.add(24);
                 if(isBassTrack){ rootNote = rootNote-24;}
                 if (content.containsKey(rootNote)) {
-                    content.get(rootNote).add(tmp);
+                    content.get(rootNote).add(posAndLen);
                     if(isBassTrack){
                         break;
                     }
                 } else {
-                    List<List<Integer>> tmp2 = new ArrayList<>();
-                    tmp2.add(tmp);
+                    List<List<Integer>> posAndLenList = new ArrayList<>();
+                    posAndLenList.add(posAndLen);
                     if(isBassTrack){
-                        content.put(rootNote, tmp2);
+                        content.put(rootNote, posAndLenList);
                         break;
                     }
 
-                    content.put(rootNote, tmp2);
+                    content.put(rootNote, posAndLenList);
                 }
             }
         }
