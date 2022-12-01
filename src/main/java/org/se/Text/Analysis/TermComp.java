@@ -22,8 +22,8 @@ class TermComp implements Comparator<NounTerm> {
 
 	@Override
 	public int compare(NounTerm o1, NounTerm o2) {
-		TermVariations l1 = terms.get(o1.getLemma());
-		TermVariations l2 = terms.get(o2.getLemma());
+		TermVariations l1 = terms.get(o1.getRadix());
+		TermVariations l2 = terms.get(o2.getRadix());
 		int x1 = o1.getFrequency() * specialVariationBias + l1.getFrequency() * generalTermBias;
 		int x2 = o2.getFrequency() * specialVariationBias + l2.getFrequency() * generalTermBias;
 		return Integer.compare(x1, x2);

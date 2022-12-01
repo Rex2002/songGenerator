@@ -7,29 +7,30 @@ import java.util.*;
  */
 public class NounTerm {
 	public int frequency;
-	public String lemma;
+	public String radix;
 	public String[] words;
 	public Integer[] syllables = {};
 	public Boolean isPlural;
 	public GrammaticalCase grammaticalCase;
 	public Gender gender;
 
-	public NounTerm(String lemma, String[] words, Integer[] syllables, Boolean isPlural,
+	public NounTerm(String radix, String[] words, Integer[] syllables, Boolean isPlural,
 			GrammaticalCase grammaticalCase,
 			Gender gender) {
 		this.frequency = 1;
-		this.lemma = lemma;
+		this.radix = radix;
 		this.words = words;
 		this.syllables = syllables;
 		this.isPlural = isPlural;
 		this.grammaticalCase = grammaticalCase;
 		this.gender = gender;
+		System.out.println(this);
 	}
 
-	public NounTerm(String lemma, String word, Integer[] syllables, Boolean isPlural, GrammaticalCase grammaticalCase,
+	public NounTerm(String radix, String word, Integer[] syllables, Boolean isPlural, GrammaticalCase grammaticalCase,
 			Gender gender) {
 		this.frequency = 1;
-		this.lemma = lemma;
+		this.radix = radix;
 		String[] words = { word };
 		this.words = words;
 		this.syllables = syllables;
@@ -40,14 +41,14 @@ public class NounTerm {
 
 	public NounTerm(String word) {
 		this.frequency = 1;
-		this.lemma = word;
+		this.radix = word;
 		String[] words = { word };
 		this.words = words;
 		Integer[] syllables = { 0 };
 		this.syllables = syllables;
 		this.isPlural = false;
 		this.grammaticalCase = GrammaticalCase.Nominative;
-		this.gender = Gender.female;
+		this.gender = Gender.Female;
 	}
 
 	public void increaseFrequency() {
@@ -90,8 +91,8 @@ public class NounTerm {
 		return this.gender;
 	}
 
-	public String getLemma() {
-		return this.lemma;
+	public String getRadix() {
+		return this.radix;
 	}
 
 	public void setFrequency(int frequency) {
@@ -114,8 +115,8 @@ public class NounTerm {
 		this.gender = gender;
 	}
 
-	public void setLemma(String lemma) {
-		this.lemma = lemma;
+	public void setRadix(String radix) {
+		this.radix = radix;
 	}
 
 	public NounTerm words(String[] words) {
@@ -133,8 +134,8 @@ public class NounTerm {
 		return this;
 	}
 
-	public NounTerm lemma(String lemma) {
-		setLemma(lemma);
+	public NounTerm radix(String radix) {
+		setRadix(radix);
 		return this;
 	}
 
@@ -148,12 +149,12 @@ public class NounTerm {
 		NounTerm term = (NounTerm) o;
 		return Objects.equals(words, term.words) && Objects.equals(syllables, term.syllables)
 				&& Objects.equals(isPlural, term.isPlural) && Objects.equals(grammaticalCase, term.grammaticalCase)
-				&& Objects.equals(gender, term.gender) && Objects.equals(lemma, term.lemma);
+				&& Objects.equals(gender, term.gender) && Objects.equals(radix, term.radix);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(words, syllables, isPlural, grammaticalCase, gender, lemma);
+		return Objects.hash(words, syllables, isPlural, grammaticalCase, gender, radix);
 	}
 
 	@Override
@@ -164,8 +165,12 @@ public class NounTerm {
 				", isPlural='" + isIsPlural() + "'" +
 				", grammaticalCase='" + getGrammaticalCase() + "'" +
 				", gender='" + this.gender + "'" +
-				", lemma='" + this.lemma + "'" +
+				", radix='" + this.radix + "'" +
 				"}";
+	}
+
+	public String show() {
+		return String.join(" ", this.words);
 	}
 
 	public String[] syllableStrings() {

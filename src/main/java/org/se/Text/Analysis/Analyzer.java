@@ -1,6 +1,7 @@
 package org.se.Text.Analysis;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -12,7 +13,7 @@ import org.se.Text.Analysis.dict.Dict;
  */
 public class Analyzer {
 	public static TermCollection analyze(Path filepath) throws IOException {
-		Dict dict = new Dict(Path.of("", "Dictionary"));
+		Dict dict = new Dict(Path.of("", "./src/main/resources/dictionary"));
 		String text = Analyzer.readFile(filepath);
 		ArrayList<ArrayList<String>> sentences = Analyzer.preprocess(text);
 		ArrayList<ArrayList<Tag>> tags = Analyzer.tag(sentences, dict);
@@ -20,7 +21,7 @@ public class Analyzer {
 	}
 
 	public static String readFile(Path filepath) throws IOException {
-		return Files.readString(filepath);
+		return Files.readString(filepath, StandardCharsets.ISO_8859_1);
 	}
 
 	static ArrayList<ArrayList<String>> preprocess(String text) {
@@ -129,21 +130,24 @@ public class Analyzer {
 		for (ArrayList<Tag> sentenceTags : tags) {
 			for (Tag t : sentenceTags) {
 				if (!t.is(TagType.Other)) {
-					NounTerm term = dict.buildTerm(t);
+					Optional<NounTerm> term = dict.buildTerm(t);
+					if (term.isPresent()) {
+						// System.out.println(term.get());
 
-					// TODO: There must be better syntax for this
-					// maybe something similar to Rust's match syntax?
-					Map<String, TermVariations> tmp;
-					if (t.is(TagType.Noun)) {
-						tmp = nounVariations;
-					} else {
-						tmp = verbVariations;
-					}
+						// TODO: There must be better syntax for this
+						// maybe something similar to Rust's match syntax?
+						Map<String, TermVariations> tmp;
+						if (t.is(TagType.Noun)) {
+							tmp = nounVariations;
+						} else {
+							tmp = verbVariations;
+						}
 
-					if (tmp.containsKey(term.lemma)) {
-						tmp.get(term.lemma).add(term);
-					} else {
-						tmp.put(term.lemma, new TermVariations(term));
+						if (tmp.containsKey(term.get().radix)) {
+							tmp.get(term.get().radix).add(term.get());
+						} else {
+							tmp.put(term.get().radix, new TermVariations(term.get()));
+						}
 					}
 				}
 			}

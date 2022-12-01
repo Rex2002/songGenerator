@@ -2,12 +2,12 @@ package org.se.Text.Analysis.dict;
 
 import java.util.*;
 
-public class WordList {
+public class WordList implements Iterable<WordWithData> {
 	private List<WordWithData> store = new ArrayList<WordWithData>();
 	final String baseKey;
 
 	public WordList() {
-		this.baseKey = "lemma";
+		this.baseKey = "radix";
 	}
 
 	public WordList(String baseKey) {
@@ -15,12 +15,17 @@ public class WordList {
 	}
 
 	public WordList(Iterable<String> strings) {
-		this.baseKey = "lemma";
+		this.baseKey = "radix";
 		for (String s : strings) {
 			WordWithData h = new WordWithData();
 			h.put(baseKey, s);
 			this.insert(h);
 		}
+	}
+
+	@Override
+	public Iterator<WordWithData> iterator() {
+		return store.iterator();
 	}
 
 	public boolean isEmpty() {
@@ -32,13 +37,13 @@ public class WordList {
 	}
 
 	private int binSearch(String s, int start, int end) {
-		int mid = (int) end / 2 + start;
+		int mid = (int) (end + start) / 2;
 		while (end - start > 1) {
 			mid = (int) (end + start) / 2;
 			int x = store.get(mid).get(baseKey).compareTo(s);
 			if (x == 0)
 				return mid;
-			else if (x < 0)
+			else if (x > 0)
 				end = mid;
 			else
 				start = mid;
@@ -109,7 +114,7 @@ public class WordList {
 	public Optional<WordWithData> get(String s) {
 		int i = binSearch(s);
 		WordWithData h = store.get(i);
-		if (h.get(baseKey) == s) {
+		if (h.get(baseKey).equalsIgnoreCase(s)) {
 			return Optional.of(h);
 		}
 		return Optional.empty();
@@ -120,11 +125,11 @@ public class WordList {
 	}
 
 	public boolean has(String s) {
-		int i = binSearch(s);
 		if (store.isEmpty()) {
 			return false;
 		}
+		int i = binSearch(s);
 		WordWithData h = store.get(i);
-		return h != null && h.get(baseKey) == s;
+		return h != null && h.get(baseKey).compareTo(s) == 0;
 	}
 }

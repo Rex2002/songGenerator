@@ -5,10 +5,19 @@ import java.nio.file.Path;
 import org.se.Text.Analysis.*;
 
 public class Main {
+	static int counter = 0;
+
 	public static void main(String[] args) throws IOException {
 
-		TermCollection tc = Analyzer.analyze(Path.of("test.txt"));
-		System.out.println(tc);
+		TermCollection tc = Analyzer.analyze(Path.of("bibel.txt"));
+		tc.iterNouns(vars -> {
+			if (vars.getFrequency() > 1) {
+				counter++;
+				vars.forEach(term -> System.out.print(term.show() + ", "));
+				System.out.println(vars.getFrequency());
+			}
+		});
+		System.out.println(counter);
 
 		// TermCollection tc = TermExample.getExample();
 		// List<Term> res =

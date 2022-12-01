@@ -16,6 +16,8 @@ anfallen. Eine solche Menge von Informationen ist praktisch nicht fehlerfrei
 zu speichern. Um das Audiosignal zu rekonstruieren, ist es daher notwendig,
 Fehler in der Speicherung und der Übertragung zu erkennen und zu korrigie-
 ren.
+Die Grundlagen sind also wichtig.
+Das hier sind nur Testsätze bezüglich den Grundlagen der Codierungstheorie.
 Der grundsätzliche Ansatz hierzu ist, die Nachricht mit Redundanzen so an-
 zureichern, dass auch aus einer fehlerhaft übertragenen Nachricht noch auf
 deren Inhalt geschlossen werden kann.
