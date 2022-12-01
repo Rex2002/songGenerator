@@ -1,5 +1,9 @@
 package org.se.model;
 
+
+/**
+ * @author Malte Richert
+ */
 public enum InstrumentEnum {
     chords,
     chords2,

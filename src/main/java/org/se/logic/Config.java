@@ -14,6 +14,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
+/**
+ * @author Malte Richert
+ */
+
 public class Config {
     private static List<Structure> structures;
     private static List<List<List<String>>> chordProgressions;

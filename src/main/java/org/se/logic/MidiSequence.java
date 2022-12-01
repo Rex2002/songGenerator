@@ -9,6 +9,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+
+/**
+ * @author Benjamin Frahm
+ */
+
 public class MidiSequence {
     private static final int PPQ_RESOLUTION = 24;
     private Sequence seq;
@@ -61,16 +66,15 @@ public class MidiSequence {
     /**
      * for detailed information about the key-value mapping for the key see: <a href="https://www.recordingblogs.com/wiki/midi-key-signature-meta-message">...</a>
      * @param key - the musical key
-     * @param scale - the scale, minor or major, 0 -> major, 1 -> minor
      * @param trackNumber - the track number, for which the key is meant to be set
      */
-    public void setKey(String key, String scale, int trackNumber) {
+    public void setKey(String key, int trackNumber) {
 
-        if (!(MusicalKey.musicalKeyMinor.containsKey(key) || MusicalKey.musicalKeyMajor.containsKey(key))){
+        if (!( MusicalKey.musicalKeyMajor.containsKey(key))){
             throw new RuntimeException("illegal key" + key);
         }
-        byte s = (byte) (Objects.equals(scale, "min") ? 1 :0);
-        byte k = s==1 ? MusicalKey.musicalKeyMinor.get(key) : MusicalKey.musicalKeyMajor.get(key);
+        byte s = 0;
+        byte k = MusicalKey.musicalKeyMajor.get(key);
         try {
             MetaMessage mt = new MetaMessage();
 

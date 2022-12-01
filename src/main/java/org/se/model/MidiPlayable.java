@@ -1,8 +1,14 @@
 package org.se.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
+/**
+ * @author Benjamin Frahm
+ */
 
 public abstract class MidiPlayable {
     private final int trackNo;
@@ -30,5 +36,18 @@ public abstract class MidiPlayable {
 
     public void setBar(int bar){
         this.bar = bar;
+    }
+
+    public Map<Integer, List<List<Integer>>> deepCopy(){
+        Map<Integer, List<List<Integer>>> deepCopy = new HashMap<>();
+        for(Integer note : content.keySet()){
+            List<List<Integer>> k = new ArrayList<>();
+            for(List<Integer> innerList : content.get(note)){
+                List<Integer> l = new ArrayList<>(innerList);
+                k.add(l);
+            }
+            deepCopy.put(note, k);
+        }
+        return deepCopy;
     }
 }

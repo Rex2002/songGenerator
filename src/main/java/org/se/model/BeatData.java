@@ -5,6 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.*;
 
+
+/**
+ * @author Malte Richert
+ */
 public class BeatData {
     @JsonProperty
     private Map<String, String> mainPattern;
@@ -48,9 +52,9 @@ public class BeatData {
                     String symbol = map.get(instrument).substring(i, i + 1);
 
                     if (symbol.equals("x")) {
-                        int duration;
                         int position = i * resolution;
 
+                        int duration;
                         if (positions.indexOf(position) < positions.size()-1) {
                             duration = positions.get(positions.indexOf(position)+1) - position;
                         } else {

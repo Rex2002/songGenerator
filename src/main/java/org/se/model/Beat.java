@@ -6,6 +6,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * @author Malte Richert
+ */
+
 public class Beat {
     @JsonProperty
     Map<String, List<List<Integer>>> mainPattern;

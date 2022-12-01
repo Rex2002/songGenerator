@@ -1,3 +1,4 @@
+# @author Benjamin Frahm
 # mapping for drum <=> midi note
 #
 bass   : 36       # confirmed very low bass
@@ -13,4 +14,4 @@ hTom   : 50
 lTom   : 45       # confirmed
 click  : 32       # tongue clicking
 chimes : 33       # confirmed
-crash  : 0
+crash  : 49

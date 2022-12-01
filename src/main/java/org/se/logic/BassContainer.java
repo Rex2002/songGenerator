@@ -6,13 +6,17 @@ import org.se.model.MusicalKey;
 
 import java.util.*;
 
+/**
+ * @author Malte Richert
+ */
+
 public class BassContainer extends MidiPlayable {
-    private final int baseNote;
+    private final MusicalKey key;
     private final Chord[] chords;
     private final Chord[] nextChords;
-    public BassContainer(int trackNo, int bar, int baseNote, List<String> currentChords, List<String> nextChords) {
+    public BassContainer(int trackNo, int bar, MusicalKey key, List<String> currentChords, List<String> nextChords) {
         super(trackNo, bar);
-        this.baseNote = baseNote;
+        this.key = key;
         this.chords = parseChordString(currentChords);
         this.nextChords = parseChordString(nextChords);
         setContent();
@@ -23,7 +27,7 @@ public class BassContainer extends MidiPlayable {
         for (int i = 0; i < chords.size(); i++) {
             int stair = Integer.parseInt(String.valueOf(chords.get(i).charAt(0)));
             String modifier = chords.get(i).substring(1);
-            parsedChords[i] = new Chord(MusicalKey.getNotesInKey(baseNote, "maj")[stair], modifier);
+            parsedChords[i] = new Chord(MusicalKey.getNotesInKey(key.getBaseNote())[stair], modifier);
         }
         return parsedChords;
     }
@@ -47,7 +51,7 @@ public class BassContainer extends MidiPlayable {
             } else {
                 nextChord = nextChords[0];
             }
-            int[] scale = MusicalKey.getNotesInKey(baseNote, "maj");
+            int[] scale = MusicalKey.getNotesInKey(key.getBaseNote());
             Map<Integer, Integer> descaler = new HashMap<>();
             for (int index = 0; index < scale.length; index++) {
                 descaler.put(scale[index]%12, index);
@@ -83,15 +87,15 @@ public class BassContainer extends MidiPlayable {
         }
     }
     private void addNoteToContent(int count, int pitch){
-        List<Integer> pos = new ArrayList<>();
-        pos.add(count * 12);
-        pos.add(12);
+        List<Integer> posAndLen = new ArrayList<>();
+        posAndLen.add(count * 12);
+        posAndLen.add(12);
         if (super.getContent().containsKey(pitch)) {
-            super.getContent().get(pitch).add(pos);
+            super.getContent().get(pitch).add(posAndLen);
         } else {
-            List<List<Integer>> temp2 = new ArrayList<>();
-            temp2.add(pos);
-            super.getContent().put(pitch, temp2);
+            List<List<Integer>> posAndLenList = new ArrayList<>();
+            posAndLenList.add(posAndLen);
+            super.getContent().put(pitch, posAndLenList);
         }
     }
 }

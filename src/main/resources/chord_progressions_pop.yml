@@ -1,3 +1,4 @@
+# @author Malte Richert
 # 0, 3, 4 in major, others minor
 # each list in the list describes one bar, when there are multiple elements in the inner list, the bar is split equally
 - [["0"], ["4"], ["3"], ["0"]] # -1 der Stufen, wg. Index

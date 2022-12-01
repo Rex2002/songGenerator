@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.*;
 
+/**
+ * @author Malte Richert
+ */
 public class Structure {
     @JsonProperty
     private Map<String, Part> parts;
