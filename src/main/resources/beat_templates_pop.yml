@@ -76,3 +76,20 @@ smallFill:
     hiHat:  x-x-x-x-x-x-x---
     snare:  ----x-------x---
     bass:   x--x----x-------
+---
+# B4:
+resolution: 6
+mainPattern:
+    hiHat:  x-x-x-x-x-x-x-x-
+    snare:  ----x-------x---
+    bass:   x-------x-x-----
+bigFill:
+    oHiHat: ------------x---
+    hiHat:  x-x-x-x-xx-x----
+    snare:  ----x-----x---x-
+    bass:   x-------x-------
+smallFill:
+    oHiHat: --------------x-
+    hiHat:  x-x-x-x-x-x-x-x-
+    snare:  ----x-------x---
+    bass:   x-------x-x-----
