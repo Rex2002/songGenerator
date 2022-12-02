@@ -20,4 +20,8 @@ public class Util {
 		}
 		return true;
 	}
+
+	public static <T> boolean Contains(Iterable<T> items, T item) {
+		return Any(items, x -> x == item);
+	}
 }

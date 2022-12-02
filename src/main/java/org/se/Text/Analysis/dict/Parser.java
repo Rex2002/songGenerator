@@ -1,14 +1,45 @@
 package org.se.Text.Analysis.dict;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import org.se.Text.Analysis.*;
 
 public class Parser {
+	// List of classes that are supported for parsing
+	static Class<?>[] supportedClasses = { Integer.class, Boolean.class, List.class, GrammaticalCase.class,
+			Person.class, Tense.class, Gender.class, Numerus.class };
+
+	public static <T> Optional<T> parse(String s, Class<T> cls) {
+		// Why can't I do a switch statement on Class<T>,
+		// ugghhhhhhh why Java, why!!!????
+		if (cls == String.class)
+			return Optional.ofNullable(cls.cast(s));
+		else if (cls == GrammaticalCase.class)
+			return Optional.ofNullable(cls.cast(parseGrammaticalCase(s)));
+		else if (cls == Person.class)
+			return Optional.ofNullable(cls.cast(parsePerson(s)));
+		else if (cls == Tense.class)
+			return Optional.ofNullable(cls.cast(parseTense(s)));
+		else if (cls == Gender.class)
+			return Optional.ofNullable(cls.cast(parseGender(s)));
+		else if (cls == Numerus.class)
+			return Optional.ofNullable(cls.cast(parseNumerus(s)));
+		else if (cls == Boolean.class)
+			return Optional.ofNullable(cls.cast(parseBool(s)));
+		else if (cls == Integer.class)
+			return Optional.ofNullable(cls.cast(parseInt(s)));
+		else if (cls == List.class)
+			return Optional.ofNullable(cls.cast(parseList(s)));
+
+		return Optional.empty();
+	}
+
 	public static GrammaticalCase parseGrammaticalCase(String s) {
 		s = s.toLowerCase();
 		switch (s.charAt(0)) {
@@ -27,6 +58,34 @@ public class Parser {
 			default:
 				return GrammaticalCase.Nominative;
 		}
+	}
+
+	public static Person parsePerson(String s) {
+		s = s.toLowerCase();
+		switch (s.charAt(0)) {
+			case '1':
+				return Person.First;
+			case 'f':
+				return Person.First;
+
+			case '2':
+				return Person.Second;
+			case 's':
+				return Person.Second;
+
+			case '3':
+				return Person.Third;
+			case 't':
+				return Person.Third;
+
+			default:
+				return Person.First;
+		}
+	}
+
+	public static Tense parseTense(String s) {
+		// No logic required, since currently only present tense is supported
+		return Tense.Present;
 	}
 
 	public static Gender parseGender(String s) {
@@ -49,11 +108,15 @@ public class Parser {
 		}
 	}
 
-	public static Optional<Integer> parseInt(String s) {
+	public static Integer parseInt(String s) {
+		return parseInt(s, 0);
+	}
+
+	public static Integer parseInt(String s, Integer def) {
 		try {
-			return Optional.of(Integer.parseInt(s.trim()));
+			return Integer.parseInt(s.trim());
 		} catch (Exception e) {
-			return Optional.empty();
+			return def;
 		}
 	}
 
@@ -65,7 +128,23 @@ public class Parser {
 		return s.split("-");
 	}
 
-	public static void readCSV(Path filepath, Consumer<? super WordWithData> forEachRow)
+	public static List<String[]> readCSV(Path filepath)
+			throws IOException {
+		if (!filepath.toString().endsWith(".csv") && !Files.exists(filepath)) {
+			filepath = Path.of(filepath.toString() + ".csv");
+		}
+
+		String[] rows = Files.readString(filepath).split("\\r?\\n");
+		List<String[]> res = new ArrayList<>();
+
+		for (int i = 0; i < rows.length; i++) {
+			res.add(rows[i].split(","));
+		}
+
+		return res;
+	}
+
+	public static void parseCSV(Path filepath, Consumer<? super WordWithData> forEachRow)
 			throws IOException {
 		if (!filepath.toString().endsWith(".csv") && !Files.exists(filepath)) {
 			filepath = Path.of(filepath.toString() + ".csv");
@@ -84,11 +163,49 @@ public class Parser {
 		}
 	}
 
+	// This function uses generics to set the attributes in a given class with the
+	// parsed entries of a CSV file.
+	// For this to work, the field in the CSV has to have the same name as the
+	// corresponding attribute in the class. And the attribute has to be public
+	// (either exactly the same name, or the same as the lowercase attribute's name)
+	public static <T> void parseCSV(Path filepath, List<T> list, Class<T> cls) throws IOException {
+		parseCSV(filepath, row -> {
+			try {
+				T t = cls.getDeclaredConstructor().newInstance();
+
+				for (Field field : cls.getFields()) {
+					String s = null;
+					String fieldName = field.getName();
+					if (row.containsKey(fieldName)) {
+						s = row.get(fieldName);
+					} else {
+						String tmp = fieldName.toLowerCase();
+						if (row.containsKey(tmp)) {
+							s = row.get(tmp);
+						}
+					}
+
+					if (s != null) {
+						Optional<?> val = parse(s, field.getType());
+						if (val.isPresent()) {
+							field.set(t, val.get());
+						}
+					}
+				}
+
+				list.add(t);
+			} catch (Exception e) {
+				// TODO: Add sensible ErrorHandling
+				System.err.println(e);
+			}
+		});
+	}
+
 	public static void readCSV(Path filepath, List<WordWithData> list) throws IOException {
-		readCSV(filepath, row -> list.add(row));
+		parseCSV(filepath, row -> list.add(row));
 	}
 
 	public static void readCSV(Path filepath, WordList list) throws IOException {
-		readCSV(filepath, row -> list.insert(row));
+		parseCSV(filepath, row -> list.insert(row));
 	}
 }

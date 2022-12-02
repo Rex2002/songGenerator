@@ -1,11 +1,13 @@
 package org.se.Text.Analysis.dict;
 
 import java.util.*;
+
+import org.se.Text.Analysis.DisplayableParent;
 import org.se.Text.Analysis.Numerus;
 
-public abstract class TermEndings {
-	String radix;
-	Numerus numerus;
+public abstract class TermEndings implements DisplayableParent {
+	public String radix;
+	public Numerus numerus;
 
 	public TermEndings() {
 	}
@@ -13,6 +15,12 @@ public abstract class TermEndings {
 	public TermEndings(String radix, Numerus numerus) {
 		this.radix = radix;
 		this.numerus = numerus;
+	}
+
+	@Override
+	public String toStringHelper() {
+		return " radix='" + getRadix() + "'" +
+				", numerus='" + getNumerus() + "'";
 	}
 
 	public String getRadix() {
@@ -60,8 +68,7 @@ public abstract class TermEndings {
 	@Override
 	public String toString() {
 		return "{" +
-				" radix='" + getRadix() + "'" +
-				", numerus='" + getNumerus() + "'" +
+				toStringHelper() +
 				"}";
 	}
 

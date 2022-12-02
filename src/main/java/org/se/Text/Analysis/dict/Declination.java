@@ -7,21 +7,19 @@ import org.se.Text.Analysis.GrammaticalCase;
 import org.se.Text.Analysis.Numerus;
 
 public class Declination extends TermEndings {
-	GrammaticalCase grammaticalCase;
-	Gender gender;
-	boolean toUmlaut;
+	public GrammaticalCase grammaticalCase;
+	public Gender gender;
+	public boolean toUmlaut;
 
 	public Declination(String radix,
 			GrammaticalCase grammaticalCase,
 			Gender gender,
 			Numerus numerus,
 			boolean toUmlaut) {
-		this.radix = radix;
+		super(radix, numerus);
 		this.grammaticalCase = grammaticalCase;
 		this.gender = gender;
-		this.numerus = numerus;
 		this.toUmlaut = toUmlaut;
-		// System.out.println(this);
 	}
 
 	public Declination() {
@@ -91,10 +89,9 @@ public class Declination extends TermEndings {
 	@Override
 	public String toString() {
 		return "{" +
-				" radix='" + getRadix() + "'" +
+				super.toStringHelper() +
 				", grammaticalCase='" + getGrammaticalCase() + "'" +
 				", gender='" + getGender() + "'" +
-				", numerus='" + getNumerus() + "'" +
 				", toUmlaut='" + isToUmlaut() + "'" +
 				"}";
 	}

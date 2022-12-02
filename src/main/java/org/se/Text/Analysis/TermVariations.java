@@ -59,71 +59,6 @@ public class TermVariations<T extends Term> {
 		});
 	}
 
-	public String getRadix() {
-		return this.radix;
-	}
-
-	public Map<Integer, T> getVariations() {
-		return this.variations;
-	}
-
-	public void setVariations(Map<Integer, T> variations) {
-		this.variations = variations;
-	}
-
-	public Integer getFrequency() {
-		return this.frequency;
-	}
-
-	public void setFrequency(Integer frequency) {
-		this.frequency = frequency;
-	}
-
-	public void setRadix(String radix) {
-		this.radix = radix;
-	}
-
-	public TermVariations<T> variations(Map<Integer, T> variations) {
-		setVariations(variations);
-		return this;
-	}
-
-	public TermVariations<T> frequency(Integer frequency) {
-		setFrequency(frequency);
-		return this;
-	}
-
-	public TermVariations<T> radix(String radix) {
-		setRadix(radix);
-		return this;
-	}
-
-	@Override
-	public int hashCode() {
-		return this.radix.hashCode();
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (o == this)
-			return true;
-		if (!(o instanceof TermVariations)) {
-			return false;
-		}
-		TermVariations<T> termVariations = (TermVariations<T>) o;
-		return Objects.equals(variations, termVariations.variations)
-				&& Objects.equals(frequency, termVariations.frequency) && Objects.equals(radix, termVariations.radix);
-	}
-
-	@Override
-	public String toString() {
-		return "{" +
-				" variations='" + getVariations() + "'" +
-				", frequency='" + getFrequency() + "'" +
-				", radix='" + getRadix() + "'" +
-				"}";
-	}
-
 	public void add(T term) {
 		if (this.radix.isEmpty()) {
 			this.radix = term.radix;
@@ -197,5 +132,72 @@ public class TermVariations<T extends Term> {
 			Numerus numerus) {
 		int hash = NounTerm.hashData(gender, grammaticalCase, numerus);
 		return nounVariations.variations.containsKey(hash);
+	}
+
+	// Boilerplate:
+
+	public String getRadix() {
+		return this.radix;
+	}
+
+	public Map<Integer, T> getVariations() {
+		return this.variations;
+	}
+
+	public void setVariations(Map<Integer, T> variations) {
+		this.variations = variations;
+	}
+
+	public Integer getFrequency() {
+		return this.frequency;
+	}
+
+	public void setFrequency(Integer frequency) {
+		this.frequency = frequency;
+	}
+
+	public void setRadix(String radix) {
+		this.radix = radix;
+	}
+
+	public TermVariations<T> variations(Map<Integer, T> variations) {
+		setVariations(variations);
+		return this;
+	}
+
+	public TermVariations<T> frequency(Integer frequency) {
+		setFrequency(frequency);
+		return this;
+	}
+
+	public TermVariations<T> radix(String radix) {
+		setRadix(radix);
+		return this;
+	}
+
+	@Override
+	public int hashCode() {
+		return this.radix.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this)
+			return true;
+		if (!(o instanceof TermVariations)) {
+			return false;
+		}
+		TermVariations<T> termVariations = (TermVariations<T>) o;
+		return Objects.equals(variations, termVariations.variations)
+				&& Objects.equals(frequency, termVariations.frequency) && Objects.equals(radix, termVariations.radix);
+	}
+
+	@Override
+	public String toString() {
+		return "{" +
+				" variations='" + getVariations() + "'" +
+				", frequency='" + getFrequency() + "'" +
+				", radix='" + getRadix() + "'" +
+				"}";
 	}
 }

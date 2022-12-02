@@ -2,7 +2,7 @@ package org.se.Text.Analysis;
 
 import java.util.*;
 
-public class Term {
+public class Term implements DisplayableParent {
 	public int frequency;
 	public String radix;
 	public String word;
@@ -50,7 +50,8 @@ public class Term {
 	// return res;
 	// }
 
-	protected String toStringHelper() {
+	@Override
+	public String toStringHelper() {
 		return " frequency='" + getFrequency() + "'" +
 				", radix='" + getRadix() + "'" +
 				", word='" + getWord() + "'" +

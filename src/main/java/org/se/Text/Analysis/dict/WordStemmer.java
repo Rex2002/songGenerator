@@ -56,9 +56,10 @@ public class WordStemmer {
 
 	// Actual Logic:
 
-	public static WordStemmer[] radicalize(String s, List<Declination> caseEnding, WordList suffixes, WordList prefixes,
+	public static WordStemmer[] radicalize(String s, List<Declination> caseEndings, WordList suffixes,
+			WordList prefixes,
 			int minStemLength, WordList diphtongs, WordList umlautChanges, String baseKey) {
-		WordStemmer[] x = findCaseEndings(s, caseEnding, umlautChanges, minStemLength, diphtongs, baseKey);
+		WordStemmer[] x = findCaseEndings(s, caseEndings, umlautChanges, minStemLength, diphtongs, baseKey);
 		for (WordStemmer w : x) {
 			w.removeSuffixes(suffixes, minStemLength, diphtongs);
 			w.removePrefixes(prefixes, minStemLength, diphtongs);
@@ -158,14 +159,14 @@ public class WordStemmer {
 	// This could be optimized by storing a list of radixes
 	// mapping to a list of Declinations
 	// where no duplicate radixes are stored and the result is flattened
-	public static WordStemmer[] findCaseEndings(String s, List<Declination> caseEnding, WordList umlautChanges,
+	public static WordStemmer[] findCaseEndings(String s, List<Declination> caseEndings, WordList umlautChanges,
 			int minStemLength,
 			WordList diphtongs,
 			String baseKey) {
 		List<WordStemmer> l = new ArrayList<>();
 
 		// Check all endings if they apply to the stem
-		for (Declination ending : caseEnding) {
+		for (Declination ending : caseEndings) {
 			String scopy = s;
 			if (scopy.endsWith(ending.getRadix())) {
 				// Update Umlaut sequences if necessary
