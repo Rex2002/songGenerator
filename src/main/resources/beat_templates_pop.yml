@@ -95,3 +95,73 @@ smallFill:
     hiHat:  x-x-x-x-x-x-x-x-
     snare:  ----x-------x---
     bass:   x-------x-x-----
+---
+# B5:
+resolution: 6
+mainPattern:
+    hiHat:  x-x-x-x-x-x-x-x-
+    snare:  ----x-------x---
+    bass:   x-x-----x-------
+bigFill:
+    hiHat:  x-x-x-x-xx-x----
+    hTom:   -------------xx-
+    snare:  ----x-----x-x---
+    bass:   x-x-----x-------
+smallFill:
+    oHiHat: --------------x-
+    hiHat:  x-x-x-x-x-x-x---
+    snare:  ----x-------x---
+    bass:   x-x-----x-------
+---
+# B6:
+resolution: 6
+mainPattern:
+    hiHat:  x-x-x-x-x-x-x-x-
+    snare:  ----x-------x---
+    bass:   x--x--x---x-----
+bigFill:
+    hiHat:  x-x-x-x---------
+    mTom:   --------------x-
+    snare:  ----x---xx-x----
+    lTom:   ------------xx--
+    bass:   x--x--x---------
+smallFill:
+    hiHat:  x-x-x-x-x-x-x-x-
+    snare:  ----x-------x--x
+    bass:   x--x--x---x-----
+---
+# B7:
+resolution: 6
+mainPattern:
+    hiHat:  x-x-x-x-x-x-x-x-
+    snare:  ----x-------x---
+    bass:   x------x--x-----
+bigFill:
+    oHiHat: ------------x---
+    hiHat:  x---x-----------
+    mTom:   ----------x-----
+    snare:  ----x-------x---
+    lTom:   -------x--------
+    bass:   x------x--x-----
+smallFill:
+    hiHat:  x-x-x-x-x-x-x-x-
+    snare:  ----x-------x---
+    bass:   x------x--x---x-
+---
+# S3:
+resolution: 6
+mainPattern:
+    hiHat:  x-x-x-x-x-x-x-x-
+    snare:  ----x-------x-x-
+    bass:   x-------x-------
+bigFill:
+    hiHat:  x-x-x-x----x----
+    hTom:   ------------xx--
+    mTom:   --------------xx
+    snare:  ----x---xx------
+    lTom:   ----------x-----
+    bass:   x---------------
+smallFill:
+    hiHat:  x-x-x-x-x-x-x-x-
+    snare:  ----x-------x--x
+    bass:   x-------x-------
