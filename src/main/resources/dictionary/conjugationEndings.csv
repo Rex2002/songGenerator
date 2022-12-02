@@ -1,0 +1,10 @@
+radix,person,numerus,tense
+e,1,singular,present
+st,2,singular,present
+est,2,singular,present
+t,3,singular,present
+et,3,singular,present
+en,1,plural,present
+t,2,plural,present
+et,2,plural,present
+en,3,plural,present

@@ -17,6 +17,7 @@ public class Dict {
 	WordList diphtongs;
 	WordList umlautChanges;
 	List<Declination> caseEndings;
+	List<Declination> conjugationEndings;
 	final String baseKey;
 
 	public static String getDefaultBaseKey() {
@@ -25,7 +26,7 @@ public class Dict {
 
 	public Dict(WordList nounSuffixes, WordList nounPrefixes,
 			WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs, WordList diphtongs,
-			WordList umlautChanges, List<Declination> caseEndings) {
+			WordList umlautChanges, List<Declination> caseEndings, List<Declination> conjugationEndings) {
 		this.nounSuffixes = nounSuffixes;
 		this.nounPrefixes = nounPrefixes;
 		this.nouns = nouns;
@@ -35,12 +36,12 @@ public class Dict {
 		this.diphtongs = diphtongs;
 		this.umlautChanges = umlautChanges;
 		this.caseEndings = caseEndings;
+		this.conjugationEndings = conjugationEndings;
 		this.baseKey = getDefaultBaseKey();
 	}
 
 	private static Tuple<WordList[], List<Declination>> readDictionaryFromFiles(Path affixCSV, Path nounsCSV,
-			Path verbsCSV, Path diphtongsCSV,
-			Path umlautChangesCSV, Path caseEndingsCSV)
+			Path verbsCSV, Path diphtongsCSV, Path umlautChangesCSV, Path caseEndingsCSV, Path conjugationEndingsCSV)
 			throws IOException {
 		String baseKey = getDefaultBaseKey();
 		WordList nouns = new WordList(baseKey);
@@ -52,6 +53,9 @@ public class Dict {
 		WordList diphtongs = new WordList(baseKey);
 		WordList umlautChanges = new WordList(baseKey);
 		List<Declination> caseEndings = new ArrayList<>();
+		List<Declination> conjugationEndings = new ArrayList<>();
+		// caseEndings isn't a WordList, because we need a list of duplicate
+		// ending-radixes
 
 		Parser.readCSV(affixCSV, row -> {
 			switch (row.get("type")) {
@@ -85,18 +89,20 @@ public class Dict {
 			dec.setToUmlaut(row.getBool("toUmlaut"));
 			caseEndings.add(dec);
 		});
+		Parser.readCSV(conjugationEndingsCSV, row -> {
 
-		WordList[] res = { nounSuffixes, nounPrefixes, nouns, verbSuffixes, verbPrefixes, verbs, diphtongs,
+		});
+
+		WordList[] wordLists = { nounSuffixes, nounPrefixes, nouns, verbSuffixes, verbPrefixes, verbs, diphtongs,
 				umlautChanges };
-		return new Tuple<>(res, caseEndings);
+		return new Tuple<>(wordLists, caseEndings);
 	}
 
 	public Dict(Path affixCSV, Path nounsCSV, Path verbsCSV, Path diphtongsCSV, Path umlautChangesCSV,
-			Path caseEndingsCSV)
+			Path caseEndingsCSV, Path conjugationEndingsCSV)
 			throws IOException {
 		Tuple<WordList[], List<Declination>> res = readDictionaryFromFiles(affixCSV, nounsCSV, verbsCSV, diphtongsCSV,
-				umlautChangesCSV,
-				caseEndingsCSV);
+				umlautChangesCSV, caseEndingsCSV, conjugationEndingsCSV);
 		this.nounSuffixes = res.x[0];
 		this.nounPrefixes = res.x[1];
 		this.nouns = res.x[2];
@@ -115,10 +121,10 @@ public class Dict {
 		Path verbsCSV = dirPath.resolve("verbsDict");
 		Path diphtongsCSV = dirPath.resolve("diphtongs");
 		Path umlautChangesCSV = dirPath.resolve("umlautChanges");
-		Path caseEndingsYAML = dirPath.resolve("caseEndings");
+		Path caseEndingsCSV = dirPath.resolve("declinationEndings");
+		Path conjugationEndingsCSV = dirPath.resolve("conjugationEndingsCSV");
 		Tuple<WordList[], List<Declination>> res = readDictionaryFromFiles(affixCSV, nounsCSV, verbsCSV, diphtongsCSV,
-				umlautChangesCSV,
-				caseEndingsYAML);
+				umlautChangesCSV, caseEndingsCSV, conjugationEndingsCSV);
 		this.nounSuffixes = res.x[0];
 		this.nounPrefixes = res.x[1];
 		this.nouns = res.x[2];
