@@ -4,6 +4,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * @author Val Richter
+ */
 public class ListVal implements WordData {
 	private List<WordData> store;
 

@@ -5,6 +5,9 @@ import java.util.*;
 import org.se.Text.Analysis.dict.Dict;
 import org.se.Text.Analysis.dict.WordWithData;
 
+/**
+ * @author Val Richter
+ */
 public class VerbTerm extends Term {
 	String infinitive;
 

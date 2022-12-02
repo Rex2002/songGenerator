@@ -2,6 +2,9 @@ package org.se.Text.Analysis.dict.dynamic;
 
 import java.util.Objects;
 
+/**
+ * @author Val Richter
+ */
 public class StrVal implements WordData {
 	private String str;
 

@@ -2,6 +2,9 @@ package org.se.Text.Analysis.dict;
 
 import java.util.*;
 
+/**
+ * @author Val Richter
+ */
 public class WordList implements Iterable<WordWithData> {
 	private List<WordWithData> store = new ArrayList<WordWithData>();
 	final String baseKey;

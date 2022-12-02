@@ -2,6 +2,9 @@ package org.se.Text.Analysis.dict.dynamic;
 
 import java.util.*;
 
+/**
+ * @author Val Richter
+ */
 public class IntVal implements WordData {
 	private Integer i;
 

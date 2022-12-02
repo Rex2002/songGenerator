@@ -2,6 +2,9 @@ package org.se;
 
 import java.util.function.Predicate;
 
+/**
+ * @author Val Richter
+ */
 public class Util {
 	public static <T> boolean Any(Iterable<T> items, Predicate<? super T> f) {
 		for (T item : items) {

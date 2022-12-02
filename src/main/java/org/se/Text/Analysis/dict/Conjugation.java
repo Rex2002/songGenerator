@@ -3,6 +3,9 @@ package org.se.Text.Analysis.dict;
 import java.util.*;
 import org.se.Text.Analysis.*;
 
+/**
+ * @author Val Richter
+ */
 public class Conjugation extends TermEndings {
 	public Person person;
 	public Tense tense;

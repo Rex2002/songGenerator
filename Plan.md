@@ -1,3 +1,7 @@
+<!--
+  * @author Val Richter
+ -->
+
 # The data we need:
 
 A list of nouns with their...

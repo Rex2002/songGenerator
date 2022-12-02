@@ -1,3 +1,7 @@
+<!--
+  * @author Val Richter
+ -->
+
 # Text
 
 This package deals with reading the text in the input file, extracting it's most common terms and using those and a general structure of the song, to write the lyrics for the song.

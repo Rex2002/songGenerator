@@ -1,3 +1,8 @@
+<!--
+  * @author Val Richter
+  * TODO: The description below is outdated (though roughly still correct)
+ -->
+
 # Text-Analysis
 
 Table of Contents:

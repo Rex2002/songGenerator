@@ -1,3 +1,8 @@
+<!--
+  * @author Val Richter
+  * TODO: The API description below is outdated. Main Change is addition of Verbs, as well as changes in the Term & TermVariations API
+ -->
+
 # TermCollection
 
 Nach der vollständigen Analyse des Texts wird ein Objekt der Klasse `TermCollection` weitergegeben. Prinzipiell ist die TermCollection einfach eine Liste an Termen. Allerdings soll sie auch einige Methoden bieten, um die Nutzung zu vereinfachen. Falls andere Methoden sinnvoll wären, sag mir einfach Bescheid und dann können wir die stattdessen einbauen.

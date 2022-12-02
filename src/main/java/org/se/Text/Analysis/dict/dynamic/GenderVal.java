@@ -3,6 +3,9 @@ package org.se.Text.Analysis.dict.dynamic;
 import java.util.*;
 import org.se.Text.Analysis.Gender;
 
+/**
+ * @author Val Richter
+ */
 public class GenderVal implements WordData {
 	private Gender gender;
 

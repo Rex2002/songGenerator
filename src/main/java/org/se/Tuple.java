@@ -2,6 +2,9 @@ package org.se;
 
 import java.util.Objects;
 
+/**
+ * @author Val Richter
+ */
 public class Tuple<X, Y> {
 	public final X x;
 	public final Y y;

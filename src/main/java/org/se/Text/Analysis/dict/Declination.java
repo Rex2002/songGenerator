@@ -6,6 +6,9 @@ import org.se.Text.Analysis.Gender;
 import org.se.Text.Analysis.GrammaticalCase;
 import org.se.Text.Analysis.Numerus;
 
+/**
+ * @author Val Richter
+ */
 public class Declination extends TermEndings {
 	public GrammaticalCase grammaticalCase;
 	public Gender gender;

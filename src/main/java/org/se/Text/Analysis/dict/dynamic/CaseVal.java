@@ -3,6 +3,9 @@ package org.se.Text.Analysis.dict.dynamic;
 import java.util.*;
 import org.se.Text.Analysis.GrammaticalCase;
 
+/**
+ * @author Val Richter
+ */
 public class CaseVal implements WordData {
 	private GrammaticalCase grammaticalCase;
 

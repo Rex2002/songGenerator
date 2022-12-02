@@ -6,6 +6,9 @@ import java.util.*;
 import org.se.Util;
 import org.se.Text.Analysis.*;
 
+/**
+ * @author Val Richter
+ */
 public class Dict {
 	WordList nounSuffixes = new WordList();
 	WordList nounPrefixes = new WordList();

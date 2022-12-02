@@ -3,6 +3,9 @@ package org.se.Text.Analysis.dict.dynamic;
 import java.util.*;
 import org.se.Text.Analysis.Numerus;
 
+/**
+ * @author Val Richter
+ */
 public class NumerusVal implements WordData {
 	private Numerus numerus;
 

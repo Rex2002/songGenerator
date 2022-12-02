@@ -2,6 +2,9 @@ package org.se.Text.Analysis;
 
 import java.util.*;
 
+/**
+ * @author Val Richter
+ */
 public class Term implements DisplayableParent {
 	public int frequency;
 	public String radix;

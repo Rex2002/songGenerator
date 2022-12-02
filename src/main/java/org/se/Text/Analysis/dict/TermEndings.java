@@ -5,6 +5,9 @@ import java.util.*;
 import org.se.Text.Analysis.DisplayableParent;
 import org.se.Text.Analysis.Numerus;
 
+/**
+ * @author Val Richter
+ */
 public abstract class TermEndings implements DisplayableParent {
 	public String radix;
 	public Numerus numerus;

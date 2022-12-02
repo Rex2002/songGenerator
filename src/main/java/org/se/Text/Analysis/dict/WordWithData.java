@@ -2,6 +2,9 @@ package org.se.Text.Analysis.dict;
 
 import java.util.*;
 
+/**
+ * @author Val Richter
+ */
 public class WordWithData extends HashMap<String, String> {
 	private String baseKey = "radix";
 

@@ -2,6 +2,9 @@ package org.se.Text.Analysis.dict;
 
 import java.util.*;
 
+/**
+ * @author Val Richter
+ */
 public class WordStemmer {
 	private String stem = "";
 	private Declination declinatedSuffix = new Declination();

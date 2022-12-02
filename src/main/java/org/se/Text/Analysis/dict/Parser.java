@@ -10,6 +10,9 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import org.se.Text.Analysis.*;
 
+/**
+ * @author Val Richter
+ */
 public class Parser {
 	// List of classes that are supported for parsing
 	static Class<?>[] supportedClasses = { Integer.class, Boolean.class, List.class, GrammaticalCase.class,
