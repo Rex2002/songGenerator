@@ -122,7 +122,7 @@ public class Dict {
 		Path diphtongsCSV = dirPath.resolve("diphtongs");
 		Path umlautChangesCSV = dirPath.resolve("umlautChanges");
 		Path caseEndingsCSV = dirPath.resolve("declinationEndings");
-		Path conjugationEndingsCSV = dirPath.resolve("conjugationEndingsCSV");
+		Path conjugationEndingsCSV = dirPath.resolve("conjugationEndings");
 		Tuple<WordList[], List<Declination>> res = readDictionaryFromFiles(affixCSV, nounsCSV, verbsCSV, diphtongsCSV,
 				umlautChangesCSV, caseEndingsCSV, conjugationEndingsCSV);
 		this.nounSuffixes = res.x[0];
@@ -236,15 +236,15 @@ public class Dict {
 		// System.out.println(data);
 
 		String radix = data.getStem();
-		Integer[] syllables = { 0 };
-		boolean isPlural = caseEnding.getNumerus() == Numerus.Plural;
+		Integer syllableAmount = 1;
+		Numerus numerus = caseEnding.getNumerus();
 		GrammaticalCase grammaticalCase = caseEnding.getGrammaticalCase();
 		Gender gender = caseEnding.getGender();
 
-		return Optional.of(new NounTerm(radix, t.word, syllables, isPlural, grammaticalCase, gender));
+		return Optional.of(new NounTerm(radix, t.word, syllableAmount, numerus, grammaticalCase, gender));
 	}
 
-	public Optional<NounTerm> buildVerbTerm(Tag t) {
+	public Optional<VerbTerm> buildVerbTerm(Tag t) {
 		addWordStemmerData(t, verbSuffixes, verbPrefixes);
 
 		// TODO: Add logic here
@@ -256,12 +256,11 @@ public class Dict {
 		// "Term" class or something
 
 		// TODO
-		Integer[] syllables = { 0 };
-		return Optional.of(new NounTerm(t.getWord(), t.getWord(), syllables, false, GrammaticalCase.Nominative,
-				Gender.Female));
+		return Optional.of(new VerbTerm(t.getWord()));
 	}
 
-	public Optional<NounTerm> buildTerm(Tag t) {
+	// TODO: Probably unnecessary and can be removed by now
+	public Optional<? extends Term> buildTerm(Tag t) {
 		if (t.is(TagType.Noun)) {
 			return buildNounTerm(t);
 		} else {
@@ -269,12 +268,11 @@ public class Dict {
 		}
 	}
 
-	public NounTerm createNounTerm(TermVariations variations, Gender gender, GrammaticalCase grammaticalCase,
-			boolean isPlural) {
+	public NounTerm createNounTerm(TermVariations<NounTerm> variations, Gender gender, GrammaticalCase grammaticalCase,
+			Numerus numerus) {
 		// TODO
-		Integer[] syllables = { 0 };
-		return new NounTerm(variations.getRadix(), variations.getRadix(), syllables, false, GrammaticalCase.Nominative,
-				Gender.Female);
+		return new NounTerm(variations.getRadix(), variations.getRadix(), 1, numerus,
+				grammaticalCase, gender);
 	}
 
 	// Getters, Setters & other Boilerplate

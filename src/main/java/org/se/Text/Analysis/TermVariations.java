@@ -10,50 +10,50 @@ import org.se.Text.Analysis.dict.Dict;
 /**
  * @author Val Richter
  */
-public class TermVariations {
-	public Map<Integer, NounTerm> variations;
+public class TermVariations<T extends Term> {
+	public Map<Integer, T> variations;
 	public Integer frequency;
 	public String radix;
 
-	// public Map<Term> getVariations(@Nullable GrammaticalCase grammaticalCase,
-	// @Nullable Gender gender, @Nullable Boolean isPlural, @Nullable Integer
+	// public Map<T> getVariations(@Nullable GrammaticalCase grammaticalCase,
+	// @Nullable Gender gender, @Nullable Numerus numerus, @Nullable Integer
 	// syllableMin, @Nullable Integer syllableMax) {}
 
 	// Gets the term of the specified variation if it's stored and otherwise creates
 	// it based on simple rules
 	// Careful, created variations might be pretty bad
-	// public Term createVariation(GrammaticalCase grammaticalCase, Boolean
-	// isPlural) {}
+	// public T createVariation(GrammaticalCase grammaticalCase, Numerus
+	// numerus) {}
 
 	public TermVariations() {
-		this.variations = new HashMap<Integer, NounTerm>();
+		this.variations = new HashMap<Integer, T>();
 		this.frequency = 0;
 		this.radix = "";
 	}
 
-	public TermVariations(NounTerm term) {
-		this.variations = new HashMap<Integer, NounTerm>();
+	public TermVariations(T term) {
+		this.variations = new HashMap<Integer, T>();
 		this.variations.put(term.hashData(), term);
 		this.frequency = 1;
 		this.radix = term.radix;
 	}
 
-	public TermVariations(List<NounTerm> terms) {
-		this.variations = new HashMap<Integer, NounTerm>();
-		for (NounTerm term : terms) {
+	public TermVariations(List<T> terms) {
+		this.variations = new HashMap<Integer, T>();
+		for (T term : terms) {
 			variations.put(term.hashData(), term);
 		}
 		this.frequency = terms.size();
 		this.radix = terms.get(0).radix;
 	}
 
-	public TermVariations(Map<Integer, NounTerm> variations, Integer frequency, String radix) {
+	public TermVariations(Map<Integer, T> variations, Integer frequency, String radix) {
 		this.variations = variations;
 		this.frequency = frequency;
 		this.radix = radix;
 	}
 
-	public void forEach(Consumer<? super NounTerm> f) {
+	public void forEach(Consumer<? super T> f) {
 		variations.forEach((key, term) -> {
 			f.accept(term);
 		});
@@ -63,11 +63,11 @@ public class TermVariations {
 		return this.radix;
 	}
 
-	public Map<Integer, NounTerm> getVariations() {
+	public Map<Integer, T> getVariations() {
 		return this.variations;
 	}
 
-	public void setVariations(Map<Integer, NounTerm> variations) {
+	public void setVariations(Map<Integer, T> variations) {
 		this.variations = variations;
 	}
 
@@ -83,17 +83,17 @@ public class TermVariations {
 		this.radix = radix;
 	}
 
-	public TermVariations variations(Map<Integer, NounTerm> variations) {
+	public TermVariations<T> variations(Map<Integer, T> variations) {
 		setVariations(variations);
 		return this;
 	}
 
-	public TermVariations frequency(Integer frequency) {
+	public TermVariations<T> frequency(Integer frequency) {
 		setFrequency(frequency);
 		return this;
 	}
 
-	public TermVariations radix(String radix) {
+	public TermVariations<T> radix(String radix) {
 		setRadix(radix);
 		return this;
 	}
@@ -110,7 +110,7 @@ public class TermVariations {
 		if (!(o instanceof TermVariations)) {
 			return false;
 		}
-		TermVariations termVariations = (TermVariations) o;
+		TermVariations<T> termVariations = (TermVariations<T>) o;
 		return Objects.equals(variations, termVariations.variations)
 				&& Objects.equals(frequency, termVariations.frequency) && Objects.equals(radix, termVariations.radix);
 	}
@@ -124,7 +124,7 @@ public class TermVariations {
 				"}";
 	}
 
-	public void add(NounTerm term) {
+	public void add(T term) {
 		if (this.radix.isEmpty()) {
 			this.radix = term.radix;
 		}
@@ -138,53 +138,19 @@ public class TermVariations {
 		increaseFrequency();
 	}
 
-	public boolean has(NounTerm term) {
+	public boolean has(T term) {
 		return this.variations.containsKey(term.hashCode());
 	}
 
-	public boolean hasType(Gender gender, GrammaticalCase grammaticalCase, Boolean isPlural) {
-		int hash = NounTerm.hashData(gender, grammaticalCase, isPlural);
-		return variations.containsKey(hash);
-	}
-
-	public List<NounTerm> queryBy(Predicate<? super NounTerm> f) {
+	public List<T> queryBy(Predicate<? super T> f) {
 		return this.variations.values().stream().filter(f).collect(Collectors.toList());
 	}
 
-	public List<NounTerm> queryBy(Gender gender) {
-		return this.queryBy(x -> x.gender == gender);
+	public List<T> queryBySyllableRange(int minSyllableAmount, int maxSyllableAmount) {
+		return this.queryBy(x -> minSyllableAmount <= x.syllableAmount && x.syllableAmount >= maxSyllableAmount);
 	}
 
-	public List<NounTerm> queryBy(GrammaticalCase grammaticalCase) {
-		return this.queryBy(x -> x.grammaticalCase == grammaticalCase);
-	}
-
-	public List<NounTerm> queryBy(Boolean isPlural) {
-		return this.queryBy(x -> x.isPlural == isPlural);
-	}
-
-	public List<NounTerm> queryBySyllableRange(int minSyllableAmount, int maxSyllableAmount) {
-		return this.queryBy(x -> minSyllableAmount <= x.syllables.length && x.syllables.length >= maxSyllableAmount);
-	}
-
-	public Optional<NounTerm> getTerm(Gender gender, GrammaticalCase grammaticalCase, Boolean isPlural) {
-		int hash = NounTerm.hashData(gender, grammaticalCase, isPlural);
-		if (variations.containsKey(hash)) {
-			return Optional.of(this.variations.get(hash));
-		}
-		return Optional.empty();
-	}
-
-	public NounTerm createTerm(Gender gender, GrammaticalCase grammaticalCase, Boolean isPlural, Dict dict) {
-		Optional<NounTerm> res = getTerm(gender, grammaticalCase, isPlural);
-		if (res.isPresent()) {
-			return res.get();
-		}
-
-		return dict.createNounTerm(this, gender, grammaticalCase, isPlural);
-	}
-
-	public void add(TermVariations variations) {
+	public void add(TermVariations<T> variations) {
 		variations.variations.forEach((key, term) -> {
 			if (!this.variations.containsKey(key)) {
 				this.variations.put(key, term);
@@ -197,5 +163,39 @@ public class TermVariations {
 
 	public void increaseFrequency() {
 		this.frequency++;
+	}
+
+	// Static Functions specifically for Nouns
+
+	public static Optional<NounTerm> getTerm(TermVariations<NounTerm> nounVariations, Gender gender,
+			GrammaticalCase grammaticalCase,
+			Numerus numerus) {
+		int hash = NounTerm.hashData(gender, grammaticalCase, numerus);
+		if (nounVariations.variations.containsKey(hash)) {
+			return Optional.of(nounVariations.variations.get(hash));
+		}
+		return Optional.empty();
+	}
+
+	// Same as getTerm, except it allows the program to automatically create the
+	// queried variation if necessary
+	// Automatically created variations can be very wrong and should avoided if
+	// possible
+	public static NounTerm createTerm(TermVariations<NounTerm> nounVariations, Gender gender,
+			GrammaticalCase grammaticalCase,
+			Numerus numerus, Dict dict) {
+		Optional<NounTerm> res = getTerm(nounVariations, gender, grammaticalCase, numerus);
+		if (res.isPresent()) {
+			return res.get();
+		}
+
+		return dict.createNounTerm(nounVariations, gender, grammaticalCase, numerus);
+	}
+
+	public static boolean hasType(TermVariations<NounTerm> nounVariations, Gender gender,
+			GrammaticalCase grammaticalCase,
+			Numerus numerus) {
+		int hash = NounTerm.hashData(gender, grammaticalCase, numerus);
+		return nounVariations.variations.containsKey(hash);
 	}
 }

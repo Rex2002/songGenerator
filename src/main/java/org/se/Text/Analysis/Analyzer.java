@@ -124,32 +124,34 @@ public class Analyzer {
 	}
 
 	static TermCollection buildTerms(ArrayList<ArrayList<Tag>> tags, Dict dict) {
-		Map<String, TermVariations> nounVariations = new HashMap<String, TermVariations>();
-		Map<String, TermVariations> verbVariations = new HashMap<String, TermVariations>();
+		Map<String, TermVariations<NounTerm>> nounVariations = new HashMap<String, TermVariations<NounTerm>>();
+		Map<String, TermVariations<VerbTerm>> verbVariations = new HashMap<String, TermVariations<VerbTerm>>();
 
 		for (ArrayList<Tag> sentenceTags : tags) {
 			for (Tag t : sentenceTags) {
 				if (!t.is(TagType.Other)) {
-					Optional<NounTerm> term = dict.buildTerm(t);
-					if (term.isPresent()) {
-						// System.out.println(term.get());
 
-						// TODO: There must be better syntax for this
-						// maybe something similar to Rust's match syntax?
-						Map<String, TermVariations> tmp;
-						if (t.is(TagType.Noun)) {
-							tmp = nounVariations;
-						} else {
-							tmp = verbVariations;
+					if (t.is(TagType.Noun)) {
+						Optional<NounTerm> term = dict.buildNounTerm(t);
+						if (term.isPresent()) {
+							if (nounVariations.containsKey(term.get().radix)) {
+								nounVariations.get(term.get().radix).add(term.get());
+							} else {
+								nounVariations.put(term.get().radix, new TermVariations<NounTerm>(term.get()));
+							}
 						}
-
-						if (tmp.containsKey(term.get().radix)) {
-							tmp.get(term.get().radix).add(term.get());
-						} else {
-							tmp.put(term.get().radix, new TermVariations(term.get()));
+					} else {
+						Optional<VerbTerm> term = dict.buildVerbTerm(t);
+						if (term.isPresent()) {
+							if (verbVariations.containsKey(term.get().radix)) {
+								verbVariations.get(term.get().radix).add(term.get());
+							} else {
+								verbVariations.put(term.get().radix, new TermVariations<VerbTerm>(term.get()));
+							}
 						}
 					}
 				}
+
 			}
 		}
 		return new TermCollection(nounVariations, verbVariations);

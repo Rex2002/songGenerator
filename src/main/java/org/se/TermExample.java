@@ -22,17 +22,17 @@ public class TermExample {
 			return GrammaticalCase.Accusative;
 	}
 
+	private static Numerus parseNumerus(String s) {
+		s = s.toLowerCase();
+		if (s.startsWith("p") || s.startsWith("t"))
+			return Numerus.Plural;
+		else
+			return Numerus.Singular;
+	}
+
 	private static Gender parseGender(String s) {
 		s = s.toLowerCase();
 		return s.startsWith("m") ? Gender.Male : s.startsWith("f") ? Gender.Female : Gender.Neutral;
-	}
-
-	private static Boolean parseIsPlural(String s) {
-		s = s.toLowerCase();
-		if (s.startsWith("t"))
-			return true;
-		else
-			return false;
 	}
 
 	private static List<Integer> parseSyllables(String s) {
@@ -51,8 +51,8 @@ public class TermExample {
 			t.setRadix(row[0]);
 			t.setGender(TermExample.parseGender(row[2]));
 			t.setGrammaticalCase(TermExample.parseCase(row[3]));
-			t.setIsPlural(TermExample.parseIsPlural(row[4]));
-			t.setSyllables(TermExample.parseSyllables(row[5]).toArray(t.syllables));
+			t.setNumerus(TermExample.parseNumerus(row[4]));
+			t.setSyllableAmount(TermExample.parseSyllables(row[5]).size());
 			TermVariations v = new TermVariations(t);
 			c.addNouns(v);
 		});
