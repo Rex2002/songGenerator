@@ -4,7 +4,7 @@ import java.util.*;
 
 public class WordStemmer {
 	private String stem = "";
-	private Declination caseEnding = new Declination();
+	private Declination declinatedSuffix = new Declination();
 	private List<WordWithData> prefixes = new LinkedList<WordWithData>();
 	private List<WordWithData> suffixes = new LinkedList<WordWithData>();
 	final String baseKey;
@@ -25,10 +25,10 @@ public class WordStemmer {
 		this.stem = stem;
 	}
 
-	public WordStemmer(String baseKey, String stem, Declination caseEnding) {
+	public WordStemmer(String baseKey, String stem, Declination declinatedSuffix) {
 		this.baseKey = baseKey;
 		this.stem = stem;
-		this.caseEnding = caseEnding;
+		this.declinatedSuffix = declinatedSuffix;
 	}
 
 	public WordStemmer(String stem, List<WordWithData> prefixes, List<WordWithData> suffixes) {
@@ -45,10 +45,10 @@ public class WordStemmer {
 		this.suffixes = suffixes;
 	}
 
-	public WordStemmer(String stem, Declination caseEnding, List<WordWithData> prefixes,
+	public WordStemmer(String stem, Declination declinatedSuffix, List<WordWithData> prefixes,
 			List<WordWithData> suffixes, String baseKey) {
 		this.stem = stem;
-		this.caseEnding = caseEnding;
+		this.declinatedSuffix = declinatedSuffix;
 		this.prefixes = prefixes;
 		this.suffixes = suffixes;
 		this.baseKey = baseKey;
@@ -56,10 +56,11 @@ public class WordStemmer {
 
 	// Actual Logic:
 
-	public static WordStemmer[] radicalize(String s, List<Declination> caseEndings, WordList suffixes,
+	public static WordStemmer[] radicalize(String s, List<Declination> declinatedSuffixes, WordList suffixes,
 			WordList prefixes,
 			int minStemLength, WordList diphtongs, WordList umlautChanges, String baseKey) {
-		WordStemmer[] x = findCaseEndings(s, caseEndings, umlautChanges, minStemLength, diphtongs, baseKey);
+		WordStemmer[] x = findDeclinatedSuffixes(s, declinatedSuffixes, umlautChanges, minStemLength, diphtongs,
+				baseKey);
 		for (WordStemmer w : x) {
 			w.removeSuffixes(suffixes, minStemLength, diphtongs);
 			w.removePrefixes(prefixes, minStemLength, diphtongs);
@@ -152,27 +153,28 @@ public class WordStemmer {
 		return w;
 	}
 
-	// TODO: Optimize caseEndings storage
-	// Currently all caseEndings are stored in a list
+	// TODO: Optimize declinatedSuffixes storage
+	// Currently all declinatedSuffixes are stored in a list
 	// where many objects have the same radix
 	// specifically this means, that we have many duplicate calculations
 	// This could be optimized by storing a list of radixes
 	// mapping to a list of Declinations
 	// where no duplicate radixes are stored and the result is flattened
-	public static WordStemmer[] findCaseEndings(String s, List<Declination> caseEndings, WordList umlautChanges,
+	public static WordStemmer[] findDeclinatedSuffixes(String s, List<Declination> declinatedSuffixes,
+			WordList umlautChanges,
 			int minStemLength,
 			WordList diphtongs,
 			String baseKey) {
 		List<WordStemmer> l = new ArrayList<>();
 
-		// Check all endings if they apply to the stem
-		for (Declination ending : caseEndings) {
+		// Check all suffixs if they apply to the stem
+		for (Declination suffix : declinatedSuffixes) {
 			String scopy = s;
-			if (scopy.endsWith(ending.getRadix())) {
+			if (scopy.endsWith(suffix.getRadix())) {
 				// Update Umlaut sequences if necessary
-				if (ending.getToUmlaut()) {
+				if (suffix.getToUmlaut()) {
 					char[] chars = scopy.toCharArray();
-					int len = chars.length - ending.getRadix().length();
+					int len = chars.length - suffix.getRadix().length();
 
 					// Update umlaute if necessary
 					// Check every character if it's part of an umlaut sequence
@@ -203,7 +205,7 @@ public class WordStemmer {
 					scopy = chars.toString();
 				}
 
-				l.add(new WordStemmer(baseKey, scopy, ending));
+				l.add(new WordStemmer(baseKey, scopy, suffix));
 			}
 		}
 
@@ -221,12 +223,12 @@ public class WordStemmer {
 		this.stem = stem;
 	}
 
-	public Declination getCaseEnding() {
-		return this.caseEnding;
+	public Declination getDeclinatedSuffix() {
+		return this.declinatedSuffix;
 	}
 
-	public void setCaseEnding(Declination caseEnding) {
-		this.caseEnding = caseEnding;
+	public void setDeclinatedSuffix(Declination declinatedSuffix) {
+		this.declinatedSuffix = declinatedSuffix;
 	}
 
 	public List<WordWithData> getPrefixes() {
@@ -254,8 +256,8 @@ public class WordStemmer {
 		return this;
 	}
 
-	public WordStemmer caseEnding(Declination caseEnding) {
-		setCaseEnding(caseEnding);
+	public WordStemmer declinatedSuffix(Declination declinatedSuffix) {
+		setDeclinatedSuffix(declinatedSuffix);
 		return this;
 	}
 
@@ -277,21 +279,21 @@ public class WordStemmer {
 			return false;
 		}
 		WordStemmer wordStemmer = (WordStemmer) o;
-		return Objects.equals(stem, wordStemmer.stem) && Objects.equals(caseEnding, wordStemmer.caseEnding)
+		return Objects.equals(stem, wordStemmer.stem) && Objects.equals(declinatedSuffix, wordStemmer.declinatedSuffix)
 				&& Objects.equals(prefixes, wordStemmer.prefixes) && Objects.equals(suffixes, wordStemmer.suffixes)
 				&& Objects.equals(baseKey, wordStemmer.baseKey);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(stem, caseEnding, prefixes, suffixes, baseKey);
+		return Objects.hash(stem, declinatedSuffix, prefixes, suffixes, baseKey);
 	}
 
 	@Override
 	public String toString() {
 		return "{" +
 				" stem='" + getStem() + "'" +
-				", caseEnding='" + getCaseEnding() + "'" +
+				", declinatedSuffix='" + getDeclinatedSuffix() + "'" +
 				", prefixes='" + getPrefixes() + "'" +
 				", suffixes='" + getSuffixes() + "'" +
 				", baseKey='" + getBaseKey() + "'" +

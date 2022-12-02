@@ -15,8 +15,8 @@ public class Dict {
 	WordList verbs = new WordList();
 	WordList diphtongs = new WordList();
 	WordList umlautChanges = new WordList();
-	List<Declination> caseEndings = new ArrayList<>();
-	List<Conjugation> conjugationEndings = new ArrayList<>();
+	List<Declination> declinatedSuffixes = new ArrayList<>();
+	List<Conjugation> conjugatedSuffixes = new ArrayList<>();
 	final String baseKey;
 
 	public static String getDefaultBaseKey() {
@@ -25,7 +25,7 @@ public class Dict {
 
 	public Dict(WordList nounSuffixes, WordList nounPrefixes,
 			WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs, WordList diphtongs,
-			WordList umlautChanges, List<Declination> caseEndings, List<Conjugation> conjugationEndings) {
+			WordList umlautChanges, List<Declination> declinatedSuffixes, List<Conjugation> conjugatedSuffixes) {
 		this.nounSuffixes = nounSuffixes;
 		this.nounPrefixes = nounPrefixes;
 		this.nouns = nouns;
@@ -34,8 +34,8 @@ public class Dict {
 		this.verbs = verbs;
 		this.diphtongs = diphtongs;
 		this.umlautChanges = umlautChanges;
-		this.caseEndings = caseEndings;
-		this.conjugationEndings = conjugationEndings;
+		this.declinatedSuffixes = declinatedSuffixes;
+		this.conjugatedSuffixes = conjugatedSuffixes;
 		this.baseKey = getDefaultBaseKey();
 	}
 
@@ -65,8 +65,8 @@ public class Dict {
 					break;
 			}
 		});
-		Parser.parseCSV(dirPath.resolve("declinationEndings"), caseEndings, Declination.class);
-		Parser.parseCSV(dirPath.resolve("conjugationEndings"), conjugationEndings, Conjugation.class);
+		Parser.parseCSV(dirPath.resolve("declinatedSuffixes"), declinatedSuffixes, Declination.class);
+		Parser.parseCSV(dirPath.resolve("conjugatedSuffixes"), conjugatedSuffixes, Conjugation.class);
 	}
 
 	public Dict addDictionary(Dict dict) {
@@ -77,7 +77,7 @@ public class Dict {
 		this.verbSuffixes.insertAll(dict.getVerbSuffixes());
 		this.verbs.insertAll(dict.getVerbs());
 		this.umlautChanges.insertAll(dict.getUmlautChanges());
-		this.caseEndings.addAll(dict.getCaseEndings());
+		this.declinatedSuffixes.addAll(dict.getDeclinatedSuffixes());
 		return this;
 	}
 
@@ -85,7 +85,7 @@ public class Dict {
 
 	public List<WordStemmer> tryNounStem(String s) {
 		List<WordStemmer> res = new ArrayList<>();
-		WordStemmer[] l = WordStemmer.radicalize(s, caseEndings, nounSuffixes, nounPrefixes, 2, diphtongs,
+		WordStemmer[] l = WordStemmer.radicalize(s, declinatedSuffixes, nounSuffixes, nounPrefixes, 2, diphtongs,
 				umlautChanges,
 				baseKey);
 
@@ -140,7 +140,7 @@ public class Dict {
 		// This can happen, when the Analyzer tags the word before giving it to the
 		// Dictionary (for example because of capitalization of word)
 		if (t.getData().isEmpty()) {
-			WordStemmer[] res = WordStemmer.radicalize(t.word, caseEndings, suffixes, prefixes, 2, diphtongs,
+			WordStemmer[] res = WordStemmer.radicalize(t.word, declinatedSuffixes, suffixes, prefixes, 2, diphtongs,
 					umlautChanges,
 					baseKey);
 
@@ -162,16 +162,16 @@ public class Dict {
 		}
 
 		WordStemmer data = t.getData().get();
-		Declination caseEnding = data.getCaseEnding();
+		Declination declinatedSuffix = data.getDeclinatedSuffix();
 
 		// System.out.println(t);
 		// System.out.println(data);
 
 		String radix = data.getStem();
 		Integer syllableAmount = 1;
-		Numerus numerus = caseEnding.getNumerus();
-		GrammaticalCase grammaticalCase = caseEnding.getGrammaticalCase();
-		Gender gender = caseEnding.getGender();
+		Numerus numerus = declinatedSuffix.getNumerus();
+		GrammaticalCase grammaticalCase = declinatedSuffix.getGrammaticalCase();
+		Gender gender = declinatedSuffix.getGender();
 
 		return Optional.of(new NounTerm(radix, t.word, syllableAmount, numerus, grammaticalCase, gender));
 	}
@@ -289,7 +289,7 @@ public class Dict {
 
 	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes,
 			WordList verbPrefixes, WordList verbs, WordList diphtongs, WordList umlautChanges,
-			List<Declination> caseEndings,
+			List<Declination> declinatedSuffixes,
 			String baseKey) {
 		this.nounSuffixes = nounSuffixes;
 		this.nounPrefixes = nounPrefixes;
@@ -299,7 +299,7 @@ public class Dict {
 		this.verbs = verbs;
 		this.diphtongs = diphtongs;
 		this.umlautChanges = umlautChanges;
-		this.caseEndings = caseEndings;
+		this.declinatedSuffixes = declinatedSuffixes;
 		this.baseKey = baseKey;
 	}
 
@@ -319,12 +319,12 @@ public class Dict {
 		this.umlautChanges = umlautChanges;
 	}
 
-	public List<Declination> getCaseEndings() {
-		return this.caseEndings;
+	public List<Declination> getDeclinatedSuffixes() {
+		return this.declinatedSuffixes;
 	}
 
-	public void setCaseEndings(List<Declination> caseEndings) {
-		this.caseEndings = caseEndings;
+	public void setDeclinatedSuffixes(List<Declination> declinatedSuffixes) {
+		this.declinatedSuffixes = declinatedSuffixes;
 	}
 
 	public String getBaseKey() {
@@ -341,8 +341,8 @@ public class Dict {
 		return this;
 	}
 
-	public Dict caseEndings(List<Declination> caseEndings) {
-		setCaseEndings(caseEndings);
+	public Dict declinatedSuffixes(List<Declination> declinatedSuffixes) {
+		setDeclinatedSuffixes(declinatedSuffixes);
 		return this;
 	}
 
