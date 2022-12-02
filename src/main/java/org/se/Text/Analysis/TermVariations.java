@@ -74,7 +74,7 @@ public class TermVariations<T extends Term> {
 	}
 
 	public boolean has(T term) {
-		return this.variations.containsKey(term.hashCode());
+		return this.variations.containsKey(term.hashData());
 	}
 
 	public List<T> queryBy(Predicate<? super T> f) {
