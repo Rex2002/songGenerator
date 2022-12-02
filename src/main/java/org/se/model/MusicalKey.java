@@ -1,5 +1,6 @@
 package org.se.model;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -21,6 +22,16 @@ public class MusicalKey {
             notesInKey[i] = baseNote + keyMaj[i];
         }
         return notesInKey;
+    }
+
+    public static int findIndexOfNoteInScale(int[] notesInKey, int note){
+        for(int index = 0; index < notesInKey.length; index++){
+            if(note == notesInKey[index] || note - 12 == notesInKey[index] || note + 12 == notesInKey[index]){
+                return index;
+            }
+        }
+        System.out.println("failed to find value in key: " + note + ", " + Arrays.toString(notesInKey));
+        return 0;
     }
 
     public MusicalKey(){

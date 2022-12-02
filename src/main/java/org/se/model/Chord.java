@@ -54,4 +54,12 @@ public class Chord {
     public static HashMap<String, ArrayList<Integer>> getChordModifiers() {
         return chordModifiers;
     }
+
+    @Override
+    public String toString() {
+        return "Chord{" +
+                "baseNote=" + baseNote +
+                ", chordModifier=" + chordModifier +
+                '}';
+    }
 }

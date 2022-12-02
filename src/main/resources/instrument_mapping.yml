@@ -1,10 +1,12 @@
 # @author Benjamin Frahm
 chords  : 1
 chords2 : 2
-melody  : 40
+melody  : 56
 melody2 : 3
 drums   : 114
 drums2  : 118
 bass    : 36 #52
 bass2   : 53
 bariSax : 67
+violin  : 40
+trumpet : 56

@@ -48,6 +48,7 @@ public class Part {
 
     private void fillPart(MusicalKey key, Map<Integer,Integer> trackMapping){
         int beatNo = ran.nextInt(BeatContainer.getDrumBeats().size());
+        Theme theme = new Theme(0,0, key, chordProgression);
         MidiPlayable m;
         for(int bar = 0; bar < length; bar++){
             for(InstrumentEnum instr : reqInsts){
@@ -90,8 +91,9 @@ public class Part {
                             chordProgression.get((bar+1) % chordProgression.size()));
                     midiPlayables.add(m);
                 }
-                else{
-                    m = new Melody(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar, key, chordProgression.get(bar % chordProgression.size()));
+                else if(bar % 4 == 0){
+                    m = new ThemeVariation(theme, trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar);
+                    //m = new Melody(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar, key, chordProgression.get(bar % chordProgression.size()));
                     midiPlayables.add(m);
                 }
             }
