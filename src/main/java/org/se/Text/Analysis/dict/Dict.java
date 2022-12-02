@@ -138,15 +138,41 @@ public class Dict {
 		// Add WordStemmer data,
 		// in case it wasn't produced when tagging the word already
 		// This can happen, when the Analyzer tags the word before giving it to the
-		// Dictionary (for example because of capitalization of word)
+		// Dictionary (specifically because of capitalization of word)
+
+		// TODO:
+		// Add check that noun has same declinated gender as in nounsList
+		// The only exception to this should be when the noun is set to have a variable
+		// gender
+		// in which case only the existence of certain tags (which are marked as gender
+		// domineering) may alter the word's current gender
+		// For this, the nounsDict.csv file needs to be updated - specifically it needs
+		// to associate a gender and a flag determining if it's gender can change with
+		// every noun
+
+		// TODO:
+		// Add check if word can be seperated into parts, all of which are in the
+		// nounsList
+		// This check basically just allows for compound nouns
+		// Some specific affixes should be allowed between these parts (like "s")
+		// these specific affixes should have their own category in the affixesDict.csv
+		// file
+
+		// TODO:
+		// Decide whether to have the above as hard or soft checks
+		// Soft checks would mean that failing the check would still change the data's
+		// tag but not break out of the loop, allowing for other WordStemmer objects to
+		// dominate the data later. Specifically, succeeding the test would still break
+		// out of the loop, enforcing the use of the best fitting data if possible
+		// Hard checks would simply add no data if the WordStemmer doesn't pass the
+		// check
 		if (t.getData().isEmpty()) {
 			WordStemmer[] res = WordStemmer.radicalize(t.word, declinatedSuffixes, suffixes, prefixes, 2, diphtongs,
-					umlautChanges,
-					baseKey);
+					umlautChanges, baseKey);
 
 			for (WordStemmer w : res) {
-				if (nouns.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.Any(w.getSuffixes(),
-						data -> data.containsKey("certain") && Parser.parseBool(data.get("certain"))))) {
+				if (nouns.has(w.getStem()) || Util.Any(w.getSuffixes(),
+						data -> data.containsKey("certain") && Parser.parseBool(data.get("certain")))) {
 					t.setData(Optional.of(w));
 					break;
 				}
