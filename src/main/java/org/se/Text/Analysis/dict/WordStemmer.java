@@ -91,7 +91,7 @@ public class WordStemmer {
 
 		for (int i = chars.length - 1; i > minStemLength; i--) {
 			boolean isPartOfDiphtong = false;
-			currentStringPart += chars[i];
+			currentStringPart = chars[i] + currentStringPart;
 
 			// Check if current character is part of a diphtong
 			if (i > 0) {
