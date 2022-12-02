@@ -1,4 +1,4 @@
-public class countWords{
+public class WordCounter{
   public static int[] countWords(String content){
       String c = content;
       String[] sentenceParts = c.split(".!?");
