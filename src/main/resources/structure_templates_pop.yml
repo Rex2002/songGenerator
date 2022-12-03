@@ -10,6 +10,7 @@ parts:
       - drums
       - bass
       - melody
+      - melody2
     opt:
       - chords2
   verse:

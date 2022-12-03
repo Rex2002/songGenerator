@@ -24,9 +24,24 @@ public class MusicalKey {
         return notesInKey;
     }
 
+    public static int[] getCloseNotesInKey(int baseNote, int note){
+        int[] gamut = getNotesInKey(baseNote);
+        while(gamut[0] > note){
+            for(int index = 0; index<gamut.length; index++){
+                gamut[index] -= 12;
+            }
+        }
+        while(gamut[gamut.length-1] < note){
+            for(int index = 0; index < gamut.length; index++){
+                gamut[index] += 12;
+            }
+        }
+        return gamut;
+    }
+
     public static int findIndexOfNoteInScale(int[] notesInKey, int note){
         for(int index = 0; index < notesInKey.length; index++){
-            if(note == notesInKey[index] || note - 12 == notesInKey[index] || note + 12 == notesInKey[index]){
+            if(note%12 == notesInKey[index]%12){
                 return index;
             }
         }
@@ -35,7 +50,8 @@ public class MusicalKey {
     }
 
     public MusicalKey(){
-        base = (String) musicalKeyMajor.keySet().toArray()[new Random().nextInt(musicalKeyMajor.keySet().size())];
+        // TODO revert to random key
+        base = "C";//(String) musicalKeyMajor.keySet().toArray()[new Random().nextInt(musicalKeyMajor.keySet().size())];
         baseNote = translateNoteStringToValue(base);
     }
 

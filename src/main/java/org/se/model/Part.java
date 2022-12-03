@@ -92,7 +92,11 @@ public class Part {
                     midiPlayables.add(m);
                 }
                 else if(bar % 4 == 0){
-                    m = new ThemeVariation(theme, trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar);
+                    if(instr.toString().equals("melody2")){
+                        m = new ThemeVariation(theme, trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar, false);
+                    }else {
+                        m = new ThemeVariation(theme, trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar);
+                    }
                     //m = new Melody(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar, key, chordProgression.get(bar % chordProgression.size()));
                     midiPlayables.add(m);
                 }

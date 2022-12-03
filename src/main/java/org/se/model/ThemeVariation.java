@@ -4,17 +4,24 @@ import java.util.*;
 
 public class ThemeVariation extends MidiPlayable {
 
-    int minSyllablesPerBar = 7;
+    // some instruments swing better with smaller number of syllables (aka notes), others, like violin, can handle larger numbers without sounding crappy
+    int minSyllablesPerBar = 6;
     Theme theme;
     Map<Integer, List<List<Integer>>> transposedContent;
     static Random ran = new Random();
     public ThemeVariation(Theme theme, int trackNo, int bar) {
         super(trackNo, bar);
+        System.out.println("we are in bar " + bar);
         this.theme = theme;
-        System.out.println("called theme variation");
         setContent(theme.deepCopy());
         createVariation();
     }
+    public ThemeVariation(Theme theme, int trackNo, int bar, boolean variationFlag) {
+        super(trackNo, bar);
+        this.theme = theme;
+        setContent(theme.deepCopy());
+    }
+
 
     private void createVariation(){
 
@@ -22,7 +29,6 @@ public class ThemeVariation extends MidiPlayable {
         Map<Integer, List<List<Integer>>> themeContent = theme.transposedContent;
         int pos, posNextSmaller, posNextBigger, newNote, newLength;
         // artificially scaled the gamut one octave up
-        int[] gamut = MusicalKey.getNotesInKey(theme.getKey().getBaseNote());
 
         List<Integer> posAndLength;
         for(int bar = 0; bar < getLengthInBars(); bar++){
@@ -33,37 +39,56 @@ public class ThemeVariation extends MidiPlayable {
                 if(themeContent.containsKey(posNextBigger) && themeContent.containsKey(posNextSmaller)) {
                     posAndLength = new ArrayList<>();
                     if (posNextBigger == pos) {
-                        newNote = gamut[MusicalKey.findIndexOfNoteInScale(gamut, (themeContent.get(pos).get(0).get(0))+gamut.length-1)% gamut.length];
+                        int[] gamut = MusicalKey.getCloseNotesInKey(theme.getKey().getBaseNote(), (themeContent.get(pos).get(0).get(0)));
+                        newNote = gamut[(MusicalKey.findIndexOfNoteInScale(gamut, (themeContent.get(pos).get(0).get(0))) + 6) % 7];
                         newLength = themeContent.get(pos).get(0).get(1);
                         posAndLength.add(pos);
                         posAndLength.add(newLength);
 
-                        if(getContent().containsKey(newNote)){
-                            getContent().get(newNote).add(posAndLength);
-                        }
-                        else{
-                            List<List<Integer>> posAndLengthList = new ArrayList<>();
-                            posAndLengthList.add(posAndLength);
-                            getContent().put(newNote, posAndLengthList);
-                        }
+                        addPosAndLengthToContent(newNote, posAndLength);
                     }
-                    if (posNextBigger == pos + 6) {
-                        newNote = gamut[MusicalKey.findIndexOfNoteInScale(gamut, (themeContent.get(pos+6).get(0).get(0))+gamut.length-1)% gamut.length];
+                    else if (posNextBigger == pos + 6) {
+                        int[] gamut = MusicalKey.getCloseNotesInKey(theme.getKey().getBaseNote(), themeContent.get(pos + 6).get(0).get(0));
+                        newNote = gamut[(MusicalKey.findIndexOfNoteInScale(gamut, themeContent.get(pos + 6).get(0).get(0)) + (7 - ran.nextInt(2))) % 7];
                         //newNote = themeContent.get(pos+6).get(0).get(0) - 3;
                         newLength = 6;
                         posAndLength.add(pos);
                         posAndLength.add(newLength);
 
-                        if(getContent().containsKey(newNote)){
-                            getContent().get(newNote).add(posAndLength);
+                        addPosAndLengthToContent(newNote, posAndLength);
+                    }
+                    else if(posNextBigger - posNextSmaller >= 48 && themeContent.get(posNextBigger).get(0).get(0).equals(themeContent.get(posNextSmaller).get(0).get(0)) ){//&& ran.nextInt(2) == 0){
+                        System.out.println("adding run@" + pos);
+                        System.out.println("posNextBigger: " + posNextBigger);
+                        System.out.println("posNextSmaller: " + posNextSmaller);
+                        System.out.println("note at posBigger: " + themeContent.get(posNextBigger).get(0));
+                        int[] gamut = MusicalKey.getCloseNotesInKey(theme.getKey().getBaseNote(),themeContent.get(posNextBigger).get(0).get(0));
+                        int index = MusicalKey.findIndexOfNoteInScale(gamut, themeContent.get(posNextBigger).get(0).get(0));
+                        if(index >= 4){
+                            newNote = gamut[index-2];
+                            newLength = 12;
+                            posAndLength.add(posNextBigger - 24);
+                            posAndLength.add(newLength);
+                            addPosAndLengthToContent(newNote, posAndLength);
+                            newNote = gamut[index-1];
+                        }else{
+                            newNote = gamut[index+2];
+                            newLength = 12;
+                            posAndLength.add(posNextBigger - 24);
+                            posAndLength.add(newLength);
+                            addPosAndLengthToContent(newNote, posAndLength);
+                            newNote = gamut[index+1];
                         }
-                        else{
-                            List<List<Integer>> posAndLengthList = new ArrayList<>();
-                            posAndLengthList.add(posAndLength);
-                            getContent().put(newNote, posAndLengthList);
-                        }
-                        // make note ...
-                    } else {
+                        System.out.println("posAndLength before reworking: " + posAndLength);
+                        posAndLength.set(0, posNextBigger-36);
+                        addPosAndLengthToContent(newNote, posAndLength);
+                        posAndLength.set(0, posNextBigger-12);
+                        System.out.println("posAndLength after reworking:");
+                        addPosAndLengthToContent(newNote, posAndLength);
+                        // lauf
+                    }else {
+                        int[] gamut = MusicalKey.getCloseNotesInKey(theme.getKey().getBaseNote(), themeContent.get(posNextBigger).get(0).get(0));
+
                         int index1 = MusicalKey.findIndexOfNoteInScale(gamut, themeContent.get(posNextBigger).get(0).get(0));
                         int index2 = MusicalKey.findIndexOfNoteInScale(gamut, themeContent.get(posNextSmaller).get(0).get(0));
                         int newIndexInGamut = (index1 + index2) / 2;
@@ -72,19 +97,23 @@ public class ThemeVariation extends MidiPlayable {
                         posAndLength.add(newLength);
                         newNote = gamut[newIndexInGamut];
 
-
-                        if(getContent().containsKey(newNote)){
-                            getContent().get(newNote).add(posAndLength);
-                        }
-                        else{
-                            List<List<Integer>> posAndLengthList = new ArrayList<>();
-                            posAndLengthList.add(posAndLength);
-                            getContent().put(newNote, posAndLengthList);
-                        }
+                        addPosAndLengthToContent(newNote, posAndLength);
                         // make note be in the middle of them (in the scale tones)
                     }
                 }
             }
+        }
+    }
+
+    private void addPosAndLengthToContent(int newNote, List<Integer> posAndLength){
+        List<Integer> posAndLengthCopy = new ArrayList<>(posAndLength);
+        if(getContent().containsKey(newNote)){
+            getContent().get(newNote).add(posAndLengthCopy);
+        }
+        else{
+            List<List<Integer>> posAndLengthList = new ArrayList<>();
+            posAndLengthList.add(posAndLengthCopy);
+            getContent().put(newNote, posAndLengthList);
         }
     }
 
