@@ -171,7 +171,7 @@ public class MidiSequence {
     @Deprecated
     public void addChord(Chord chord, long start, long length, int trackNumber){
         for (int modifier: chord.getChordModifier()) {
-            addNote(chord.getBaseNote() + modifier, start, length, trackNumber);
+            addNote(chord.getRootNote() + modifier, start, length, trackNumber);
         }
     }
 

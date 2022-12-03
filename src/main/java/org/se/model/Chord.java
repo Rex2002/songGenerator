@@ -9,17 +9,17 @@ import java.util.HashMap;
  */
 
 public class Chord {
-    private final int baseNote;
+    private final int rootNote;
     private final ArrayList<Integer> chordModifier;
     public static HashMap<String, ArrayList<Integer>> chordModifiers;
 
-    public Chord(int baseNote, String chordMod){
-        if (0 <= baseNote && baseNote < 128){
-            this.baseNote = baseNote;
+    public Chord(int rootNote, String chordMod){
+        if (0 <= rootNote && rootNote < 128){
+            this.rootNote = rootNote;
         }
         else {
-            System.out.println("invalid baseNote, change to 60 (C)");
-            this.baseNote = 60;
+            System.out.println("invalid rootNote, change to 60 (C)");
+            this.rootNote = 60;
         }
 
         if (chordModifiers.containsKey(chordMod)){
@@ -30,8 +30,8 @@ public class Chord {
         }
     }
 
-    public int getBaseNote() {
-        return baseNote;
+    public int getRootNote() {
+        return rootNote;
     }
 
     public ArrayList<Integer> getChordModifier(){
@@ -41,7 +41,7 @@ public class Chord {
     public ArrayList<Integer> getChord(){
         ArrayList<Integer> k = new ArrayList<>();
         for (int modifier: chordModifier) {
-            k.add(baseNote + modifier);
+            k.add(rootNote + modifier);
         }
         return k;
 
@@ -58,7 +58,7 @@ public class Chord {
     @Override
     public String toString() {
         return "Chord{" +
-                "baseNote=" + baseNote +
+                "baseNote=" + rootNote +
                 ", chordModifier=" + chordModifier +
                 '}';
     }

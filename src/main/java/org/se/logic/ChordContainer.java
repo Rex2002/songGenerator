@@ -68,31 +68,22 @@ public class ChordContainer extends MidiPlayable {
         inflateChordList();
         for (int count = 0; count < 4; count++){
             List<Integer> singleChord = inflatedChords[count].getChord();
-            for (Integer rootNote : singleChord) {
+            if (isBassTrack) {
+                singleChord = List.of(inflatedChords[count].getRootNote()-24);
+            }
+            for (Integer note : singleChord) {
                 List<Integer> posAndLen;
-                if (isBassTrack && count == 3){
-                    posAndLen = List.of(count*24 + 12, 12);
-                } else if (isBassTrack && count == 2){
-                    posAndLen = List.of(count*24, 36);
-                }
-                else {
+                if (isBassTrack && count == 3) {
+                    posAndLen = List.of(count * 24 + 12, 12);
+                } else {
                     posAndLen = List.of(count*24, 24);
                 }
-                if(isBassTrack){ rootNote = rootNote-24;}
-                if (content.containsKey(rootNote)) {
-                    content.get(rootNote).add(posAndLen);
-                    if(isBassTrack){
-                        break;
-                    }
+                if (content.containsKey(note)) {
+                    content.get(note).add(posAndLen);
                 } else {
                     List<List<Integer>> posAndLenList = new ArrayList<>();
                     posAndLenList.add(posAndLen);
-                    if(isBassTrack){
-                        content.put(rootNote, posAndLenList);
-                        break;
-                    }
-
-                    content.put(rootNote, posAndLenList);
+                    content.put(note, posAndLenList);
                 }
             }
         }

@@ -5,8 +5,8 @@
 # quarter: 24
 # eighth: 12
 # sixteenth: 6
-# There has to be exactly one mainPart, bigFill and smallFill for every beat
 # Feel free to change resolution and go crazy with 32ths, triplets or whatever your heart desires!
+# There has to be exactly one mainPart, bigFill and smallFill for every beat.
 #
 # 1:
 resolution: 6
@@ -38,7 +38,7 @@ bigFill:
     snare:  ----x------xx-xx
     bass:   x-------x-------
 smallFill:
-    ride:   x-x-x-x-x-x-x-x-
+    ride:   x-x-x-x-x-x-x---
     snare:  ----x-------x-xx
     bass:   x-------x-------
 ---

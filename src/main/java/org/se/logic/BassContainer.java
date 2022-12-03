@@ -38,7 +38,7 @@ public class BassContainer extends MidiPlayable {
         for (int count = 0; count < 8; count++){
             int indexInChord = count % (8/chords.length);
             int chordIndex = count / (8/chords.length);
-            int rootNote = chords[chordIndex].getChord().get(0) % 12 + 36; // gets root of chord and translates it to octave starting with 36
+            int rootNote = chords[chordIndex].getRootNote() % 12 + 36; // gets root of chord and translates it to octave starting with 36
 
 
             // get #eights each chord is played
@@ -56,7 +56,7 @@ public class BassContainer extends MidiPlayable {
             for (int index = 0; index < scale.length; index++) {
                 descaler.put(scale[index]%12, index);
             }
-            int distance = (descaler.get(nextChord.getBaseNote()%12) - descaler.get(rootNote%12)) %7;
+            int distance = (descaler.get(nextChord.getRootNote()%12) - descaler.get(rootNote%12)) %7;
             if (distance > 3){
                 distance -= 7;
             } else if (distance < -3) {
