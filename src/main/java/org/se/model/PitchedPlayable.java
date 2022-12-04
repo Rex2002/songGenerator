@@ -14,20 +14,23 @@ abstract public class PitchedPlayable extends MidiPlayable{
     public PitchedPlayable(int trackNo, int bar, MusicalKey key, List<String> chord) {
         super(trackNo, bar);
         this.key = key;
-        parseChordString(chord);
+        this.chords = parseChordString(chord);
         inflateChordList();
     }
 
-    public void parseChordString(List<String> chords){
-        this.chords = new Chord[chords.size()];
+
+
+    public Chord[] parseChordString(List<String> chords){
+        Chord[] parsedChords = new Chord[chords.size()];
         for (int i = 0; i < chords.size(); i++) {
             int stair = Integer.parseInt(String.valueOf(chords.get(i).charAt(0)));
             String modifier = chords.get(i).substring(1);
-            this.chords[i] = new Chord(MusicalKey.getNotesInKey(key.getBaseNote())[stair], modifier);
+            parsedChords[i] = new Chord(MusicalKey.getNotesInKey(key.getBaseNote())[stair], modifier);
         }
+        return parsedChords;
     }
 
-    private void inflateChordList(){
+    protected void inflateChordList(){
         inflatedChords = new Chord[4];
         for(int chordNo = 0; chordNo < chords.length; chordNo ++){
             for(int i = 0; i < 4/chords.length; i ++){

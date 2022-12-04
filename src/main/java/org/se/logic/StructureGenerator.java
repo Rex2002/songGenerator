@@ -13,10 +13,10 @@ import java.util.*;
 public class StructureGenerator {
     private static final Random ran = new Random();
     private static Structure structure;
-    private static Map<Integer, Integer> trackMapping = new HashMap<>();
+    private static final Map<Integer, Integer> trackMapping = new HashMap<>();
 
     public static void generateStructure(Map<String, Object> settings, Map<String, Integer> metrics){
-        structure = Config.getStructures().get(0);//Config.getStructures().get(ran.nextInt(Config.getStructures().size()));
+        structure = Config.getStructures().get(ran.nextInt(Config.getStructures().size()));
         structure.setGenre((Genre) settings.get("genre"));
         structure.setKey(new MusicalKey());
         if (settings.get("tempo") != null){
@@ -42,8 +42,6 @@ public class StructureGenerator {
                 List<String> reqChords = getImportantChords(structure.getPart(structure.getBasePartKey()).getChords());
                 List<List<List<String>>> progression = ChordContainer.getMatchingProgressions(reqChords);
                 part.fillPart(progression.get(ran.nextInt(progression.size())), structure.getKey(), trackMapping);
-                // TODO pick chord progressions matching reqChords instead of picking any randomly
-                //  I believe this should be done now, ready for review
             } else {
                 part.fillRandomly(structure.getKey(), trackMapping);
             }

@@ -11,11 +11,12 @@ public class ThemeVariation extends MidiPlayable {
     static Random ran = new Random();
     public ThemeVariation(Theme theme, int trackNo, int bar) {
         super(trackNo, bar);
-        System.out.println("we are in bar " + bar);
         this.theme = theme;
         setContent(theme.deepCopy());
         createVariation();
     }
+
+    @SuppressWarnings("unused")
     public ThemeVariation(Theme theme, int trackNo, int bar, boolean variationFlag) {
         super(trackNo, bar);
         this.theme = theme;
@@ -24,44 +25,32 @@ public class ThemeVariation extends MidiPlayable {
 
 
     private void createVariation(){
-
-
         Map<Integer, List<List<Integer>>> themeContent = theme.transposedContent;
         int pos, posNextSmaller, posNextBigger, newNote, newLength;
-        // artificially scaled the gamut one octave up
-
         List<Integer> posAndLength;
-        for(int bar = 0; bar < getLengthInBars(); bar++){
+
+        for(int bar = 0; bar < theme.getLengthInBars(); bar++){
             while(getNoteCountInBar(bar) < minSyllablesPerBar){
                 pos = ran.nextInt(16)*6 + bar*96;
-                posNextSmaller = getPosNextSmaller(pos);
-                posNextBigger = getPosNextBigger(pos);
+                posNextSmaller = getPosNext(pos, false);
+                posNextBigger = getPosNext(pos, true);
                 if(themeContent.containsKey(posNextBigger) && themeContent.containsKey(posNextSmaller)) {
                     posAndLength = new ArrayList<>();
                     if (posNextBigger == pos) {
-                        int[] gamut = MusicalKey.getCloseNotesInKey(theme.getKey().getBaseNote(), (themeContent.get(pos).get(0).get(0)));
-                        newNote = gamut[(MusicalKey.findIndexOfNoteInScale(gamut, (themeContent.get(pos).get(0).get(0))) + 6) % 7];
-                        newLength = themeContent.get(pos).get(0).get(1);
-                        posAndLength.add(pos);
-                        posAndLength.add(newLength);
-
-                        addPosAndLengthToContent(newNote, posAndLength);
+                        continue;
                     }
-                    else if (posNextBigger == pos + 6) {
+                    if (posNextBigger == pos + 6) {
                         int[] gamut = MusicalKey.getCloseNotesInKey(theme.getKey().getBaseNote(), themeContent.get(pos + 6).get(0).get(0));
                         newNote = gamut[(MusicalKey.findIndexOfNoteInScale(gamut, themeContent.get(pos + 6).get(0).get(0)) + (7 - ran.nextInt(2))) % 7];
-                        //newNote = themeContent.get(pos+6).get(0).get(0) - 3;
                         newLength = 6;
                         posAndLength.add(pos);
                         posAndLength.add(newLength);
 
                         addPosAndLengthToContent(newNote, posAndLength);
                     }
-                    else if(posNextBigger - posNextSmaller >= 48 && themeContent.get(posNextBigger).get(0).get(0).equals(themeContent.get(posNextSmaller).get(0).get(0)) ){//&& ran.nextInt(2) == 0){
-                        System.out.println("adding run@" + pos);
-                        System.out.println("posNextBigger: " + posNextBigger);
-                        System.out.println("posNextSmaller: " + posNextSmaller);
-                        System.out.println("note at posBigger: " + themeContent.get(posNextBigger).get(0));
+
+                    else if(posNextBigger - posNextSmaller >= 48 && themeContent.get(posNextBigger).get(0).get(0).equals(themeContent.get(posNextSmaller).get(0).get(0)) && ran.nextInt(2) == 0){
+                        System.out.println("run");
                         int[] gamut = MusicalKey.getCloseNotesInKey(theme.getKey().getBaseNote(),themeContent.get(posNextBigger).get(0).get(0));
                         int index = MusicalKey.findIndexOfNoteInScale(gamut, themeContent.get(posNextBigger).get(0).get(0));
                         if(index >= 4){
@@ -79,13 +68,10 @@ public class ThemeVariation extends MidiPlayable {
                             addPosAndLengthToContent(newNote, posAndLength);
                             newNote = gamut[index+1];
                         }
-                        System.out.println("posAndLength before reworking: " + posAndLength);
                         posAndLength.set(0, posNextBigger-36);
                         addPosAndLengthToContent(newNote, posAndLength);
                         posAndLength.set(0, posNextBigger-12);
-                        System.out.println("posAndLength after reworking:");
                         addPosAndLengthToContent(newNote, posAndLength);
-                        // lauf
                     }else {
                         int[] gamut = MusicalKey.getCloseNotesInKey(theme.getKey().getBaseNote(), themeContent.get(posNextBigger).get(0).get(0));
 
@@ -98,7 +84,6 @@ public class ThemeVariation extends MidiPlayable {
                         newNote = gamut[newIndexInGamut];
 
                         addPosAndLengthToContent(newNote, posAndLength);
-                        // make note be in the middle of them (in the scale tones)
                     }
                 }
             }
@@ -117,24 +102,15 @@ public class ThemeVariation extends MidiPlayable {
         }
     }
 
-    public int getPosNextSmaller(int posToFind){
-        int smallerPos = 0;
-        for(Integer pos : theme.transposedContent.keySet()){
-            if(pos < posToFind && smallerPos < pos){
-                smallerPos = pos;
+    public int getPosNext(int posToFind, boolean bigger) {
+        int foundPos = bigger ? theme.getLengthInBars() * 96 : 0;
+        for (Integer pos : theme.transposedContent.keySet()) {
+            if ((!bigger && pos < posToFind && foundPos < pos)
+                    || (bigger && pos >= posToFind && foundPos > pos)) {
+                foundPos = pos;
             }
         }
-        return smallerPos;
-    }
-
-    public int getPosNextBigger(int posToFind){
-        int biggerPos = getLengthInBars() * 96;
-        for(Integer pos : theme.transposedContent.keySet()){
-            if(pos >= posToFind && biggerPos > pos){
-                biggerPos = pos;
-            }
-        }
-        return biggerPos;
+        return foundPos;
     }
 
     public int getNoteCountInBar(int bar){
@@ -167,9 +143,5 @@ public class ThemeVariation extends MidiPlayable {
                 }
             }
         }
-    }
-
-    int getLengthInBars(){
-        return 4;
     }
 }

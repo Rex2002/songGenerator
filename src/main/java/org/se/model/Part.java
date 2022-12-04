@@ -14,13 +14,13 @@ import java.util.*;
 
 public class Part {
     @JsonProperty
-    private int length;
+    private final int length;
     @JsonProperty
-    private List<InstrumentEnum> reqInsts;
+    private final List<InstrumentEnum> reqInsts;
     @JsonProperty
-    private List<InstrumentEnum> optInsts;
+    private final List<InstrumentEnum> optInsts;
     @JsonProperty
-    private int randomizationLevel;
+    private final int randomizationLevel;
     private List<List<String>> chordProgression;
     private final Random ran = new Random();
     private final List<MidiPlayable> midiPlayables = new ArrayList<>();
@@ -48,7 +48,7 @@ public class Part {
 
     private void fillPart(MusicalKey key, Map<Integer,Integer> trackMapping){
         int beatNo = ran.nextInt(BeatContainer.getDrumBeats().size());
-        Theme theme = new Theme(0,0, key, chordProgression);
+        Theme theme = new Theme(key, chordProgression);
         MidiPlayable m;
         for(int bar = 0; bar < length; bar++){
             for(InstrumentEnum instr : reqInsts){
@@ -61,22 +61,14 @@ public class Part {
                     midiPlayables.add(m);
                 }
                 else if(instrEnumBeginsWith(instr,"drum")){
-                    // adds fills at the following positions with chances:
-                    //   every second bar:
-                    //      small fill: 50%
-                    //   every fourth bar:
-                    //      big fill: 50%
-                    //      small fill: 50%
-                    //  last bar of the part:
-                    //      big fill: 100%
                     int fill;
                     if (bar == length - 1){
                         fill = 1;
                     }
-                    else if(bar % 4 == 3){
-                        fill = ran.nextInt(2);
+                    else if(bar % 8 == 7){
+                        fill = ran.nextInt(3) == 0 ? 0 : 1;
                     }
-                    else if(bar % 2 == 1){
+                    else if(bar % 4 == 3){
                         fill = ran.nextInt(2) - 1;
                     }
                     else{

@@ -1,36 +1,29 @@
 package org.se.logic;
 
 import org.se.model.Chord;
-import org.se.model.MidiPlayable;
 import org.se.model.MusicalKey;
+import org.se.model.PitchedPlayable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Malte Richert
  */
 
-public class BassContainer extends MidiPlayable {
+public class BassContainer extends PitchedPlayable {
     private final MusicalKey key;
-    private final Chord[] chords;
     private final Chord[] nextChords;
     public BassContainer(int trackNo, int bar, MusicalKey key, List<String> currentChords, List<String> nextChords) {
-        super(trackNo, bar);
+        super(trackNo, bar, key, currentChords);
         this.key = key;
-        this.chords = parseChordString(currentChords);
         this.nextChords = parseChordString(nextChords);
         setContent();
     }
 
-    public Chord[] parseChordString(List<String> chords){
-        Chord[] parsedChords = new Chord[chords.size()];
-        for (int i = 0; i < chords.size(); i++) {
-            int stair = Integer.parseInt(String.valueOf(chords.get(i).charAt(0)));
-            String modifier = chords.get(i).substring(1);
-            parsedChords[i] = new Chord(MusicalKey.getNotesInKey(key.getBaseNote())[stair], modifier);
-        }
-        return parsedChords;
-    }
+
 
     private void setContent() {
         //creates steady eighth bass line on root notes with scalar transitions
@@ -39,7 +32,6 @@ public class BassContainer extends MidiPlayable {
             int indexInChord = count % (8/chords.length);
             int chordIndex = count / (8/chords.length);
             int rootNote = chords[chordIndex].getRootNote() % 12 + 36; // gets root of chord and translates it to octave starting with 36
-
 
             // get #eights each chord is played
             int chordEights = 8 / chords.length;

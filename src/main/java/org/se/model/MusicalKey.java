@@ -14,7 +14,7 @@ public class MusicalKey {
 
     public static int[] keyMaj = {0,2,4,5,7,9,11};
     private final int baseNote;
-    private String base;
+    private final String base;
 
     public static int[] getNotesInKey(int baseNote){
         int[] notesInKey = new int[7];
@@ -50,8 +50,7 @@ public class MusicalKey {
     }
 
     public MusicalKey(){
-        // TODO revert to random key
-        base = "C";//(String) musicalKeyMajor.keySet().toArray()[new Random().nextInt(musicalKeyMajor.keySet().size())];
+        base = (String) musicalKeyMajor.keySet().toArray()[new Random().nextInt(musicalKeyMajor.keySet().size())];
         baseNote = translateNoteStringToValue(base);
     }
 

@@ -2,6 +2,10 @@ package org.se.model;
 
 import java.util.*;
 
+/**
+ * @author Benjamin Frahm
+ */
+
 public class Theme extends MidiPlayable{
 
     private final MusicalKey key;
@@ -9,8 +13,8 @@ public class Theme extends MidiPlayable{
     private Chord[] inflatedChords;
     HashMap<Integer, List<List<Integer>>> transposedContent;
 
-    public Theme(int trackNo, int bar, MusicalKey key, List<List<String>> chordProgression) {
-        super(trackNo, bar);
+    public Theme(MusicalKey key, List<List<String>> chordProgression) {
+        super(0, 0);
         this.key = key;
         parseChordString(chordProgression);
         inflateChordList();
@@ -23,16 +27,16 @@ public class Theme extends MidiPlayable{
         Random ran = new Random();
         for(int i = 0; i < 8*4; i++){
             if(ran.nextInt(8) == 0 || (i%2 == 0 && ran.nextInt(4) != 0 )){
-                Integer c = inflatedChords[i/2].getChord().get(ran.nextInt(inflatedChords[i/2].getChord().size()));
-                List<Integer> l2 = new ArrayList<>();
-                l2.add(i*12);
-                l2.add(12+12*ran.nextInt(3));
-                if(content.containsKey(c)){
-                    content.get(c).add(l2);
+                Integer chordNote = inflatedChords[i/2].getChord().get(ran.nextInt(inflatedChords[i/2].getChord().size()));
+                List<Integer> posAndLength = new ArrayList<>();
+                posAndLength.add(i*12);
+                posAndLength.add(12+12*ran.nextInt(3));
+                if(content.containsKey(chordNote)){
+                    content.get(chordNote).add(posAndLength);
                 } else{
                     List<List<Integer>> l = new ArrayList<>();
-                    l.add(l2);
-                    content.put(c, l);
+                    l.add(posAndLength);
+                    content.put(chordNote, l);
                 }
             }
         }
@@ -84,4 +88,6 @@ public class Theme extends MidiPlayable{
     public MusicalKey getKey() {
         return key;
     }
+
+    public int getLengthInBars(){ return 4;}
 }

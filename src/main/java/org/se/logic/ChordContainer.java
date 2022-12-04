@@ -1,25 +1,19 @@
 package org.se.logic;
 
-import org.se.model.Chord;
-import org.se.model.MidiPlayable;
 import org.se.model.MusicalKey;
+import org.se.model.PitchedPlayable;
 
 import java.util.*;
 
 /**
  * @author Benjamin Frahm
  */
-public class ChordContainer extends MidiPlayable {
-    private final MusicalKey key;
+public class ChordContainer extends PitchedPlayable {
     private final boolean isBassTrack;
-    Chord[] chords;
-    Chord[] inflatedChords;
+
     public ChordContainer(int trackNo, int bar, MusicalKey key, List<String> chords, boolean isBassTrack) {
-        super(trackNo, bar);
-        this.chords = new Chord[chords.size()];
-        this.key = key;
+        super(trackNo, bar, key, chords);
         this.isBassTrack = isBassTrack;
-        this.parseChordString(chords);
         setContent();
     }
 
@@ -44,23 +38,6 @@ public class ChordContainer extends MidiPlayable {
             }
         }
         return returnProgressions;
-    }
-
-    public void parseChordString(List<String> chords){
-        for (int i = 0; i < chords.size(); i++) {
-            int stair = Integer.parseInt(String.valueOf(chords.get(i).charAt(0)));
-            String modifier = chords.get(i).substring(1);
-            this.chords[i] = new Chord(MusicalKey.getNotesInKey(key.getBaseNote())[stair], modifier);
-        }
-    }
-
-    private void inflateChordList(){
-        inflatedChords = new Chord[4];
-        for(int chordNo = 0; chordNo < chords.length; chordNo ++){
-            for(int i = 0; i < 4/chords.length; i ++){
-                inflatedChords[4/chords.length*chordNo+i] = chords[chordNo];
-            }
-        }
     }
 
     private void setContent(){
