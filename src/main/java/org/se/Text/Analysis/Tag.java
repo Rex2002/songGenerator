@@ -2,13 +2,26 @@ package org.se.Text.Analysis;
 
 import java.util.*;
 
+import org.se.Text.Analysis.dict.WordStemmer;
+
+/**
+ * @author Val Richter
+ */
 public class Tag {
 	public TagType type;
 	public String word;
+	public Optional<WordStemmer> data;
 
 	public Tag(String word, TagType type) {
 		this.word = word;
 		this.type = type;
+		this.data = Optional.empty();
+	}
+
+	public Tag(String word, TagType type, WordStemmer data) {
+		this.word = word;
+		this.type = type;
+		this.data = Optional.ofNullable(data);
 	}
 
 	public boolean is(TagType type) {
@@ -31,6 +44,14 @@ public class Tag {
 		this.word = word;
 	}
 
+	public Optional<WordStemmer> getData() {
+		return this.data;
+	}
+
+	public void setData(Optional<WordStemmer> data) {
+		this.data = data;
+	}
+
 	public Tag type(TagType type) {
 		setType(type);
 		return this;
@@ -38,6 +59,11 @@ public class Tag {
 
 	public Tag word(String word) {
 		setWord(word);
+		return this;
+	}
+
+	public Tag data(Optional<WordStemmer> data) {
+		setData(data);
 		return this;
 	}
 
@@ -60,9 +86,9 @@ public class Tag {
 	@Override
 	public String toString() {
 		return "{" +
-			" type='" + getType() + "'" +
-			", word='" + getWord() + "'" +
-			"}";
+				" type='" + getType() + "'" +
+				", word='" + getWord() + "'" +
+				"}";
 	}
 
 }

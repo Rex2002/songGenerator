@@ -4,9 +4,8 @@ import java.io.IOException;
 import org.se.Text.Analysis.TermCollection;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+	static int counter = 0;
 
 		TermCollection x = TermExample.getExample();
 		System.out.println(x);
-    }
-}
+    }}

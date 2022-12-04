@@ -1,7 +1,8 @@
 package org.se.Text.Analysis;
 
+/**
+ * @author Val Richter
+ */
 public enum Gender {
-	male,
-	female,
-	neutral,
+	Male, Female, Neutral,
 }
