@@ -24,6 +24,7 @@ public class Part {
     private List<List<String>> chordProgression;
     private final Random ran = new Random();
     private final List<MidiPlayable> midiPlayables = new ArrayList<>();
+    private final List<MidiText> midiTexts = new ArrayList<>();
 
     @JsonCreator
     public Part(@JsonProperty("length") int length, @JsonProperty("req") List<InstrumentEnum> reqInsts,
@@ -50,12 +51,20 @@ public class Part {
         int beatNo = ran.nextInt(BeatContainer.getDrumBeats().size());
         Theme theme = new Theme(key, chordProgression);
         MidiPlayable m;
+        PitchedPlayable p;
+        MidiText t;
         for(int bar = 0; bar < length; bar++){
             for(InstrumentEnum instr : reqInsts){
                 if(instrEnumBeginsWith(instr, "chords")) {
-                    m = new ChordContainer(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())),bar,
+                    p = new ChordContainer(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())),bar,
                             key, chordProgression.get(bar % chordProgression.size()) );
-                    midiPlayables.add(m);
+                    midiPlayables.add(p);
+                    for(int chordNo = 0; chordNo < p.getInflatedChords().length; chordNo++){
+                        t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar, p.getInflatedChords()[chordNo], chordNo);
+                        midiTexts.add(t);
+                    }
+
+
                     m = new ChordContainer(trackMapping.get(Config.getInstrumentMapping().get(instr.toString()))+1,bar,
                             key, chordProgression.get(bar % chordProgression.size()), true );
                     midiPlayables.add(m);
@@ -138,4 +147,7 @@ public class Part {
         return chordProgression;
     }
 
+    public List<MidiText> getMidiTexts() {
+        return midiTexts;
+    }
 }

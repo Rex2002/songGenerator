@@ -8,6 +8,8 @@ import java.util.List;
  * @reviewer Malte Richert
  */
 abstract public class PitchedPlayable extends MidiPlayable{
+
+
     protected Chord[] chords;
     protected Chord[] inflatedChords;
     protected MusicalKey key;
@@ -39,7 +41,8 @@ abstract public class PitchedPlayable extends MidiPlayable{
             }
         }
     }
-    // parseChordString
-    // inflateChordList
-    // constructor: MusicalKey-Attribute, chords
+
+    public Chord[] getInflatedChords() {
+        return inflatedChords;
+    }
 }

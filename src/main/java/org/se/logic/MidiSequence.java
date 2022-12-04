@@ -2,6 +2,7 @@ package org.se.logic;
 
 import org.se.model.Chord;
 import org.se.model.MidiPlayable;
+import org.se.model.MidiText;
 import org.se.model.MusicalKey;
 
 import javax.sound.midi.*;
@@ -187,6 +188,9 @@ public class MidiSequence {
         }
     }
 
+    public void addMidiText(MidiText t){
+        addText(t.getPos(),t.getTrackNo(), t.getText());
+    }
     @Deprecated
     public void addBeat(BeatContainer beat, int bar){
         Map<Integer, List<List<Integer>>> beatContent = beat.getContent();
