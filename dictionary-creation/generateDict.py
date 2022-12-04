@@ -10,6 +10,11 @@ nouns = list()
 verbs = list()
 
 
+forbiddenNouns = ("der", "die", "das", "ich", "du", "er", "sie", "es", "wir", "ihr", "sie", "bei", "in", "im", "am", "um", "als")
+forbiddenSymbols = ("’")
+forbiddenStarts = ("\"", "'", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-")
+
+
 # Read nouns
 with open("./nouns.csv", encoding="utf8") as csvFile:
 	reader = list(csv.reader(csvFile))
@@ -71,8 +76,7 @@ with open("./nouns.csv", encoding="utf8") as csvFile:
 				break
 
 		if type(pos) is str:
-			if pos == "noun" and not radix.startswith(("\"", "'", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-")):
-
+			if pos == "noun" and not radix.startswith(forbiddenStarts) and not radix.lower() in forbiddenNouns and all([not char in radix for char in forbiddenSymbols]):
 				toUmlaut = False
 				radixLen = len(radix)
 				for idx in range(len(radix)):
@@ -83,6 +87,9 @@ with open("./nouns.csv", encoding="utf8") as csvFile:
 							toUmlaut = True
 					if radixLen < len(radix):
 						break
+
+				if radixLen < 2:
+					continue
 
 				if toUmlaut:
 					toUmlaut = "true"

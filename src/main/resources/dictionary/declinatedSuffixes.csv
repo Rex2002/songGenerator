@@ -6,6 +6,7 @@ es,genitive,male,singular,false
 ,accusative,male,singular,false
 er,nominative,male,plural,true
 er,genitive,male,plural,true
+en,dative,male,plural,true
 ern,dative,male,plural,true
 er,accusative,male,plural,true
 ,nominative,female,singular,false
@@ -21,6 +22,7 @@ s,genitive,neutral,singular,false
 es,genitive,neutral,singular,false
 ,dative,neutral,singular,false
 ,accusative,neutral,singular,false
+e,nominative,neutral,plural,false
 er,nominative,neutral,plural,true
 er,genitive,neutral,plural,true
 ern,dative,neutral,plural,true

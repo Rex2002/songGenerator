@@ -12,17 +12,15 @@ import org.se.Text.Analysis.Numerus;
 public class Declination extends TermEndings {
 	public GrammaticalCase grammaticalCase;
 	public Gender gender;
-	public boolean toUmlaut;
 
 	public Declination(String radix,
 			GrammaticalCase grammaticalCase,
 			Gender gender,
 			Numerus numerus,
 			boolean toUmlaut) {
-		super(radix, numerus);
+		super(radix, numerus, toUmlaut);
 		this.grammaticalCase = grammaticalCase;
 		this.gender = gender;
-		this.toUmlaut = toUmlaut;
 	}
 
 	public Declination() {
@@ -44,18 +42,6 @@ public class Declination extends TermEndings {
 		this.gender = gender;
 	}
 
-	public boolean isToUmlaut() {
-		return this.toUmlaut;
-	}
-
-	public boolean getToUmlaut() {
-		return this.toUmlaut;
-	}
-
-	public void setToUmlaut(boolean toUmlaut) {
-		this.toUmlaut = toUmlaut;
-	}
-
 	public Declination grammaticalCase(GrammaticalCase grammaticalCase) {
 		setGrammaticalCase(grammaticalCase);
 		return this;
@@ -63,11 +49,6 @@ public class Declination extends TermEndings {
 
 	public Declination gender(Gender gender) {
 		setGender(gender);
-		return this;
-	}
-
-	public Declination toUmlaut(boolean toUmlaut) {
-		setToUmlaut(toUmlaut);
 		return this;
 	}
 
@@ -80,8 +61,7 @@ public class Declination extends TermEndings {
 		}
 		Declination declination = (Declination) o;
 		return Objects.equals(radix, declination.radix) && Objects.equals(grammaticalCase, declination.grammaticalCase)
-				&& Objects.equals(gender, declination.gender) && Objects.equals(numerus, declination.numerus)
-				&& toUmlaut == declination.toUmlaut;
+				&& Objects.equals(gender, declination.gender) && Objects.equals(numerus, declination.numerus);
 	}
 
 	@Override
@@ -95,7 +75,6 @@ public class Declination extends TermEndings {
 				super.toStringHelper() +
 				", grammaticalCase='" + getGrammaticalCase() + "'" +
 				", gender='" + getGender() + "'" +
-				", toUmlaut='" + isToUmlaut() + "'" +
 				"}";
 	}
 

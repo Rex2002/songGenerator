@@ -21,7 +21,7 @@ public class Analyzer {
 	}
 
 	public static String readFile(Path filepath) throws IOException {
-		return Files.readString(filepath, StandardCharsets.ISO_8859_1);
+		return Files.readString(filepath, StandardCharsets.UTF_8);
 	}
 
 	static ArrayList<ArrayList<String>> preprocess(String text) {

@@ -11,6 +11,11 @@ public class WordWithData extends HashMap<String, String> {
 	public WordWithData() {
 	}
 
+	public WordWithData(String baseKey, HashMap<? extends String, ? extends String> map) {
+		super(map);
+		this.baseKey = baseKey;
+	}
+
 	public WordWithData(String baseKey) {
 		this.baseKey = baseKey;
 	}

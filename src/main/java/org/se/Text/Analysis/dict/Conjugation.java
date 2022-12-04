@@ -13,8 +13,8 @@ public class Conjugation extends TermEndings {
 	public Conjugation() {
 	}
 
-	public Conjugation(String radix, Numerus numerus, Person person, Tense tense) {
-		super(radix, numerus);
+	public Conjugation(String radix, Numerus numerus, Person person, Tense tense, boolean toUmlaut) {
+		super(radix, numerus, toUmlaut);
 		this.person = person;
 		this.tense = tense;
 	}

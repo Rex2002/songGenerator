@@ -9,6 +9,6 @@ import org.se.Text.Analysis.*;
  */
 public class TermExample {
 	public static TermCollection getExample() throws IOException {
-		return Analyzer.analyze(Path.of("test2.txt"));
+		return Analyzer.analyze(Path.of("test.txt"));
 	}
 }

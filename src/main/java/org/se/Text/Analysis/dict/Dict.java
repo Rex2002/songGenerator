@@ -26,9 +26,8 @@ public class Dict {
 		return "radix";
 	}
 
-	public Dict(WordList nounSuffixes, WordList nounPrefixes,
-			WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs, WordList diphtongs,
-			WordList umlautChanges, List<Declination> declinatedSuffixes, List<Conjugation> conjugatedSuffixes) {
+	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs,
+			WordList diphtongs, WordList umlautChanges, List<Declination> declinatedSuffixes, List<Conjugation> conjugatedSuffixes) {
 		this.nounSuffixes = nounSuffixes;
 		this.nounPrefixes = nounPrefixes;
 		this.nouns = nouns;
@@ -86,11 +85,9 @@ public class Dict {
 
 	// Make word into a term
 
-	public List<WordStemmer> tryNounStem(String s) {
+	public List<WordStemmer> getPossibleNounStems(String s) {
 		List<WordStemmer> res = new ArrayList<>();
-		WordStemmer[] l = WordStemmer.radicalize(s, declinatedSuffixes, nounSuffixes, nounPrefixes, 2, diphtongs,
-				umlautChanges,
-				baseKey);
+		WordStemmer[] l = WordStemmer.radicalize(s, declinatedSuffixes, nounSuffixes, nounPrefixes, 2, diphtongs, umlautChanges, baseKey);
 
 		// TODO: Fix this
 		for (WordStemmer w : l) {
@@ -104,32 +101,115 @@ public class Dict {
 		return res;
 	}
 
-	public Optional<WordStemmer> tryVerbStem(String s) {
+	public List<WordStemmer> getPossibleVerbStems(String s) {
 		// TODO: Add conjugation
-		WordStemmer w = WordStemmer.removeSuffixes(s, verbSuffixes, 2, diphtongs, baseKey);
-		w.removePrefixes(verbPrefixes, 2, diphtongs);
+		WordStemmer[] l = WordStemmer.radicalize(s, conjugatedSuffixes, verbSuffixes, verbPrefixes, 2, diphtongs, umlautChanges, baseKey);
+		List<WordStemmer> res = new ArrayList<>();
 
-		if (verbs.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.Any(w.getSuffixes(), data -> {
-			return data.containsKey("certain") && Parser.parseBool(data.get("certain"));
-		}))) {
-			return Optional.of(w);
-		} else {
-			return Optional.empty();
+		for (WordStemmer w : l) {
+			if (verbs.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.Any(w.getSuffixes(), data -> {
+				return data.containsKey("certain") && Parser.parseBool(data.get("certain"));
+			}))) {
+				res.add(w);
+			}
 		}
+		return res;
+	}
+
+	// TODO: Test if there are better values for these variables
+	final static int affixCountBias = -6;
+	final static int inDictionaryBias = 20;
+	final static int declinatedSuffixGenderBias = 20;
+	final static int lastSuffixGenderBias = 10;
+	final static int allSuffixesGenderBias = 1;
+	final static int allSuffixesDictGenderBias = 2;
+	final static int stemNounExceptionBias = -10;
+	static Gender tmpGender = null;
+
+	private int heuristicForStemCmp(WordStemmer stem, boolean areNouns) {
+		WordList dict = areNouns ? nouns : verbs;
+		int count = 0;
+
+		count += affixCountBias * stem.affixesCount();
+		if (dict.has(stem.getStem())) count += inDictionaryBias;
+
+		try {
+			if (areNouns) {
+				Optional<WordWithData> dictEntry = dict.get(stem.getStem());
+				if (dictEntry.isPresent()) {
+					Gender dictGender = dictEntry.get().get("gender", Gender.class).get();
+
+					if (((Declination) stem.getGrammartizedSuffix()).getGender() == dictGender) count += declinatedSuffixGenderBias;
+
+					if (!stem.getSuffixes().isEmpty()
+							&& stem.getSuffixes().get(stem.getSuffixes().size() - 1).get("gender", Gender.class).get() == dictGender) {
+						count += lastSuffixGenderBias;
+					}
+
+					tmpGender = null;
+					if (Util.All(stem.getSuffixes(), suffix -> {
+						Gender currentGender = suffix.get("gender", Gender.class).get();
+						if (tmpGender == null || currentGender == tmpGender) {
+							tmpGender = currentGender;
+							return true;
+						} else return false;
+					})) {
+						count += allSuffixesGenderBias;
+					}
+
+					if (tmpGender != null && tmpGender == dictGender) count += allSuffixesDictGenderBias;
+				}
+			}
+		} catch (Exception e) {
+			// Something went wrong when treating the stem as a noun, probably because of some NullPointer.
+			// Since a noun was expected, we will decrease the count for this exception
+			count += stemNounExceptionBias;
+		}
+
+		return count;
+	}
+
+	/**
+	 * Retrieve the best stem of a list of possible stems. The best stem is hereby
+	 * defined as having been chopped into the fewest parts (suffixes/prefixes) and
+	 * fitting best with those parts.
+	 *
+	 * @param stems
+	 *            The list of possible stems to choose from.
+	 * @param areNouns
+	 *            Whether the stems are all nounStems. If set to true, additional metadata like the word's gender are taken into account
+	 * @return Returns the best WordStemmer object of the input and nothing, if the
+	 *         list of stems is empty.
+	 */
+	public Optional<WordStemmer> getBestOfStems(List<WordStemmer> stems, boolean areNouns) {
+		Optional<WordStemmer> best = Optional.empty();
+		for (WordStemmer stem : stems) {
+			if (best.isEmpty()) {
+				best = Optional.of(stem);
+			} else {
+				int currentCount = heuristicForStemCmp(stem, areNouns);
+				int bestCount = heuristicForStemCmp(best.get(), areNouns);
+
+				if (currentCount > bestCount) {
+					best = Optional.of(stem);
+				}
+			}
+		}
+		return best;
 	}
 
 	public Tag tagWord(String s) {
-		// TODO: Maybe check is word is a common stopWord (would require a list of
+		// TODO: Maybe check if word is a common stopWord (would require a list of
 		// stop-words)
 		// TODO: Maybe filter based on the tag of the last word (i.e. there can't be a
 		// noun directly after a verb in the same sentence)
 
-		List<WordStemmer> nouns = tryNounStem(s);
-		if (!nouns.isEmpty()) {
-			return new Tag(s, TagType.Noun, nouns.get(0));
+		Optional<WordStemmer> noun = getBestOfStems(getPossibleNounStems(s), true);
+		if (noun.isPresent()) {
+			return new Tag(s, TagType.Noun, noun.get());
 		}
 
-		Optional<WordStemmer> verb = tryVerbStem(s);
+		Optional<WordStemmer> verb = getBestOfStems(getPossibleVerbStems(s), false);
 		if (verb.isPresent()) {
 			return new Tag(s, TagType.Verb, verb.get());
 		}
@@ -170,16 +250,8 @@ public class Dict {
 		// Hard checks would simply add no data if the WordStemmer doesn't pass the
 		// check
 		if (t.getData().isEmpty()) {
-			WordStemmer[] res = WordStemmer.radicalize(t.word, declinatedSuffixes, suffixes, prefixes, 2, diphtongs,
-					umlautChanges, baseKey);
-
-			for (WordStemmer w : res) {
-				if (nouns.has(w.getStem()) || Util.Any(w.getSuffixes(),
-						data -> data.containsKey("certain") && Parser.parseBool(data.get("certain")))) {
-					t.setData(Optional.of(w));
-					break;
-				}
-			}
+			Optional<WordStemmer> stem = getBestOfStems(getPossibleNounStems(t.word), true);
+			t.setData(stem);
 		}
 	}
 
@@ -190,8 +262,13 @@ public class Dict {
 			return Optional.empty();
 		}
 
+		// TODO: Currently this function converts the grammartizedSuffix into a
+		// Declination, which is only safe as long as this function is only called for
+		// nouns. There should probably be some better way to do this.
+		// This is currently not an actual issue, though, and thus has a low priority
+
 		WordStemmer data = t.getData().get();
-		Declination declinatedSuffix = data.getDeclinatedSuffix();
+		Declination declinatedSuffix = (Declination) data.getGrammartizedSuffix();
 
 		// System.out.println(t);
 		// System.out.println(data);
@@ -229,11 +306,9 @@ public class Dict {
 		}
 	}
 
-	public NounTerm createNounTerm(TermVariations<NounTerm> variations, Gender gender, GrammaticalCase grammaticalCase,
-			Numerus numerus) {
+	public NounTerm createNounTerm(TermVariations<NounTerm> variations, Gender gender, GrammaticalCase grammaticalCase, Numerus numerus) {
 		// TODO
-		return new NounTerm(variations.getRadix(), variations.getRadix(), 1, numerus,
-				grammaticalCase, gender);
+		return new NounTerm(variations.getRadix(), variations.getRadix(), 1, numerus, grammaticalCase, gender);
 	}
 
 	// Getters, Setters & other Boilerplate
@@ -316,10 +391,8 @@ public class Dict {
 		return this;
 	}
 
-	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes,
-			WordList verbPrefixes, WordList verbs, WordList diphtongs, WordList umlautChanges,
-			List<Declination> declinatedSuffixes,
-			String baseKey) {
+	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs,
+			WordList diphtongs, WordList umlautChanges, List<Declination> declinatedSuffixes, String baseKey) {
 		this.nounSuffixes = nounSuffixes;
 		this.nounPrefixes = nounPrefixes;
 		this.nouns = nouns;
@@ -377,15 +450,13 @@ public class Dict {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this)
-			return true;
+		if (o == this) return true;
 		if (!(o instanceof Dict)) {
 			return false;
 		}
 		Dict dictionary = (Dict) o;
-		return Objects.equals(nounSuffixes, dictionary.nounSuffixes)
-				&& Objects.equals(nounPrefixes, dictionary.nounPrefixes) && Objects.equals(nouns, dictionary.nouns)
-				&& Objects.equals(verbSuffixes, dictionary.verbSuffixes)
+		return Objects.equals(nounSuffixes, dictionary.nounSuffixes) && Objects.equals(nounPrefixes, dictionary.nounPrefixes)
+				&& Objects.equals(nouns, dictionary.nouns) && Objects.equals(verbSuffixes, dictionary.verbSuffixes)
 				&& Objects.equals(verbPrefixes, dictionary.verbPrefixes) && Objects.equals(verbs, dictionary.verbs);
 	}
 
@@ -396,14 +467,8 @@ public class Dict {
 
 	@Override
 	public String toString() {
-		return "{" +
-				" nounSuffixes='" + getNounSuffixes() + "'" +
-				", nounPrefixes='" + getNounPrefixes() + "'" +
-				", nouns='" + getNouns() + "'" +
-				", verbSuffixes='" + getVerbSuffixes() + "'" +
-				", verbPrefixes='" + getVerbPrefixes() + "'" +
-				", verbs='" + getVerbs() + "'" +
-				"}";
+		return "{" + " nounSuffixes='" + getNounSuffixes() + "'" + ", nounPrefixes='" + getNounPrefixes() + "'" + ", nouns='" + getNouns() + "'"
+				+ ", verbSuffixes='" + getVerbSuffixes() + "'" + ", verbPrefixes='" + getVerbPrefixes() + "'" + ", verbs='" + getVerbs() + "'" + "}";
 	}
 
 }

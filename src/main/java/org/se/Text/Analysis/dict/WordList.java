@@ -1,12 +1,14 @@
 package org.se.Text.Analysis.dict;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * @author Val Richter
  */
 public class WordList implements Iterable<WordWithData> {
 	private List<WordWithData> store = new ArrayList<WordWithData>();
+	private WordWithData elementWithLongestBase = null;
 	final String baseKey;
 
 	public WordList() {
@@ -39,6 +41,29 @@ public class WordList implements Iterable<WordWithData> {
 		return store.size();
 	}
 
+	private int cmpBaseLengths(WordWithData x, WordWithData y) {
+		return Integer.compareUnsigned(x.get().length(), y.get().length());
+	}
+
+	private void updateElementWithLongestBase() {
+		WordWithData best = null;
+		for (WordWithData w : store) {
+			if (best == null || cmpBaseLengths(w, best) > 0) {
+				best = w;
+			}
+		}
+		elementWithLongestBase = best;
+	}
+
+	public WordWithData getElementWithLongestBase() {
+		if (elementWithLongestBase != null) {
+			return elementWithLongestBase;
+		} else {
+			updateElementWithLongestBase();
+			return elementWithLongestBase;
+		}
+	}
+
 	private int binSearch(String s, int start, int end) {
 		int mid = (int) (end + start) / 2;
 		while (end - start > 1) {
@@ -62,6 +87,9 @@ public class WordList implements Iterable<WordWithData> {
 		if (!h.containsKey(baseKey)) {
 			return false;
 		}
+		if (elementWithLongestBase != null && cmpBaseLengths(h, elementWithLongestBase) > 0) {
+			elementWithLongestBase = h;
+		}
 		int i = binSearch(h.get(baseKey));
 		store.add(i, h);
 		return true;
@@ -69,6 +97,7 @@ public class WordList implements Iterable<WordWithData> {
 
 	public boolean insert(String s) {
 		WordWithData h = new WordWithData();
+		h.put(baseKey, s);
 		return insert(h);
 	}
 
@@ -103,6 +132,41 @@ public class WordList implements Iterable<WordWithData> {
 			}
 		}
 		return res;
+	}
+
+	/**
+	 * Filters a list of elements in this WordList. This method is pure and doesn't
+	 * mutate this {@link WordList} object.
+	 *
+	 * @param f
+	 *            Function determining for each element, whether it should be in the
+	 *            newly created {@link WordList}
+	 * @return
+	 */
+	public WordList filter(Predicate<? super WordWithData> f) {
+		WordList res = new WordList();
+		for (int i = 0; i < store.size(); i++) {
+			WordWithData w = store.get(i);
+			if (f.test(w)) {
+				// We can add the WordWithData object unsafely directly, because we know the
+				// words were already stored in this list and we iterate over this list in an
+				// ordered fashion
+				res.store.add(w);
+			}
+		}
+		return res;
+	}
+
+	/**
+	 * Same as filter, but mutates this WordList object
+	 *
+	 * @param f
+	 *            Function determining for each element, whether it should stay in
+	 *            this {@link WordList}
+	 */
+	public void filterMut(Predicate<? super WordWithData> f) {
+		elementWithLongestBase = null;
+		store = store.stream().filter(f).toList();
 	}
 
 	public Optional<String> get(String s, String key) {

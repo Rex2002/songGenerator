@@ -15,8 +15,8 @@ public class Main {
 		// counter++;
 		// }
 		// });
-
-		System.out.println("\n\nExample:");
+		// System.out.println("\n\n");
+		System.out.println("Example:");
 		TermCollection example = TermExample.getExample();
 		example.iterNouns(vars -> {
 			if (vars.getFrequency() >= 1) {
