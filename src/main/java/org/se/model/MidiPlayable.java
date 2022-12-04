@@ -8,6 +8,7 @@ import java.util.Map;
 
 /**
  * @author Benjamin Frahm
+ * @reviewer Malte Richert
  */
 
 public abstract class MidiPlayable {

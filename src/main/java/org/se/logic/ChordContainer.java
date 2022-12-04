@@ -7,6 +7,7 @@ import java.util.*;
 
 /**
  * @author Benjamin Frahm
+ *  @reviewer Malte Richert
  */
 public class ChordContainer extends PitchedPlayable {
     private final boolean isBassTrack;

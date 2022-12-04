@@ -11,6 +11,7 @@ import java.util.Map;
 
 /**
  * @author Malte Richert
+ * @reviewer Benjamin Frahm
  */
 
 public class BassContainer extends PitchedPlayable {

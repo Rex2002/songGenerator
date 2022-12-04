@@ -6,6 +6,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
+/**
+ * @author Benjamin Frahm
+ */
+
 public class MidiTest {
 
     public static Random ran = new Random();
@@ -85,6 +89,7 @@ public class MidiTest {
             ex.printStackTrace();
         }
     }
+    @Deprecated
     public static void playMidiSounds() throws InterruptedException{
         try{
             Synthesizer midiSynth = MidiSystem.getSynthesizer();
@@ -94,7 +99,7 @@ public class MidiTest {
                 System.out.println(i.getPatch().getProgram());
             }
             //get and load default instrument and channel lists
-            Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
+            //Instrument[] instr = midiSynth.getDefaultSoundbank().getInstruments();
 
             MidiChannel[] mChannels = midiSynth.getChannels();
             midiSynth.loadAllInstruments(midiSynth.getDefaultSoundbank());

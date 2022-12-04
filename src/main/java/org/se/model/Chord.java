@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 /**
  * @author Benjamin Frahm
+ * @reviewer Malte Richert
  */
 
 public class Chord {
@@ -51,6 +52,7 @@ public class Chord {
         Chord.chordModifiers = chordModifiers;
     }
 
+    @Deprecated
     public static HashMap<String, ArrayList<Integer>> getChordModifiers() {
         return chordModifiers;
     }

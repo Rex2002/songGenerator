@@ -2,6 +2,11 @@ package org.se.model;
 
 import java.util.*;
 
+/**
+ * @author Benjamin Frahm
+ * @reviewer Malte Richert
+ */
+
 public class ThemeVariation extends MidiPlayable {
 
     // some instruments swing better with smaller number of syllables (aka notes), others, like violin, can handle larger numbers without sounding crappy

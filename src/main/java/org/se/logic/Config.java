@@ -17,6 +17,7 @@ import java.util.List;
 
 /**
  * @author Malte Richert
+ * @reviewer Benjamin Frahm
  */
 
 public class Config {

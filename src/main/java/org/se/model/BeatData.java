@@ -8,16 +8,17 @@ import java.util.*;
 
 /**
  * @author Malte Richert
+ * @reviewer Benjamin Frahm
  */
 public class BeatData {
     @JsonProperty
-    private Map<String, String> mainPattern;
+    private final Map<String, String> mainPattern;
     @JsonProperty
-    private Map<String, String> bigFill;
+    private final Map<String, String> bigFill;
     @JsonProperty
-    private Map<String, String> smallFill;
+    private final Map<String, String> smallFill;
     @JsonProperty
-    private int resolution; //midi-length of smallest time-unit in template
+    private final int resolution; //midi-length of smallest time-unit in template
 
     @JsonCreator
     public BeatData(@JsonProperty("mainPattern") Map<String, String> mainPattern,

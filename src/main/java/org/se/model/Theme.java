@@ -4,6 +4,7 @@ import java.util.*;
 
 /**
  * @author Benjamin Frahm
+ * @reviewer Malte Richert
  */
 
 public class Theme extends MidiPlayable{

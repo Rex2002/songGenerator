@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * @author Benjamin Frahm
+ * @reviewer Malte Richert
  */
 abstract public class PitchedPlayable extends MidiPlayable{
     protected Chord[] chords;

@@ -8,6 +8,7 @@ import java.util.Random;
 
 /**
  * @author Benjamin Frahm
+ * @reviewer Malte Richert
  */
 
 public class MusicalKey {

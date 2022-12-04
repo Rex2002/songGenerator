@@ -1,7 +1,6 @@
 package org.se.logic;
 
 import org.se.model.*;
-
 import java.util.*;
 
 
@@ -9,7 +8,6 @@ import java.util.*;
  * @author Malte Richert
  * @author Benjamin Frahm
  */
-
 public class StructureGenerator {
     private static final Random ran = new Random();
     private static Structure structure;

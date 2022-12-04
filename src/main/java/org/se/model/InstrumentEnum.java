@@ -3,6 +3,7 @@ package org.se.model;
 
 /**
  * @author Malte Richert
+ * @author Benjamin Frahm
  */
 public enum InstrumentEnum {
     chords,

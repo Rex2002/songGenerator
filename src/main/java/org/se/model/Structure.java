@@ -6,14 +6,15 @@ import java.util.*;
 
 /**
  * @author Malte Richert
+ * @reviewer Benjamin Frahm
  */
 public class Structure {
     @JsonProperty
-    private Map<String, Part> parts;
+    private final Map<String, Part> parts;
     @JsonProperty
-    private List<String> order;
+    private final List<String> order;
     @JsonProperty
-    private String basePartKey;
+    private final String basePartKey;
     private MusicalKey key;
     private Genre genre;
     private int tempo;
