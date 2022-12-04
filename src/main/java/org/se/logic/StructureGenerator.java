@@ -55,7 +55,6 @@ public class StructureGenerator {
             }
             seq.addText(barOffset*4, 0, partName);
             for(MidiText t: structure.getPart(partName).getMidiTexts()){
-                System.out.println("adding midi text: " + t.getText());
                 t.setBar(t.getBar() + barOffset);
                 seq.addMidiText(t);
                 t.setBar(t.getBar() - barOffset);
