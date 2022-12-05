@@ -4,7 +4,7 @@ basePart: intro
 parts:
   intro:
     # pimped length for testing to values beyond ones imagination, needs to be reduced for production
-    length: 32
+    length: 8
     req:
       - chords
       - drums

@@ -9,12 +9,14 @@ import java.util.*;
  * @author Benjamin Frahm
  */
 public class StructureGenerator {
-    private static final Random ran = new Random();
+    private static Random ran = new Random();
     private static Structure structure;
     private static final Map<Integer, Integer> trackMapping = new HashMap<>();
 
     public static void generateStructure(Map<String, Object> settings, Map<String, Integer> metrics){
-        structure = Config.getStructures().get(ran.nextInt(Config.getStructures().size()));
+        ran = new Random(379875934);
+        Config.setGenreFlag((Genre) settings.get("genre"));
+        structure =Config.getStructures().get(ran.nextInt(Config.getStructures().size()));
         structure.setGenre((Genre) settings.get("genre"));
         structure.setKey(new MusicalKey());
         if (settings.get("tempo") != null){

@@ -1,0 +1,24 @@
+# not actually blues, just example file for implementation
+# TODO add blues structures
+order: [intro, verse, verse]
+basePart: intro
+parts:
+  intro:
+    # pimped length for testing to values beyond ones imagination, needs to be reduced for production
+    length: 8
+    req:
+      - drums
+      - bass
+      - melody
+      - melody2
+    opt:
+      - chords2
+  verse:
+    length: 16
+    randomizationLevel: 0 #0: no variation, 1: keep 2 most important chords, 2: stay in key
+    req:
+      - chords
+      - bass
+      - drums
+    opt:
+      - chords2

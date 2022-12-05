@@ -3,10 +3,7 @@ package org.se.logic;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
-import org.se.model.Beat;
-import org.se.model.BeatData;
-import org.se.model.Chord;
-import org.se.model.Structure;
+import org.se.model.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,9 +18,10 @@ import java.util.List;
  */
 
 public class Config {
-    private static List<Structure> structures;
-    private static List<List<List<String>>> chordProgressions;
+    private static List<Structure> structuresPop, structuresBlues;
+    private static List<List<List<String>>> chordProgressionsPop, chordProgressionsBlues;
     private static HashMap<String, Integer> instrumentMapping;
+    private static Genre genreFlag;
 
     public static void loadConfig(){
         YAMLFactory yaml = new YAMLFactory();
@@ -55,11 +53,19 @@ public class Config {
         //load structure template
         try{
             YAMLParser yamlParser = yaml.createParser(new File("./src/main/resources/structure_templates_pop.yml"));
-            structures = mapper.readValues(yamlParser, Structure.class).readAll();
+            structuresPop = mapper.readValues(yamlParser, Structure.class).readAll();
         } catch (IOException e) {
-            System.out.println("Encountered exception while trying to read Structure template.");
+            System.out.println("Encountered exception while trying to read Structure template for pop.");
             e.printStackTrace();
         }
+        try{
+            YAMLParser yamlParser = yaml.createParser(new File("./src/main/resources/structure_templates_blues.yml"));
+            structuresBlues = mapper.readValues(yamlParser, Structure.class).readAll();
+        } catch (IOException e) {
+            System.out.println("Encountered exception while trying to read Structure template for blues.");
+            e.printStackTrace();
+        }
+
 
         //load chord modifiers into Chord class
         try {
@@ -71,9 +77,15 @@ public class Config {
 
         //load chord progressions
         try{
-            chordProgressions = mapper.readValue(new File("./src/main/resources/chord_progressions_pop.yml"), ArrayList.class);
+            chordProgressionsPop = mapper.readValue(new File("./src/main/resources/chord_progressions_pop.yml"), ArrayList.class);
         } catch (IOException e) {
-            System.out.println("Encountered exception while trying to read Chord progressions from template.");
+            System.out.println("Encountered exception while trying to read Chord progressions for pop from template.");
+            e.printStackTrace();
+        }
+        try{
+            chordProgressionsBlues = mapper.readValue(new File("./src/main/resources/chord_progressions_blues.yml"), ArrayList.class);
+        } catch (IOException e) {
+            System.out.println("Encountered exception while trying to read Chord progressions for blues from template.");
             e.printStackTrace();
         }
 
@@ -87,12 +99,14 @@ public class Config {
     }
 
     public static List<Structure> getStructures() {
-        return structures;
+        return genreFlag == Genre.BLUES ? structuresBlues : structuresPop;
     }
     public static List<List<List<String>>> getChordProgressions() {
-        return chordProgressions;
+        return genreFlag == Genre.BLUES ? chordProgressionsBlues : chordProgressionsPop;
     }
     public static HashMap<String, Integer> getInstrumentMapping() {
         return instrumentMapping;
     }
+
+    public static void setGenreFlag(Genre genre) { genreFlag = genre; }
 }
