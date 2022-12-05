@@ -21,7 +21,7 @@ public class VerbTerm extends Term {
 		super(word);
 		Optional<WordWithData> tmp = dict.getVerbs().get(word);
 		if (tmp.isPresent()) {
-			this.infinitive = tmp.get().get("infinitiv");
+			this.infinitive = tmp.get().get("infinitive");
 		} else {
 			this.infinitive = word;
 		}
@@ -35,10 +35,7 @@ public class VerbTerm extends Term {
 
 	@Override
 	public String toString() {
-		return "{" +
-				super.toStringHelper() +
-				" infinitive='" + getInfinitive() + "'" +
-				"}";
+		return "{" + super.toStringHelper() + " infinitive='" + getInfinitive() + "'" + "}";
 	}
 
 	@Override
@@ -53,8 +50,7 @@ public class VerbTerm extends Term {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this)
-			return true;
+		if (o == this) return true;
 		if (!(o instanceof VerbTerm)) {
 			return false;
 		}
