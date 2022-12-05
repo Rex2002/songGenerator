@@ -69,12 +69,9 @@ public class WordList implements Iterable<WordWithData> {
 		while (end - start > 1) {
 			mid = (int) (end + start) / 2;
 			int x = store.get(mid).get(baseKey).compareTo(s);
-			if (x == 0)
-				return mid;
-			else if (x > 0)
-				end = mid;
-			else
-				start = mid;
+			if (x == 0) return mid;
+			else if (x > 0) end = mid;
+			else start = mid;
 		}
 		return mid;
 	}

@@ -11,6 +11,7 @@ verbs = list()
 
 
 forbiddenNouns = ("der", "die", "das", "ich", "du", "er", "sie", "es", "wir", "ihr", "sie", "bei", "in", "im", "am", "um", "als")
+forbiddenVerbs = ("ein")
 forbiddenSymbols = ("’")
 forbiddenStarts = ("\"", "'", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-")
 
@@ -110,17 +111,28 @@ with open("./nouns.csv", encoding="utf8") as csvFile:
 
 
 # Read Verbs
-# with open("./verbs.csv", encoding="utf8") as csvFile:
-# 	reader = list(csv.reader(csvFile))
-# 	header = list(map(lambda x: x.lower(), reader[:1][0]))
-# 	for row in reader[1:]:
-# 		if len(row) == 1 and type(row[0]) is list:
-# 			row = row[0]
-# 		current = list()
-# 		current.append(row[0]) # Radix ist currently just the copied infinitiv, which isn't desirable, but probably won't be fixed in this python file
-# 		for col in row:
-# 			current.append(col)
-# 		verbs.append(current)
+with open("./verbs.csv", encoding="utf8") as csvFile:
+	reader = list(csv.reader(csvFile))
+	header = list(map(lambda x: x.lower(), reader[:1][0]))
+	for row in reader[1:]:
+		if len(row) == 1 and type(row[0]) is list:
+			row = row[0]
+		current = list()
+
+		radix = row[0]
+		if radix.endswith("en"):
+			radix = radix[:-2]
+		elif radix.endswith("n"):
+			radix = radix[:-1]
+
+		if radix.lower() in forbiddenVerbs:
+			continue
+
+		current.append(radix)
+
+		for col in row:
+			current.append(col)
+		verbs.append(current)
 
 # Write new CSV Files
 
@@ -131,10 +143,10 @@ with open(dir + "nounsDict.csv", encoding="utf8", mode="w") as csvFile:
 	writer.writerow(["radix", "nominative-singular", "nominative-plural", "gender", "toUmlaut"])
 	writer.writerows(nouns)
 
-# with open(dir + "verbsDict.csv", encoding="utf8", mode="w") as csvFile:
-# 	writer = csv.writer(csvFile, delimiter=",", lineterminator="\n")
-# 	writer.writerow(["radix", "infinitv", "1.pers-singular-präsens", "2.pers-singular-präsens", "3.pers-singular-präsens", "1.pers-singular-präteritum", "partizip 2", "1.pers-konjunktiv 2", "imperativ-singular", "imperativ-plural", "hilfsverb"])
-# 	writer.writerows(verbs)
+with open(dir + "verbsDict.csv", encoding="utf8", mode="w") as csvFile:
+	writer = csv.writer(csvFile, delimiter=",", lineterminator="\n")
+	writer.writerow(["radix", "infinitve", "1.pers-singular-präsens", "2.pers-singular-präsens", "3.pers-singular-präsens", "1.pers-singular-präteritum", "partizip 2", "1.pers-konjunktiv 2", "imperativ-singular", "imperativ-plural", "hilfsverb"])
+	writer.writerows(verbs)
 
 # with open(dir + "affixDict2.csv", encoding="utf8", mode="w") as csvFile:
 # 	writer = csv.writer(csvFile, delimiter=",", lineterminator="\n")

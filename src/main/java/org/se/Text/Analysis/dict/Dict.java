@@ -262,8 +262,8 @@ public class Dict {
 		WordStemmer data = t.getData().get();
 		String radix = data.getStem();
 		String infinitive = radix;
-		if (verbs.has(radix)) infinitive = verbs.get(radix).get().get();
-		else if (verbs.has(t.getWord())) infinitive = verbs.get(t.getWord()).get().get();
+		if (verbs.has(radix)) infinitive = verbs.get(radix).get().get("infinitive");
+		else if (verbs.has(t.getWord())) infinitive = verbs.get(t.getWord()).get().get("infinitive");
 
 		VerbTerm verb = new VerbTerm(radix, t.getWord(), 1, data.getGrammartizedSuffix().getNumerus(), infinitive);
 		return Optional.of(verb);
