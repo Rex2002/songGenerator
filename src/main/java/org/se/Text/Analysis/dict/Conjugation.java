@@ -1,7 +1,8 @@
-package org.se.Text.Analysis.dict;
+package org.se.text.analysis.dict;
 
 import java.util.*;
-import org.se.Text.Analysis.*;
+
+import org.se.text.analysis.*;
 
 /**
  * @author Val Richter
@@ -47,8 +48,7 @@ public class Conjugation extends TermEndings {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this)
-			return true;
+		if (o == this) return true;
 		if (!(o instanceof Conjugation)) {
 			return false;
 		}
@@ -63,10 +63,6 @@ public class Conjugation extends TermEndings {
 
 	@Override
 	public String toString() {
-		return "{" +
-				super.toStringHelper() +
-				" person='" + getPerson() + "'" +
-				", tense='" + getTense() + "'" +
-				"}";
+		return "{" + super.toStringHelper() + " person='" + getPerson() + "'" + ", tense='" + getTense() + "'" + "}";
 	}
 }

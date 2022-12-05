@@ -1,4 +1,4 @@
-package org.se.Text.Analysis.dict;
+package org.se.text.analysis.dict;
 
 import java.util.*;
 
@@ -55,8 +55,7 @@ public class WordWithData extends HashMap<String, String> {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this)
-			return true;
+		if (o == this) return true;
 		if (!(o instanceof WordWithData)) {
 			return false;
 		}
@@ -71,9 +70,7 @@ public class WordWithData extends HashMap<String, String> {
 
 	@Override
 	public String toString() {
-		return "{" +
-				" baseKey='" + getBaseKey() + "'" +
-				"}";
+		return "{" + " baseKey='" + getBaseKey() + "'" + "}";
 	}
 
 }

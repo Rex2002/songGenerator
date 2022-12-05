@@ -1,11 +1,11 @@
-package org.se.Text.Analysis;
+package org.se.text.analysis;
 
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import org.se.Text.Analysis.dict.Dict;
+import org.se.text.analysis.dict.Dict;
 
 /**
  * @author Val Richter
@@ -15,31 +15,21 @@ public class TermVariations<T extends Term> {
 	public Integer frequency;
 	public String radix;
 
-	// public Map<T> getVariations(@Nullable GrammaticalCase grammaticalCase,
-	// @Nullable Gender gender, @Nullable Numerus numerus, @Nullable Integer
-	// syllableMin, @Nullable Integer syllableMax) {}
-
-	// Gets the term of the specified variation if it's stored and otherwise creates
-	// it based on simple rules
-	// Careful, created variations might be pretty bad
-	// public T createVariation(GrammaticalCase grammaticalCase, Numerus
-	// numerus) {}
-
 	public TermVariations() {
-		this.variations = new HashMap<Integer, T>();
+		this.variations = new HashMap<>();
 		this.frequency = 0;
 		this.radix = "";
 	}
 
 	public TermVariations(T term) {
-		this.variations = new HashMap<Integer, T>();
+		this.variations = new HashMap<>();
 		this.variations.put(term.hashData(), term);
 		this.frequency = 1;
 		this.radix = term.radix;
 	}
 
 	public TermVariations(List<T> terms) {
-		this.variations = new HashMap<Integer, T>();
+		this.variations = new HashMap<>();
 		for (T term : terms) {
 			variations.put(term.hashData(), term);
 		}
@@ -54,9 +44,7 @@ public class TermVariations<T extends Term> {
 	}
 
 	public void forEach(Consumer<? super T> f) {
-		variations.forEach((key, term) -> {
-			f.accept(term);
-		});
+		variations.forEach((key, term) -> f.accept(term));
 	}
 
 	public void add(T term) {
@@ -102,8 +90,7 @@ public class TermVariations<T extends Term> {
 
 	// Static Functions specifically for Nouns
 
-	public static Optional<NounTerm> getTerm(TermVariations<NounTerm> nounVariations, Gender gender,
-			GrammaticalCase grammaticalCase,
+	public static Optional<NounTerm> getTerm(TermVariations<NounTerm> nounVariations, Gender gender, GrammaticalCase grammaticalCase,
 			Numerus numerus) {
 		int hash = NounTerm.hashData(gender, grammaticalCase, numerus);
 		if (nounVariations.variations.containsKey(hash)) {
@@ -116,9 +103,8 @@ public class TermVariations<T extends Term> {
 	// queried variation if necessary
 	// Automatically created variations can be very wrong and should avoided if
 	// possible
-	public static NounTerm createTerm(TermVariations<NounTerm> nounVariations, Gender gender,
-			GrammaticalCase grammaticalCase,
-			Numerus numerus, Dict dict) {
+	public static NounTerm createTerm(TermVariations<NounTerm> nounVariations, Gender gender, GrammaticalCase grammaticalCase, Numerus numerus,
+			Dict dict) {
 		Optional<NounTerm> res = getTerm(nounVariations, gender, grammaticalCase, numerus);
 		if (res.isPresent()) {
 			return res.get();
@@ -127,9 +113,7 @@ public class TermVariations<T extends Term> {
 		return dict.createNounTerm(nounVariations, gender, grammaticalCase, numerus);
 	}
 
-	public static boolean hasType(TermVariations<NounTerm> nounVariations, Gender gender,
-			GrammaticalCase grammaticalCase,
-			Numerus numerus) {
+	public static boolean hasType(TermVariations<NounTerm> nounVariations, Gender gender, GrammaticalCase grammaticalCase, Numerus numerus) {
 		int hash = NounTerm.hashData(gender, grammaticalCase, numerus);
 		return nounVariations.variations.containsKey(hash);
 	}
@@ -160,21 +144,6 @@ public class TermVariations<T extends Term> {
 		this.radix = radix;
 	}
 
-	public TermVariations<T> variations(Map<Integer, T> variations) {
-		setVariations(variations);
-		return this;
-	}
-
-	public TermVariations<T> frequency(Integer frequency) {
-		setFrequency(frequency);
-		return this;
-	}
-
-	public TermVariations<T> radix(String radix) {
-		setRadix(radix);
-		return this;
-	}
-
 	@Override
 	public int hashCode() {
 		return this.radix.hashCode();
@@ -182,22 +151,17 @@ public class TermVariations<T extends Term> {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this)
-			return true;
+		if (o == this) return true;
 		if (!(o instanceof TermVariations)) {
 			return false;
 		}
 		TermVariations<T> termVariations = (TermVariations<T>) o;
-		return Objects.equals(variations, termVariations.variations)
-				&& Objects.equals(frequency, termVariations.frequency) && Objects.equals(radix, termVariations.radix);
+		return Objects.equals(variations, termVariations.variations) && Objects.equals(frequency, termVariations.frequency)
+				&& Objects.equals(radix, termVariations.radix);
 	}
 
 	@Override
 	public String toString() {
-		return "{" +
-				" variations='" + getVariations() + "'" +
-				", frequency='" + getFrequency() + "'" +
-				", radix='" + getRadix() + "'" +
-				"}";
+		return "{" + " variations='" + getVariations() + "'" + ", frequency='" + getFrequency() + "'" + ", radix='" + getRadix() + "'" + "}";
 	}
 }

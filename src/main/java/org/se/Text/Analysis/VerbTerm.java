@@ -1,9 +1,9 @@
-package org.se.Text.Analysis;
+package org.se.text.analysis;
 
 import java.util.*;
 
-import org.se.Text.Analysis.dict.Dict;
-import org.se.Text.Analysis.dict.WordWithData;
+import org.se.text.analysis.dict.Dict;
+import org.se.text.analysis.dict.WordWithData;
 
 /**
  * @author Val Richter

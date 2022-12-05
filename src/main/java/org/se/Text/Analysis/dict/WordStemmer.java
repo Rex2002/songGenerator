@@ -1,4 +1,4 @@
-package org.se.Text.Analysis.dict;
+package org.se.text.analysis.dict;
 
 import java.util.*;
 import java.util.function.Consumer;

@@ -1,10 +1,12 @@
-package org.se.Text.Analysis.dict;
+package org.se.text.analysis.dict;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Function;
+
 import org.se.Util;
-import org.se.Text.Analysis.*;
+import org.se.text.analysis.*;
 
 /**
  * @author Val Richter
@@ -21,6 +23,8 @@ public class Dict {
 	List<Declination> declinatedSuffixes = new ArrayList<>();
 	List<Conjugation> conjugatedSuffixes = new ArrayList<>();
 	final String baseKey;
+
+	final static String GENDER_KEY = "gender";
 
 	public static String getDefaultBaseKey() {
 		return "radix";
@@ -115,53 +119,52 @@ public class Dict {
 	}
 
 	// TODO: Test if there are better values for these variables
-	final static int affixCountBias = -6;
-	final static int inDictionaryBias = 20;
-	final static int declinatedSuffixGenderBias = 20;
-	final static int lastSuffixGenderBias = 10;
-	final static int allSuffixesGenderBias = 1;
-	final static int allSuffixesDictGenderBias = 2;
-	final static int stemNounExceptionBias = -10;
+	final static int AFFIX_COUNT_BIAS = -6;
+	final static int IN_DICTIONARY_BIAS = 20;
+	final static int DECLINATED_SUFFIX_GENDER_BIAS = 20;
+	final static int LAST_SUFFIX_GENDER_BIAS = 10;
+	final static int ALL_SUFFIXES_GENDER_BIAS = 1;
+	final static int ALL_SUFFIXES_DICT_GENDER_BIAS = 2;
+	final static int STEM_NOUN_EXCEPTION_BIAS = -10;
 	static Gender tmpGender = null;
 
-	private int heuristicForStemCmp(WordStemmer stem, boolean areNouns) {
-		WordList dict = areNouns ? nouns : verbs;
+	private static int heuristicForStemCmp(WordStemmer stem, boolean areNouns, WordList dict) {
 		int count = 0;
 
-		count += affixCountBias * stem.affixesCount();
-		if (dict.has(stem.getStem())) count += inDictionaryBias;
+		count += AFFIX_COUNT_BIAS * stem.affixesCount();
+		if (dict.has(stem.getStem())) count += IN_DICTIONARY_BIAS;
 
 		try {
 			if (areNouns) {
 				Optional<WordWithData> dictEntry = dict.get(stem.getStem());
 				if (dictEntry.isPresent()) {
-					Gender dictGender = dictEntry.get().get("gender", Gender.class).get();
+					Gender dictGender = dictEntry.get().get(GENDER_KEY, Gender.class).get();
 
-					if (((Declination) stem.getGrammartizedSuffix()).getGender() == dictGender) count += declinatedSuffixGenderBias;
+					if (((Declination) stem.getGrammartizedSuffix()).getGender() == dictGender) count += DECLINATED_SUFFIX_GENDER_BIAS;
 
 					if (!stem.getSuffixes().isEmpty()
-							&& stem.getSuffixes().get(stem.getSuffixes().size() - 1).get("gender", Gender.class).get() == dictGender) {
-						count += lastSuffixGenderBias;
+							&& stem.getSuffixes().get(stem.getSuffixes().size() - 1).get(GENDER_KEY, Gender.class).get() == dictGender) {
+						count += LAST_SUFFIX_GENDER_BIAS;
 					}
 
 					tmpGender = null;
 					if (Util.All(stem.getSuffixes(), suffix -> {
-						Gender currentGender = suffix.get("gender", Gender.class).get();
+						Gender currentGender = suffix.get(GENDER_KEY, Gender.class).get();
 						if (tmpGender == null || currentGender == tmpGender) {
 							tmpGender = currentGender;
 							return true;
 						} else return false;
 					})) {
-						count += allSuffixesGenderBias;
+						count += ALL_SUFFIXES_GENDER_BIAS;
 					}
 
-					if (tmpGender != null && tmpGender == dictGender) count += allSuffixesDictGenderBias;
+					if (tmpGender != null && tmpGender == dictGender) count += ALL_SUFFIXES_DICT_GENDER_BIAS;
 				}
 			}
 		} catch (Exception e) {
 			// Something went wrong when treating the stem as a noun, probably because of some NullPointer.
 			// Since a noun was expected, we will decrease the count for this exception
-			count += stemNounExceptionBias;
+			count += STEM_NOUN_EXCEPTION_BIAS;
 		}
 
 		return count;
@@ -180,13 +183,14 @@ public class Dict {
 	 *         list of stems is empty.
 	 */
 	public Optional<WordStemmer> getBestOfStems(List<WordStemmer> stems, boolean areNouns) {
+		WordList dict = areNouns ? nouns : verbs;
 		Optional<WordStemmer> best = Optional.empty();
 		for (WordStemmer stem : stems) {
 			if (best.isEmpty()) {
 				best = Optional.of(stem);
 			} else {
-				int currentCount = heuristicForStemCmp(stem, areNouns);
-				int bestCount = heuristicForStemCmp(best.get(), areNouns);
+				int currentCount = heuristicForStemCmp(stem, areNouns, dict);
+				int bestCount = heuristicForStemCmp(best.get(), areNouns, dict);
 
 				if (currentCount > bestCount) {
 					best = Optional.of(stem);
@@ -215,19 +219,20 @@ public class Dict {
 		return new Tag(s, TagType.Other);
 	}
 
-	private void addWordStemmerData(Tag t, WordList suffixes, WordList prefixes) {
+	private void addWordStemmerData(Tag t, boolean areNouns) {
 		// Add WordStemmer data,
 		// in case it wasn't produced when tagging the word already
 		// This can happen, when the Analyzer tags the word before giving it to the
 		// Dictionary (specifically because of capitalization of word)
+		Function<String, List<WordStemmer>> f = areNouns ? x -> getPossibleNounStems(x) : x -> getPossibleVerbStems(x);
 		if (t.getData().isEmpty()) {
-			Optional<WordStemmer> stem = getBestOfStems(getPossibleNounStems(t.word), true);
+			Optional<WordStemmer> stem = getBestOfStems(f.apply(t.word), areNouns);
 			t.setData(stem);
 		}
 	}
 
 	public Optional<NounTerm> buildNounTerm(Tag t) {
-		addWordStemmerData(t, nounSuffixes, nounPrefixes);
+		addWordStemmerData(t, true);
 
 		if (t.getData().isEmpty()) {
 			return Optional.empty();
@@ -250,7 +255,7 @@ public class Dict {
 	}
 
 	public Optional<VerbTerm> buildVerbTerm(Tag t) {
-		addWordStemmerData(t, verbSuffixes, verbPrefixes);
+		addWordStemmerData(t, false);
 
 		// TODO: Update this function potentially
 		// TODO: Update conjugatedSuffixes.csv

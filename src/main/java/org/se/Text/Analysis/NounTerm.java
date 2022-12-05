@@ -1,4 +1,4 @@
-package org.se.Text.Analysis;
+package org.se.text.analysis;
 
 import java.util.*;
 
@@ -9,9 +9,7 @@ public class NounTerm extends Term {
 	public GrammaticalCase grammaticalCase;
 	public Gender gender;
 
-	public NounTerm(String radix, String word, Integer syllableAmount, Numerus numerus,
-			GrammaticalCase grammaticalCase,
-			Gender gender) {
+	public NounTerm(String radix, String word, Integer syllableAmount, Numerus numerus, GrammaticalCase grammaticalCase, Gender gender) {
 		super(radix, word, syllableAmount, numerus);
 		this.grammaticalCase = grammaticalCase;
 		this.gender = gender;
@@ -20,10 +18,11 @@ public class NounTerm extends Term {
 	public NounTerm(String word) {
 		// TODO: Change hardcoded defaults to programmatically determined ones
 		super(word);
-		this.grammaticalCase = GrammaticalCase.Nominative;
-		this.gender = Gender.Female;
+		this.grammaticalCase = GrammaticalCase.NOMINATIVE;
+		this.gender = Gender.FEMALE;
 	}
 
+	@Override
 	public int hashData() {
 		return NounTerm.hashData(gender, grammaticalCase, numerus);
 	}
@@ -37,11 +36,7 @@ public class NounTerm extends Term {
 
 	@Override
 	public String toString() {
-		return "{" +
-				super.toStringHelper() +
-				", grammaticalCase='" + getGrammaticalCase() + "'" +
-				", gender='" + getGender() + "'" +
-				"}";
+		return "{" + super.toStringHelper() + ", grammaticalCase='" + getGrammaticalCase() + "'" + ", gender='" + getGender() + "'" + "}";
 	}
 
 	// Boilerplate:
@@ -62,27 +57,14 @@ public class NounTerm extends Term {
 		this.gender = gender;
 	}
 
-	public NounTerm grammaticalCase(GrammaticalCase grammaticalCase) {
-		setGrammaticalCase(grammaticalCase);
-		return this;
-	}
-
-	public NounTerm gender(Gender gender) {
-		setGender(gender);
-		return this;
-	}
-
 	@Override
 	public boolean equals(Object o) {
-		if (o == this)
-			return true;
+		if (o == this) return true;
 		if (!(o instanceof NounTerm)) {
 			return false;
 		}
 		NounTerm nounTerm = (NounTerm) o;
-		return super.equals(nounTerm)
-				&& Objects.equals(grammaticalCase, nounTerm.grammaticalCase)
-				&& Objects.equals(gender, nounTerm.gender);
+		return super.equals(nounTerm) && Objects.equals(grammaticalCase, nounTerm.grammaticalCase) && Objects.equals(gender, nounTerm.gender);
 	}
 
 	@Override

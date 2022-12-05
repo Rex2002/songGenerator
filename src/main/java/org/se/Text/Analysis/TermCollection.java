@@ -1,4 +1,4 @@
-package org.se.Text.Analysis;
+package org.se.text.analysis;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -12,15 +12,16 @@ import java.util.stream.Collectors;
 public class TermCollection {
 	public Map<String, TermVariations<NounTerm>> nouns;
 	public Map<String, TermVariations<VerbTerm>> verbs;
+	static final Random rand = new Random();
 
 	public TermCollection() {
-		this.nouns = new HashMap<String, TermVariations<NounTerm>>();
-		this.verbs = new HashMap<String, TermVariations<VerbTerm>>();
+		this.nouns = new HashMap<>();
+		this.verbs = new HashMap<>();
 	}
 
-	public TermCollection(ArrayList<TermVariations<NounTerm>> nouns, ArrayList<TermVariations<VerbTerm>> verbs) {
-		this.nouns = new HashMap<String, TermVariations<NounTerm>>();
-		this.verbs = new HashMap<String, TermVariations<VerbTerm>>();
+	public TermCollection(List<TermVariations<NounTerm>> nouns, List<TermVariations<VerbTerm>> verbs) {
+		this.nouns = new HashMap<>();
+		this.verbs = new HashMap<>();
 		for (TermVariations<NounTerm> term : nouns) {
 			this.nouns.put(term.getRadix(), term);
 		}
@@ -51,7 +52,7 @@ public class TermCollection {
 	}
 
 	public void addNoun(NounTerm t) {
-		TermVariations<NounTerm> v = new TermVariations<NounTerm>(t);
+		TermVariations<NounTerm> v = new TermVariations<>(t);
 		if (hasNoun(v)) {
 			nouns.get(v.getRadix()).add(t);
 		} else {
@@ -60,7 +61,7 @@ public class TermCollection {
 	}
 
 	public void addVerb(VerbTerm t) {
-		TermVariations<VerbTerm> v = new TermVariations<VerbTerm>(t);
+		TermVariations<VerbTerm> v = new TermVariations<>(t);
 		if (hasVerb(v)) {
 			verbs.get(v.getRadix()).add(t);
 		} else {
@@ -68,19 +69,19 @@ public class TermCollection {
 		}
 	}
 
-	public Boolean hasNoun(TermVariations<NounTerm> variations) {
+	public boolean hasNoun(TermVariations<NounTerm> variations) {
 		return nouns.containsKey(variations.getRadix());
 	}
 
-	public Boolean hasNoun(NounTerm t) {
+	public boolean hasNoun(NounTerm t) {
 		return nouns.containsKey(t.getRadix());
 	}
 
-	public Boolean hasVerb(TermVariations<VerbTerm> variations) {
+	public boolean hasVerb(TermVariations<VerbTerm> variations) {
 		return verbs.containsKey(variations.getRadix());
 	}
 
-	public Boolean hasVerb(VerbTerm t) {
+	public boolean hasVerb(VerbTerm t) {
 		return verbs.containsKey(t.getRadix());
 	}
 
@@ -92,15 +93,11 @@ public class TermCollection {
 	}
 
 	public void iterNouns(Consumer<? super TermVariations<NounTerm>> f) {
-		nouns.forEach((key, variations) -> {
-			f.accept(variations);
-		});
+		nouns.forEach((key, variations) -> f.accept(variations));
 	}
 
 	public void iterVerbs(Consumer<? super TermVariations<VerbTerm>> f) {
-		verbs.forEach((key, variations) -> {
-			f.accept(variations);
-		});
+		verbs.forEach((key, variations) -> f.accept(variations));
 	}
 
 	public void flatIter(Consumer<? super Term> f) {
@@ -109,33 +106,26 @@ public class TermCollection {
 	}
 
 	public void flatIterNouns(Consumer<? super NounTerm> f) {
-		nouns.forEach((key, variations) -> {
-			variations.forEach(f);
-		});
+		nouns.forEach((key, variations) -> variations.forEach(f));
 	}
 
 	public void flatIterVerbs(Consumer<? super VerbTerm> f) {
-		verbs.forEach((key, variations) -> {
-			variations.forEach(f);
-		});
+		verbs.forEach((key, variations) -> variations.forEach(f));
 	}
 
 	// Query Functions
 
-	public List<NounTerm> query(GrammaticalCase grammaticalCase, Gender gender, Numerus numerus, Integer syllableMin,
-			Integer syllableMax) {
-		List<NounTerm> existing = new ArrayList<NounTerm>();
-		List<NounTerm> created = new ArrayList<NounTerm>();
+	public List<NounTerm> query(GrammaticalCase grammaticalCase, Gender gender, Numerus numerus, Integer syllableMin, Integer syllableMax) {
+		List<NounTerm> existing = new ArrayList<>();
+		List<NounTerm> created = new ArrayList<>();
 
 		nouns.values().forEach(x -> {
 			Optional<NounTerm> res = TermVariations.getTerm(x, gender, grammaticalCase, numerus);
 			if (res.isPresent()) {
 				NounTerm t = res.get();
 				if (syllableMin <= t.syllableAmount && t.syllableAmount <= syllableMax) {
-					if (TermVariations.hasType(x, gender, grammaticalCase, numerus))
-						existing.add(t);
-					else
-						created.add(t);
+					if (TermVariations.hasType(x, gender, grammaticalCase, numerus)) existing.add(t);
+					else created.add(t);
 				}
 			}
 		});
@@ -202,25 +192,21 @@ public class TermCollection {
 
 	// Static Query Functions
 
-	public static <T extends Term> List<T> queryBySyllableRange(Map<String, TermVariations<T>> terms,
-			Integer minSyllableAmount,
+	public static <T extends Term> List<T> queryBySyllableRange(Map<String, TermVariations<T>> terms, Integer minSyllableAmount,
 			Integer maxSyllableAmount) {
-		return TermCollection.queryBy(terms,
-				x -> minSyllableAmount <= x.syllableAmount && x.syllableAmount <= maxSyllableAmount);
+		return TermCollection.queryBy(terms, x -> minSyllableAmount <= x.syllableAmount && x.syllableAmount <= maxSyllableAmount);
 	}
 
-	public static <T extends Term> List<T> queryBySyllableAmount(Map<String, TermVariations<T>> terms,
-			Integer syllableAmount) {
-		return TermCollection.queryBy(terms, x -> x.syllableAmount == syllableAmount);
+	public static <T extends Term> List<T> queryBySyllableAmount(Map<String, TermVariations<T>> terms, Integer syllableAmount) {
+		return TermCollection.queryBy(terms, x -> Objects.equals(x.syllableAmount, syllableAmount));
 	}
 
-	public static List<NounTerm> queryBy(Map<String, TermVariations<NounTerm>> terms,
-			GrammaticalCase grammaticalCase) {
+	public static List<NounTerm> queryBy(Map<String, TermVariations<NounTerm>> terms, GrammaticalCase grammaticalCase) {
 		return TermCollection.queryBy(terms, x -> x.grammaticalCase == grammaticalCase);
 	}
 
 	public static <T extends Term> List<T> queryBy(Map<String, TermVariations<T>> terms, Boolean onlyPluralTerms) {
-		return TermCollection.queryBy(terms, x -> (x.getNumerus() == Numerus.Plural) == onlyPluralTerms);
+		return TermCollection.queryBy(terms, x -> (x.getNumerus() == Numerus.PLURAL) == onlyPluralTerms);
 	}
 
 	public static List<NounTerm> queryBy(Map<String, TermVariations<NounTerm>> terms, Gender gender) {
@@ -230,21 +216,17 @@ public class TermCollection {
 	public static <T extends Term> List<T> queryBy(Map<String, TermVariations<T>> terms, Predicate<? super T> f) {
 		List<T> res = new ArrayList<>();
 		terms.values().forEach(x -> res.addAll(x.queryBy(f)));
-		res.sort(new TermComp<T>(terms));
+		res.sort(new TermComp<>(terms));
 		return res;
 	}
 
 	public static <T extends Term> List<T> mostCommonTerms(Map<String, TermVariations<T>> terms) {
-		List<T> res = terms.values().stream().map(x -> x.variations.values().stream())
-				.flatMap(Function.identity())
-				.collect(Collectors.toList());
-		;
-		res.sort(new TermComp<T>(terms));
+		List<T> res = terms.values().stream().map(x -> x.variations.values().stream()).flatMap(Function.identity()).collect(Collectors.toList());
+		res.sort(new TermComp<>(terms));
 		return res.subList(0, 10);
 	}
 
 	public static <T extends Term> T getRandomTerm(List<TermVariations<T>> terms) {
-		Random rand = new Random();
 		int i = rand.nextInt(terms.size());
 		Collection<T> ts = terms.get(i).variations.values();
 		int j = rand.nextInt(ts.size());
@@ -269,20 +251,9 @@ public class TermCollection {
 		this.verbs = verbs;
 	}
 
-	public TermCollection nouns(Map<String, TermVariations<NounTerm>> nouns) {
-		setNouns(nouns);
-		return this;
-	}
-
-	public TermCollection verbs(Map<String, TermVariations<VerbTerm>> verbs) {
-		setVerbs(verbs);
-		return this;
-	}
-
 	@Override
 	public boolean equals(Object o) {
-		if (o == this)
-			return true;
+		if (o == this) return true;
 		if (!(o instanceof TermCollection)) {
 			return false;
 		}
@@ -297,10 +268,7 @@ public class TermCollection {
 
 	@Override
 	public String toString() {
-		return "{" +
-				" nouns='" + getNouns() + "'" +
-				", verbs='" + getVerbs() + "'" +
-				"}";
+		return "{" + " nouns='" + getNouns() + "'" + ", verbs='" + getVerbs() + "'" + "}";
 	}
 
 }

@@ -1,4 +1,4 @@
-package org.se.Text.Analysis;
+package org.se.text.analysis;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -6,12 +6,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-import org.se.Text.Analysis.dict.Dict;
+import org.se.text.analysis.dict.Dict;
 
 /**
  * @author Val Richter
  */
 public class Analyzer {
+	private Analyzer() {
+	}
+
 	public static TermCollection analyze(Path filepath) throws IOException {
 		Dict dict = new Dict(Path.of("", "./src/main/resources/dictionary"));
 		String text = Analyzer.readFile(filepath);
@@ -43,14 +46,14 @@ public class Analyzer {
 			char c = chars[i];
 			// ignore whitespace
 			if (Character.isWhitespace(c)) {
-				if (currentWord != "" && !splitLastWord) {
+				if (!"".equals(currentWord) && !splitLastWord) {
 					currentSentence.add(currentWord);
 					currentWord = "";
 				}
 			}
 			// End sentence at specific punctuation (e.g. at .!?)
 			else if (sentenceEnds.indexOf(c) != -1) {
-				if (currentWord != "") {
+				if (!"".equals(currentWord)) {
 					currentSentence.add(currentWord);
 					currentWord = "";
 				}
@@ -60,12 +63,12 @@ public class Analyzer {
 				currentSentence.clear();
 			}
 			// Current word gets split
-			else if (currentWord != "" && !splitLastWord && wordSplitter.indexOf(c) != -1) {
+			else if (!"".equals(currentWord) && !splitLastWord && wordSplitter.indexOf(c) != -1) {
 				splitLastWord = true;
 			}
 			// punctuation that doesn't end a sentence
 			else if (otherPunctuation.indexOf(c) != -1) {
-				if (currentWord != "") {
+				if (!"".equals(currentWord)) {
 					currentSentence.add(currentWord);
 					currentWord = "";
 				}
@@ -78,7 +81,7 @@ public class Analyzer {
 			}
 		}
 
-		if (currentWord != "") {
+		if (!"".equals(currentWord)) {
 			currentSentence.add(currentWord);
 		}
 		if (!currentSentence.isEmpty()) {

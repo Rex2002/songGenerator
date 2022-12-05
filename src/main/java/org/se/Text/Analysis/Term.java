@@ -1,4 +1,4 @@
-package org.se.Text.Analysis;
+package org.se.text.analysis;
 
 import java.util.*;
 
@@ -17,7 +17,7 @@ public class Term implements DisplayableParent {
 		this.radix = word;
 		this.word = word;
 		this.syllableAmount = 1;
-		this.numerus = Numerus.Singular;
+		this.numerus = Numerus.SINGULAR;
 	}
 
 	public Term(String radix, String word, Integer syllableAmount, Numerus numerus) {
@@ -36,37 +36,15 @@ public class Term implements DisplayableParent {
 		return this.hashCode();
 	}
 
-	// Removed, because we only store the amount of syllables
-	// instead of a list of syllable starting indices
-	// Keeping the code as a comment,
-	// in case we should decide to change that decision again
-
-	// public String[] syllableStrings() {
-	// String word = String.join("", this.word);
-	// String[] res = new String[syllableAmount.length];
-	// for (int i = 0; i < syllableAmount.length; i++) {
-	// Integer start = syllableAmount[i];
-	// Integer end = i + 1 == syllableAmount.length ? word.length() :
-	// syllableAmount[i + 1];
-	// res[i] = word.substring(start, end);
-	// }
-	// return res;
-	// }
-
 	@Override
 	public String toStringHelper() {
-		return " frequency='" + getFrequency() + "'" +
-				", radix='" + getRadix() + "'" +
-				", word='" + getWord() + "'" +
-				", syllableAmount='" + getSyllableAmount() + "'" +
-				", numerus='" + getNumerus() + "'";
+		return " frequency='" + getFrequency() + "'" + ", radix='" + getRadix() + "'" + ", word='" + getWord() + "'" + ", syllableAmount='"
+				+ getSyllableAmount() + "'" + ", numerus='" + getNumerus() + "'";
 	}
 
 	@Override
 	public String toString() {
-		return "{" +
-				toStringHelper() +
-				"}";
+		return "{" + toStringHelper() + "}";
 	}
 
 	public int getFrequency() {
@@ -111,35 +89,9 @@ public class Term implements DisplayableParent {
 		this.numerus = numerus;
 	}
 
-	public Term frequency(int frequency) {
-		setFrequency(frequency);
-		return this;
-	}
-
-	public Term radix(String radix) {
-		setRadix(radix);
-		return this;
-	}
-
-	public Term word(String word) {
-		setWord(word);
-		return this;
-	}
-
-	public Term syllableAmount(Integer syllableAmount) {
-		setSyllableAmount(syllableAmount);
-		return this;
-	}
-
-	public Term numerus(Numerus numerus) {
-		setNumerus(numerus);
-		return this;
-	}
-
 	@Override
 	public boolean equals(Object o) {
-		if (o == this)
-			return true;
+		if (o == this) return true;
 		if (!(o instanceof Term)) {
 			return false;
 		}

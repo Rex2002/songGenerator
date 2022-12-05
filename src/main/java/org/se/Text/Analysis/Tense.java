@@ -1,9 +1,9 @@
-package org.se.Text.Analysis;
+package org.se.text.analysis;
 
 /**
  * @author Val Richter
  */
 public enum Tense {
-	Present,
+	PRESENT,
 	// Further tenses are currently not supported
 }

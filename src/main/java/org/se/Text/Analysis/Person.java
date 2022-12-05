@@ -1,8 +1,8 @@
-package org.se.Text.Analysis;
+package org.se.text.analysis;
 
 /**
  * @author Val Richter
  */
 public enum Person {
-	First, Second, Third,
+	FIRST, SECOND, THIRD,
 }

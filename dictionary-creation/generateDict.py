@@ -77,7 +77,7 @@ with open("./nouns.csv", encoding="utf8") as csvFile:
 				break
 
 		if type(pos) is str:
-			if pos == "noun" and not radix.startswith(forbiddenStarts) and not radix.lower() in forbiddenNouns and all([not char in radix for char in forbiddenSymbols]):
+			if pos == "noun" and not radix.startswith(forbiddenStarts) and radix.lower() not in forbiddenNouns and all([char not in radix for char in forbiddenSymbols]):
 				toUmlaut = False
 				radixLen = len(radix)
 				for idx in range(len(radix)):

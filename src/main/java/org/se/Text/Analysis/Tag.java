@@ -1,8 +1,8 @@
-package org.se.Text.Analysis;
+package org.se.text.analysis;
 
 import java.util.*;
 
-import org.se.Text.Analysis.dict.WordStemmer;
+import org.se.text.analysis.dict.WordStemmer;
 
 /**
  * @author Val Richter
@@ -69,8 +69,7 @@ public class Tag {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this)
-			return true;
+		if (o == this) return true;
 		if (!(o instanceof Tag)) {
 			return false;
 		}
@@ -85,10 +84,7 @@ public class Tag {
 
 	@Override
 	public String toString() {
-		return "{" +
-				" type='" + getType() + "'" +
-				", word='" + getWord() + "'" +
-				"}";
+		return "{" + " type='" + getType() + "'" + ", word='" + getWord() + "'" + "}";
 	}
 
 }
