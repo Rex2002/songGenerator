@@ -86,28 +86,26 @@ public class Dict {
 	// Make word into a term
 
 	public List<WordStemmer> getPossibleNounStems(String s) {
-		List<WordStemmer> res = new ArrayList<>();
-		WordStemmer[] l = WordStemmer.radicalize(s, declinatedSuffixes, nounSuffixes, nounPrefixes, 2, diphtongs, umlautChanges, baseKey);
-
-		// TODO: Fix this
-		for (WordStemmer w : l) {
-			if (nouns.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.Any(w.getSuffixes(), data -> {
-				return data.containsKey("certain") && Parser.parseBool(data.get("certain"));
-			}))) {
-				res.add(w);
-			}
-		}
-
-		return res;
+		// TODO:
+		// Add check if word can be seperated into parts, all of which are in the nounsList
+		// This check basically just allows for compound nouns
+		// Some specific affixes should be allowed between these parts (like "s")
+		// these specific affixes should have their own category in the affixesDict.csv file
+		// There should also be some affixes, that can be removed from the original word for compound words
+		return getPossibleStems(s, declinatedSuffixes, nouns, nounSuffixes, nounPrefixes);
 	}
 
 	public List<WordStemmer> getPossibleVerbStems(String s) {
-		// TODO: Add conjugation
-		WordStemmer[] l = WordStemmer.radicalize(s, conjugatedSuffixes, verbSuffixes, verbPrefixes, 2, diphtongs, umlautChanges, baseKey);
+		return getPossibleStems(s, conjugatedSuffixes, verbs, verbSuffixes, nounPrefixes);
+	}
+
+	private List<WordStemmer> getPossibleStems(String s, List<? extends TermEndings> termEndings, WordList dict, WordList suffixes,
+			WordList prefixes) {
+		WordStemmer[] l = WordStemmer.radicalize(s, termEndings, suffixes, prefixes, 2, diphtongs, umlautChanges, baseKey);
 		List<WordStemmer> res = new ArrayList<>();
 
 		for (WordStemmer w : l) {
-			if (verbs.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.Any(w.getSuffixes(), data -> {
+			if (dict.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.Any(w.getSuffixes(), data -> {
 				return data.containsKey("certain") && Parser.parseBool(data.get("certain"));
 			}))) {
 				res.add(w);
@@ -222,33 +220,6 @@ public class Dict {
 		// in case it wasn't produced when tagging the word already
 		// This can happen, when the Analyzer tags the word before giving it to the
 		// Dictionary (specifically because of capitalization of word)
-
-		// TODO:
-		// Add check that noun has same declinated gender as in nounsList
-		// The only exception to this should be when the noun is set to have a variable
-		// gender
-		// in which case only the existence of certain tags (which are marked as gender
-		// domineering) may alter the word's current gender
-		// For this, the nounsDict.csv file needs to be updated - specifically it needs
-		// to associate a gender and a flag determining if it's gender can change with
-		// every noun
-
-		// TODO:
-		// Add check if word can be seperated into parts, all of which are in the
-		// nounsList
-		// This check basically just allows for compound nouns
-		// Some specific affixes should be allowed between these parts (like "s")
-		// these specific affixes should have their own category in the affixesDict.csv
-		// file
-
-		// TODO:
-		// Decide whether to have the above as hard or soft checks
-		// Soft checks would mean that failing the check would still change the data's
-		// tag but not break out of the loop, allowing for other WordStemmer objects to
-		// dominate the data later. Specifically, succeeding the test would still break
-		// out of the loop, enforcing the use of the best fitting data if possible
-		// Hard checks would simply add no data if the WordStemmer doesn't pass the
-		// check
 		if (t.getData().isEmpty()) {
 			Optional<WordStemmer> stem = getBestOfStems(getPossibleNounStems(t.word), true);
 			t.setData(stem);
@@ -270,44 +241,36 @@ public class Dict {
 		WordStemmer data = t.getData().get();
 		Declination declinatedSuffix = (Declination) data.getGrammartizedSuffix();
 
-		// System.out.println(t);
-		// System.out.println(data);
-
 		String radix = data.getStem();
-		Integer syllableAmount = 1;
 		Numerus numerus = declinatedSuffix.getNumerus();
 		GrammaticalCase grammaticalCase = declinatedSuffix.getGrammaticalCase();
 		Gender gender = declinatedSuffix.getGender();
 
-		return Optional.of(new NounTerm(radix, t.word, syllableAmount, numerus, grammaticalCase, gender));
+		return Optional.of(new NounTerm(radix, t.word, 1, numerus, grammaticalCase, gender));
 	}
 
 	public Optional<VerbTerm> buildVerbTerm(Tag t) {
 		addWordStemmerData(t, verbSuffixes, verbPrefixes);
 
-		// TODO: Add logic here
-		// Specifically move the logic of determining metadata for the term here instead
-		// of in the Term-class
+		// TODO: Update this function potentially
+		// TODO: Update conjugatedSuffixes.csv
 
-		// If we extract verbs from the text too, we need a new VerbTerm class as well.
-		// Maybe both NounTerm and VerbTerm class can be extending the same parent
-		// "Term" class or something
-
-		// TODO
-		return Optional.of(new VerbTerm(t.getWord()));
-	}
-
-	// TODO: Probably unnecessary and can be removed by now
-	public Optional<? extends Term> buildTerm(Tag t) {
-		if (t.is(TagType.Noun)) {
-			return buildNounTerm(t);
-		} else {
-			return buildVerbTerm(t);
+		if (t.getData().isEmpty()) {
+			return Optional.empty();
 		}
+
+		WordStemmer data = t.getData().get();
+		String radix = data.getStem();
+		String infinitive = radix;
+		if (verbs.has(radix)) infinitive = verbs.get(radix).get().get();
+		else if (verbs.has(t.getWord())) infinitive = verbs.get(t.getWord()).get().get();
+
+		VerbTerm verb = new VerbTerm(radix, t.getWord(), 1, data.getGrammartizedSuffix().getNumerus(), infinitive);
+		return Optional.of(verb);
 	}
 
 	public NounTerm createNounTerm(TermVariations<NounTerm> variations, Gender gender, GrammaticalCase grammaticalCase, Numerus numerus) {
-		// TODO
+		// TODO: Add logic for creating new variations here. Specifically use the data in declinatedSuffixes.csv and in nouns.csv
 		return new NounTerm(variations.getRadix(), variations.getRadix(), 1, numerus, grammaticalCase, gender);
 	}
 
