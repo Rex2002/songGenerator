@@ -1,0 +1,12 @@
+
+#for a variable write: $v|(n,f|m|n,p|s,n|a|d|g,[1,10],[1,10],int id)$
+
+strophe:
+  - "$n,f,p,1,1,10$ machen mich traurig"
+  - "$n,f,p,1,2,10$ machen mich traurig"
+---
+strophe:
+  - "$n,f,p,1,1,10$ machen mich tsdfgdsfdfs"
+  - "$n,f,p,1,2,10$ machen mich flücklicj"
+
+
