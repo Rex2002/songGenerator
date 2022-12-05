@@ -1,6 +1,7 @@
 package gui;
 
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,6 +13,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("gui.fxml"));
         primaryStage.setTitle("SongGenerator");
+        primaryStage.getIcons().add(new Image("file:img/icon.png"));
         primaryStage.setScene(new Scene(root, 800, 450));
         primaryStage.setResizable(false);
         primaryStage.show();
