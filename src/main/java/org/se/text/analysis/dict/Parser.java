@@ -10,6 +10,12 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.se.text.analysis.*;
+import org.se.text.analysis.model.CompoundPart;
+import org.se.text.analysis.model.Gender;
+import org.se.text.analysis.model.GrammaticalCase;
+import org.se.text.analysis.model.Numerus;
+import org.se.text.analysis.model.Person;
+import org.se.text.analysis.model.Tense;
 
 /**
  * @author Val Richter

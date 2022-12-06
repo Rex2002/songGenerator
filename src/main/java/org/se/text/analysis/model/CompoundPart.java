@@ -1,4 +1,4 @@
-package org.se.text.analysis;
+package org.se.text.analysis.model;
 
 public enum CompoundPart {
 	ADDITION, SUBTRACTION

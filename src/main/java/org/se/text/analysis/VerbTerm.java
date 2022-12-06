@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.se.text.analysis.dict.Dict;
 import org.se.text.analysis.dict.WordWithData;
+import org.se.text.analysis.model.Numerus;
 
 /**
  * @author Val Richter

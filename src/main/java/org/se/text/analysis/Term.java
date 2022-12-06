@@ -2,6 +2,9 @@ package org.se.text.analysis;
 
 import java.util.*;
 
+import org.se.text.analysis.model.DisplayableParent;
+import org.se.text.analysis.model.Numerus;
+
 /**
  * @author Val Richter
  */

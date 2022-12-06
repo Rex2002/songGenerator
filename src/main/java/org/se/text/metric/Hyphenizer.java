@@ -1,4 +1,4 @@
-package org.se;
+package org.se.text.metric;
 
 public class Hyphenizer {
 	public static int CountSyllabes(String terms) {

@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import org.se.Tuple;
-import org.se.text.analysis.CompoundPart;
+import org.se.text.analysis.model.CompoundPart;
 
 /**
  * @author Val Richter

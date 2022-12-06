@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 import org.se.text.analysis.dict.Dict;
+import org.se.text.analysis.model.TagType;
 
 /**
  * @author Val Richter

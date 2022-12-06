@@ -1,6 +1,8 @@
-package org.se;
+package org.se.text.metric;
 
-public class metricAnalyzer {
+import org.se.text.analysis.TermCollection;
+
+public class MetricAnalyzer {
 	public static int metricsGet(String content, String terms) {
 		// Find Average length for sentences and hyphen in order to determine text speed
 		int averageH = averageHyphen(terms);
@@ -26,25 +28,25 @@ public class metricAnalyzer {
 		 * 160 bpm average short
 		 * 180 bpm short short
 		 */
-		if (averageH <= 1 & averageS <= 9) {
+		if (averageH <= 1 && averageS <= 9) {
 			bpm = 180;
 		}
-		if (averageH == 2 | averageH == 3 & averageS <= 9) {
+		if (averageH == 2 || averageH == 3 && averageS <= 9) {
 			bpm = 160;
 		}
-		if (averageH == 2 | averageH == 3 & averageS >= 9 & averageS <= 18) {
+		if (averageH == 2 || averageH == 3 && averageS >= 9 && averageS <= 18) {
 			bpm = 140;
 		}
-		if (averageH == 2 | averageH == 3 & averageS >= 19) {
+		if (averageH == 2 || averageH == 3 && averageS >= 19) {
 			bpm = 120;
 		}
-		if (averageH >= 4 & averageS <= 9) {
+		if (averageH >= 4 && averageS <= 9) {
 			bpm = 100;
 		}
-		if (averageH >= 4 & averageS >= 9 & averageS <= 18) {
+		if (averageH >= 4 && averageS >= 9 && averageS <= 18) {
 			bpm = 80;
 		}
-		if (averageH >= 4 & averageS >= 19) {
+		if (averageH >= 4 && averageS >= 19) {
 			bpm = 60;
 		}
 		return bpm;

@@ -7,6 +7,12 @@ import java.util.function.Function;
 
 import org.se.Util;
 import org.se.text.analysis.*;
+import org.se.text.analysis.model.Conjugation;
+import org.se.text.analysis.model.Declination;
+import org.se.text.analysis.model.Gender;
+import org.se.text.analysis.model.GrammaticalCase;
+import org.se.text.analysis.model.Numerus;
+import org.se.text.analysis.model.TagType;
 
 /**
  * @author Val Richter

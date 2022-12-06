@@ -2,6 +2,10 @@ package org.se.text.analysis;
 
 import java.util.*;
 
+import org.se.text.analysis.model.Gender;
+import org.se.text.analysis.model.GrammaticalCase;
+import org.se.text.analysis.model.Numerus;
+
 /**
  * @author Val Richter
  */

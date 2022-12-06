@@ -1,4 +1,4 @@
-package org.se;
+package org.se.text.metric;
 
 public class WordCounter {
 	public static int[] countWords(String content) {

@@ -6,6 +6,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.se.text.analysis.dict.Dict;
+import org.se.text.analysis.model.Gender;
+import org.se.text.analysis.model.GrammaticalCase;
+import org.se.text.analysis.model.Numerus;
 
 /**
  * @author Val Richter

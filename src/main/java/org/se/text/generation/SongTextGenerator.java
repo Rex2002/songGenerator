@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.se.text.analysis.*;
+import org.se.text.analysis.model.Gender;
+import org.se.text.analysis.model.GrammaticalCase;
+import org.se.text.analysis.model.Numerus;
 
 public class SongTextGenerator {
 
