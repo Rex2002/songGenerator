@@ -100,7 +100,6 @@ public class SongTextGenerator {
         int beginning = rawString.indexOf('$');
         int end = rawString.indexOf('$',beginning + 1);
 
-        //System.out.println(rawString.substring(beginning + 1,end));
 
         String requirementsVariableString = rawString.substring(beginning + 1,end);
         String [] strArr = getStringArrFromRequirementsVariableString(requirementsVariableString);
