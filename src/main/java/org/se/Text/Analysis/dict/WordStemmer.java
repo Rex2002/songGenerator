@@ -99,39 +99,7 @@ public class WordStemmer {
 				String scopy = s.substring(0, s.length() - suffix.getRadix().length());
 				if (scopy.length() >= minStemLength) {
 					// Update Umlaut sequences if necessary
-					if (suffix.getToUmlaut()) {
-						char[] chars = scopy.toCharArray();
-						int len = chars.length - suffix.getRadix().length();
-
-						// Update umlaute if necessary
-						// Check every character if it's part of an umlaut sequence
-						for (int i = 0; i < len; i++) {
-							// Go through all umlaut sounds, to check if the current character is part of a
-							// umlaut sequence
-							for (WordWithData umlaut : umlautChanges) {
-								char[] withUmlaut = umlaut.get("with").toCharArray();
-								boolean comparison = true;
-								// Check if the current slice is the correct umlaut sequence
-								for (int j = 0; comparison && j < withUmlaut.length && j + i < len; j++) {
-									if (withUmlaut[j] != chars[i + j]) {
-										comparison = false;
-									}
-								}
-								// If the comparison was correct, update the umlaut sequence
-								// break to stop checking for other umlaut sequences
-								if (comparison) {
-									char[] withoutUmlaut = umlaut.get().toCharArray();
-									for (int j = 0; comparison && j < withoutUmlaut.length && j + i < len; j++) {
-										chars[i + j] = withoutUmlaut[j];
-									}
-									break;
-								}
-							}
-						}
-
-						scopy = chars.toString();
-					}
-
+					scopy = Dict.changeUmlaut(umlautChanges, diphtongs, scopy, false);
 					res.add(new WordStemmer(baseKey, scopy, suffix));
 				}
 			}

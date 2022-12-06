@@ -24,6 +24,12 @@ public class WordWithData extends HashMap<String, String> {
 		return this.get(baseKey);
 	}
 
+	public <T> boolean equals(String key, T y) {
+		Optional<?> x = get(key, y.getClass());
+		if (x.isPresent()) return Objects.equals((T) x.get(), y);
+		else return false;
+	}
+
 	// Since parseInt accepts a third argument, this method must exist, even though
 	// all other <getType> methods were replaced with the generic get(Class<T> cls)
 	// There might be a better workaround, but I find this more elegant than having

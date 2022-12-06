@@ -24,11 +24,11 @@ public class Dict {
 	List<Conjugation> conjugatedSuffixes = new ArrayList<>();
 	final String baseKey;
 
-	final static String GENDER_KEY = "gender";
-
-	public static String getDefaultBaseKey() {
-		return "radix";
-	}
+	static final String GENDER_KEY = "gender";
+	static final String GRAMMATICAL_CASE_KEY = "grammaticalCase";
+	static final String NUMERUS_KEY = "numerus";
+	static final String TO_UMLAUT_KEY = "toUmlaut";
+	static final String DEFAULT_BASE_KEY = "radix";
 
 	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs,
 			WordList diphtongs, WordList umlautChanges, List<Declination> declinatedSuffixes, List<Conjugation> conjugatedSuffixes) {
@@ -42,11 +42,11 @@ public class Dict {
 		this.umlautChanges = umlautChanges;
 		this.declinatedSuffixes = declinatedSuffixes;
 		this.conjugatedSuffixes = conjugatedSuffixes;
-		this.baseKey = getDefaultBaseKey();
+		this.baseKey = DEFAULT_BASE_KEY;
 	}
 
 	public Dict(Path dirPath) throws IOException {
-		this.baseKey = getDefaultBaseKey();
+		this.baseKey = DEFAULT_BASE_KEY;
 
 		Parser.readCSV(dirPath.resolve("nounsDict"), this.nouns);
 		Parser.readCSV(dirPath.resolve("verbsDict"), this.verbs);
@@ -84,6 +84,7 @@ public class Dict {
 		this.verbs.insertAll(dict.getVerbs());
 		this.umlautChanges.insertAll(dict.getUmlautChanges());
 		this.declinatedSuffixes.addAll(dict.getDeclinatedSuffixes());
+		this.conjugatedSuffixes.addAll(dict.getConjugatedSuffixes());
 		return this;
 	}
 
@@ -109,7 +110,7 @@ public class Dict {
 		List<WordStemmer> res = new ArrayList<>();
 
 		for (WordStemmer w : l) {
-			if (dict.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.Any(w.getSuffixes(), data -> {
+			if (dict.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.any(w.getSuffixes(), data -> {
 				return data.containsKey("certain") && Parser.parseBool(data.get("certain"));
 			}))) {
 				res.add(w);
@@ -119,13 +120,13 @@ public class Dict {
 	}
 
 	// TODO: Test if there are better values for these variables
-	final static int AFFIX_COUNT_BIAS = -6;
-	final static int IN_DICTIONARY_BIAS = 20;
-	final static int DECLINATED_SUFFIX_GENDER_BIAS = 20;
-	final static int LAST_SUFFIX_GENDER_BIAS = 10;
-	final static int ALL_SUFFIXES_GENDER_BIAS = 1;
-	final static int ALL_SUFFIXES_DICT_GENDER_BIAS = 2;
-	final static int STEM_NOUN_EXCEPTION_BIAS = -10;
+	static final int AFFIX_COUNT_BIAS = -6;
+	static final int IN_DICTIONARY_BIAS = 20;
+	static final int DECLINATED_SUFFIX_GENDER_BIAS = 20;
+	static final int LAST_SUFFIX_GENDER_BIAS = 10;
+	static final int ALL_SUFFIXES_GENDER_BIAS = 1;
+	static final int ALL_SUFFIXES_DICT_GENDER_BIAS = 2;
+	static final int STEM_NOUN_EXCEPTION_BIAS = -10;
 	static Gender tmpGender = null;
 
 	private static int heuristicForStemCmp(WordStemmer stem, boolean areNouns, WordList dict) {
@@ -148,7 +149,7 @@ public class Dict {
 					}
 
 					tmpGender = null;
-					if (Util.All(stem.getSuffixes(), suffix -> {
+					if (Util.all(stem.getSuffixes(), suffix -> {
 						Gender currentGender = suffix.get(GENDER_KEY, Gender.class).get();
 						if (tmpGender == null || currentGender == tmpGender) {
 							tmpGender = currentGender;
@@ -201,11 +202,6 @@ public class Dict {
 	}
 
 	public Tag tagWord(String s) {
-		// TODO: Maybe check if word is a common stopWord (would require a list of
-		// stop-words)
-		// TODO: Maybe filter based on the tag of the last word (i.e. there can't be a
-		// noun directly after a verb in the same sentence)
-
 		Optional<WordStemmer> noun = getBestOfStems(getPossibleNounStems(s), true);
 		if (noun.isPresent()) {
 			return new Tag(s, TagType.Noun, noun.get());
@@ -224,7 +220,7 @@ public class Dict {
 		// in case it wasn't produced when tagging the word already
 		// This can happen, when the Analyzer tags the word before giving it to the
 		// Dictionary (specifically because of capitalization of word)
-		Function<String, List<WordStemmer>> f = areNouns ? x -> getPossibleNounStems(x) : x -> getPossibleVerbStems(x);
+		Function<String, List<WordStemmer>> f = areNouns ? this::getPossibleNounStems : this::getPossibleVerbStems;
 		if (t.getData().isEmpty()) {
 			Optional<WordStemmer> stem = getBestOfStems(f.apply(t.word), areNouns);
 			t.setData(stem);
@@ -275,8 +271,62 @@ public class Dict {
 	}
 
 	public NounTerm createNounTerm(TermVariations<NounTerm> variations, Gender gender, GrammaticalCase grammaticalCase, Numerus numerus) {
-		// TODO: Add logic for creating new variations here. Specifically use the data in declinatedSuffixes.csv and in nouns.csv
-		return new NounTerm(variations.getRadix(), variations.getRadix(), 1, numerus, grammaticalCase, gender);
+		// TODO: Currently, we check here and in the TermVariation's function whether such a term already exists. We should remove one of the checks
+		// to avoid doing the same work twice
+		Optional<NounTerm> existingTerm = TermVariations.getTerm(variations, gender, grammaticalCase, numerus);
+		if (existingTerm.isPresent()) return existingTerm.get();
+
+		Optional<Declination> suffix = Util.find(declinatedSuffixes,
+				s -> s.getGender() == gender && s.getGrammaticalCase() == grammaticalCase && s.getNumerus() == numerus);
+
+		if (suffix.isPresent()) {
+			String word = variations.getRadix();
+			if (suffix.get().getToUmlaut()) {
+				word = Dict.changeUmlaut(umlautChanges, diphtongs, word, true);
+			}
+			word += suffix.get().getRadix();
+			return new NounTerm(variations.getRadix(), word, 1, numerus, grammaticalCase, gender);
+		} else {
+			return new NounTerm(variations.getRadix(), variations.getRadix(), 1, numerus, grammaticalCase, gender);
+		}
+	}
+
+	public static String changeUmlaut(WordList umlautChanges, WordList diphtongs, String s, boolean addUmlaut) {
+		char[] chars = s.toCharArray();
+		boolean isPartOfDiphtong = false;
+
+		String initialKey = addUmlaut ? "radix" : "with";
+		String updatedKey = addUmlaut ? "with" : "radix";
+
+		for (int i = 0; i < chars.length; i++) {
+			if (isPartOfDiphtong) isPartOfDiphtong = false;
+			else {
+				if (i + 1 < chars.length && diphtongs.has(chars[i] + "" + chars[i + 1])) isPartOfDiphtong = true;
+
+				for (WordWithData umlaut : umlautChanges) {
+					char[] initial = umlaut.get(initialKey).toCharArray();
+					boolean comparison = true;
+					for (int j = 0; comparison && j < initial.length && j + i < chars.length; j++) {
+						if (initial[j] != chars[i + j]) {
+							comparison = false;
+						}
+					}
+					// If the comparison was correct, update the umlaut sequence
+					// break to stop checking for other umlaut sequences
+					if (comparison) {
+						char[] updated = umlaut.get(updatedKey).toCharArray();
+						for (int j = 0; comparison && j < updated.length && j + i < chars.length; j++) {
+							chars[i + j] = updated[j];
+						}
+						// Increae i to avoid checking the same characters, that just got updated
+						// Yes, it's bad to increase the loop counter from within the loop body, but it should be more efficient
+						i += updated.length - 1;
+						break;
+					}
+				}
+			}
+		}
+		return new String(chars);
 	}
 
 	// Getters, Setters & other Boilerplate
@@ -413,6 +463,34 @@ public class Dict {
 
 	public Dict declinatedSuffixes(List<Declination> declinatedSuffixes) {
 		setDeclinatedSuffixes(declinatedSuffixes);
+		return this;
+	}
+
+	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs,
+			WordList diphtongs, WordList umlautChanges, List<Declination> declinatedSuffixes, List<Conjugation> conjugatedSuffixes, String baseKey) {
+		this.nounSuffixes = nounSuffixes;
+		this.nounPrefixes = nounPrefixes;
+		this.nouns = nouns;
+		this.verbSuffixes = verbSuffixes;
+		this.verbPrefixes = verbPrefixes;
+		this.verbs = verbs;
+		this.diphtongs = diphtongs;
+		this.umlautChanges = umlautChanges;
+		this.declinatedSuffixes = declinatedSuffixes;
+		this.conjugatedSuffixes = conjugatedSuffixes;
+		this.baseKey = baseKey;
+	}
+
+	public List<Conjugation> getConjugatedSuffixes() {
+		return this.conjugatedSuffixes;
+	}
+
+	public void setConjugatedSuffixes(List<Conjugation> conjugatedSuffixes) {
+		this.conjugatedSuffixes = conjugatedSuffixes;
+	}
+
+	public Dict conjugatedSuffixes(List<Conjugation> conjugatedSuffixes) {
+		setConjugatedSuffixes(conjugatedSuffixes);
 		return this;
 	}
 

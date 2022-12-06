@@ -13,6 +13,6 @@ public class TermExample {
 	}
 
 	public static TermCollection getExample() throws IOException {
-		return Analyzer.analyze(Path.of("test2.txt"));
+		return Analyzer.analyze(Path.of("test3.txt"));
 	}
 }

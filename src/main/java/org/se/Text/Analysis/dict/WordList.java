@@ -7,7 +7,7 @@ import java.util.function.Predicate;
  * @author Val Richter
  */
 public class WordList implements Iterable<WordWithData> {
-	private List<WordWithData> store = new ArrayList<WordWithData>();
+	private List<WordWithData> store = new ArrayList<>();
 	private WordWithData elementWithLongestBase = null;
 	final String baseKey;
 
@@ -65,9 +65,9 @@ public class WordList implements Iterable<WordWithData> {
 	}
 
 	private int binSearch(String s, int start, int end) {
-		int mid = (int) (end + start) / 2;
+		int mid = (end + start) / 2;
 		while (end - start > 1) {
-			mid = (int) (end + start) / 2;
+			mid = (end + start) / 2;
 			int x = store.get(mid).get(baseKey).compareTo(s);
 			if (x == 0) return mid;
 			else if (x > 0) end = mid;
@@ -121,7 +121,7 @@ public class WordList implements Iterable<WordWithData> {
 	public boolean insertAll(WordList list) {
 		boolean res = true;
 		for (WordWithData h : list.store) {
-			if (list.baseKey != this.baseKey) {
+			if (!Objects.equals(list.baseKey, this.baseKey)) {
 				h.put(this.baseKey, h.get(list.baseKey));
 			}
 			if (!insert(h)) {
@@ -129,6 +129,13 @@ public class WordList implements Iterable<WordWithData> {
 			}
 		}
 		return res;
+	}
+
+	public Optional<WordWithData> find(Predicate<? super WordWithData> f) {
+		for (WordWithData w : store) {
+			if (f.test(w)) return Optional.of(w);
+		}
+		return Optional.empty();
 	}
 
 	/**
@@ -169,7 +176,7 @@ public class WordList implements Iterable<WordWithData> {
 	public Optional<String> get(String s, String key) {
 		int i = binSearch(s);
 		WordWithData h = store.get(i);
-		if (h.get(baseKey) == s) {
+		if (Objects.equals(h.get(baseKey), s)) {
 			return Optional.ofNullable(h.get(key));
 		}
 		return Optional.empty();

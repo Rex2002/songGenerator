@@ -11,7 +11,7 @@ import org.se.text.analysis.Numerus;
 public class TermEndings implements DisplayableParent {
 	public String radix;
 	public Numerus numerus;
-	public boolean toUmlaut;
+	public Boolean toUmlaut;
 
 	public TermEndings() {
 	}
