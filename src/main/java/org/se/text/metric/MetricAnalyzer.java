@@ -1,9 +1,9 @@
 package org.se.text.metric;
 
-import org.se.text.analysis.TermCollection;
+import java.util.*;
 
 public class MetricAnalyzer {
-	public static int metricsGet(String content, String terms) {
+	public static int metricsGet(String content, List<String> terms) {
 		// Find Average length for sentences and hyphen in order to determine text speed
 		int averageH = averageHyphen(terms);
 		int averageS = averageSentence(content);
@@ -52,12 +52,13 @@ public class MetricAnalyzer {
 		return bpm;
 	}
 
-	public static int averageHyphen(String terms) {
-		String term = terms;
-		int hyphenTotal = Hyphenizer.CountSyllabes(term);
-		int[] termAndSentences = WordCounter.countWords(term);
-		int termAmount = termAndSentences[0];
-		int averageH = hyphenTotal / termAmount;
+	public static int averageHyphen(List<String> terms) {
+		int totalHyphens = 0;
+		for (String t : terms) {
+			totalHyphens += Hyphenizer.CountSyllabes(t);
+		}
+
+		int averageH = totalHyphens / terms.size();
 		return averageH;
 	}
 

@@ -16,7 +16,8 @@ public class Analyzer {
 	private Analyzer() {
 	}
 
-	public static TermCollection analyze(String text) throws IOException {
+	public static TermCollection analyze(String path) throws IOException {
+		String text = FileReader.main(path);
 		Dict dict = new Dict(Path.of("", "./src/main/resources/dictionary"));
 		ArrayList<ArrayList<String>> sentences = Analyzer.preprocess(text);
 		ArrayList<ArrayList<Tag>> tags = Analyzer.tag(sentences, dict);
