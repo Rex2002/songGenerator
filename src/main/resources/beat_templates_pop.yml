@@ -1,5 +1,5 @@
 # @author Malte Richert
-# readable beat specification:
+# readable beat specification inspired by E. Kruse:
 # one line per drum/cymbal. x is a note, - is a rest
 # resolution holds length of each char, specified in 96th from bar start
 # quarter: 24
