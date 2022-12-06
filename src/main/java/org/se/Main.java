@@ -1,8 +1,9 @@
 package org.se;
 
-import org.se.logic.Config;
-import org.se.logic.StructureGenerator;
-import org.se.model.Genre;
+import org.se.music.logic.Config;
+import org.se.music.logic.StructureGenerator;
+import org.se.music.model.Genre;
+
 import java.util.Map;
 
 /**
