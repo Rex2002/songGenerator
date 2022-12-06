@@ -35,72 +35,113 @@ public class SongTextGenerator {
     private String [] partText;
 
     //Midi-Sequence Generator calls SongTextGenerator()
-    public List<String> generateSongText(Structure structure, TermCollection termCollection){
-        List<String> songText = new ArrayList<String>();
+    public List<String[]> generateSongText(Structure structure, TermCollection termCollection){
+        List<String[]> songText = new ArrayList<String[]>();
         this.termCollection = termCollection;
         key = structure.getKey();
         parts = structure.getParts();
         List<String> usedWordsList = new ArrayList<>();    //to check if a Term was used in the Song before
         List<Integer> usedStrophesList = new ArrayList<>();    //to check if a strophe was used in the Song before
 
+        System.out.println(structure.getParts());
+        System.out.println(structure.getParts().get("intro").getLength());
+        System.out.println();
+        structure.getParts().get("intro");
 
-        //songText.add(generateStrophe(Structure.Genre.pop,usedStrophesList, usedWordsList).get(0));
-        System.out.println(generateStrophe(Genre.POP, usedStrophesList, usedWordsList));
+        List<String> order = structure.getOrder();
+
+        for(int i = 0; i < order.size();i++){
+            System.out.println(order.get(i) + ": ");
+            songText.add(generateStrophe(structure.getGenre(),usedStrophesList, usedWordsList,structure.getParts().get(order.get(i)).getLength()));
+            printSongtext(songText);
+        }
+
+        //songText.add(generateStrophe(Genre.POP,usedStrophesList, usedWordsList,16));
+        //System.out.println(generateStrophe(Genre.POP, usedStrophesList, usedWordsList));
 
         //TODO iwie probleme mit id
 
-        String[] arr = new String[] { "n", "f", "p", "1", "1", "10" };
-        //System.out.println(getTerm(arr));
+        String[] arr = new String[] { "n", "f", "p","n", "1", "1", "10" };
 
-        // for(int i = 0;i < generateStrophe(Structure.Genre.blues, getNounsExamples(),
-        // getVerbsExamples()).size();i++){
-        // songText.add(generateStrophe(Structure.Genre.blues, getNounsExamples(),
-        // getVerbsExamples()).get(i) + "\n");
-        //}
-        System.out.println(songText);
+        //printSongtext(songText);
         return songText;
     }
 
-    private List<String> generateStrophe(Genre genre, List<Integer> usedStrophesList, List<String> usedWordsList) {
+    private void printSongtext(List<String[]> songText) {
+        for(int i = 0;i < songText.get(0).length;i++){
+            System.out.println("Takt" + (i+1) + ": " + songText.get(0)[i]);
+        }
+    }
+
+    private String[] generateStrophe(Genre genre, List<Integer> usedStrophesList, List<String> usedWordsList, int partNumber) {
         String vers = new String();
 
         if (genre == Genre.BLUES) {
-            //String[] verse = new String[3];
-            // verse[0] = "Ich bin so traurig weil " +
-            // nouns.get(getCorrectPosition(nounsIndex,0)) + " mich traurig machen";
-            //verse [1] = verse[0];
-            //verse [2] = verse[0];
-            // verse[2] = "und deshalb muss ich " +
-            // verbs.get(getCorrectPosition(verbsIndex,0));
-
-            //List<String> bluesText = List.of();
-
-            //return bluesText;
-            return List.of();
+            return null;
         } else if (genre == Genre.POP) {
             TemplateImporter TemplateImporter = new TemplateImporter();
             List<PopTemplate> popTemplateList = TemplateImporter.getTemplate(genre);
 
 
-            usedStrophesList.add(getRandomNotUsedValue(usedStrophesList,popTemplateList.size()));
-            PopTemplate popTemplate = popTemplateList.get(getLastElement(usedStrophesList)); //get random Strophe
+            PopTemplate popTemplate = getUnusedStrophe(popTemplateList, usedStrophesList,partNumber,1000);
 
-            String testVers = popTemplate.getStrophe()[0];
-            System.out.println(testVers);
-            int beginning = testVers.indexOf('$');
-            int end = testVers.indexOf('$', beginning + 1);
-            System.out.println(testVers.substring(beginning + 1, end));
-            String requirementsVariableString = testVers.substring(beginning + 1, end);
-            String[] strArr = getStringArrFromRequirementsVariableString(requirementsVariableString);
 
-            System.out.println(
-                    testVers.substring(0, beginning) + " Hier kommt das eingesetzte Wort: " + getTerm(strArr) + " " + testVers.substring(end + 1));
+            //go through the strophe and store the verses
+            String[] verse = new String[partNumber/2];
+            for(int i = 0;i < popTemplate.getStrophe().length;i++) {
+                verse[i] = getVerse(popTemplate.getStrophe()[i]);
+            }
 
-            return List.of();
+            String[] partText = getPartText(verse, partNumber);
+
+
+            return partText;
 
         }
 
         return null;
+
+    }
+
+    private PopTemplate getUnusedStrophe(List<PopTemplate> popTemplateList, List<Integer> usedStrophesList, int partNumber, int templateTries) {
+        for(int i = 0; i < templateTries; i++) {
+            usedStrophesList.add(getRandomNotUsedValue(usedStrophesList, popTemplateList.size()));
+            PopTemplate popTemplate = popTemplateList.get(getLastElement(usedStrophesList)); //get random Strophe
+
+            if (popTemplate.getLength() == partNumber) {
+                return popTemplate;
+            } else {
+                usedStrophesList.remove(usedStrophesList.size() - 1);
+            }
+        }
+
+        //if after 1000 trys theres no fitting template: take any possible template
+        if(!usedStrophesList.isEmpty()) {
+            usedStrophesList.clear();
+            return getUnusedStrophe(popTemplateList, usedStrophesList, partNumber, templateTries / 10);
+        }
+
+        return null;
+    }
+
+    private String[] getPartText(String[] verse, int partNumber) {
+        String allVerses = "";
+
+       int index = 0;
+            while (index < verse.length && verse[index] != null){
+                allVerses = allVerses + verse[index] + "|";
+                index++;
+            }
+
+        String[] partText = new String[partNumber];
+
+        for(int i = 0;i < partText.length;i++){
+            int partEnd = allVerses.indexOf("|");
+            partText[i] = allVerses.substring(0,partEnd);
+            allVerses = allVerses.substring(partEnd + 1);
+        }
+
+        return partText;
 
     }
 
@@ -119,7 +160,7 @@ public class SongTextGenerator {
     }
 
     private String [] getStringArrFromRequirementsVariableString(String requirementsVariableString) {
-        String [] strArr = new String[]{"","","","","","",""};
+        String [] strArr = new String[7];
         int index = 0;
         while(requirementsVariableString.length() > 0) {
             if (requirementsVariableString.charAt(0) == ',')index++;
@@ -139,7 +180,7 @@ public class SongTextGenerator {
             possibleValue = (int)(Math.random() * (listLength));
             terminateCounter--;
 
-            if(terminateCounter < 0)return ((int)(Math.random() * (list.size() + 1)));  //if there is no unused index left
+            if(terminateCounter < 0)return possibleValue;  //if there is no unused index left
         }while(list.contains(possibleValue));
 
         return possibleValue;

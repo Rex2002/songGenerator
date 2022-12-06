@@ -1,0 +1,31 @@
+
+#for a variable write: $v|(n,f|m|n,p|s,n|a|d|g,[1,10],[1,10],int id)$
+# n
+
+length: 8
+strophe:
+  - "Der $n,m,s,n,1,1,10$ |macht mich traurig!"
+  - "Sie $n,m,s,n,2,1,10$ |macht mich auch traurig"
+  - "Die $n,f,p,n,3,1,10$ |machen mich ebenfalls traurig"
+  - "Diese $n,f,s,n,3,1,10$ |macht mich auch traurig"
+---
+length: 16
+strophe:
+  - "Wir $n,m,p,n,1,1,10$ |machen mich tsdfgdsfdfs"
+  - "Ihr $n,f,p,n,1,1,10$ |machen mich sdfg"
+  - "Soe $n,f,p,n,1,1,10$ |machen mich flücasdfklicj"
+  - "Meine $n,f,p,n,1,2,10$ |machen mich flücklicj"
+  - "Wir $n,m,p,n,1,1,10$ |machen mich tsdfgdsfdfs"
+  - "Ihr $n,f,p,n,1,1,10$ |machen mich sdfg"
+  - "Soe $n,f,p,n,1,1,10$ |machen mich flücasdfklicj"
+  - "Meine $n,f,p,n,1,2,10$ |machen mich flücklicj"
+---
+length: 8
+strophe:
+  - "Deone $n,m,s,n,1,1,10$|machen mich tsdfgdsfdfs"
+  - "Eure $n,f,p,n,1,1,10$|machen mich flücklicj"
+  - "Unsere $n,f,p,n,1,2,10$|machen mich flücklicj"
+  - "Keiner $n,f,p,n,1,2,10$|machen mich flücklicj"
+
+
+

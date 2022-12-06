@@ -22,7 +22,7 @@ public class TemplateImporter {
 		if (genre == Genre.POP) {
 			// load Templates from yml
 			try {
-				YAMLParser yamlParser = yaml.createParser(new File("./popTemplate.yml"));
+				YAMLParser yamlParser = yaml.createParser(new File("./src/main/resources/text/popTemplate.yml"));
 
 				return mapper.readValues(yamlParser, PopTemplate.class).readAll();
 
