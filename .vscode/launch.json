@@ -22,7 +22,8 @@
 			"name": "Launch GUI",
 			"request": "launch",
 			"mainClass": "org.se.gui.Main",
-			"projectName": "SongGenerator"
+			"projectName": "SongGenerator",
+			"vmArgs": "--module-path \"C:\\Program Files\\Java\\javafx-sdk-19\\lib --add-modules javafx.base,javafx.controls,javafx.fxml,javafx.graphics"
 		},
 		{
 			"type": "java",
