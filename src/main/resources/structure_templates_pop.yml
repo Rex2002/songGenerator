@@ -3,7 +3,6 @@ order: [intro, verse, chorus, verse, chorus, bridge, chorus]
 basePart: intro
 parts:
   intro:
-    # pimped length for testing to values beyond ones imagination, needs to be reduced for production
     length: 8
     req:
       - chords
