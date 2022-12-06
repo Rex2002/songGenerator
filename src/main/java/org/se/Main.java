@@ -1,44 +1,28 @@
 package org.se;
 
 import java.io.IOException;
-import java.nio.file.Path;
+import java.util.List;
 
 import org.se.text.analysis.*;
-import org.se.text.analysis.dict.Dict;
+import org.se.text.generation.*;
 
 public class Main {
-	static int counter = 0;
-
 	public static void main(String[] args) throws IOException {
 
-		// TermCollection tc = Analyzer.analyze(Path.of("bibel.txt"));
-		// tc.iterNouns(vars -> {
-		// if (vars.getFrequency() > 1) {
-		// System.out.println(vars);
-		// counter++;
-		// }
-		// });
-		// System.out.println("\n\n");
-		// System.out.println("Example:");
-		TermCollection example = TermExample.getExample();
-		example.iterNouns(vars -> {
-			System.out.println(vars);
-			counter++;
-		});
-		example.iterVerbs(vars -> {
-			System.out.println(vars);
-			counter++;
-		});
-		System.out.println(counter);
+		TermCollection x = TermExample.getExample();
+		// System.out.println(x);
 
-		// Dict d = new Dict(Path.of("", "./src/main/resources/dictionary"));
+		Structure structure = new Structure();
 
-		// NounTerm t1 = TermVariations.createTerm(example.getNouns().get("Mann"),
-		// Gender.MALE, GrammaticalCase.DATIVE, Numerus.PLURAL, d);
-		// System.out.println(t1);
+		SongTextGenerator songTextGenerator = new SongTextGenerator();
 
-		// NounTerm t2 = TermVariations.createTerm(example.getNouns().get("Frau"),
-		// Gender.FEMALE, GrammaticalCase.ACCUSATIVE, Numerus.PLURAL, d);
-		// System.out.println(t2);
+		// TemplateImporter t = new TemplateImporter();
+		// t.getTemplate(Structure.Genre.pop);
+
+		// System.out.println(x);
+
+		List<String> songText = songTextGenerator.generateSongText(structure, x);
+		// x.terms.get(args);
+		System.out.println(songText);
 	}
 }

@@ -1,4 +1,4 @@
-package org.se.Text.Generation;
+package org.se.text.generation;
 
 import java.io.IOException;
 
