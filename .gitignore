@@ -2,3 +2,4 @@
 target/
 /midi-file.mid
 *.mid
+*.mp3

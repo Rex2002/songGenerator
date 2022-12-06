@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.se.music.model.Genre;
 import org.se.text.generation.PopTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,8 +18,8 @@ public class TemplateImporter {
 
 	// private static List<PopTemplate> =;
 
-	public List<PopTemplate> getTemplate(Structure.Genre genre) {
-		if (genre == Structure.Genre.pop) {
+	public List<PopTemplate> getTemplate(Genre genre) {
+		if (genre == Genre.POP) {
 			// load Templates from yml
 			try {
 				YAMLParser yamlParser = yaml.createParser(new File("./popTemplate.yml"));

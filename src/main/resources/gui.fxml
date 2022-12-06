@@ -6,7 +6,7 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane blendMode="DARKEN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.Controller">
+<AnchorPane blendMode="DARKEN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.se.gui.Controller">
    <children>
       <Slider fx:id="setting_pane_slider" layoutX="188.0" layoutY="106.0" max="180.0" min="60.0" orientation="VERTICAL" prefHeight="260.0" prefWidth="41.0" showTickLabels="true" showTickMarks="true" value="100.0" />
       <Label fx:id="setting_pane_bpm" layoutX="102.0" layoutY="106.0" text="bpm:" />

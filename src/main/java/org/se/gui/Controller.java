@@ -1,5 +1,6 @@
 package org.se.gui;
 
+
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -123,7 +124,7 @@ public class Controller implements Initializable {
 		fileChooser.setTitle("Select .pdf or .txt file");
 
 		// start searching in "desktop"-folder
-		fileChooser.setInitialDirectory(new File("C:/Users/" + userName + "/Desktop"));
+		fileChooser.setInitialDirectory(new File("/home/harka"));//"C:/Users/" + userName + "/Desktop"));
 
 		setting_pane_slider.valueProperty().addListener((ObservableValue<? extends Number> num, Number oldVal, Number newVal) -> {
 			setting_pane_bpm.setText("bpm:" + newVal.intValue());
