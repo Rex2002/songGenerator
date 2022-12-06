@@ -2,6 +2,7 @@ package org.se.text.analysis.dict;
 
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * @author Val Richter
@@ -175,7 +176,7 @@ public class WordList implements Iterable<WordWithData> {
 	 */
 	public void filterMut(Predicate<? super WordWithData> f) {
 		elementWithLongestBase = null;
-		store = store.stream().filter(f).toList();
+		store = store.stream().filter(f).collect(Collectors.toList());
 	}
 
 	public Optional<String> get(String s, String key) {

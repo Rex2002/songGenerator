@@ -1,0 +1,9 @@
+Input: Nomen Verben
+
+Blues:
+3 Strophen gleich
+1 anders
+
+//(Nomen,Plural) + Verb  + ReflexivPronomen + [Präposition + Ort]
+
+Attribut Text, Verb, Nomen

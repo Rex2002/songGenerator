@@ -44,7 +44,7 @@ TBD
 
 ### Preprocessing
 
-Nearly always when analyzing some data, it needs to be normalized in some way or other in a preprocessing step. So let's take a look at th data, we receive as input: Text. To be more precise, the text is assumed to be grammatically correct, german language text. Due to accepting both PDF- and Text-Files we can't take the formatting of the text into account (at least not uniformly). All we care about then is to analyze valid german sentences.
+Nearly always when analyzing some data, it needs to be normalized in some way or other in a preprocessing step. So let's take a look at the data, we receive as input: Text. To be more precise, the text is assumed to be grammatically correct, german language text. Due to accepting both PDF- and Text-Files we can't take the formatting of the text into account (at least not uniformly). All we care about then is to analyze valid german sentences.
 
 A common preprocessing step in NLP is to convert the whole text to lower case. Since we will try to exploit german capitalization rules in our analysis later, we can't do that. We could also remove stopwords (such as "and", "the" etc.), instead however, we will simply ignore such words when building terms later on. The benefit of this approach is that we can ignore unnecesssary words very generally based on grammatical rules when building terms, instead of needing to use a big dictionary, that would most likely miss many words regardless.
 
