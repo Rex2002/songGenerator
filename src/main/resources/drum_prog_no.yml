@@ -1,0 +1,17 @@
+# @author Benjamin Frahm
+# mapping for drum <=> midi note
+#
+bass   : 36       # confirmed very low bass
+bass2  : 35       # confirmed, slightly higher bass
+snare  : 38       # confirmed
+sideStick: 37     # confirmed
+woodClick: 39     # confirmed
+hiHat  : 42
+oHiHat : 46       # confirmed
+ride   : 51       # confirmed
+mTom   : 47
+hTom   : 50
+lTom   : 45       # confirmed
+click  : 32       # tongue clicking
+chimes : 33       # confirmed
+crash  : 49

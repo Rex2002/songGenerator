@@ -1,0 +1,431 @@
+# @author Malte Richert
+order: [intro, verse, chorus, verse, chorus, bridge, chorus]
+basePart: intro
+parts:
+  intro:
+    # pimped length for testing to values beyond ones imagination, needs to be reduced for production
+    length: 8
+    req:
+      - chords
+      - drums
+      - bass
+      - melody
+      - melody2
+    opt:
+      - chords2
+  verse:
+    length: 16
+    randomizationLevel: 0 #0: no variation, 1: keep 2 most important chords, 2: stay in key
+    req:
+      - chords
+      - bass
+      - drums
+    opt:
+      - chords2
+  chorus:
+    length: 8
+    randomizationLevel: 2
+    req:
+      - chords
+      - bass
+      - drums
+    opt:
+      - melody
+  bridge:
+    length: 8
+    randomizationLevel: 1 #0: no variation, 1: keep 2 most important chords, 2: stay in key
+    req:
+      - chords
+      - bass
+      - melody
+    opt:
+      - chords2
+---
+# S1
+order: [intro, verse, preChorus, chorus, danceChorus, verse, preChorus, chorus, danceChorus, redChorus, danceChorus]
+basePart: chorus
+parts:
+  intro:
+    length: 8
+    randomizationLevel: 0
+    req:
+      - chords
+      - bass
+      - drums
+      - melody2
+    opt:
+      - chords2
+  verse:
+    length: 16
+    randomizationLevel: 2
+    req:
+      - chords
+      - bass
+      - drums
+      - melody
+    opt: []
+  preChorus:
+    length: 8
+    randomizationLevel: 1
+    req:
+      - chords
+      - bass
+      - drums
+      - melody
+    opt:
+      - chords2
+  chorus:
+    length: 8
+    req:
+      - chords
+      - bass2
+      - drums
+      - melody
+    opt:
+      - chords2
+  danceChorus:
+    length: 8
+    randomizationLevel: 0
+    req:
+      - chords
+      - bass2
+      - drums
+      - melody2
+    opt:
+      - chords2
+  redChorus:
+    length: 8
+    randomizationLevel: 0
+    req:
+      - chords
+      - melody
+    opt:
+      - bass
+---
+# S2_red
+order: [intro, chorus, verse, chorus, verse, chorus, instrumental, chorus, outro]
+basePart: chorus
+parts:
+  intro:
+    randomizationLevel: 0
+    length: 4
+    req:
+      - chords
+    opt: []
+  chorus:
+    length: 8
+    req:
+      - chords
+      - melody
+      - bass
+    opt:
+      - drums
+  verse:
+    length: 16
+    randomizationLevel: 2
+    req:
+      - chords
+      - melody
+    opt:
+      - bass
+  instrumental:
+    length: 8
+    randomizationLevel: 2
+    req:
+      - chords
+      - bass
+    opt:
+      - drums
+      - melody2
+  outro:
+    length: 4
+    randomizationLevel: 0
+    req:
+      - chords
+      - bass
+    opt: []
+---
+# S2_red_shuffled
+order: [intro, verse, chorus, verse, chorus, instrumental, chorus, outro]
+basePart: chorus
+parts:
+  intro:
+    randomizationLevel: 0
+    length: 4
+    req:
+      - chords
+    opt: []
+  chorus:
+    length: 8
+    req:
+      - chords
+      - melody
+      - bass
+    opt:
+      - drums
+  verse:
+    length: 16
+    randomizationLevel: 2
+    req:
+      - chords
+      - melody
+    opt:
+      - bass
+  instrumental:
+    length: 8
+    randomizationLevel: 2
+    req:
+      - chords
+      - bass
+    opt:
+      - drums
+      - melody2
+  outro:
+    length: 4
+    randomizationLevel: 0
+    req:
+      - chords
+      - bass
+    opt: []
+---
+# S2_red_reshuffled
+order: [intro, verse, chorus, verse, chorus, instrumental, chorus, outro]
+basePart: verse
+parts:
+  intro:
+    randomizationLevel: 0
+    length: 4
+    req:
+      - chords
+    opt: []
+  chorus:
+    length: 8
+    randomizationLevel: 2
+    req:
+      - chords
+      - melody
+      - bass
+    opt:
+      - drums
+  verse:
+    length: 16
+    req:
+      - chords
+      - melody
+    opt:
+      - bass
+  instrumental:
+    length: 8
+    randomizationLevel: 2
+    req:
+      - chords
+      - bass
+    opt:
+      - drums
+      - melody2
+  outro:
+    length: 4
+    randomizationLevel: 0
+    req:
+      - chords
+      - bass
+    opt: []
+---
+# S2_full
+order: [intro, chorus, verse, chorus, verse, chorus, instrumental, chorus, outro]
+basePart: chorus
+parts:
+  intro:
+    length: 4
+    randomizationLevel: 0
+    req:
+      - chords
+    opt:
+      - bass
+      - drums
+  chorus:
+    length: 8
+    req:
+      - chords
+      - melody
+      - bass
+      - drums
+    opt: []
+  verse:
+    length: 16
+    randomizationLevel: 2
+    req:
+      - chords
+      - melody
+      - bass
+      - drums
+    opt: []
+  instrumental:
+    length: 8
+    randomizationLevel: 2
+    req:
+      - chords
+      - bass
+      - drums
+    opt:
+      - melody2
+  outro:
+    length: 4
+    randomizationLevel: 0
+    req:
+      - chords
+      - bass
+      - drums
+    opt: []
+---
+# S2_full_shuffled
+order: [intro, verse, chorus, verse, chorus, instrumental, chorus, chorus, outro]
+basePart: chorus
+parts:
+  intro:
+    length: 4
+    randomizationLevel: 0
+    req:
+      - chords
+    opt:
+      - bass
+      - drums
+  chorus:
+    length: 8
+    req:
+      - chords
+      - melody
+      - bass
+      - drums
+    opt: []
+  verse:
+    length: 16
+    randomizationLevel: 2
+    req:
+      - chords
+      - melody
+      - bass
+      - drums
+    opt: []
+  instrumental:
+    length: 8
+    randomizationLevel: 2
+    req:
+      - chords
+      - bass
+      - drums
+    opt:
+      - melody2
+  outro:
+    length: 4
+    randomizationLevel: 0
+    req:
+      - chords
+      - bass
+      - drums
+    opt: []
+---
+# S2_full_reshuffled
+order: [intro, verse, chorus, verse, chorus, instrumental, chorus, chorus, outro]
+basePart: verse
+parts:
+  intro:
+    randomizationLevel: 0
+    length: 4
+    req:
+      - chords
+    opt:
+      - bass
+      - drums
+  chorus:
+    length: 8
+    randomizationLevel: 2
+    req:
+      - chords
+      - melody
+      - bass
+      - drums
+    opt: []
+  verse:
+    length: 16
+    req:
+      - chords
+      - melody
+      - bass
+      - drums
+    opt: []
+  instrumental:
+    length: 8
+    randomizationLevel: 1
+    req:
+      - chords
+      - bass
+      - drums
+    opt:
+      - melody2
+  outro:
+    length: 4
+    randomizationLevel: 0
+    req:
+      - chords
+      - bass
+      - drums
+    opt: []
+---
+# S3
+order: [intro, verse, preChorus, chorus, verse, preChorus, chorus, bridge, chorus, outro]
+basePart: chorus
+parts:
+  intro:
+    length: 8
+    randomizationLevel: 0
+    req:
+      - chords
+      - bass
+      - drums
+      - melody2
+    opt: []
+  preChorus:
+    length: 8
+    randomizationLevel: 1
+    req:
+      - chords
+      - melody
+      - bass
+      - drums
+    opt: []
+  chorus:
+    length: 8
+    req:
+      - chords
+      - melody
+      - bass
+      - drums
+    opt: []
+  verse:
+    length: 16
+    randomizationLevel: 2
+    req:
+      - chords
+      - melody
+      - bass
+      - drums
+    opt: []
+  bridge:
+    length: 8
+    randomizationLevel: 1
+    req:
+      - chords
+      - bass
+      - melody
+    opt:
+      - drums
+  outro:
+    length: 8
+    randomizationLevel: 1
+    req:
+      - chords
+      - bass
+      - melody2
+    opt:
+      - drums
