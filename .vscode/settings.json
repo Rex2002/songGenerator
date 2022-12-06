@@ -1,4 +1,4 @@
 {
 	"java.format.settings.url": "eclipse-formatter.xml",
-	"java.configuration.updateBuildConfiguration": "automatic"
+	"java.configuration.updateBuildConfiguration": "disabled"
 }
