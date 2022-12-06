@@ -18,6 +18,7 @@ public class Main {
         //TemplateImporter t = new TemplateImporter();
         //t.getTemplate(Structure.Genre.pop);
 
+        //System.out.println(x);
 
 
         List<String> songText = songTextGenerator.generateSongText(structure,x);

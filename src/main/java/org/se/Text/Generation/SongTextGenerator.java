@@ -46,7 +46,7 @@ public class SongTextGenerator {
         //TODO iwie probleme mit id
 
         String [] arr = new String[]{"n","f","p","1","1","10"};
-        System.out.println(getTerm(arr));
+        //System.out.println(getTerm(arr));
 
 
 
@@ -77,23 +77,53 @@ public class SongTextGenerator {
             TemplateImporter TemplateImporter = new TemplateImporter();
             List<PopTemplate> popTemplateList = TemplateImporter.getTemplate(genre);
 
-            usedStrophesList.add((int)Math.random()%(popTemplateList.size()+1));
+
+            usedStrophesList.add(getRandomNotUsedValue(usedStrophesList,popTemplateList.size()));
             PopTemplate popTemplate = popTemplateList.get(getLastElement(usedStrophesList)); //get random Strophe
 
-            System.out.println((int)(Math.random() * (popTemplateList.size() + 1)));
-            System.out.println((int)Math.random()%popTemplateList.size()+1);
-            System.out.println(popTemplateList.size());
-            System.out.println((Math.random()*100)%2.0);
+            String testVers = popTemplate.getStrophe()[0];
+            System.out.println(testVers);
+            int beginning = testVers.indexOf('$');
+            int end = testVers.indexOf('$',beginning + 1);
+            System.out.println(testVers.substring(beginning + 1,end));
+            String requirementsVariableString = testVers.substring(beginning + 1,end);
+            String [] strArr = getStringArrFromRequirementsVariableString(requirementsVariableString);
 
-            popTemplateList.get(0).getStrophe();
-            System.out.println(popTemplate.getStrophe()[0]);
 
-
+            System.out.println(testVers.substring(0,beginning) + " Hier kommt das eingesetzte Wort: "+ getTerm(strArr) + " " + testVers.substring(end + 1));
 
             return List.of();
         }
 
         return null;
+
+    }
+
+    private String [] getStringArrFromRequirementsVariableString(String requirementsVariableString) {
+        String [] strArr = new String[]{"","","","","",""};
+        int index = 0;
+        while(requirementsVariableString.length() > 0) {
+            if (requirementsVariableString.charAt(0) == ',')index++;
+            else{
+                strArr[index] = strArr[index] + requirementsVariableString.charAt(0);
+            }
+            requirementsVariableString= requirementsVariableString.substring(1);
+        }
+        return strArr;
+        }
+
+    private Integer getRandomNotUsedValue(List<Integer> List, int listLength) {
+        int terminateCounter = listLength;
+        int PossibleValue;
+
+        do{
+            PossibleValue = (int)(Math.random() * (listLength));
+            terminateCounter--;
+
+            if(terminateCounter < 0)return ((int)(Math.random() * (List.size() + 1)));  //if there is no unused index left
+        }while(List.contains(PossibleValue));
+
+        return PossibleValue;
 
     }
 
@@ -127,7 +157,7 @@ public class SongTextGenerator {
         int syllMin, syllMax;
 
 
-        //detect Grammatical case
+        //detect Grammatical case//TODO
         switch (requirements[3]) {
             case "a":
                 grammaticalCase = GrammaticalCase.Accusative;break;
