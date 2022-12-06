@@ -29,7 +29,7 @@ public class Config {
 
 		// load drum program config into BeatContainer
 		try {
-			BeatContainer.setDrumPrograms(mapper.readValue(new File("./src/main/resources/drum_prog_no.yml"), HashMap.class));
+			BeatContainer.setDrumPrograms(mapper.readValue(new File("./src/main/resources/music/drum_prog_no.yml"), HashMap.class));
 		} catch (IOException e) {
 			System.out.println("Encountered exception while trying to read drum_prog config.");
 			e.printStackTrace();
@@ -37,7 +37,7 @@ public class Config {
 
 		// load beat templates into BeatContainer
 		try {
-			YAMLParser yamlParser = yaml.createParser(new File("./src/main/resources/beat_templates_pop.yml"));
+			YAMLParser yamlParser = yaml.createParser(new File("./src/main/resources/music/beat_templates_pop.yml"));
 			List<BeatData> beatDataList = mapper.readValues(yamlParser, BeatData.class).readAll();
 
 			List<Beat> outBeats = new ArrayList<>();
@@ -52,14 +52,14 @@ public class Config {
 
 		// load structure template
 		try {
-			YAMLParser yamlParser = yaml.createParser(new File("./src/main/resources/structure_templates_pop.yml"));
+			YAMLParser yamlParser = yaml.createParser(new File("./src/main/resources/music/structure_templates_pop.yml"));
 			structuresPop = mapper.readValues(yamlParser, Structure.class).readAll();
 		} catch (IOException e) {
 			System.out.println("Encountered exception while trying to read Structure template for pop.");
 			e.printStackTrace();
 		}
 		try {
-			YAMLParser yamlParser = yaml.createParser(new File("./src/main/resources/structure_templates_blues.yml"));
+			YAMLParser yamlParser = yaml.createParser(new File("./src/main/resources/music/structure_templates_blues.yml"));
 			structuresBlues = mapper.readValues(yamlParser, Structure.class).readAll();
 		} catch (IOException e) {
 			System.out.println("Encountered exception while trying to read Structure template for blues.");
@@ -68,7 +68,7 @@ public class Config {
 
 		// load chord modifiers into Chord class
 		try {
-			Chord.setChordModifiers(mapper.readValue(new File("./src/main/resources/chord_modifiers.yml"), HashMap.class));
+			Chord.setChordModifiers(mapper.readValue(new File("./src/main/resources/music/chord_modifiers.yml"), HashMap.class));
 		} catch (IOException e) {
 			System.out.println("Encountered exception while trying to read Chord modifiers from config.");
 			e.printStackTrace();
@@ -76,13 +76,13 @@ public class Config {
 
 		// load chord progressions
 		try {
-			chordProgressionsPop = mapper.readValue(new File("./src/main/resources/chord_progressions_pop.yml"), ArrayList.class);
+			chordProgressionsPop = mapper.readValue(new File("./src/main/resources/music/chord_progressions_pop.yml"), ArrayList.class);
 		} catch (IOException e) {
 			System.out.println("Encountered exception while trying to read Chord progressions for pop from template.");
 			e.printStackTrace();
 		}
 		try {
-			chordProgressionsBlues = mapper.readValue(new File("./src/main/resources/chord_progressions_blues.yml"), ArrayList.class);
+			chordProgressionsBlues = mapper.readValue(new File("./src/main/resources/music/chord_progressions_blues.yml"), ArrayList.class);
 		} catch (IOException e) {
 			System.out.println("Encountered exception while trying to read Chord progressions for blues from template.");
 			e.printStackTrace();
@@ -90,7 +90,7 @@ public class Config {
 
 		// load instrument mappings
 		try {
-			instrumentMapping = mapper.readValue(new File("./src/main/resources/instrument_mapping.yml"), HashMap.class);
+			instrumentMapping = mapper.readValue(new File("./src/main/resources/music/instrument_mapping.yml"), HashMap.class);
 		} catch (IOException e) {
 			System.out.println("Encountered exception while trying to read Instrument mappings from config.");
 			e.printStackTrace();
