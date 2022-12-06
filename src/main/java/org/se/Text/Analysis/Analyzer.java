@@ -101,10 +101,10 @@ public class Analyzer {
 	}
 
 	static ArrayList<ArrayList<Tag>> tag(ArrayList<ArrayList<String>> sentences, Dict dict) {
-		ArrayList<ArrayList<Tag>> tags = new ArrayList<ArrayList<Tag>>();
+		ArrayList<ArrayList<Tag>> tags = new ArrayList<>();
 
 		for (ArrayList<String> sentence : sentences) {
-			ArrayList<Tag> currentTags = new ArrayList<Tag>();
+			ArrayList<Tag> currentTags = new ArrayList<>();
 
 			for (int i = 0; i < sentence.size(); i++) {
 				String word = sentence.get(i);
@@ -127,8 +127,8 @@ public class Analyzer {
 	}
 
 	static TermCollection buildTerms(ArrayList<ArrayList<Tag>> tags, Dict dict) {
-		Map<String, TermVariations<NounTerm>> nounVariations = new HashMap<String, TermVariations<NounTerm>>();
-		Map<String, TermVariations<VerbTerm>> verbVariations = new HashMap<String, TermVariations<VerbTerm>>();
+		Map<String, TermVariations<NounTerm>> nounVariations = new HashMap<>();
+		Map<String, TermVariations<VerbTerm>> verbVariations = new HashMap<>();
 
 		for (ArrayList<Tag> sentenceTags : tags) {
 			for (Tag t : sentenceTags) {

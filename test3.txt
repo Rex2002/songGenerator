@@ -1,1 +1,1 @@
-Ich bin weder ein Mann noch eine Frau.
+Testsatz mit den Wörtern Mann und Frau und Baumhaustür.

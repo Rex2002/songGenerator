@@ -20,6 +20,7 @@ public class Dict {
 	WordList verbs = new WordList();
 	WordList diphtongs = new WordList();
 	WordList umlautChanges = new WordList();
+	WordList compoundParts = new WordList();
 	List<Declination> declinatedSuffixes = new ArrayList<>();
 	List<Conjugation> conjugatedSuffixes = new ArrayList<>();
 	final String baseKey;
@@ -31,7 +32,8 @@ public class Dict {
 	static final String DEFAULT_BASE_KEY = "radix";
 
 	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs,
-			WordList diphtongs, WordList umlautChanges, List<Declination> declinatedSuffixes, List<Conjugation> conjugatedSuffixes) {
+			WordList diphtongs, WordList umlautChanges, WordList compoundParts, List<Declination> declinatedSuffixes,
+			List<Conjugation> conjugatedSuffixes) {
 		this.nounSuffixes = nounSuffixes;
 		this.nounPrefixes = nounPrefixes;
 		this.nouns = nouns;
@@ -40,6 +42,7 @@ public class Dict {
 		this.verbs = verbs;
 		this.diphtongs = diphtongs;
 		this.umlautChanges = umlautChanges;
+		this.compoundParts = compoundParts;
 		this.declinatedSuffixes = declinatedSuffixes;
 		this.conjugatedSuffixes = conjugatedSuffixes;
 		this.baseKey = DEFAULT_BASE_KEY;
@@ -52,6 +55,7 @@ public class Dict {
 		Parser.readCSV(dirPath.resolve("verbsDict"), this.verbs);
 		Parser.readCSV(dirPath.resolve("diphtongs"), this.diphtongs);
 		Parser.readCSV(dirPath.resolve("umlautChanges"), this.umlautChanges);
+		Parser.readCSV(dirPath.resolve("compoundParts"), this.compoundParts);
 		Parser.parseCSV(dirPath.resolve("affixesDict"), row -> {
 			switch (row.get("type")) {
 				case "nounSuffix":
@@ -83,6 +87,7 @@ public class Dict {
 		this.verbSuffixes.insertAll(dict.getVerbSuffixes());
 		this.verbs.insertAll(dict.getVerbs());
 		this.umlautChanges.insertAll(dict.getUmlautChanges());
+		this.compoundParts.insertAll(dict.getCompoundParts());
 		this.declinatedSuffixes.addAll(dict.getDeclinatedSuffixes());
 		this.conjugatedSuffixes.addAll(dict.getConjugatedSuffixes());
 		return this;
@@ -91,26 +96,20 @@ public class Dict {
 	// Make word into a term
 
 	public List<WordStemmer> getPossibleNounStems(String s) {
-		// TODO:
-		// Add check if word can be seperated into parts, all of which are in the nounsList
-		// This check basically just allows for compound nouns
-		// Some specific affixes should be allowed between these parts (like "s")
-		// these specific affixes should have their own category in the affixesDict.csv file
-		// There should also be some affixes, that can be removed from the original word for compound words
-		return getPossibleStems(s, declinatedSuffixes, nouns, nounSuffixes, nounPrefixes);
+		return getPossibleStems(s, nouns, declinatedSuffixes, nounSuffixes, nounPrefixes);
 	}
 
 	public List<WordStemmer> getPossibleVerbStems(String s) {
-		return getPossibleStems(s, conjugatedSuffixes, verbs, verbSuffixes, nounPrefixes);
+		return getPossibleStems(s, verbs, conjugatedSuffixes, verbSuffixes, nounPrefixes);
 	}
 
-	private List<WordStemmer> getPossibleStems(String s, List<? extends TermEndings> termEndings, WordList dict, WordList suffixes,
+	private List<WordStemmer> getPossibleStems(String s, WordList terms, List<? extends TermEndings> termEndings, WordList suffixes,
 			WordList prefixes) {
-		WordStemmer[] l = WordStemmer.radicalize(s, termEndings, suffixes, prefixes, 2, diphtongs, umlautChanges, baseKey);
+		WordStemmer[] l = WordStemmer.radicalize(s, terms, termEndings, suffixes, prefixes, compoundParts, 2, diphtongs, umlautChanges, baseKey);
 		List<WordStemmer> res = new ArrayList<>();
 
 		for (WordStemmer w : l) {
-			if (dict.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.any(w.getSuffixes(), data -> {
+			if (terms.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.any(w.getSuffixes(), data -> {
 				return data.containsKey("certain") && Parser.parseBool(data.get("certain"));
 			}))) {
 				res.add(w);
@@ -120,6 +119,7 @@ public class Dict {
 	}
 
 	// TODO: Test if there are better values for these variables
+	// TODO: Add bias for compoundParts
 	static final int AFFIX_COUNT_BIAS = -6;
 	static final int IN_DICTIONARY_BIAS = 20;
 	static final int DECLINATED_SUFFIX_GENDER_BIAS = 20;
@@ -409,20 +409,6 @@ public class Dict {
 		return this;
 	}
 
-	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs,
-			WordList diphtongs, WordList umlautChanges, List<Declination> declinatedSuffixes, String baseKey) {
-		this.nounSuffixes = nounSuffixes;
-		this.nounPrefixes = nounPrefixes;
-		this.nouns = nouns;
-		this.verbSuffixes = verbSuffixes;
-		this.verbPrefixes = verbPrefixes;
-		this.verbs = verbs;
-		this.diphtongs = diphtongs;
-		this.umlautChanges = umlautChanges;
-		this.declinatedSuffixes = declinatedSuffixes;
-		this.baseKey = baseKey;
-	}
-
 	public WordList getDiphtongs() {
 		return this.diphtongs;
 	}
@@ -466,21 +452,6 @@ public class Dict {
 		return this;
 	}
 
-	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs,
-			WordList diphtongs, WordList umlautChanges, List<Declination> declinatedSuffixes, List<Conjugation> conjugatedSuffixes, String baseKey) {
-		this.nounSuffixes = nounSuffixes;
-		this.nounPrefixes = nounPrefixes;
-		this.nouns = nouns;
-		this.verbSuffixes = verbSuffixes;
-		this.verbPrefixes = verbPrefixes;
-		this.verbs = verbs;
-		this.diphtongs = diphtongs;
-		this.umlautChanges = umlautChanges;
-		this.declinatedSuffixes = declinatedSuffixes;
-		this.conjugatedSuffixes = conjugatedSuffixes;
-		this.baseKey = baseKey;
-	}
-
 	public List<Conjugation> getConjugatedSuffixes() {
 		return this.conjugatedSuffixes;
 	}
@@ -491,6 +462,36 @@ public class Dict {
 
 	public Dict conjugatedSuffixes(List<Conjugation> conjugatedSuffixes) {
 		setConjugatedSuffixes(conjugatedSuffixes);
+		return this;
+	}
+
+	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs,
+			WordList diphtongs, WordList umlautChanges, WordList compoundParts, List<Declination> declinatedSuffixes,
+			List<Conjugation> conjugatedSuffixes, String baseKey) {
+		this.nounSuffixes = nounSuffixes;
+		this.nounPrefixes = nounPrefixes;
+		this.nouns = nouns;
+		this.verbSuffixes = verbSuffixes;
+		this.verbPrefixes = verbPrefixes;
+		this.verbs = verbs;
+		this.diphtongs = diphtongs;
+		this.umlautChanges = umlautChanges;
+		this.compoundParts = compoundParts;
+		this.declinatedSuffixes = declinatedSuffixes;
+		this.conjugatedSuffixes = conjugatedSuffixes;
+		this.baseKey = baseKey;
+	}
+
+	public WordList getCompoundParts() {
+		return this.compoundParts;
+	}
+
+	public void setCompoundParts(WordList compoundParts) {
+		this.compoundParts = compoundParts;
+	}
+
+	public Dict compoundParts(WordList compoundParts) {
+		setCompoundParts(compoundParts);
 		return this;
 	}
 

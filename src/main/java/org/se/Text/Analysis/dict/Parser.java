@@ -31,6 +31,7 @@ public class Parser {
 		else if (cls == Tense.class) return Optional.ofNullable(cls.cast(parseTense(s)));
 		else if (cls == Gender.class) return Optional.ofNullable(cls.cast(parseGender(s)));
 		else if (cls == Numerus.class) return Optional.ofNullable(cls.cast(parseNumerus(s)));
+		else if (cls == CompoundPart.class) return Optional.ofNullable(cls.cast(parseCompoundPart(s)));
 		else if (cls == Boolean.class) return Optional.ofNullable(cls.cast(parseBool(s)));
 		else if (cls == Integer.class) return Optional.ofNullable(cls.cast(parseInt(s)));
 		else if (cls == List.class) return Optional.ofNullable(cls.cast(parseList(s)));
@@ -111,6 +112,16 @@ public class Parser {
 
 			default:
 				return Numerus.SINGULAR;
+		}
+	}
+
+	public static CompoundPart parseCompoundPart(String s) {
+		switch (s.toLowerCase().charAt(0)) {
+			case 's':
+				return CompoundPart.SUBTRACTION;
+
+			default:
+				return CompoundPart.ADDITION;
 		}
 	}
 
