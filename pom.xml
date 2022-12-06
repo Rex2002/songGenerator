@@ -14,7 +14,12 @@
             <artifactId>jackson-dataformat-yaml</artifactId>
             <version>2.14.0</version>
         </dependency>
-    </dependencies>
+		<dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.10</version>
+        </dependency>
+	</dependencies>
 
     <properties>
         <maven.compiler.source>18</maven.compiler.source>
