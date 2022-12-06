@@ -39,15 +39,13 @@ public class SongTextGenerator {
         List<Integer> usedStrophesList = new ArrayList<>();    //to check if a strophe was used in the Song before
 
 
-
         //songText.add(generateStrophe(Structure.Genre.pop,usedStrophesList, usedWordsList).get(0));
-        System.out.println(generateStrophe(Structure.Genre.pop,usedStrophesList, usedWordsList));
+        System.out.println(generateStrophe(Structure.Genre.pop, usedStrophesList, usedWordsList));
 
         //TODO iwie probleme mit id
 
-        String [] arr = new String[]{"n","f","p","1","1","10"};
+        //String [] arr = new String[]{"n","f","p","n","1","1","10"};
         //System.out.println(getTerm(arr));
-
 
 
 
@@ -81,49 +79,61 @@ public class SongTextGenerator {
             usedStrophesList.add(getRandomNotUsedValue(usedStrophesList,popTemplateList.size()));
             PopTemplate popTemplate = popTemplateList.get(getLastElement(usedStrophesList)); //get random Strophe
 
-            String testVers = popTemplate.getStrophe()[0];
-            System.out.println(testVers);
-            int beginning = testVers.indexOf('$');
-            int end = testVers.indexOf('$',beginning + 1);
-            System.out.println(testVers.substring(beginning + 1,end));
-            String requirementsVariableString = testVers.substring(beginning + 1,end);
-            String [] strArr = getStringArrFromRequirementsVariableString(requirementsVariableString);
-
-
-            System.out.println(testVers.substring(0,beginning) + " Hier kommt das eingesetzte Wort: "+ getTerm(strArr) + " " + testVers.substring(end + 1));
+            String[] verse = new String[8];
+            for(int i = 0;i < popTemplate.getStrophe().length;i++) {
+                verse[i] = getVerse(popTemplate.getStrophe()[i]);
+                System.out.println(verse[i]);
+            }
+            System.out.println(verse);
 
             return List.of();
+
         }
 
         return null;
 
     }
 
+    private String getVerse(String rawString) {
+
+        //System.out.println(rawString);
+        int beginning = rawString.indexOf('$');
+        int end = rawString.indexOf('$',beginning + 1);
+
+        //System.out.println(rawString.substring(beginning + 1,end));
+
+        String requirementsVariableString = rawString.substring(beginning + 1,end);
+        String [] strArr = getStringArrFromRequirementsVariableString(requirementsVariableString);
+
+
+        return (rawString.substring(0,beginning) + getTerm(strArr) + rawString.substring(end + 1));
+    }
+
     private String [] getStringArrFromRequirementsVariableString(String requirementsVariableString) {
-        String [] strArr = new String[]{"","","","","",""};
+        String [] strArr = new String[]{"","","","","","",""};
         int index = 0;
         while(requirementsVariableString.length() > 0) {
             if (requirementsVariableString.charAt(0) == ',')index++;
             else{
-                strArr[index] = strArr[index] + requirementsVariableString.charAt(0);
+                strArr[index] = strArr[index] + requirementsVariableString.charAt(0);   //Stringbuilder
             }
             requirementsVariableString= requirementsVariableString.substring(1);
         }
         return strArr;
         }
 
-    private Integer getRandomNotUsedValue(List<Integer> List, int listLength) {
+    private Integer getRandomNotUsedValue(List<Integer> list, int listLength) {
         int terminateCounter = listLength;
-        int PossibleValue;
+        int possibleValue;
 
         do{
-            PossibleValue = (int)(Math.random() * (listLength));
+            possibleValue = (int)(Math.random() * (listLength));
             terminateCounter--;
 
-            if(terminateCounter < 0)return ((int)(Math.random() * (List.size() + 1)));  //if there is no unused index left
-        }while(List.contains(PossibleValue));
+            if(terminateCounter < 0)return ((int)(Math.random() * (list.size() + 1)));  //if there is no unused index left
+        }while(list.contains(possibleValue));
 
-        return PossibleValue;
+        return possibleValue;
 
     }
 
@@ -135,6 +145,8 @@ public class SongTextGenerator {
             termList = getNounsTermListFromRequirements(requirements);//hier fürs Beispiel nomen Statt Verben TODO!!
             //List<String> termList = getVerbsTermListFromRequirements(requirements);
         }
+
+        //System.out.println(termList);
 
         //index gives the position of the noun in termList
         int termListSize = termList.size();
@@ -149,25 +161,14 @@ public class SongTextGenerator {
 
     //boa ne Hashmap statt dem String wäre schlauer!!!!!!!!!!!!!!!
     private List<NounTerm> getNounsTermListFromRequirements(String [] requirements) {
-        //requirements looks like [n,f,p,1,1,10]
-        // [Case,Gender,isPlural,id,syllMin,syllMax]
+        //requirements looks like [n,f,p,n,1,1,10]
+        // [Noun,Gender,Plural,Case,id,syllMin,syllMax]
         GrammaticalCase grammaticalCase;
         Gender gender;
         Numerus numerus;
         int syllMin, syllMax;
 
 
-        //detect Grammatical case//TODO
-        switch (requirements[3]) {
-            case "a":
-                grammaticalCase = GrammaticalCase.Accusative;break;
-            case "d":
-                grammaticalCase = GrammaticalCase.Dative;break;
-            case "g":
-                grammaticalCase = GrammaticalCase.Genitive;break;
-            default:
-                grammaticalCase = GrammaticalCase.Nominative;
-        }
 
         //detect Gender
         switch (requirements[1]) {
@@ -185,16 +186,28 @@ public class SongTextGenerator {
             default:  numerus = Numerus.Singular; //in case of a false Input singular is selected
         }
 
+        //detect Grammatical case//TODO
+        switch (requirements[3]) {
+            case "a":
+                grammaticalCase = GrammaticalCase.Accusative;break;
+            case "d":
+                grammaticalCase = GrammaticalCase.Dative;break;
+            case "g":
+                grammaticalCase = GrammaticalCase.Genitive;break;
+            default:
+                grammaticalCase = GrammaticalCase.Nominative;
+        }
+
         //detect min Syll
         try {
-            syllMin = Integer.parseInt(requirements[4]);
+            syllMin = Integer.parseInt(requirements[5]);
         } catch (NumberFormatException ex) {
             syllMin = 0;
         }
 
         //detect max Syll
         try {
-            syllMax = Integer.parseInt(requirements[5]);
+            syllMax = Integer.parseInt(requirements[6]);
         } catch (NumberFormatException ex) {
             syllMax = 15;
         }
@@ -209,7 +222,7 @@ public class SongTextGenerator {
 
     private int getIdFromRequirements(String[] requirements) {
         try {
-            return Integer.parseInt(requirements[3]);
+            return Integer.parseInt(requirements[4]);
         } catch (NumberFormatException ex) {
             return 4; //should be a random Number but would require a Math library
 
