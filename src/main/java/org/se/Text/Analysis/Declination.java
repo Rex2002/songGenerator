@@ -11,7 +11,8 @@ public class Declination extends TermEndings {
 	public GrammaticalCase grammaticalCase;
 	public Gender gender;
 
-	public Declination(String radix, GrammaticalCase grammaticalCase, Gender gender, Numerus numerus, boolean toUmlaut) {
+	public Declination(String radix, GrammaticalCase grammaticalCase, Gender gender, Numerus numerus,
+			boolean toUmlaut) {
 		super(radix, numerus, toUmlaut);
 		this.grammaticalCase = grammaticalCase;
 		this.gender = gender;
@@ -48,7 +49,8 @@ public class Declination extends TermEndings {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this) return true;
+		if (o == this)
+			return true;
 		if (!(o instanceof Declination)) {
 			return false;
 		}
@@ -64,7 +66,8 @@ public class Declination extends TermEndings {
 
 	@Override
 	public String toString() {
-		return "{" + super.toStringHelper() + ", grammaticalCase='" + getGrammaticalCase() + "'" + ", gender='" + getGender() + "'" + "}";
+		return "{" + super.toStringHelper() + ", grammaticalCase='" + getGrammaticalCase() + "'" + ", gender='"
+				+ getGender() + "'" + "}";
 	}
 
 }

@@ -19,22 +19,33 @@ public class Parser {
 	}
 
 	// List of classes that are supported for parsing
-	static Class<?>[] supportedClasses = { Integer.class, Boolean.class, List.class, GrammaticalCase.class, Person.class, Tense.class, Gender.class,
+	static Class<?>[] supportedClasses = { Integer.class, Boolean.class, List.class, GrammaticalCase.class,
+			Person.class, Tense.class, Gender.class,
 			Numerus.class };
 
 	public static <T> Optional<T> parse(String s, Class<T> cls) {
 		// Why can't I do a switch statement on Class<T>,
 		// ugghhhhhhh why Java, why!!!????
-		if (cls == String.class) return Optional.ofNullable(cls.cast(s));
-		else if (cls == GrammaticalCase.class) return Optional.ofNullable(cls.cast(parseGrammaticalCase(s)));
-		else if (cls == Person.class) return Optional.ofNullable(cls.cast(parsePerson(s)));
-		else if (cls == Tense.class) return Optional.ofNullable(cls.cast(parseTense(s)));
-		else if (cls == Gender.class) return Optional.ofNullable(cls.cast(parseGender(s)));
-		else if (cls == Numerus.class) return Optional.ofNullable(cls.cast(parseNumerus(s)));
-		else if (cls == CompoundPart.class) return Optional.ofNullable(cls.cast(parseCompoundPart(s)));
-		else if (cls == Boolean.class) return Optional.ofNullable(cls.cast(parseBool(s)));
-		else if (cls == Integer.class) return Optional.ofNullable(cls.cast(parseInt(s)));
-		else if (cls == List.class) return Optional.ofNullable(cls.cast(parseList(s)));
+		if (cls == String.class)
+			return Optional.ofNullable(cls.cast(s));
+		else if (cls == GrammaticalCase.class)
+			return Optional.ofNullable(cls.cast(parseGrammaticalCase(s)));
+		else if (cls == Person.class)
+			return Optional.ofNullable(cls.cast(parsePerson(s)));
+		else if (cls == Tense.class)
+			return Optional.ofNullable(cls.cast(parseTense(s)));
+		else if (cls == Gender.class)
+			return Optional.ofNullable(cls.cast(parseGender(s)));
+		else if (cls == Numerus.class)
+			return Optional.ofNullable(cls.cast(parseNumerus(s)));
+		else if (cls == CompoundPart.class)
+			return Optional.ofNullable(cls.cast(parseCompoundPart(s)));
+		else if (cls == Boolean.class)
+			return Optional.ofNullable(cls.cast(parseBool(s)));
+		else if (cls == Integer.class)
+			return Optional.ofNullable(cls.cast(parseInt(s)));
+		else if (cls == List.class)
+			return Optional.ofNullable(cls.cast(parseList(s)));
 
 		return Optional.empty();
 	}

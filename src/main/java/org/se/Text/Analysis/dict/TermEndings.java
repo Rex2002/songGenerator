@@ -24,7 +24,8 @@ public class TermEndings implements DisplayableParent {
 
 	@Override
 	public String toStringHelper() {
-		return " radix='" + getRadix() + "'" + ", numerus='" + getNumerus() + "'" + ", toUmlaut='" + getToUmlaut() + "'";
+		return " radix='" + getRadix() + "'" + ", numerus='" + getNumerus() + "'" + ", toUmlaut='" + getToUmlaut()
+				+ "'";
 	}
 
 	public String getRadix() {
@@ -72,12 +73,14 @@ public class TermEndings implements DisplayableParent {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this) return true;
+		if (o == this)
+			return true;
 		if (!(o instanceof TermEndings)) {
 			return false;
 		}
 		TermEndings termEndings = (TermEndings) o;
-		return Objects.equals(radix, termEndings.radix) && Objects.equals(numerus, termEndings.numerus) && toUmlaut == termEndings.toUmlaut;
+		return Objects.equals(radix, termEndings.radix) && Objects.equals(numerus, termEndings.numerus)
+				&& toUmlaut == termEndings.toUmlaut;
 	}
 
 	@Override

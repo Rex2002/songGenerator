@@ -38,7 +38,8 @@ public class Term implements DisplayableParent {
 
 	@Override
 	public String toStringHelper() {
-		return " frequency='" + getFrequency() + "'" + ", radix='" + getRadix() + "'" + ", word='" + getWord() + "'" + ", syllableAmount='"
+		return " frequency='" + getFrequency() + "'" + ", radix='" + getRadix() + "'" + ", word='" + getWord() + "'"
+				+ ", syllableAmount='"
 				+ getSyllableAmount() + "'" + ", numerus='" + getNumerus() + "'";
 	}
 
@@ -91,7 +92,8 @@ public class Term implements DisplayableParent {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this) return true;
+		if (o == this)
+			return true;
 		if (!(o instanceof Term)) {
 			return false;
 		}

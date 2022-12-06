@@ -47,7 +47,8 @@ public class Conjugation extends TermEndings {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this) return true;
+		if (o == this)
+			return true;
 		if (!(o instanceof Conjugation)) {
 			return false;
 		}

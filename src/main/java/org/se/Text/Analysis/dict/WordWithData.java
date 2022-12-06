@@ -26,8 +26,10 @@ public class WordWithData extends HashMap<String, String> {
 
 	public <T> boolean equals(String key, T y) {
 		Optional<?> x = get(key, y.getClass());
-		if (x.isPresent()) return Objects.equals((T) x.get(), y);
-		else return false;
+		if (x.isPresent())
+			return Objects.equals((T) x.get(), y);
+		else
+			return false;
 	}
 
 	// Since parseInt accepts a third argument, this method must exist, even though
@@ -61,7 +63,8 @@ public class WordWithData extends HashMap<String, String> {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this) return true;
+		if (o == this)
+			return true;
 		if (!(o instanceof WordWithData)) {
 			return false;
 		}

@@ -69,9 +69,12 @@ public class WordList implements Iterable<WordWithData> {
 		while (end - start > 1) {
 			mid = (end + start) / 2;
 			int x = store.get(mid).get(baseKey).compareTo(s);
-			if (x == 0) return mid;
-			else if (x > 0) end = mid;
-			else start = mid;
+			if (x == 0)
+				return mid;
+			else if (x > 0)
+				end = mid;
+			else
+				start = mid;
 		}
 		return mid;
 	}
@@ -134,7 +137,8 @@ public class WordList implements Iterable<WordWithData> {
 
 	public Optional<WordWithData> find(Predicate<? super WordWithData> f) {
 		for (WordWithData w : store) {
-			if (f.test(w)) return Optional.of(w);
+			if (f.test(w))
+				return Optional.of(w);
 		}
 		return Optional.empty();
 	}
@@ -144,8 +148,8 @@ public class WordList implements Iterable<WordWithData> {
 	 * mutate this {@link WordList} object.
 	 *
 	 * @param f
-	 *            Function determining for each element, whether it should be in the
-	 *            newly created {@link WordList}
+	 *          Function determining for each element, whether it should be in the
+	 *          newly created {@link WordList}
 	 * @return
 	 */
 	public WordList filter(Predicate<? super WordWithData> f) {
@@ -166,8 +170,8 @@ public class WordList implements Iterable<WordWithData> {
 	 * Same as filter, but mutates this WordList object
 	 *
 	 * @param f
-	 *            Function determining for each element, whether it should stay in
-	 *            this {@link WordList}
+	 *          Function determining for each element, whether it should stay in
+	 *          this {@link WordList}
 	 */
 	public void filterMut(Predicate<? super WordWithData> f) {
 		elementWithLongestBase = null;

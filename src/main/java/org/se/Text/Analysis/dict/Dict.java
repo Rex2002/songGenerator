@@ -31,7 +31,8 @@ public class Dict {
 	static final String TO_UMLAUT_KEY = "toUmlaut";
 	static final String DEFAULT_BASE_KEY = "radix";
 
-	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs,
+	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes,
+			WordList verbPrefixes, WordList verbs,
 			WordList diphtongs, WordList umlautChanges, WordList compoundParts, List<Declination> declinatedSuffixes,
 			List<Conjugation> conjugatedSuffixes) {
 		this.nounSuffixes = nounSuffixes;
@@ -103,9 +104,11 @@ public class Dict {
 		return getPossibleStems(s, verbs, conjugatedSuffixes, verbSuffixes, nounPrefixes);
 	}
 
-	private List<WordStemmer> getPossibleStems(String s, WordList terms, List<? extends TermEndings> termEndings, WordList suffixes,
+	private List<WordStemmer> getPossibleStems(String s, WordList terms, List<? extends TermEndings> termEndings,
+			WordList suffixes,
 			WordList prefixes) {
-		WordStemmer[] l = WordStemmer.radicalize(s, terms, termEndings, suffixes, prefixes, compoundParts, 2, diphtongs, umlautChanges, baseKey);
+		WordStemmer[] l = WordStemmer.radicalize(s, terms, termEndings, suffixes, prefixes, compoundParts, 2, diphtongs,
+				umlautChanges, baseKey);
 		List<WordStemmer> res = new ArrayList<>();
 
 		for (WordStemmer w : l) {
@@ -133,7 +136,8 @@ public class Dict {
 		int count = 0;
 
 		count += AFFIX_COUNT_BIAS * stem.affixesCount();
-		if (dict.has(stem.getStem())) count += IN_DICTIONARY_BIAS;
+		if (dict.has(stem.getStem()))
+			count += IN_DICTIONARY_BIAS;
 
 		try {
 			if (areNouns) {
@@ -141,10 +145,12 @@ public class Dict {
 				if (dictEntry.isPresent()) {
 					Gender dictGender = dictEntry.get().get(GENDER_KEY, Gender.class).get();
 
-					if (((Declination) stem.getGrammartizedSuffix()).getGender() == dictGender) count += DECLINATED_SUFFIX_GENDER_BIAS;
+					if (((Declination) stem.getGrammartizedSuffix()).getGender() == dictGender)
+						count += DECLINATED_SUFFIX_GENDER_BIAS;
 
 					if (!stem.getSuffixes().isEmpty()
-							&& stem.getSuffixes().get(stem.getSuffixes().size() - 1).get(GENDER_KEY, Gender.class).get() == dictGender) {
+							&& stem.getSuffixes().get(stem.getSuffixes().size() - 1).get(GENDER_KEY, Gender.class)
+									.get() == dictGender) {
 						count += LAST_SUFFIX_GENDER_BIAS;
 					}
 
@@ -154,16 +160,19 @@ public class Dict {
 						if (tmpGender == null || currentGender == tmpGender) {
 							tmpGender = currentGender;
 							return true;
-						} else return false;
+						} else
+							return false;
 					})) {
 						count += ALL_SUFFIXES_GENDER_BIAS;
 					}
 
-					if (tmpGender != null && tmpGender == dictGender) count += ALL_SUFFIXES_DICT_GENDER_BIAS;
+					if (tmpGender != null && tmpGender == dictGender)
+						count += ALL_SUFFIXES_DICT_GENDER_BIAS;
 				}
 			}
 		} catch (Exception e) {
-			// Something went wrong when treating the stem as a noun, probably because of some NullPointer.
+			// Something went wrong when treating the stem as a noun, probably because of
+			// some NullPointer.
 			// Since a noun was expected, we will decrease the count for this exception
 			count += STEM_NOUN_EXCEPTION_BIAS;
 		}
@@ -177,9 +186,11 @@ public class Dict {
 	 * fitting best with those parts.
 	 *
 	 * @param stems
-	 *            The list of possible stems to choose from.
+	 *                 The list of possible stems to choose from.
 	 * @param areNouns
-	 *            Whether the stems are all nounStems. If set to true, additional metadata like the word's gender are taken into account
+	 *                 Whether the stems are all nounStems. If set to true,
+	 *                 additional metadata like the word's gender are taken into
+	 *                 account
 	 * @return Returns the best WordStemmer object of the input and nothing, if the
 	 *         list of stems is empty.
 	 */
@@ -263,18 +274,23 @@ public class Dict {
 		WordStemmer data = t.getData().get();
 		String radix = data.getStem();
 		String infinitive = radix;
-		if (verbs.has(radix)) infinitive = verbs.get(radix).get().get("infinitive");
-		else if (verbs.has(t.getWord())) infinitive = verbs.get(t.getWord()).get().get("infinitive");
+		if (verbs.has(radix))
+			infinitive = verbs.get(radix).get().get("infinitive");
+		else if (verbs.has(t.getWord()))
+			infinitive = verbs.get(t.getWord()).get().get("infinitive");
 
 		VerbTerm verb = new VerbTerm(radix, t.getWord(), 1, data.getGrammartizedSuffix().getNumerus(), infinitive);
 		return Optional.of(verb);
 	}
 
-	public NounTerm createNounTerm(TermVariations<NounTerm> variations, Gender gender, GrammaticalCase grammaticalCase, Numerus numerus) {
-		// TODO: Currently, we check here and in the TermVariation's function whether such a term already exists. We should remove one of the checks
+	public NounTerm createNounTerm(TermVariations<NounTerm> variations, Gender gender, GrammaticalCase grammaticalCase,
+			Numerus numerus) {
+		// TODO: Currently, we check here and in the TermVariation's function whether
+		// such a term already exists. We should remove one of the checks
 		// to avoid doing the same work twice
 		Optional<NounTerm> existingTerm = TermVariations.getTerm(variations, gender, grammaticalCase, numerus);
-		if (existingTerm.isPresent()) return existingTerm.get();
+		if (existingTerm.isPresent())
+			return existingTerm.get();
 
 		Optional<Declination> suffix = Util.find(declinatedSuffixes,
 				s -> s.getGender() == gender && s.getGrammaticalCase() == grammaticalCase && s.getNumerus() == numerus);
@@ -299,9 +315,11 @@ public class Dict {
 		String updatedKey = addUmlaut ? "with" : "radix";
 
 		for (int i = 0; i < chars.length; i++) {
-			if (isPartOfDiphtong) isPartOfDiphtong = false;
+			if (isPartOfDiphtong)
+				isPartOfDiphtong = false;
 			else {
-				if (i + 1 < chars.length && diphtongs.has(chars[i] + "" + chars[i + 1])) isPartOfDiphtong = true;
+				if (i + 1 < chars.length && diphtongs.has(chars[i] + "" + chars[i + 1]))
+					isPartOfDiphtong = true;
 
 				for (WordWithData umlaut : umlautChanges) {
 					char[] initial = umlaut.get(initialKey).toCharArray();
@@ -319,7 +337,8 @@ public class Dict {
 							chars[i + j] = updated[j];
 						}
 						// Increae i to avoid checking the same characters, that just got updated
-						// Yes, it's bad to increase the loop counter from within the loop body, but it should be more efficient
+						// Yes, it's bad to increase the loop counter from within the loop body, but it
+						// should be more efficient
 						i += updated.length - 1;
 						break;
 					}
@@ -465,7 +484,8 @@ public class Dict {
 		return this;
 	}
 
-	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs,
+	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes,
+			WordList verbPrefixes, WordList verbs,
 			WordList diphtongs, WordList umlautChanges, WordList compoundParts, List<Declination> declinatedSuffixes,
 			List<Conjugation> conjugatedSuffixes, String baseKey) {
 		this.nounSuffixes = nounSuffixes;
@@ -497,12 +517,14 @@ public class Dict {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this) return true;
+		if (o == this)
+			return true;
 		if (!(o instanceof Dict)) {
 			return false;
 		}
 		Dict dictionary = (Dict) o;
-		return Objects.equals(nounSuffixes, dictionary.nounSuffixes) && Objects.equals(nounPrefixes, dictionary.nounPrefixes)
+		return Objects.equals(nounSuffixes, dictionary.nounSuffixes)
+				&& Objects.equals(nounPrefixes, dictionary.nounPrefixes)
 				&& Objects.equals(nouns, dictionary.nouns) && Objects.equals(verbSuffixes, dictionary.verbSuffixes)
 				&& Objects.equals(verbPrefixes, dictionary.verbPrefixes) && Objects.equals(verbs, dictionary.verbs);
 	}
@@ -514,8 +536,10 @@ public class Dict {
 
 	@Override
 	public String toString() {
-		return "{" + " nounSuffixes='" + getNounSuffixes() + "'" + ", nounPrefixes='" + getNounPrefixes() + "'" + ", nouns='" + getNouns() + "'"
-				+ ", verbSuffixes='" + getVerbSuffixes() + "'" + ", verbPrefixes='" + getVerbPrefixes() + "'" + ", verbs='" + getVerbs() + "'" + "}";
+		return "{" + " nounSuffixes='" + getNounSuffixes() + "'" + ", nounPrefixes='" + getNounPrefixes() + "'"
+				+ ", nouns='" + getNouns() + "'"
+				+ ", verbSuffixes='" + getVerbSuffixes() + "'" + ", verbPrefixes='" + getVerbPrefixes() + "'"
+				+ ", verbs='" + getVerbs() + "'" + "}";
 	}
 
 }

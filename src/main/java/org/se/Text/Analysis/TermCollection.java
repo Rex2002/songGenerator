@@ -115,7 +115,8 @@ public class TermCollection {
 
 	// Query Functions
 
-	public List<NounTerm> query(GrammaticalCase grammaticalCase, Gender gender, Numerus numerus, Integer syllableMin, Integer syllableMax) {
+	public List<NounTerm> query(GrammaticalCase grammaticalCase, Gender gender, Numerus numerus, Integer syllableMin,
+			Integer syllableMax) {
 		List<NounTerm> existing = new ArrayList<>();
 		List<NounTerm> created = new ArrayList<>();
 
@@ -124,8 +125,10 @@ public class TermCollection {
 			if (res.isPresent()) {
 				NounTerm t = res.get();
 				if (syllableMin <= t.syllableAmount && t.syllableAmount <= syllableMax) {
-					if (TermVariations.hasType(x, gender, grammaticalCase, numerus)) existing.add(t);
-					else created.add(t);
+					if (TermVariations.hasType(x, gender, grammaticalCase, numerus))
+						existing.add(t);
+					else
+						created.add(t);
 				}
 			}
 		});
@@ -192,12 +195,15 @@ public class TermCollection {
 
 	// Static Query Functions
 
-	public static <T extends Term> List<T> queryBySyllableRange(Map<String, TermVariations<T>> terms, Integer minSyllableAmount,
+	public static <T extends Term> List<T> queryBySyllableRange(Map<String, TermVariations<T>> terms,
+			Integer minSyllableAmount,
 			Integer maxSyllableAmount) {
-		return TermCollection.queryBy(terms, x -> minSyllableAmount <= x.syllableAmount && x.syllableAmount <= maxSyllableAmount);
+		return TermCollection.queryBy(terms,
+				x -> minSyllableAmount <= x.syllableAmount && x.syllableAmount <= maxSyllableAmount);
 	}
 
-	public static <T extends Term> List<T> queryBySyllableAmount(Map<String, TermVariations<T>> terms, Integer syllableAmount) {
+	public static <T extends Term> List<T> queryBySyllableAmount(Map<String, TermVariations<T>> terms,
+			Integer syllableAmount) {
 		return TermCollection.queryBy(terms, x -> Objects.equals(x.syllableAmount, syllableAmount));
 	}
 
@@ -221,7 +227,8 @@ public class TermCollection {
 	}
 
 	public static <T extends Term> List<T> mostCommonTerms(Map<String, TermVariations<T>> terms) {
-		List<T> res = terms.values().stream().map(x -> x.variations.values().stream()).flatMap(Function.identity()).collect(Collectors.toList());
+		List<T> res = terms.values().stream().map(x -> x.variations.values().stream()).flatMap(Function.identity())
+				.collect(Collectors.toList());
 		res.sort(new TermComp<>(terms));
 		return res.subList(0, 10);
 	}
@@ -253,7 +260,8 @@ public class TermCollection {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this) return true;
+		if (o == this)
+			return true;
 		if (!(o instanceof TermCollection)) {
 			return false;
 		}

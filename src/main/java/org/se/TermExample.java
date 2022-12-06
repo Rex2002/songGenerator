@@ -1,8 +1,8 @@
 package org.se;
 
 import java.io.IOException;
-import java.nio.file.*;
 
+import org.se.text.TextMain;
 import org.se.text.analysis.*;
 
 /**
@@ -13,6 +13,6 @@ public class TermExample {
 	}
 
 	public static TermCollection getExample() throws IOException {
-		return Analyzer.analyze(Path.of("test3.txt"));
+		return TextMain.analyze("test3.txt");
 	}
 }

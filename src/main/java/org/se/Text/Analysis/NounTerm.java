@@ -9,7 +9,8 @@ public class NounTerm extends Term {
 	public GrammaticalCase grammaticalCase;
 	public Gender gender;
 
-	public NounTerm(String radix, String word, Integer syllableAmount, Numerus numerus, GrammaticalCase grammaticalCase, Gender gender) {
+	public NounTerm(String radix, String word, Integer syllableAmount, Numerus numerus, GrammaticalCase grammaticalCase,
+			Gender gender) {
 		super(radix, word, syllableAmount, numerus);
 		this.grammaticalCase = grammaticalCase;
 		this.gender = gender;
@@ -36,7 +37,8 @@ public class NounTerm extends Term {
 
 	@Override
 	public String toString() {
-		return "{" + super.toStringHelper() + ", grammaticalCase='" + getGrammaticalCase() + "'" + ", gender='" + getGender() + "'" + "}";
+		return "{" + super.toStringHelper() + ", grammaticalCase='" + getGrammaticalCase() + "'" + ", gender='"
+				+ getGender() + "'" + "}";
 	}
 
 	// Boilerplate:
@@ -59,12 +61,14 @@ public class NounTerm extends Term {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this) return true;
+		if (o == this)
+			return true;
 		if (!(o instanceof NounTerm)) {
 			return false;
 		}
 		NounTerm nounTerm = (NounTerm) o;
-		return super.equals(nounTerm) && Objects.equals(grammaticalCase, nounTerm.grammaticalCase) && Objects.equals(gender, nounTerm.gender);
+		return super.equals(nounTerm) && Objects.equals(grammaticalCase, nounTerm.grammaticalCase)
+				&& Objects.equals(gender, nounTerm.gender);
 	}
 
 	@Override

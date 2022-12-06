@@ -90,7 +90,8 @@ public class TermVariations<T extends Term> {
 
 	// Static Functions specifically for Nouns
 
-	public static Optional<NounTerm> getTerm(TermVariations<NounTerm> nounVariations, Gender gender, GrammaticalCase grammaticalCase,
+	public static Optional<NounTerm> getTerm(TermVariations<NounTerm> nounVariations, Gender gender,
+			GrammaticalCase grammaticalCase,
 			Numerus numerus) {
 		int hash = NounTerm.hashData(gender, grammaticalCase, numerus);
 		if (nounVariations.variations.containsKey(hash)) {
@@ -103,7 +104,8 @@ public class TermVariations<T extends Term> {
 	// queried variation if necessary
 	// Automatically created variations can be very wrong and should avoided if
 	// possible
-	public static NounTerm createTerm(TermVariations<NounTerm> nounVariations, Gender gender, GrammaticalCase grammaticalCase, Numerus numerus,
+	public static NounTerm createTerm(TermVariations<NounTerm> nounVariations, Gender gender,
+			GrammaticalCase grammaticalCase, Numerus numerus,
 			Dict dict) {
 		Optional<NounTerm> res = getTerm(nounVariations, gender, grammaticalCase, numerus);
 		if (res.isPresent()) {
@@ -113,7 +115,8 @@ public class TermVariations<T extends Term> {
 		return dict.createNounTerm(nounVariations, gender, grammaticalCase, numerus);
 	}
 
-	public static boolean hasType(TermVariations<NounTerm> nounVariations, Gender gender, GrammaticalCase grammaticalCase, Numerus numerus) {
+	public static boolean hasType(TermVariations<NounTerm> nounVariations, Gender gender,
+			GrammaticalCase grammaticalCase, Numerus numerus) {
 		int hash = NounTerm.hashData(gender, grammaticalCase, numerus);
 		return nounVariations.variations.containsKey(hash);
 	}
@@ -151,17 +154,20 @@ public class TermVariations<T extends Term> {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this) return true;
+		if (o == this)
+			return true;
 		if (!(o instanceof TermVariations)) {
 			return false;
 		}
 		TermVariations<T> termVariations = (TermVariations<T>) o;
-		return Objects.equals(variations, termVariations.variations) && Objects.equals(frequency, termVariations.frequency)
+		return Objects.equals(variations, termVariations.variations)
+				&& Objects.equals(frequency, termVariations.frequency)
 				&& Objects.equals(radix, termVariations.radix);
 	}
 
 	@Override
 	public String toString() {
-		return "{" + " variations='" + getVariations() + "'" + ", frequency='" + getFrequency() + "'" + ", radix='" + getRadix() + "'" + "}";
+		return "{" + " variations='" + getVariations() + "'" + ", frequency='" + getFrequency() + "'" + ", radix='"
+				+ getRadix() + "'" + "}";
 	}
 }

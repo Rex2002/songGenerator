@@ -1,4 +1,4 @@
-package org.se;
+package org.se.text;
 
 import java.io.IOException;
 import com.itextpdf.text.pdf.PdfReader;
