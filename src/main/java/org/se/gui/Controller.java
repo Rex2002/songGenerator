@@ -1,6 +1,5 @@
 package org.se.gui;
 
-
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -123,8 +122,11 @@ public class Controller implements Initializable {
 
 		fileChooser.setTitle("Select .pdf or .txt file");
 
+		// Crashes the app, if the specified folder doesn't exist
+		// Safest is to just not set the initial directory, then it should always work
+
 		// start searching in "desktop"-folder
-		fileChooser.setInitialDirectory(new File("/home/harka"));//"C:/Users/" + userName + "/Desktop"));
+		// fileChooser.setInitialDirectory(new File("/home/harka"));//"C:/Users/" + userName + "/Desktop"));
 
 		setting_pane_slider.valueProperty().addListener((ObservableValue<? extends Number> num, Number oldVal, Number newVal) -> {
 			setting_pane_bpm.setText("bpm:" + newVal.intValue());
