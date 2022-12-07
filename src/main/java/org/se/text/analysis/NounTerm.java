@@ -14,16 +14,15 @@ public class NounTerm extends Term {
 	public Gender gender;
 	public boolean changeableGender = false;
 
-	public NounTerm(String radix, String word, Integer syllableAmount, Numerus numerus, GrammaticalCase grammaticalCase, Gender gender,
-			boolean changeableGender) {
-		super(radix, word, syllableAmount, numerus);
+	public NounTerm(String radix, String word, Numerus numerus, GrammaticalCase grammaticalCase, Gender gender, boolean changeableGender) {
+		super(radix, word, numerus);
 		this.grammaticalCase = grammaticalCase;
 		this.gender = gender;
 		this.changeableGender = changeableGender;
 	}
 
-	public NounTerm(String radix, String word, Integer syllableAmount, Numerus numerus, GrammaticalCase grammaticalCase, Gender gender) {
-		super(radix, word, syllableAmount, numerus);
+	public NounTerm(String radix, String word, Numerus numerus, GrammaticalCase grammaticalCase, Gender gender) {
+		super(radix, word, numerus);
 		this.grammaticalCase = grammaticalCase;
 		this.gender = gender;
 	}

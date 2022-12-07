@@ -263,7 +263,7 @@ public class Dict {
 		GrammaticalCase grammaticalCase = declinatedSuffix.getGrammaticalCase();
 		Gender gender = declinatedSuffix.getGender();
 
-		return Optional.of(new NounTerm(radixBuilder.toString(), t.word, 1, numerus, grammaticalCase, gender));
+		return Optional.of(new NounTerm(radixBuilder.toString(), t.word, numerus, grammaticalCase, gender));
 	}
 
 	public Optional<VerbTerm> buildVerbTerm(Tag t) {
@@ -282,7 +282,7 @@ public class Dict {
 		if (verbs.has(radix)) infinitive = verbs.get(radix).get().get("infinitive");
 		else if (verbs.has(t.getWord())) infinitive = verbs.get(t.getWord()).get().get("infinitive");
 
-		VerbTerm verb = new VerbTerm(radix, t.getWord(), 1, data.getGrammartizedSuffix().getNumerus(), infinitive);
+		VerbTerm verb = new VerbTerm(radix, t.getWord(), data.getGrammartizedSuffix().getNumerus(), infinitive);
 		return Optional.of(verb);
 	}
 
@@ -321,7 +321,7 @@ public class Dict {
 			strbuilder.append(suffix.getRadix());
 
 			String word = strbuilder.toString();
-			return new NounTerm(radix, word, 0, numerus, grammaticalCase, gender, genderChangeSuffix != null);
+			return new NounTerm(radix, word, numerus, grammaticalCase, gender, genderChangeSuffix != null);
 		}
 
 		return null;

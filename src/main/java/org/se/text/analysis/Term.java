@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.se.text.analysis.model.DisplayableParent;
 import org.se.text.analysis.model.Numerus;
+import org.se.text.metric.Hyphenizer;
 
 /**
  * @author Val Richter
@@ -23,12 +24,12 @@ public class Term implements DisplayableParent {
 		this.numerus = Numerus.SINGULAR;
 	}
 
-	public Term(String radix, String word, Integer syllableAmount, Numerus numerus) {
+	public Term(String radix, String word, Numerus numerus) {
 		this.frequency = 1;
 		this.radix = radix;
 		this.word = word;
-		this.syllableAmount = syllableAmount;
 		this.numerus = numerus;
+		this.syllableAmount = Hyphenizer.CountSyllabes(word);
 	}
 
 	public void increaseFrequency() {

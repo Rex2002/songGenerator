@@ -12,8 +12,8 @@ import org.se.text.analysis.model.Numerus;
 public class VerbTerm extends Term {
 	String infinitive;
 
-	public VerbTerm(String radix, String word, Integer syllableAmount, Numerus numerus, String infinitive) {
-		super(radix, word, syllableAmount, numerus);
+	public VerbTerm(String radix, String word, Numerus numerus, String infinitive) {
+		super(radix, word, numerus);
 		this.infinitive = infinitive;
 	}
 
