@@ -1,4 +1,4 @@
-package org.se;
+package org.se.text;
 
 import java.io.IOException;
 import java.util.*;
@@ -19,6 +19,15 @@ public class Test {
 		TermCollection terms = Analyzer.analyze(filepath);
 		StructureGenerator.generateStructure(settings, metrics);
 		SongTextGenerator textGenerator = new SongTextGenerator();
-		List<String[]> songText = textGenerator.generateSongText(null, terms);
+		List<String[]> songText = textGenerator.generateSongText(Config.getStructures().get(0), terms);
+
+		System.out.println("\n\n\nSongtext:\n");
+
+		for (String[] strophe : songText) {
+			for (String line : strophe) {
+				System.out.println(line);
+			}
+			System.out.println("\n");
+		}
 	}
 }

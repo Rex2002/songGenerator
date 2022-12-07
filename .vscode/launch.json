@@ -8,6 +8,20 @@
 			"type": "java",
 			"name": "Launch Test",
 			"request": "launch",
+			"mainClass": "org.se.text.Test",
+			"projectName": "SongGenerator"
+		},
+		{
+			"type": "java",
+			"name": "Launch Test",
+			"request": "launch",
+			"mainClass": "org.se.Test",
+			"projectName": "SongGenerator"
+		},
+		{
+			"type": "java",
+			"name": "Launch Test",
+			"request": "launch",
 			"mainClass": "org.se.text.analysis.Test",
 			"projectName": "SongGenerator"
 		},
