@@ -44,6 +44,10 @@ public class TermCollection {
 		this.dict = dict;
 	}
 
+	public int size() {
+		return nouns.size() + verbs.size();
+	}
+
 	public void addNouns(TermVariations<NounTerm> variations) {
 		if (hasNoun(variations)) {
 			nouns.get(variations.getRadix()).add(variations);

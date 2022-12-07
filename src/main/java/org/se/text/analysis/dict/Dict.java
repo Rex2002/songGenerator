@@ -13,6 +13,9 @@ import org.se.text.analysis.model.*;
  * @author Val Richter
  */
 public class Dict {
+	// TODO: Refactor to have all all attributes and methods static
+	// Reason for this is that it makes no sense for our application to create several instances of the Dict class
+	// and we thus allow the same data to be loaded twice
 	WordList nounSuffixes = new WordList();
 	WordList nounPrefixes = new WordList();
 	WordList nouns = new WordList();
@@ -96,6 +99,10 @@ public class Dict {
 		this.declinatedSuffixes.addAll(dict.getDeclinatedSuffixes());
 		this.conjugatedSuffixes.addAll(dict.getConjugatedSuffixes());
 		return this;
+	}
+
+	public static Dict getDefault() throws IOException {
+		return new Dict(Path.of("", "./src/main/resources/dictionary"));
 	}
 
 	// Make word into a term
