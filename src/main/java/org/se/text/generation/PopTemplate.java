@@ -20,4 +20,12 @@ public class PopTemplate {
 		return strophe;
 	}
 	public int getLength() {return length; 	}
+
+	@Override
+	public String toString() {
+		return "PopTemplate{" +
+				"strophe=" + Arrays.toString(strophe) +
+				", length=" + length +
+				'}';
+	}
 }
