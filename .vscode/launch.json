@@ -6,6 +6,27 @@
 	"configurations": [
 		{
 			"type": "java",
+			"name": "Launch Test",
+			"request": "launch",
+			"mainClass": "org.se.text.analysis.Test",
+			"projectName": "SongGenerator"
+		},
+		{
+			"type": "java",
+			"name": "Launch MidiTest",
+			"request": "launch",
+			"mainClass": "org.se.music.logic.MidiTest",
+			"projectName": "SongGenerator"
+		},
+		{
+			"type": "java",
+			"name": "Launch SongTextGenerator",
+			"request": "launch",
+			"mainClass": "org.se.text.generation.SongTextGenerator",
+			"projectName": "SongGenerator"
+		},
+		{
+			"type": "java",
 			"name": "Launch Current File",
 			"request": "launch",
 			"mainClass": "${file}"

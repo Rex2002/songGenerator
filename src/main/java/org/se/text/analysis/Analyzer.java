@@ -5,9 +5,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-
-import org.se.text.analysis.dict.Dict;
-import org.se.text.analysis.model.TagType;
+import org.se.text.analysis.dict.*;
+import org.se.text.analysis.model.*;
 
 /**
  * @author Val Richter
@@ -19,8 +18,8 @@ public class Analyzer {
 	public static TermCollection analyze(String path) throws IOException {
 		String text = FileReader.main(path);
 		Dict dict = new Dict(Path.of("", "./src/main/resources/dictionary"));
-		ArrayList<ArrayList<String>> sentences = Analyzer.preprocess(text);
-		ArrayList<ArrayList<Tag>> tags = Analyzer.tag(sentences, dict);
+		List<Sentence> sentences = Analyzer.preprocess(text);
+		List<List<Tag>> tags = Analyzer.tag(sentences, dict);
 		return Analyzer.buildTerms(tags, dict);
 	}
 
@@ -28,62 +27,62 @@ public class Analyzer {
 		return Files.readString(filepath, StandardCharsets.UTF_8);
 	}
 
-	static ArrayList<ArrayList<String>> preprocess(String text) {
+	static List<Sentence> preprocess(String text) {
 		// I'm sure there must be a better way to do this
 		// Maybe there's something you could do with streams to make this more readable
 		// but Java certainly doesn't make it easy to do any of this shit ffs
 		// I hate Java so fucking much, I'd rather be using C at this point
 		// aaaaaaaaaaaarrrrrgggggghhhhhhhhh
 		String wordSplitter = "-_";
-		Boolean splitLastWord = false;
+		boolean splitLastWord = false;
 		String sentenceEnds = ".!?";
 		String otherPunctuation = ",;:-";
-		ArrayList<ArrayList<String>> sentences = new ArrayList<ArrayList<String>>();
-		ArrayList<String> currentSentence = new ArrayList<String>();
+		List<Sentence> sentences = new ArrayList<>();
+		Sentence currentSentence = new Sentence();
 		char[] chars = text.toCharArray();
-		String currentWord = "";
+		StringBuilder currentWord = new StringBuilder();
 
 		for (int i = 0; i < chars.length; i++) {
 			char c = chars[i];
 			// ignore whitespace
 			if (Character.isWhitespace(c)) {
-				if (!"".equals(currentWord) && !splitLastWord) {
-					currentSentence.add(currentWord);
-					currentWord = "";
+				if (!currentWord.isEmpty() && !splitLastWord) {
+					currentSentence.add(currentWord.toString());
+					currentWord.delete(0, currentWord.length());
 				}
 			}
 			// End sentence at specific punctuation (e.g. at .!?)
 			else if (sentenceEnds.indexOf(c) != -1) {
-				if (!"".equals(currentWord)) {
-					currentSentence.add(currentWord);
-					currentWord = "";
+				if (!currentWord.isEmpty()) {
+					currentSentence.add(currentWord.toString());
+					currentWord.delete(0, currentWord.length());
 				}
 				splitLastWord = false;
-				ArrayList<String> copiedSentence = new ArrayList<String>(currentSentence);
+				Sentence copiedSentence = new Sentence(currentSentence);
 				sentences.add(copiedSentence);
 				currentSentence.clear();
 			}
 			// Current word gets split
-			else if (!"".equals(currentWord) && !splitLastWord && wordSplitter.indexOf(c) != -1) {
+			else if (!currentWord.isEmpty() && !splitLastWord && wordSplitter.indexOf(c) != -1) {
 				splitLastWord = true;
 			}
 			// punctuation that doesn't end a sentence
 			else if (otherPunctuation.indexOf(c) != -1) {
-				if (!"".equals(currentWord)) {
-					currentSentence.add(currentWord);
-					currentWord = "";
+				if (!currentWord.isEmpty()) {
+					currentSentence.add(currentWord.toString());
+					currentWord.delete(0, currentWord.length());
 				}
 				splitLastWord = false;
 			}
 			// otherwise we just have another character for the word
 			else {
-				currentWord += c;
+				currentWord.append(c);
 				splitLastWord = false;
 			}
 		}
 
-		if (!"".equals(currentWord)) {
-			currentSentence.add(currentWord);
+		if (!currentWord.isEmpty()) {
+			currentSentence.add(currentWord.toString());
 		}
 		if (!currentSentence.isEmpty()) {
 			sentences.add(currentSentence);
@@ -101,11 +100,11 @@ public class Analyzer {
 		return count;
 	}
 
-	static ArrayList<ArrayList<Tag>> tag(ArrayList<ArrayList<String>> sentences, Dict dict) {
-		ArrayList<ArrayList<Tag>> tags = new ArrayList<>();
+	static List<List<Tag>> tag(List<Sentence> sentences, Dict dict) {
+		List<List<Tag>> tags = new ArrayList<>();
 
-		for (ArrayList<String> sentence : sentences) {
-			ArrayList<Tag> currentTags = new ArrayList<>();
+		for (Sentence sentence : sentences) {
+			List<Tag> currentTags = new ArrayList<>();
 
 			for (int i = 0; i < sentence.size(); i++) {
 				String word = sentence.get(i);
@@ -127,30 +126,30 @@ public class Analyzer {
 		return tags;
 	}
 
-	static TermCollection buildTerms(ArrayList<ArrayList<Tag>> tags, Dict dict) {
+	static TermCollection buildTerms(List<List<Tag>> tags, Dict dict) {
 		Map<String, TermVariations<NounTerm>> nounVariations = new HashMap<>();
 		Map<String, TermVariations<VerbTerm>> verbVariations = new HashMap<>();
 
-		for (ArrayList<Tag> sentenceTags : tags) {
+		for (List<Tag> sentenceTags : tags) {
 			for (Tag t : sentenceTags) {
 				if (!t.is(TagType.Other)) {
 
 					if (t.is(TagType.Noun)) {
 						Optional<NounTerm> term = dict.buildNounTerm(t);
 						if (term.isPresent()) {
-							if (nounVariations.containsKey(term.get().radix)) {
-								nounVariations.get(term.get().radix).add(term.get());
+							if (nounVariations.containsKey(term.get().getRadix())) {
+								nounVariations.get(term.get().getRadix()).add(term.get());
 							} else {
-								nounVariations.put(term.get().radix, new TermVariations<NounTerm>(term.get()));
+								nounVariations.put(term.get().getRadix(), new TermVariations<>(term.get()));
 							}
 						}
 					} else {
 						Optional<VerbTerm> term = dict.buildVerbTerm(t);
 						if (term.isPresent()) {
-							if (verbVariations.containsKey(term.get().radix)) {
-								verbVariations.get(term.get().radix).add(term.get());
+							if (verbVariations.containsKey(term.get().getRadix())) {
+								verbVariations.get(term.get().getRadix()).add(term.get());
 							} else {
-								verbVariations.put(term.get().radix, new TermVariations<VerbTerm>(term.get()));
+								verbVariations.put(term.get().getRadix(), new TermVariations<>(term.get()));
 							}
 						}
 					}
@@ -158,7 +157,7 @@ public class Analyzer {
 
 			}
 		}
-		return new TermCollection(nounVariations, verbVariations);
+		return new TermCollection(dict, nounVariations, verbVariations);
 	}
 
 }

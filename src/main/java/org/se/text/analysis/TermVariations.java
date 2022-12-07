@@ -17,6 +17,7 @@ public class TermVariations<T extends Term> {
 	public Map<Integer, T> variations;
 	public Integer frequency;
 	public String radix;
+	private Random rand = new Random();
 
 	public TermVariations() {
 		this.variations = new HashMap<>();
@@ -44,6 +45,13 @@ public class TermVariations<T extends Term> {
 		this.variations = variations;
 		this.frequency = frequency;
 		this.radix = radix;
+	}
+
+	public TermVariations(Map<Integer, T> variations, Integer frequency, String radix, Random rand) {
+		this.variations = variations;
+		this.frequency = frequency;
+		this.radix = radix;
+		this.rand = rand;
 	}
 
 	public void forEach(Consumer<? super T> f) {
@@ -91,6 +99,12 @@ public class TermVariations<T extends Term> {
 		this.frequency++;
 	}
 
+	public Term getRandomTerm() {
+		int i = rand.nextInt(variations.size());
+		Object[] arr = variations.values().toArray();
+		return (Term) arr[i];
+	}
+
 	// Static Functions specifically for Nouns
 
 	public static Optional<NounTerm> getTerm(TermVariations<NounTerm> nounVariations, Gender gender, GrammaticalCase grammaticalCase,
@@ -106,12 +120,10 @@ public class TermVariations<T extends Term> {
 	// queried variation if necessary
 	// Automatically created variations can be very wrong and should avoided if
 	// possible
-	public static NounTerm createTerm(TermVariations<NounTerm> nounVariations, Gender gender, GrammaticalCase grammaticalCase, Numerus numerus,
-			Dict dict) {
+	public static Optional<NounTerm> createTerm(TermVariations<NounTerm> nounVariations, Gender gender, GrammaticalCase grammaticalCase,
+			Numerus numerus, Dict dict) {
 		Optional<NounTerm> res = getTerm(nounVariations, gender, grammaticalCase, numerus);
-		if (res.isPresent()) {
-			return res.get();
-		}
+		if (res.isPresent()) return res;
 
 		return dict.createNounTerm(nounVariations, gender, grammaticalCase, numerus);
 	}

@@ -9,11 +9,11 @@ import org.se.text.analysis.model.Numerus;
  * @author Val Richter
  */
 public class Term implements DisplayableParent {
-	public int frequency;
-	public String radix;
-	public String word;
-	public Integer syllableAmount;
-	public Numerus numerus;
+	protected int frequency;
+	protected String radix;
+	protected String word;
+	protected Integer syllableAmount;
+	protected Numerus numerus;
 
 	public Term(String word) {
 		this.frequency = 1;

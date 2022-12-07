@@ -12,8 +12,9 @@ verbs = list()
 
 forbiddenNouns = ("der", "die", "das", "ich", "du", "er", "sie", "es", "wir", "ihr", "sie", "bei", "in", "im", "am", "um", "als")
 forbiddenVerbs = ("ein")
-forbiddenSymbols = ("’", " ")
+forbiddenSymbols = ("’", " ", "ǃ")
 forbiddenStarts = ("\"", "'", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-")
+changeableGenderNouns = ("arzt")
 
 
 # Read nouns
@@ -73,12 +74,16 @@ with open("./nouns.csv", encoding="utf8") as csvFile:
 				pos = "nounSuffix"
 				break
 			elif p.startswith("substantiv") and not radix.startswith("-"):
-				pos = "noun"
+				isName = False
+				for p in pos:
+					if p.strip().endswith("name"):
+						isName = True
+				if not isName:
+					pos = "noun"
 				break
 
 		if type(pos) is str:
 			if pos == "noun" and not radix.startswith(forbiddenStarts) and radix.lower() not in forbiddenNouns and all([char not in radix for char in forbiddenSymbols]):
-				toUmlaut = False
 				radixLen = len(radix)
 				for idx in range(len(radix)):
 					for w in filter(lambda x: x != "", [nomPlu, genPlu, datPlu, accPlu]):
@@ -92,13 +97,15 @@ with open("./nouns.csv", encoding="utf8") as csvFile:
 				if radixLen < 2:
 					continue
 
-				if toUmlaut:
-					toUmlaut = "true"
+				changeableGender = radix.lower() in changeableGenderNouns
+				if changeableGender:
+					changeableGender = "true"
 				else:
-					toUmlaut = "false"
+					changeableGender = "false"
+
 				radix = radix[:radixLen]
 
-				nouns.append([radix, nomSin, nomPlu, gender, toUmlaut])
+				nouns.append([radix, nomSin, nomPlu, gender, changeableGender])
 			# else:
 			# 	if radix.startswith("-"):
 			# 		radix = radix[1:]
@@ -140,7 +147,7 @@ dir = "../src/main/resources/dictionary/"
 
 with open(dir + "nounsDict.csv", encoding="utf8", mode="w") as csvFile:
 	writer = csv.writer(csvFile, delimiter=",", lineterminator="\n")
-	writer.writerow(["radix", "nominative-singular", "nominative-plural", "gender", "toUmlaut"])
+	writer.writerow(["radix", "nominative-singular", "nominative-plural", "gender", "changeableGender"])
 	writer.writerows(nouns)
 
 with open(dir + "verbsDict.csv", encoding="utf8", mode="w") as csvFile:

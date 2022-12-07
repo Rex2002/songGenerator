@@ -6,6 +6,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.se.text.analysis.dict.Dict;
 import org.se.text.analysis.model.Gender;
 import org.se.text.analysis.model.GrammaticalCase;
 import org.se.text.analysis.model.Numerus;
@@ -16,14 +17,16 @@ import org.se.text.analysis.model.Numerus;
 public class TermCollection {
 	public Map<String, TermVariations<NounTerm>> nouns;
 	public Map<String, TermVariations<VerbTerm>> verbs;
+	private Dict dict;
 	static final Random rand = new Random();
 
-	public TermCollection() {
+	public TermCollection(Dict dict) {
 		this.nouns = new HashMap<>();
 		this.verbs = new HashMap<>();
+		this.dict = dict;
 	}
 
-	public TermCollection(List<TermVariations<NounTerm>> nouns, List<TermVariations<VerbTerm>> verbs) {
+	public TermCollection(Dict dict, List<TermVariations<NounTerm>> nouns, List<TermVariations<VerbTerm>> verbs) {
 		this.nouns = new HashMap<>();
 		this.verbs = new HashMap<>();
 		for (TermVariations<NounTerm> term : nouns) {
@@ -32,11 +35,13 @@ public class TermCollection {
 		for (TermVariations<VerbTerm> term : verbs) {
 			this.verbs.put(term.getRadix(), term);
 		}
+		this.dict = dict;
 	}
 
-	public TermCollection(Map<String, TermVariations<NounTerm>> nouns, Map<String, TermVariations<VerbTerm>> verbs) {
+	public TermCollection(Dict dict, Map<String, TermVariations<NounTerm>> nouns, Map<String, TermVariations<VerbTerm>> verbs) {
 		this.nouns = nouns;
 		this.verbs = verbs;
+		this.dict = dict;
 	}
 
 	public void addNouns(TermVariations<NounTerm> variations) {
@@ -120,22 +125,22 @@ public class TermCollection {
 	// Query Functions
 
 	public List<NounTerm> query(GrammaticalCase grammaticalCase, Gender gender, Numerus numerus, Integer syllableMin, Integer syllableMax) {
-		List<NounTerm> existing = new ArrayList<>();
-		List<NounTerm> created = new ArrayList<>();
+		List<NounTerm> res = new ArrayList<>();
 
 		nouns.values().forEach(x -> {
-			Optional<NounTerm> res = TermVariations.getTerm(x, gender, grammaticalCase, numerus);
-			if (res.isPresent()) {
-				NounTerm t = res.get();
-				if (syllableMin <= t.syllableAmount && t.syllableAmount <= syllableMax) {
-					if (TermVariations.hasType(x, gender, grammaticalCase, numerus)) existing.add(t);
-					else created.add(t);
-				}
+			Optional<NounTerm> t = TermVariations.createTerm(x, gender, grammaticalCase, numerus, dict);
+			if (t.isPresent()) {
+				int syllableAmount = t.get().getSyllableAmount();
+				if (syllableMin <= syllableAmount && syllableAmount <= syllableMax) res.add(t.get());
 			}
 		});
 
-		existing.addAll(created);
-		return existing;
+		res.sort(new TermComp<>(nouns));
+		return res;
+	}
+
+	public List<NounTerm> query(GrammaticalCase grammaticalCase, Gender gender, Numerus numerus) {
+		return query(grammaticalCase, gender, numerus, 0, Integer.MAX_VALUE);
 	}
 
 	public List<NounTerm> queryNounsBy(Predicate<? super NounTerm> f) {

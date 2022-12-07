@@ -103,7 +103,7 @@ public class WordStemmer {
 		for (WordStemmer u : grammartizedRes) {
 			for (WordStemmer v : u.findSuffixes(suffixes, minStemLength, diphtongs)) {
 				for (WordStemmer w : v.findPreffixes(prefixes, minStemLength, diphtongs)) {
-					res.addAll(w.findCompounds(terms, minStemLength, addableCompoundParts, subtractabeCompoundParts, diphtongs));
+					res.addAll(w.findCompounds(terms, minStemLength, addableCompoundParts, subtractabeCompoundParts, diphtongs, true));
 				}
 			}
 		}
@@ -128,7 +128,7 @@ public class WordStemmer {
 				String scopy = s.substring(0, s.length() - suffix.getRadix().length());
 				if (scopy.length() >= minStemLength) {
 					// Update Umlaut sequences if necessary
-					scopy = Dict.changeUmlaut(umlautChanges, diphtongs, scopy, false);
+					if (suffix.getToUmlaut()) scopy = Dict.changeUmlaut(umlautChanges, diphtongs, scopy, false);
 					res.add(new WordStemmer(baseKey, scopy, suffix));
 				}
 			}
@@ -138,15 +138,16 @@ public class WordStemmer {
 	}
 
 	public List<WordStemmer> findCompounds(WordList terms, int minStemLength, WordList addableCompoundParts, WordList subtractableCompoundParts,
-			WordList diphtongs) {
+			WordList diphtongs, boolean firstCall) {
 		List<WordStemmer> res = new LinkedList<>();
 		List<WordStemmer> nextCompounds = findNextCompound(terms, minStemLength, addableCompoundParts, subtractableCompoundParts, diphtongs);
 
-		res.add(this);
+		if (firstCall) res.add(this);
 		res.addAll(nextCompounds);
 
 		for (WordStemmer w : nextCompounds) {
-			List<WordStemmer> furtherCompounds = w.findCompounds(terms, minStemLength, addableCompoundParts, subtractableCompoundParts, diphtongs);
+			List<WordStemmer> furtherCompounds = w.findCompounds(terms, minStemLength, addableCompoundParts, subtractableCompoundParts, diphtongs,
+					false);
 			res.addAll(furtherCompounds);
 		}
 
@@ -195,7 +196,7 @@ public class WordStemmer {
 		List<WordStemmer> res = new LinkedList<>();
 		List<WordStemmer> nextAffixes = findNextAffix(affixes, minStemLength, diphtongs, false);
 
-		res.add(this);
+		if (firstCall) res.add(this);
 		res.addAll(nextAffixes);
 
 		if (firstCall && !nextAffixes.isEmpty()) {
@@ -366,13 +367,13 @@ public class WordStemmer {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(stem, grammartizedSuffix, prefixes, suffixes, baseKey);
+		return Objects.hash(stem, additionalCompounds, grammartizedSuffix, prefixes, suffixes, baseKey);
 	}
 
 	@Override
 	public String toString() {
-		return "{" + " stem='" + getStem() + "'" + ", grammartizedSuffix='" + getGrammartizedSuffix() + "'" + ", prefixes='" + getPrefixes() + "'"
-				+ ", suffixes='" + getSuffixes() + "'" + ", baseKey='" + getBaseKey() + "'" + "}";
+		return "{" + " stem='" + getStem() + "'" + ", additionalCompounds='" + getAdditionalCompounds() + "'" + ", grammartizedSuffix='"
+				+ getGrammartizedSuffix() + "'" + ", prefixes='" + getPrefixes() + "'" + ", suffixes='" + getSuffixes() + "'" + ", baseKey='"
+				+ getBaseKey() + "'" + "}";
 	}
-
 }

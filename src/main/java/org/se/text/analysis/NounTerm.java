@@ -12,6 +12,15 @@ import org.se.text.analysis.model.Numerus;
 public class NounTerm extends Term {
 	public GrammaticalCase grammaticalCase;
 	public Gender gender;
+	public boolean changeableGender = false;
+
+	public NounTerm(String radix, String word, Integer syllableAmount, Numerus numerus, GrammaticalCase grammaticalCase, Gender gender,
+			boolean changeableGender) {
+		super(radix, word, syllableAmount, numerus);
+		this.grammaticalCase = grammaticalCase;
+		this.gender = gender;
+		this.changeableGender = changeableGender;
+	}
 
 	public NounTerm(String radix, String word, Integer syllableAmount, Numerus numerus, GrammaticalCase grammaticalCase, Gender gender) {
 		super(radix, word, syllableAmount, numerus);
@@ -24,6 +33,10 @@ public class NounTerm extends Term {
 		super(word);
 		this.grammaticalCase = GrammaticalCase.NOMINATIVE;
 		this.gender = Gender.FEMALE;
+	}
+
+	public boolean fitsGender(Gender g) {
+		return changeableGender || gender.equals(g);
 	}
 
 	@Override

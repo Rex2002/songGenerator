@@ -21,11 +21,11 @@ class TermComp<T extends Term> implements Comparator<T> {
 	}
 
 	@Override
-	public int compare(T o1, T o2) {
-		TermVariations<T> l1 = terms.get(o1.getRadix());
-		TermVariations<T> l2 = terms.get(o2.getRadix());
-		int x1 = o1.getFrequency() * specialVariationBias + l1.getFrequency() * generalTermBias;
-		int x2 = o2.getFrequency() * specialVariationBias + l2.getFrequency() * generalTermBias;
+	public int compare(T t1, T t2) {
+		TermVariations<T> v1 = terms.get(t1.getRadix());
+		TermVariations<T> v2 = terms.get(t2.getRadix());
+		int x1 = t1.getFrequency() * specialVariationBias + v1.getFrequency() * generalTermBias;
+		int x2 = t2.getFrequency() * specialVariationBias + v2.getFrequency() * generalTermBias;
 		return Integer.compare(x1, x2);
 	}
 }
