@@ -25,17 +25,11 @@ public class Test {
 		int metrics = MetricAnalyzer.metricsGet(content, terms);
 		StructureGenerator.generateStructure(settings, Map.of("tempo", metrics));
 		SongTextGenerator textGenerator = new SongTextGenerator();
-		List<String[]> songText = textGenerator.generateSongText(Config.getStructures().get(0), terms);
+		HashMap<String,String[][]> songText = textGenerator.generateSongText(Config.getStructures().get(0), terms);
 
 		System.out.println("\n\n\n");
 		System.out.println("Songtext:");
 
-		for (String[] strophe : songText) {
-			for (String line : strophe) {
-				System.out.println(line);
-			}
-			System.out.println("\n");
-		}
 
 		System.out.println("Metrics:");
 		System.out.println(metrics);

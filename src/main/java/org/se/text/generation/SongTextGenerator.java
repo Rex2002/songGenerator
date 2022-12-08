@@ -2,8 +2,6 @@ package org.se.text.generation;
 
 import java.io.IOException;
 import java.util.*;
-
-import com.itextpdf.text.log.SysoCounter;
 import org.se.music.logic.Config;
 import org.se.music.model.*;
 import org.se.text.analysis.*;
@@ -23,8 +21,8 @@ public class SongTextGenerator {
 		Structure structure = strucs.get(ran.nextInt(Config.getStructures().size()));
 		structure.setGenre(Genre.POP);
 
-		g.generateSongText(structure, TermExample.getExample());
-
+		HashMap<String, String[][]> partTextMap = g.generateSongText(structure, TermExample.getExample());
+		System.out.println(partTextMap);
 	}
 
 	private MusicalKey key;
@@ -42,7 +40,7 @@ public class SongTextGenerator {
 	private List<Integer> usedStrophes = new ArrayList<>(); // to check if a strophe was used in the Song before
 
 	// Midi-Sequence Generator calls SongTextGenerator()
-	public List<String[]> generateSongText(Structure structure, TermCollection termCollection) {
+	public HashMap<String,String[][]> generateSongText(Structure structure, TermCollection termCollection) {
 
 		List<String[]> songText = new ArrayList<>();
 		this.termCollection = termCollection;
@@ -56,10 +54,48 @@ public class SongTextGenerator {
 			songText.add(generateStrophe(structure.getGenre(), structure.getParts().get(s).getLength()));
 		}
 
-		// TODO iwie probleme mit id
 
-		printSongtext(songText,order);
-		return songText;
+		//printSongtext(songText,order);
+
+		HashMap<String,String[][]> partTextMap;
+		partTextMap = getPartText(order,songText);
+
+
+		return partTextMap;
+	}
+
+	private HashMap<String, String[][]> getPartText(List<String> order, List<String[]> songText) {
+		HashMap<String, String[][]> partTextMap = new HashMap<>();
+		for (int i = 0; i < order.size(); i++) {
+			//for example the second verse
+			String partName = order.get(i);
+			int j = 1;
+			while (partTextMap.containsKey(partName)){
+				j++;
+
+				try{
+					if(Integer.valueOf(partName.substring(partName.length()-1)) <= 10 )partName = partName.substring(0,partName.length()-1);
+				}
+				catch (NumberFormatException ex){}
+
+				partName += Integer.toString(j);//TODO kommt was komisches raus von der Reihenfolge und chorus her
+			}
+
+
+			partTextMap.put(partName,getPartSyllSmoosh(songText.get(i)));
+		}
+		return partTextMap;
+	}
+
+	private String[][] getPartSyllSmoosh(String[] stropheText) {
+		String[][] textSyllSmoosh = new String[stropheText.length][2];
+
+		for(int i = 0; i < stropheText.length;i++){
+			textSyllSmoosh[i][0] = stropheText[i];
+			textSyllSmoosh[i][1] =  "2";
+		}
+
+		return textSyllSmoosh;
 	}
 
 	private void printSongtext(List<String[]> songText,List<String> order) {
