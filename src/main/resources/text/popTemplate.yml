@@ -1,11 +1,21 @@
 
 #for a variable write: $v|(n,f|m|n,p|s,n|a|d|g,[1,10],[1,10],int id)$
 # n
+#1. Nomen oder Verb (n/v)
+#2 m/f/n männ, weib, neut
+#3 singular plural s/p
+#4 Fall (n/g/a/d)
+#5 ID besteht aus "YamlNummer" + "hochzählen"
+#6 mind silben
+#7 max silben
+# | sagt neuer Takt anfangen
+
+
 #1
 length: 8
 strophe:
   - "Deine $n,m,s,n,11,1,10$|machen mich gluecklich"
-  - "Eure $n,f,p,n,1,12,10$|machen mich gluecklich"
+  - "Eure $n,f,p,n,12,1,10$|machen mich gluecklich"
   - "Unsere $n,f,p,n,13,2,10$|machen mich gluecklich"
   - "Keiner $n,f,p,n,14,2,10$|machen mich gluecklich"
 ---
@@ -24,9 +34,9 @@ strophe:
   - "Ihr $n,f,p,n,32,1,10$ |machen mich abhaengig"
   - "Soe $n,f,p,n,33,1,10$ |machen mich abhaengig"
   - "Meine $n,f,p,n,34,2,10$ |machen mich abhaengig"
-  - "Wir $n,m,p,n,1,35,10$ |machen mich abhaengig"
-  - "Ihr $n,f,p,n,1,36,10$ |machen mich abhaengig"
-  - "Soe $n,f,p,n,1,37,10$ |machen mich abhaengig"
+  - "Wir $n,m,p,n,35,1,10$ |machen mich abhaengig"
+  - "Ihr $n,f,p,n,36,1,10$ |machen mich abhaengig"
+  - "Soe $n,f,p,n,37,1,10$ |machen mich abhaengig"
   - "Meine $n,f,p,n,38,2,10$ |machen mich abhaengig"
 
 

@@ -8,6 +8,7 @@ import org.se.text.analysis.*;
 import org.se.text.analysis.model.Gender;
 import org.se.text.analysis.model.GrammaticalCase;
 import org.se.text.analysis.model.Numerus;
+import org.se.text.metric.Hyphenizer;
 
 public class SongTextGenerator {
 
@@ -55,7 +56,7 @@ public class SongTextGenerator {
 		}
 
 
-		//printSongtext(songText,order);
+		printSongtext(songText,order);
 
 		HashMap<String,String[][]> partTextMap;
 		partTextMap = getPartText(order,songText);
@@ -74,11 +75,11 @@ public class SongTextGenerator {
 				j++;
 
 				try{
-					if(Integer.valueOf(partName.substring(partName.length()-1)) <= 10 )partName = partName.substring(0,partName.length()-1);
+					if(Integer.parseInt(partName.substring(partName.length()-1)) <= 10 )partName = partName.substring(0,partName.length()-1);
 				}
 				catch (NumberFormatException ex){}
 
-				partName += Integer.toString(j);//TODO kommt was komisches raus von der Reihenfolge und chorus her
+				partName += Integer.toString(j);//TODO kommt was komisches raus von der Reihenfolge her
 			}
 
 
@@ -92,10 +93,33 @@ public class SongTextGenerator {
 
 		for(int i = 0; i < stropheText.length;i++){
 			textSyllSmoosh[i][0] = stropheText[i];
-			textSyllSmoosh[i][1] =  "2";
+			textSyllSmoosh[i][1] =  Integer.toString(countSyllables(stropheText[i]));	//TODO
 		}
 
 		return textSyllSmoosh;
+	}
+
+	private int countSyllables(String s) {
+//
+//		int nextWhitespace;
+//		nextWhitespace = s.indexOf(' ');
+//
+//		while(s.length() != 0){
+//			nextWhitespace = s.indexOf(' ');
+//			words.add(s.substring(0,nextWhitespace));
+//			s = s.substring(nextWhitespace);
+//			System.out.println(s);
+//
+		int sylCounter = 0;
+
+		String[] words = s.split(" ");
+
+
+
+		for(int i = 0; i < words.length;i++) {
+			sylCounter += Hyphenizer.CountSyllabes(words[i]);
+		}
+		return sylCounter;
 	}
 
 	private void printSongtext(List<String[]> songText,List<String> order) {

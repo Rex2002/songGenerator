@@ -13,7 +13,7 @@ public class TermExample {
 	}
 
 	public static TermCollection getExample() throws IOException {
-		String content = FileReader.main("test3.txt");
+		String content = FileReader.main("test.txt");
 		return Analyzer.analyze(content, Dict.getDefault());
 	}
 }
