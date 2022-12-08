@@ -64,9 +64,11 @@ public class Part {
 							chordProgression.get(bar % chordProgression.size()));
 					midiPlayables.add(p);
 					for (int chordNo = 0; chordNo < p.getInflatedChords().length; chordNo++) {
-						t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar, p.getInflatedChords()[chordNo],
-								chordNo);
-						midiTexts.add(t);
+						if(chordNo == 0 || p.getInflatedChords()[chordNo] != p.getInflatedChords()[chordNo-1]) {
+							t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar, p.getInflatedChords()[chordNo],
+									chordNo);
+							midiTexts.add(t);
+						}
 					}
 
 					m = new ChordContainer(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())) + 1, bar, key,
