@@ -19,6 +19,7 @@ parts:
       - chords
       - bass
       - drums
+      - vocals
     opt:
       - chords2
   chorus:
