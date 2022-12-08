@@ -3,10 +3,10 @@
 # n
 length: 8
 strophe:
-  - "Deine $n,m,s,n,1,1,10$|machen mich tsdfgdsfdfs"
-  - "Eure $n,f,p,n,1,1,10$|machen mich flücklicj"
-  - "Unsere $n,f,p,n,1,2,10$|machen mich flücklicj"
-  - "Keiner $n,f,p,n,1,2,10$|machen mich flücklicj"
+  - "Deine $n,m,s,n,1,1,10$|machen mich gluecklich"
+  - "Eure $n,f,p,n,1,1,10$|machen mich gluecklich"
+  - "Unsere $n,f,p,n,1,2,10$|machen mich gluecklich"
+  - "Keiner $n,f,p,n,1,2,10$|machen mich gluecklich"
 ---
 length: 8
 strophe:
@@ -17,13 +17,13 @@ strophe:
 ---
 length: 16
 strophe:
-  - "Wir $n,m,p,n,1,1,10$ |machen mich tsdfgdsfdfs"
-  - "Ihr $n,f,p,n,1,1,10$ |machen mich sdfg"
-  - "Soe $n,f,p,n,1,1,10$ |machen mich flücasdfklicj"
-  - "Meine $n,f,p,n,1,2,10$ |machen mich flücklicj"
-  - "Wir $n,m,p,n,1,1,10$ |machen mich tsdfgdsfdfs"
-  - "Ihr $n,f,p,n,1,1,10$ |machen mich sdfg"
-  - "Soe $n,f,p,n,1,1,10$ |machen mich flücasdfklicj"
-  - "Meine $n,f,p,n,1,2,10$ |machen mich flücklicj"
+  - "Wir $n,m,p,n,1,1,10$ |machen mich abhaengig"
+  - "Ihr $n,f,p,n,1,1,10$ |machen mich abhaengig"
+  - "Soe $n,f,p,n,1,1,10$ |machen mich abhaengig"
+  - "Meine $n,f,p,n,1,2,10$ |machen mich abhaengig"
+  - "Wir $n,m,p,n,1,1,10$ |machen mich abhaengig"
+  - "Ihr $n,f,p,n,1,1,10$ |machen mich abhaengig"
+  - "Soe $n,f,p,n,1,1,10$ |machen mich abhaengig"
+  - "Meine $n,f,p,n,1,2,10$ |machen mich abhaengig"
 
 

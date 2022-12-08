@@ -19,7 +19,7 @@ public class SongTextGenerator {
 		Config.loadConfig();
 		Config.getStructures().get(0).setGenre(Genre.POP);
 		g.generateSongText(Config.getStructures().get(0), TermExample.getExample());
-		System.out.println("structure: " + Config.getStructures().get(0));
+		//System.out.println("structure: " + Config.getStructures().get(0));
 	}
 
 	private MusicalKey key;
@@ -42,8 +42,8 @@ public class SongTextGenerator {
 		List<String> usedWordsList = new ArrayList<>(); // to check if a Term was used in the Song before
 		List<Integer> usedStrophesList = new ArrayList<>(); // to check if a strophe was used in the Song before
 
-		System.out.println(structure.getParts());
-		System.out.println(structure.getParts().get("intro").getLength());
+		//System.out.println(structure.getParts());
+		//System.out.println(structure.getParts().get("intro").getLength());
 		System.out.println();
 		structure.getParts().get("intro");
 
@@ -102,7 +102,7 @@ public class SongTextGenerator {
 			// popTemplate = popTemplateList.get(getLastElement(usedStrophesList)); //get random Strophe
 
 			if (popTemplate.getLength() == partLength) {
-				System.out.println("pop Template: " + popTemplate);
+				//System.out.println("pop Template: " + popTemplate);
 				return popTemplate;
 			}
 		}
