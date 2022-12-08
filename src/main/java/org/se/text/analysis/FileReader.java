@@ -1,13 +1,12 @@
 package org.se.text.analysis;
 
 import java.io.IOException;
+import com.ibm.icu.text.CharsetDetector;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 //Reurn ist string!!!
 
@@ -52,13 +51,12 @@ public class FileReader {
 
 	public static String readTxt(String p) throws IOException {
 		try {
+			CharsetDetector detector = new CharsetDetector();
 			Path path = Paths.get(p);
-			Stream<String> lines = Files.lines(path);
-
-			String content = lines.collect(Collectors.joining(System.lineSeparator()));
-			lines.close();
+			byte[] bytes = Files.readAllBytes(path);
+			String content = detector.getString(bytes, "");
 			return content;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
