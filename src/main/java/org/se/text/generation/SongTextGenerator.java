@@ -59,7 +59,8 @@ public class SongTextGenerator {
 	}
 
 	private void printSongtext(List<String[]> songText,List<String> order) {
-		for(int j = 0; j < songText.size();j++) {
+		//for(int j = 0; j < songText.size();j++) {
+		for(int j = 0; j < 1;j++) {		//only for testing numer 1
 			System.out.println(order.get(j));
 
 			//print part-Content
@@ -145,7 +146,7 @@ public class SongTextGenerator {
 	}
 
 	private String[] getStringArrFromRequirementsVariableString(String requirementsVariableString) {
-		String[] strArr = new String[7];
+		String[] strArr = new String[]{"","","","","","",""}; //to have empty (not null) values in String[]
 		int index = 0;
 		while (requirementsVariableString.length() > 0) {
 			if (requirementsVariableString.charAt(0) == ',') index++;
@@ -171,6 +172,7 @@ public class SongTextGenerator {
 
 	private String getTerm(String[] requirements) {
 		List<NounTerm> termList;
+		String[] test = new String[]{"n"};
 		if (isNoun(requirements)) {
 			termList = getNounsTermListFromRequirements(requirements);
 		} else {
@@ -279,7 +281,7 @@ public class SongTextGenerator {
 	}
 
 	private boolean isNoun(String[] requirements) {
-		return (requirements[0] == "n");
+		return (requirements[0].equals("n"));
 	}
 
 	// -----------------Testing---------------\\
