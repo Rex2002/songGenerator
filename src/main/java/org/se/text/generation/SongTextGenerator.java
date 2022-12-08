@@ -20,11 +20,11 @@ public class SongTextGenerator {
 		Random ran = new Random();
 		Config.loadConfig();
 		List<Structure> strucs = Config.getStructures();
-		Structure structure = strucs.get(ran.nextInt(0,Config.getStructures().size()));
+		Structure structure = strucs.get(ran.nextInt(Config.getStructures().size()));
 		structure.setGenre(Genre.POP);
-		//System.out.println(Config.getStructures());
+
 		g.generateSongText(structure, TermExample.getExample());
-		//System.out.println("structure: " + Config.getStructures().get(0));
+
 	}
 
 	private MusicalKey key;
@@ -38,18 +38,22 @@ public class SongTextGenerator {
 	// this
 	private String[] partText;
 
+	private HashMap<Integer,String> usedWords = new HashMap<>(); // to check if a Term was used in the Song before
+	private List<Integer> usedStrophes = new ArrayList<>(); // to check if a strophe was used in the Song before
+
 	// Midi-Sequence Generator calls SongTextGenerator()
 	public List<String[]> generateSongText(Structure structure, TermCollection termCollection) {
-		List<String[]> songText = new ArrayList<String[]>();
+
+		List<String[]> songText = new ArrayList<>();
 		this.termCollection = termCollection;
 		key = structure.getKey();
 		parts = structure.getParts();
-		List<String> usedWordsList = new ArrayList<>(); // to check if a Term was used in the Song before
-		List<Integer> usedStrophesList = new ArrayList<>(); // to check if a strophe was used in the Song before
+
+
 		List<String> order = structure.getOrder();
 
-		for (int i = 0; i < order.size(); i++) {
-			songText.add(generateStrophe(structure.getGenre(), usedStrophesList, usedWordsList, structure.getParts().get(order.get(i)).getLength()));
+		for (String s : order) {
+			songText.add(generateStrophe(structure.getGenre(), structure.getParts().get(s).getLength()));
 		}
 
 		// TODO iwie probleme mit id
@@ -59,8 +63,8 @@ public class SongTextGenerator {
 	}
 
 	private void printSongtext(List<String[]> songText,List<String> order) {
-		//for(int j = 0; j < songText.size();j++) {
-		for(int j = 0; j < 1;j++) {		//only for testing numer 1
+		for(int j = 0; j < songText.size();j++) {
+		//for(int j = 0; j < 1;j++) {		//only for testing number 1
 			System.out.println(order.get(j));
 
 			//print part-Content
@@ -70,9 +74,7 @@ public class SongTextGenerator {
 		}
 	}
 
-	private String[] generateStrophe(Genre genre, List<Integer> usedStrophesList, List<String> usedWordsList, int partLength) {
-		String vers = new String();
-
+	private String[] generateStrophe(Genre genre, int partLength) {
 		if (genre == Genre.BLUES) {
 			return null;
 		} else if (genre == Genre.POP) {
@@ -87,9 +89,7 @@ public class SongTextGenerator {
 				verse[i] = getVerse(popTemplate.getStrophe()[i]);
 			}
 
-			String[] partText = getPartText(verse, partLength);
-
-			return partText;
+			return getPartText(verse, partLength);
 
 		}
 
@@ -113,11 +113,11 @@ public class SongTextGenerator {
 	}
 
 	private String[] getPartText(String[] verse, int partNumber) {
-		String allVerses = "";
+		StringBuilder allVerses = new StringBuilder();
 
 		int index = 0;
 		while (index < verse.length && verse[index] != null) {
-			allVerses = allVerses + verse[index] + "|";
+			allVerses.append(verse[index]).append("|");
 			index++;
 		}
 
@@ -126,7 +126,7 @@ public class SongTextGenerator {
 		for (int i = 0; i < partText.length; i++) {
 			int partEnd = allVerses.indexOf("|");
 			partText[i] = allVerses.substring(0, partEnd);
-			allVerses = allVerses.substring(partEnd + 1);
+			allVerses = new StringBuilder(allVerses.substring(partEnd + 1));
 		}
 
 		return partText;
@@ -171,6 +171,10 @@ public class SongTextGenerator {
 	}
 
 	private String getTerm(String[] requirements) {
+		int id = getIdFromRequirements(requirements);
+		//if id was already used
+		if(usedWords.containsKey(id))return usedWords.get(id);
+
 		List<NounTerm> termList;
 		String[] test = new String[]{"n"};
 		if (isNoun(requirements)) {
@@ -184,13 +188,14 @@ public class SongTextGenerator {
 
 		// index gives the position of the noun in termList
 		int termListSize = termList.size();
-		int position = 0; // default 0
+		int position; // default 0
 		if (termListSize != 0) {
-			position = getCorrectPosition(termList.size(), getIdFromRequirements(requirements));
+			position = getCorrectPosition(termList, id);
+			usedWords.put(id,termList.get(position).getWord());
+			return termList.get(position).getWord();
 		} else {
 			return "DaPasstWohlNichts";
 		}
-		return termList.get(position).getWord();
 	}
 
 	private List<NounTerm> getNounsTermListFromRequirements(String[] requirements) {
@@ -202,40 +207,26 @@ public class SongTextGenerator {
 		int syllMin, syllMax;
 
 		// detect Gender
-		switch (requirements[1]) {
-			case "f":
-				gender = Gender.FEMALE;
-				break;
-			case "m":
-				gender = Gender.MALE;
-				break;
-			default:
-				gender = Gender.NEUTRAL; // in case of a false Input, neutral is selected
-		}
+		gender = switch (requirements[1]) {
+			case "f" -> Gender.FEMALE;
+			case "m" -> Gender.MALE;
+			default -> Gender.NEUTRAL; // in case of a false Input, neutral is selected
+		};
 
 		// detect if is Plural
-		switch (requirements[2]) {
-			case "p":
-				numerus = Numerus.PLURAL;
-				break;
-			default:
-				numerus = Numerus.SINGULAR; // in case of a false Input singular is selected
+		if ("p".equals(requirements[2])) {
+			numerus = Numerus.PLURAL;
+		} else {
+			numerus = Numerus.SINGULAR; // in case of a false Input singular is selected
 		}
 
 		// detect Grammatical case//TODO
-		switch (requirements[3]) {
-			case "a":
-				grammaticalCase = GrammaticalCase.ACCUSATIVE;
-				break;
-			case "d":
-				grammaticalCase = GrammaticalCase.DATIVE;
-				break;
-			case "g":
-				grammaticalCase = GrammaticalCase.GENITIVE;
-				break;
-			default:
-				grammaticalCase = GrammaticalCase.NOMINATIVE;
-		}
+		grammaticalCase = switch (requirements[3]) {
+			case "a" -> GrammaticalCase.ACCUSATIVE;
+			case "d" -> GrammaticalCase.DATIVE;
+			case "g" -> GrammaticalCase.GENITIVE;
+			default -> GrammaticalCase.NOMINATIVE;
+		};
 
 		// detect min Syll
 		try {
@@ -268,16 +259,23 @@ public class SongTextGenerator {
 	}
 
 	public static Integer getLastElement(List<Integer> list) {
-		if ((list != null) && (list.isEmpty() == false)) {
+		if ((null != list) && (!list.isEmpty())) {
 			int lastIdx = list.size() - 1;
-			Integer lastElement = list.get(lastIdx);
-			return lastElement;
+			return list.get(lastIdx);
 		} else return null;
 	}
 
-	private int getCorrectPosition(int Index, int position) {
-		if (Index - position <= 0) return getCorrectPosition(Index, position - Index);
-		return position;
+	private int getCorrectPosition(List<NounTerm> termList, int id) {
+		Random ran = new Random();
+		int termListSize = termList.size();
+
+		for(int i = 0; i < termListSize;i++){
+			//word was not used yet
+			if (!usedWords.containsValue(termList.get(i))) {
+				return i;
+			}
+		}
+		return ran.nextInt(termListSize);
 	}
 
 	private boolean isNoun(String[] requirements) {
@@ -299,8 +297,9 @@ public class SongTextGenerator {
 	}
 
 	private List<String> getNounsExamples() {
-		return Arrays.asList(getOneTermTesting().get(0).getWord());
+		return List.of(getOneTermTesting().get(0).getWord());
 	}
+
 
 	private String AlleMeineEntchen(List<Term> terms) {
 		String vari = terms.get(0).getWord();
