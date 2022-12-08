@@ -100,21 +100,8 @@ public class SongTextGenerator {
 	}
 
 	private int countSyllables(String s) {
-//
-//		int nextWhitespace;
-//		nextWhitespace = s.indexOf(' ');
-//
-//		while(s.length() != 0){
-//			nextWhitespace = s.indexOf(' ');
-//			words.add(s.substring(0,nextWhitespace));
-//			s = s.substring(nextWhitespace);
-//			System.out.println(s);
-//
 		int sylCounter = 0;
-
 		String[] words = s.split(" ");
-
-
 
 		for(int i = 0; i < words.length;i++) {
 			sylCounter += Hyphenizer.CountSyllabes(words[i]);
@@ -124,9 +111,7 @@ public class SongTextGenerator {
 
 	private void printSongtext(List<String[]> songText,List<String> order) {
 		for(int j = 0; j < songText.size();j++) {
-		//for(int j = 0; j < 1;j++) {		//only for testing number 1
 			System.out.println(order.get(j));
-
 			//print part-Content
 			for (int i = 0; i < songText.get(j).length; i++) {
 				System.out.println("Takt" + (i + 1) + ": " + songText.get(j)[i]);
@@ -235,14 +220,20 @@ public class SongTextGenerator {
 		//if id was already used
 		if(usedWords.containsKey(id))return usedWords.get(id);
 
-		List<NounTerm> termList;
+
+		List<? extends Term>  termList;
+
+
+
 		String[] test = new String[]{"n"};
 		if (isNoun(requirements)) {
 			termList = getNounsTermListFromRequirements(requirements);
 		} else {
-			termList = getNounsTermListFromRequirements(requirements);// hier fürs Beispiel nomen Statt Verben TODO!!
-			// List<String> termList = getVerbsTermListFromRequirements(requirements);
+			termList = getVerbsTermListFromRequirements(requirements);// hier fürs Beispiel nomen Statt Verben TODO!!
+
 		}
+
+
 
 		// System.out.println(termList);
 
@@ -305,8 +296,9 @@ public class SongTextGenerator {
 		return termCollection.query(grammaticalCase, gender, numerus, syllMin, syllMax);
 	}
 
-	private List<String> getVerbsTermListFromRequirements(String[] requirements) {
-		return getVerbsExamples(); // TODO
+	private List<VerbTerm> getVerbsTermListFromRequirements(String[] requirements) {
+		return termCollection.queryVerbsBy(true);//TODO Val????? wie korrekt?
+
 	}
 
 	private int getIdFromRequirements(String[] requirements) {
@@ -325,7 +317,7 @@ public class SongTextGenerator {
 		} else return null;
 	}
 
-	private int getCorrectPosition(List<NounTerm> termList, int id) {
+	private int getCorrectPosition(List<? extends Term>  termList, int id) {
 		Random ran = new Random();
 		int termListSize = termList.size();
 

@@ -14,8 +14,8 @@
 #1
 length: 8
 strophe:
-  - "Deine $n,m,s,n,11,1,10$|machen mich gluecklich"
-  - "Eure $n,f,p,n,12,1,10$|machen mich gluecklich"
+  - "Deine $v$|machen mich gluecklich"
+  - "Eure $v$|machen mich gluecklich"
   - "Unsere $n,f,p,n,13,2,10$|machen mich gluecklich"
   - "Keiner $n,f,p,n,14,2,10$|machen mich gluecklich"
 ---
