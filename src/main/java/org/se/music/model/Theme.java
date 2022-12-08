@@ -13,20 +13,23 @@ public class Theme extends MidiPlayable {
 	private Chord[][] chords;
 	private Chord[] inflatedChords;
 	HashMap<Integer, List<List<Integer>>> transposedContent;
+	private final int length;
 
-	public Theme(MusicalKey key, List<List<String>> chordProgression) {
+	public Theme(MusicalKey key, List<List<String>> chordProgression, int length) {
 		super(0, 0);
 		this.key = key;
+		this.length = length;
 		parseChordString(chordProgression);
 		inflateChordList();
 		setContent();
 		setTransposedContent();
+
 	}
 
 	public void setContent() {
 		Map<Integer, List<List<Integer>>> content = new HashMap<>();
 		Random ran = new Random();
-		for (int i = 0; i < 8 * 4; i++) {
+		for (int i = 0; i < 8 * length; i++) {
 			if (ran.nextInt(8) == 0 || (i % 2 == 0 && ran.nextInt(4) != 0)) {
 				Integer chordNote = inflatedChords[i / 2].getChord().get(ran.nextInt(inflatedChords[i / 2].getChord().size()));
 				List<Integer> posAndLength = new ArrayList<>();
@@ -75,7 +78,7 @@ public class Theme extends MidiPlayable {
 	}
 
 	private void inflateChordList() {
-		inflatedChords = new Chord[chords.length * 4];
+		inflatedChords = new Chord[chords.length * length];
 		for (int barNo = 0; barNo < chords.length; barNo++) {
 			for (int chordNo = 0; chordNo < chords[barNo].length; chordNo++) {
 				for (int i = 0; i < 4 / chords[barNo].length; i++) {
@@ -90,6 +93,6 @@ public class Theme extends MidiPlayable {
 	}
 
 	public int getLengthInBars() {
-		return 4;
+		return length;
 	}
 }

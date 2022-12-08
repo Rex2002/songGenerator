@@ -5,7 +5,7 @@ basePart: intro
 parts:
   intro:
     # pimped length for testing to values beyond ones imagination, needs to be reduced for production
-    length: 8
+    length: 12
     req:
       - drums
       - bass
@@ -14,7 +14,7 @@ parts:
     opt:
       - chords2
   verse:
-    length: 16
+    length: 24
     randomizationLevel: 0 #0: no variation, 1: keep 2 most important chords, 2: stay in key
     req:
       - chords

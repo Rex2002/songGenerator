@@ -7,11 +7,8 @@ import org.se.text.analysis.Analyzer;
 import org.se.text.analysis.FileReader;
 import org.se.text.analysis.TermCollection;
 import org.se.text.analysis.dict.Dict;
-import org.se.text.generation.SongTextGenerator;
 import org.se.text.metric.MetricAnalyzer;
-
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,7 +23,7 @@ public class Main {
 
 		// these are test values that will eventually be passed by UI and TextAnalyzer
 		String filepath = args.length > 0 ? args[0] : "test.txt";
-		Map<String, Object> settings = Map.of("genre", Genre.POP, "nsfw", false, "tempo", 120);
+		Map<String, Object> settings = Map.of("genre", Genre.BLUES, "nsfw", false, "tempo", 120);
 
 
 		String content = FileReader.main(filepath);

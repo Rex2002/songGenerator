@@ -4,19 +4,17 @@ import java.util.*;
 
 import org.se.music.model.*;
 import org.se.text.analysis.TermCollection;
-import org.se.text.generation.SongTextGenerator;
 
 /**
  * @author Malte Richert
  * @author Benjamin Frahm
  */
 public class StructureGenerator {
-	private static Random ran = new Random();
 	private static Structure structure;
 	private static final Map<Integer, Integer> trackMapping = new HashMap<>();
 
 	public static void generateStructure(Map<String, Object> settings, Map<String, Integer> metrics, TermCollection terms) {
-		ran = new Random(379875934);
+		Random ran = new Random(379875934);
 		Config.setGenreFlag((Genre) settings.get("genre"));
 		structure = Config.getStructures().get(0);//ran.nextInt(Config.getStructures().size()));
 		structure.setGenre((Genre) settings.get("genre"));
@@ -28,12 +26,12 @@ public class StructureGenerator {
 		}
 		System.out.println(structure);
 
-		SongTextGenerator textGenerator = new SongTextGenerator();
-		HashMap<String,List<String[][]>> songText = textGenerator.generateSongText(structure, terms);
+		//SongTextGenerator textGenerator = new SongTextGenerator();
+		//HashMap<String,List<String[][]>> songText = textGenerator.generateSongText(structure, terms);
 
 		MidiSequence seq = initMidiSequence(structure);
 
-		structure.getPart(structure.getBasePartKey()).fillRandomly(structure.getKey(), trackMapping);
+		structure.getPart(structure.getBasePartKey()).fillRandomly(structure.getKey(), trackMapping, structure.getGenre()==Genre.POP ? 4 : 12);
 
 		for (String key : structure.getParts().keySet()) {
 			if (key.equals(structure.getBasePartKey())) {
@@ -50,7 +48,7 @@ public class StructureGenerator {
 			} else {
 				progression = Config.getChordProgressions().get(ran.nextInt(Config.getChordProgressions().size()));
 			}
-			part.fillPart(progression, structure.getKey(), trackMapping);
+			part.fillPart(progression, structure.getKey(), trackMapping, structure.getGenre()==Genre.POP ? 4 : 12);
 		}
 
 		seq.setEnd(calculateLength());
@@ -67,14 +65,14 @@ public class StructureGenerator {
 				seq.addMidiText(t);
 				t.setBar(t.getBar() - barOffset);
 			}
-			if(partContainsVocal(structure.getPart(partName))){
-				Part p = structure.getPart(partName);
-				MidiText t;
-				for(int bar = 0; bar < p.getLength(); bar += 1){
-					t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get("vocals")), bar + barOffset, songText.get(partName).get(0)[bar][0]);
-					seq.addMidiText(t);
-				}
-			}
+//			if(partContainsVocal(structure.getPart(partName))){
+//				Part p = structure.getPart(partName);
+//				MidiText t;
+//				for(int bar = 0; bar < p.getLength(); bar += 1){
+//					t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get("vocals")), bar + barOffset, songText.get(partName).get(0)[bar][0]);
+//					seq.addMidiText(t);
+//				}
+//			}
 			barOffset += structure.getPart(partName).getLength();
 		}
 		seq.createFile("structureTest");

@@ -23,7 +23,6 @@ public class SongTextGenerator {
 		structure.setGenre(Genre.POP);
 
 		HashMap<String, List<String[][]>> partTextMap = g.generateSongText(structure, TermExample.getExample());
-		System.out.println(partTextMap);
 	}
 
 	private MusicalKey key;
@@ -50,12 +49,10 @@ public class SongTextGenerator {
 
 
 		List<String> order = structure.getOrder();
-		System.out.println("order: " + order);
 		for (String s : order) {
 			songText.add(generateStrophe(structure.getGenre(), structure.getParts().get(s).getLength()));
 		}
 
-		System.out.println("songText" + songText);
 		printSongtext(songText,order);
 
 		HashMap<String,List<String[][]>> partTextMap;
@@ -139,9 +136,7 @@ public class SongTextGenerator {
 	}
 
 	private String[] generateStrophe(Genre genre, int partLength) {
-		if (genre == Genre.BLUES) {
-			return null;
-		} else if (genre == Genre.POP) {
+		if (genre == Genre.POP || genre == Genre.BLUES) {
 			templateImporter = new TemplateImporter();
 			List<PopTemplate> popTemplateList = templateImporter.getTemplate(genre);
 
@@ -152,9 +147,11 @@ public class SongTextGenerator {
 			for (int i = 0; i < partLength/2; i++) {
 				verse[i] = getVerse(popTemplate.getStrophe()[i]);
 			}
-			System.out.println("verse: " + Arrays.toString(verse));
 			return getPartText(verse, partLength);
 
+		}
+		else if (genre == Genre.BLUES) {
+			return null;
 		}
 
 		return null;
@@ -170,7 +167,6 @@ public class SongTextGenerator {
 				return popTemplate;
 			}
 		}
-		System.out.println("pop Template bc useless: " + popTemplate);
 		return popTemplate;
 
 		// TODO popTemplate length does not fit requirements
