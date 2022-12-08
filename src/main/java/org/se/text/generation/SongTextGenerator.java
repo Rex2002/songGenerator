@@ -3,6 +3,7 @@ package org.se.text.generation;
 import java.io.IOException;
 import java.util.*;
 
+import com.itextpdf.text.log.SysoCounter;
 import org.se.music.logic.Config;
 import org.se.music.model.*;
 import org.se.text.analysis.*;
@@ -16,9 +17,13 @@ public class SongTextGenerator {
 
 	public static void main(String[] args) throws IOException {
 		SongTextGenerator g = new SongTextGenerator();
+		Random ran = new Random();
 		Config.loadConfig();
-		Config.getStructures().get(0).setGenre(Genre.POP);
-		g.generateSongText(Config.getStructures().get(0), TermExample.getExample());
+		List<Structure> strucs = Config.getStructures();
+		Structure structure = strucs.get(ran.nextInt(0,Config.getStructures().size()));
+		structure.setGenre(Genre.POP);
+		//System.out.println(Config.getStructures());
+		g.generateSongText(structure, TermExample.getExample());
 		//System.out.println("structure: " + Config.getStructures().get(0));
 	}
 
@@ -41,30 +46,26 @@ public class SongTextGenerator {
 		parts = structure.getParts();
 		List<String> usedWordsList = new ArrayList<>(); // to check if a Term was used in the Song before
 		List<Integer> usedStrophesList = new ArrayList<>(); // to check if a strophe was used in the Song before
-
-		//System.out.println(structure.getParts());
-		//System.out.println(structure.getParts().get("intro").getLength());
-		System.out.println();
-		structure.getParts().get("intro");
-
 		List<String> order = structure.getOrder();
 
 		for (int i = 0; i < order.size(); i++) {
-			System.out.println(order.get(i) + ": ");
 			songText.add(generateStrophe(structure.getGenre(), usedStrophesList, usedWordsList, structure.getParts().get(order.get(i)).getLength()));
-			printSongtext(songText);
-			// System.out.println(generateStrophe(Genre.POP, new ArrayList<>(), new ArrayList<>(), structure.getPart(order.get(i)).getLength()));
 		}
 
 		// TODO iwie probleme mit id
 
-		// printSongtext(songText);
+		printSongtext(songText,order);
 		return songText;
 	}
 
-	private void printSongtext(List<String[]> songText) {
-		for (int i = 0; i < songText.get(songText.size() - 1).length; i++) {
-			System.out.println("Takt" + (i + 1) + ": " + songText.get(songText.size() - 1)[i]);
+	private void printSongtext(List<String[]> songText,List<String> order) {
+		for(int j = 0; j < songText.size();j++) {
+			System.out.println(order.get(j));
+
+			//print part-Content
+			for (int i = 0; i < songText.get(j).length; i++) {
+				System.out.println("Takt" + (i + 1) + ": " + songText.get(j)[i]);
+			}
 		}
 	}
 
@@ -81,7 +82,7 @@ public class SongTextGenerator {
 
 			// go through the strophe and store the verses
 			String[] verse = new String[partLength / 2];
-			for (int i = 0; i < popTemplate.getStrophe().length; i++) {
+			for (int i = 0; i < partLength/2; i++) {
 				verse[i] = getVerse(popTemplate.getStrophe()[i]);
 			}
 
@@ -99,10 +100,8 @@ public class SongTextGenerator {
 		PopTemplate popTemplate = popTemplateList.get(0);
 		for (int i = 0; i < templateTries; i++) {
 			popTemplate = getRandomNotUsedValue(popTemplateList);// get random template
-			// popTemplate = popTemplateList.get(getLastElement(usedStrophesList)); //get random Strophe
 
 			if (popTemplate.getLength() == partLength) {
-				//System.out.println("pop Template: " + popTemplate);
 				return popTemplate;
 			}
 		}
@@ -192,7 +191,6 @@ public class SongTextGenerator {
 		return termList.get(position).getWord();
 	}
 
-	// boa ne Hashmap statt dem String wäre schlauer!!!!!!!!!!!!!!!
 	private List<NounTerm> getNounsTermListFromRequirements(String[] requirements) {
 		// requirements looks like [n,f,p,n,1,1,10]
 		// [Noun,Gender,Plural,Case,id,syllMin,syllMax]
@@ -300,10 +298,6 @@ public class SongTextGenerator {
 
 	private List<String> getNounsExamples() {
 		return Arrays.asList(getOneTermTesting().get(0).getWord());
-	}
-
-	private String generateChorus(List<String> nouns, List<String> verbs) {
-		return "alla";
 	}
 
 	private String AlleMeineEntchen(List<Term> terms) {
