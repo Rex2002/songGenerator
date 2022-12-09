@@ -2,6 +2,7 @@ package org.se.music.logic;
 
 import java.util.*;
 
+import org.se.Settings;
 import org.se.music.model.*;
 import org.se.text.analysis.TermCollection;
 
@@ -13,24 +14,24 @@ public class StructureGenerator {
 	private static Structure structure;
 	private static final Map<Integer, Integer> trackMapping = new HashMap<>();
 
-	public static void generateStructure(Map<String, Object> settings, Map<String, Integer> metrics, TermCollection terms) {
+	public static void generateStructure(Settings settings, Map<String, Integer> metrics, TermCollection terms) {
 		Random ran = new Random();
 		structure = Config.getStructures().get(ran.nextInt(Config.getStructures().size()));
-		structure.setGenre((Genre) settings.get("genre"));
+		structure.setGenre(settings.getGenre());
 		structure.setKey(new MusicalKey());
-		if (settings.get("tempo") != null) {
-			structure.setTempo((int) settings.get("tempo"));
+		if (settings.getTempo() != null) {
+			structure.setTempo(settings.getTempo());
 		} else {
 			structure.setTempo(metrics.get("tempo"));
 		}
 		System.out.println(structure);
 
-		//SongTextGenerator textGenerator = new SongTextGenerator();
-		//HashMap<String,List<String[][]>> songText = textGenerator.generateSongText(structure, terms);
+		// SongTextGenerator textGenerator = new SongTextGenerator();
+		// HashMap<String,List<String[][]>> songText = textGenerator.generateSongText(structure, terms);
 
 		MidiSequence seq = initMidiSequence(structure);
 
-		structure.getPart(structure.getBasePartKey()).fillRandomly(structure.getKey(), trackMapping, structure.getGenre()==Genre.POP ? 4 : 12);
+		structure.getPart(structure.getBasePartKey()).fillRandomly(structure.getKey(), trackMapping, structure.getGenre() == Genre.POP ? 4 : 12);
 
 		for (String key : structure.getParts().keySet()) {
 			if (key.equals(structure.getBasePartKey())) {
@@ -47,7 +48,7 @@ public class StructureGenerator {
 			} else {
 				progression = Config.getChordProgressions().get(ran.nextInt(Config.getChordProgressions().size()));
 			}
-			part.fillPart(progression, structure.getKey(), trackMapping, structure.getGenre()==Genre.POP ? 4 : 12);
+			part.fillPart(progression, structure.getKey(), trackMapping, structure.getGenre() == Genre.POP ? 4 : 12);
 		}
 
 		seq.setEnd(calculateLength());
@@ -64,14 +65,15 @@ public class StructureGenerator {
 				seq.addMidiText(t);
 				t.setBar(t.getBar() - barOffset);
 			}
-//			if(partContainsVocal(structure.getPart(partName))){
-//				Part p = structure.getPart(partName);
-//				MidiText t;
-//				for(int bar = 0; bar < p.getLength(); bar += 1){
-//					t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get("vocals")), bar + barOffset, songText.get(partName).get(0)[bar][0]);
-//					seq.addMidiText(t);
-//				}
-//			}
+			// if(partContainsVocal(structure.getPart(partName))){
+			// Part p = structure.getPart(partName);
+			// MidiText t;
+			// for(int bar = 0; bar < p.getLength(); bar += 1){
+			// t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get("vocals")), bar + barOffset,
+			// songText.get(partName).get(0)[bar][0]);
+			// seq.addMidiText(t);
+			// }
+			// }
 			barOffset += structure.getPart(partName).getLength();
 		}
 		seq.createFile("structureTest");
@@ -161,9 +163,9 @@ public class StructureGenerator {
 		return d;
 	}
 
-	public static boolean partContainsVocal(Part part){
-		for(InstrumentEnum instr : part.getReqInsts()){
-			if(instr.toString().startsWith("vocals")){
+	public static boolean partContainsVocal(Part part) {
+		for (InstrumentEnum instr : part.getReqInsts()) {
+			if (instr.toString().startsWith("vocals")) {
 				return true;
 			}
 		}
