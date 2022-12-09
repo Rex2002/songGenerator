@@ -15,19 +15,21 @@ import org.se.text.analysis.model.CompoundPart;
 public class WordStemmer {
 	private String stem = "";
 	private List<WordWithData> additionalCompounds = new LinkedList<>();
-	private TermAffixes grammartizedAffix = new TermAffixes();
+	private TermAffix grammartizedSuffix = new TermAffix();
+	private TermAffix grammartizedPrefix = new TermAffix();
 	private List<WordWithData> prefixes = new LinkedList<>();
 	private List<WordWithData> suffixes = new LinkedList<>();
 	final String baseKey;
 
+	final static String DEFAULT_BASE_KEY = "radix";
 	// Constructors:
 
 	public WordStemmer() {
-		this.baseKey = "radix";
+		this.baseKey = DEFAULT_BASE_KEY;
 	}
 
 	public WordStemmer(String stem) {
-		this.baseKey = "radix";
+		this.baseKey = DEFAULT_BASE_KEY;
 		this.stem = stem;
 	}
 
@@ -36,14 +38,21 @@ public class WordStemmer {
 		this.stem = stem;
 	}
 
-	public WordStemmer(String baseKey, String stem, TermAffixes grammartizedAffix) {
+	public WordStemmer(String baseKey, String stem, TermAffix grammartizedSuffix) {
 		this.baseKey = baseKey;
 		this.stem = stem;
-		this.grammartizedAffix = grammartizedAffix;
+		this.grammartizedSuffix = grammartizedSuffix;
+	}
+
+	public WordStemmer(String baseKey, String stem, TermAffix grammartizedSuffix, TermAffix grammartizedPrefix) {
+		this.baseKey = baseKey;
+		this.stem = stem;
+		this.grammartizedSuffix = grammartizedSuffix;
+		this.grammartizedPrefix = grammartizedPrefix;
 	}
 
 	public WordStemmer(String stem, List<WordWithData> prefixes, List<WordWithData> suffixes) {
-		this.baseKey = "radix";
+		this.baseKey = DEFAULT_BASE_KEY;
 		this.stem = stem;
 		this.prefixes = prefixes;
 		this.suffixes = suffixes;
@@ -56,29 +65,31 @@ public class WordStemmer {
 		this.suffixes = suffixes;
 	}
 
-	public WordStemmer(String stem, TermAffixes grammartizedAffix, List<WordWithData> prefixes, List<WordWithData> suffixes, String baseKey) {
+	public WordStemmer(String stem, TermAffix grammartizedSuffix, List<WordWithData> prefixes, List<WordWithData> suffixes, String baseKey) {
 		this.stem = stem;
-		this.grammartizedAffix = grammartizedAffix;
+		this.grammartizedSuffix = grammartizedSuffix;
 		this.prefixes = prefixes;
 		this.suffixes = suffixes;
 		this.baseKey = baseKey;
 	}
 
-	public WordStemmer(String stem, WordWithData additionlCompound, TermAffixes grammartizedAffix, List<WordWithData> prefixes,
-			List<WordWithData> suffixes, String baseKey) {
+	public WordStemmer(String stem, WordWithData additionlCompound, TermAffix grammartizedPrefix, TermAffix grammartizedSuffix,
+			List<WordWithData> prefixes, List<WordWithData> suffixes, String baseKey) {
 		this.stem = stem;
 		this.additionalCompounds.add(additionlCompound);
-		this.grammartizedAffix = grammartizedAffix;
+		this.grammartizedPrefix = grammartizedPrefix;
+		this.grammartizedSuffix = grammartizedSuffix;
 		this.prefixes = prefixes;
 		this.suffixes = suffixes;
 		this.baseKey = baseKey;
 	}
 
-	public WordStemmer(String stem, List<WordWithData> additionalCompounds, TermAffixes grammartizedAffix, List<WordWithData> prefixes,
-			List<WordWithData> suffixes, String baseKey) {
+	public WordStemmer(String stem, List<WordWithData> additionalCompounds, TermAffix grammartizedPrefix, TermAffix grammartizedSuffix,
+			List<WordWithData> prefixes, List<WordWithData> suffixes, String baseKey) {
 		this.stem = stem;
 		this.additionalCompounds = additionalCompounds;
-		this.grammartizedAffix = grammartizedAffix;
+		this.grammartizedPrefix = grammartizedPrefix;
+		this.grammartizedSuffix = grammartizedSuffix;
 		this.prefixes = prefixes;
 		this.suffixes = suffixes;
 		this.baseKey = baseKey;
@@ -88,11 +99,11 @@ public class WordStemmer {
 
 	public int affixesCount() {
 		int count = suffixes.size() + prefixes.size();
-		if (grammartizedAffix != null && grammartizedAffix.radix != "") count += 1;
+		if (grammartizedSuffix != null && grammartizedSuffix.radix != "") count += 1;
 		return count;
 	}
 
-	public static WordStemmer[] radicalize(String s, WordList terms, List<? extends TermAffixes> grammartizedAffixes, WordList suffixes,
+	public static WordStemmer[] radicalize(String s, WordList terms, List<? extends TermAffix> grammartizedAffixes, WordList suffixes,
 			WordList prefixes, WordList compoundParts, int minStemLength, WordList diphtongs, WordList umlautChanges, String baseKey) {
 		List<WordStemmer> res = new LinkedList<>();
 		WordList addableCompoundParts = compoundParts
@@ -120,7 +131,7 @@ public class WordStemmer {
 	// This could be optimized by storing a list of radixes
 	// mapping to a list of Declinations
 	// where no duplicate radixes are stored and the result is flattened
-	private static <T extends TermAffixes> List<WordStemmer> findGrammartizedAffixes(String s, List<T> grammartizedAffixes, WordList umlautChanges,
+	private static <T extends TermAffix> List<WordStemmer> findGrammartizedAffixes(String s, List<T> grammartizedAffixes, WordList umlautChanges,
 			int minStemLength, WordList diphtongs, String baseKey) {
 		List<WordStemmer> res = new ArrayList<>();
 		for (T suffix : grammartizedAffixes) {
@@ -129,9 +140,21 @@ public class WordStemmer {
 						.filter(affix -> affix.getType() == AffixType.PREFIX && affix.grammarticallyEquals(suffix)).toList();
 				final String scopy = s.substring(0, s.length() - suffix.getRadix().length());
 
-				if (scopy.length() >= minStemLength && Util.all(prefixes, p -> scopy.startsWith(p.getRadix()))) {
+				if (scopy.length() >= minStemLength) {
+					// TODO: Refactor to remove duplicated code
+					// With added prefixes
+					for (T prefix : prefixes) {
+						if (scopy.length() - prefix.getRadix().length() >= minStemLength && scopy.startsWith(prefix.getRadix())) {
+							WordStemmer w = new WordStemmer(baseKey, scopy.substring(prefix.getRadix().length()), prefix, suffix);
+							if (suffix.getToUmlaut() || prefix.getToUmlaut()) {
+								w.setStem(Dict.changeUmlaut(umlautChanges, diphtongs, scopy, false));
+							}
+							res.add(w);
+						}
+					}
+					// Without added prefix
 					WordStemmer w = new WordStemmer(baseKey, scopy, suffix);
-					if (suffix.getToUmlaut() || Util.any(prefixes, p -> p.getToUmlaut())) {
+					if (suffix.getToUmlaut()) {
 						w.setStem(Dict.changeUmlaut(umlautChanges, diphtongs, scopy, false));
 					}
 					res.add(w);
@@ -179,7 +202,8 @@ public class WordStemmer {
 						}
 						str += subtractable.get();
 						if (terms.has(str)) {
-							res.add(new WordStemmer(stem.substring(i + 1), terms.get(str).get(), grammartizedAffix, prefixes, suffixes, baseKey));
+							res.add(new WordStemmer(stem.substring(i + 1), terms.get(str).get(), grammartizedPrefix, grammartizedSuffix, prefixes,
+									suffixes, baseKey));
 						}
 					}
 				}
@@ -297,12 +321,20 @@ public class WordStemmer {
 		this.stem = stem;
 	}
 
-	public TermAffixes getGrammartizedAffix() {
-		return this.grammartizedAffix;
+	public TermAffix getGrammartizedSuffix() {
+		return this.grammartizedSuffix;
 	}
 
-	public void setGrammartizedAffix(TermAffixes grammartizedAffix) {
-		this.grammartizedAffix = grammartizedAffix;
+	public void setGrammartizedSuffix(TermAffix grammartizedSuffix) {
+		this.grammartizedSuffix = grammartizedSuffix;
+	}
+
+	public TermAffix getGrammartizedPrefix() {
+		return this.grammartizedPrefix;
+	}
+
+	public void setGrammartizedPrefix(TermAffix grammartizedPrefix) {
+		this.grammartizedPrefix = grammartizedPrefix;
 	}
 
 	public List<WordWithData> getPrefixes() {
@@ -330,8 +362,13 @@ public class WordStemmer {
 		return this;
 	}
 
-	public WordStemmer grammartizedAffix(TermAffixes grammartizedAffix) {
-		setGrammartizedAffix(grammartizedAffix);
+	public WordStemmer grammartizedSuffix(TermAffix grammartizedSuffix) {
+		setGrammartizedSuffix(grammartizedSuffix);
+		return this;
+	}
+
+	public WordStemmer grammartizedPrefix(TermAffix grammartizedPrefix) {
+		setGrammartizedPrefix(grammartizedPrefix);
 		return this;
 	}
 
@@ -365,20 +402,20 @@ public class WordStemmer {
 			return false;
 		}
 		WordStemmer wordStemmer = (WordStemmer) o;
-		return Objects.equals(stem, wordStemmer.stem) && Objects.equals(grammartizedAffix, wordStemmer.grammartizedAffix)
-				&& Objects.equals(prefixes, wordStemmer.prefixes) && Objects.equals(suffixes, wordStemmer.suffixes)
-				&& Objects.equals(baseKey, wordStemmer.baseKey);
+		return Objects.equals(stem, wordStemmer.stem) && Objects.equals(grammartizedSuffix, wordStemmer.grammartizedSuffix)
+				&& Objects.equals(grammartizedPrefix, wordStemmer.grammartizedPrefix) && Objects.equals(prefixes, wordStemmer.prefixes)
+				&& Objects.equals(suffixes, wordStemmer.suffixes) && Objects.equals(baseKey, wordStemmer.baseKey);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(stem, additionalCompounds, grammartizedAffix, prefixes, suffixes, baseKey);
+		return Objects.hash(stem, additionalCompounds, grammartizedSuffix, grammartizedPrefix, prefixes, suffixes, baseKey);
 	}
 
 	@Override
 	public String toString() {
-		return "{" + " stem='" + getStem() + "'" + ", additionalCompounds='" + getAdditionalCompounds() + "'" + ", grammartizedAffix='"
-				+ getGrammartizedAffix() + "'" + ", prefixes='" + getPrefixes() + "'" + ", suffixes='" + getSuffixes() + "'" + ", baseKey='"
-				+ getBaseKey() + "'" + "}";
+		return "{" + " stem='" + getStem() + "'" + ", additionalCompounds='" + getAdditionalCompounds() + "'" + ", grammartizedSuffix='"
+				+ getGrammartizedSuffix() + "'" + ", grammartizedPrefix='" + getGrammartizedPrefix() + "'" + ", prefixes='" + getPrefixes() + "'"
+				+ ", suffixes='" + getSuffixes() + "'" + ", baseKey='" + getBaseKey() + "'" + "}";
 	}
 }

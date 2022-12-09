@@ -115,7 +115,7 @@ public class Dict {
 		return getPossibleStems(s, verbs, conjugatedAffixes, verbSuffixes, nounPrefixes);
 	}
 
-	private List<WordStemmer> getPossibleStems(String s, WordList terms, List<? extends TermAffixes> termAffixes, WordList suffixes,
+	private List<WordStemmer> getPossibleStems(String s, WordList terms, List<? extends TermAffix> termAffixes, WordList suffixes,
 			WordList prefixes) {
 		WordStemmer[] l = WordStemmer.radicalize(s, terms, termAffixes, suffixes, prefixes, compoundParts, 2, diphtongs, umlautChanges, baseKey);
 		List<WordStemmer> res = new ArrayList<>();
@@ -153,7 +153,7 @@ public class Dict {
 				if (dictEntry.isPresent()) {
 					Gender dictGender = dictEntry.get().get(GENDER_KEY, Gender.class).get();
 
-					if (((Declination) stem.getGrammartizedAffix()).getGender() == dictGender) count += DECLINATED_SUFFIX_GENDER_BIAS;
+					if (((Declination) stem.getGrammartizedSuffix()).getGender() == dictGender) count += DECLINATED_SUFFIX_GENDER_BIAS;
 
 					if (!stem.getSuffixes().isEmpty()) {
 						if (stem.getSuffixes().get(stem.getSuffixes().size() - 1).get(GENDER_KEY, Gender.class).get() == dictGender) {
@@ -259,7 +259,7 @@ public class Dict {
 			// This is currently not an actual issue, though, and thus has a low priority
 
 			WordStemmer data = t.getData().get();
-			Declination declinatedSuffix = (Declination) data.getGrammartizedAffix();
+			Declination declinatedSuffix = (Declination) data.getGrammartizedSuffix();
 
 			StringBuilder radixBuilder = new StringBuilder();
 			for (WordWithData w : data.getAdditionalCompounds()) {
@@ -293,7 +293,7 @@ public class Dict {
 		if (verbs.has(radix)) infinitive = verbs.get(radix).get().get("infinitive");
 		else if (verbs.has(t.getWord())) infinitive = verbs.get(t.getWord()).get().get("infinitive");
 
-		VerbTerm verb = new VerbTerm(radix, t.getWord(), data.getGrammartizedAffix().getNumerus(), infinitive);
+		VerbTerm verb = new VerbTerm(radix, t.getWord(), data.getGrammartizedSuffix().getNumerus(), infinitive);
 		return Optional.of(verb);
 	}
 

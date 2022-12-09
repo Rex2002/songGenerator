@@ -9,23 +9,23 @@ import org.se.text.analysis.model.Numerus;
 /**
  * @author Val Richter
  */
-public class TermAffixes implements DisplayableParent {
+public class TermAffix implements DisplayableParent {
 	public String radix;
 	public Numerus numerus;
 	public AffixType type;
 	public Boolean toUmlaut;
 
-	public TermAffixes() {
+	public TermAffix() {
 	}
 
-	public TermAffixes(String radix, Numerus numerus, AffixType type, boolean toUmlaut) {
+	public TermAffix(String radix, Numerus numerus, AffixType type, boolean toUmlaut) {
 		this.radix = radix;
 		this.numerus = numerus;
 		this.type = type;
 		this.toUmlaut = toUmlaut;
 	}
 
-	public boolean grammarticallyEquals(TermAffixes other) {
+	public boolean grammarticallyEquals(TermAffix other) {
 		return numerus == other.numerus;
 	}
 
@@ -71,22 +71,22 @@ public class TermAffixes implements DisplayableParent {
 		this.toUmlaut = toUmlaut;
 	}
 
-	public TermAffixes radix(String radix) {
+	public TermAffix radix(String radix) {
 		setRadix(radix);
 		return this;
 	}
 
-	public TermAffixes numerus(Numerus numerus) {
+	public TermAffix numerus(Numerus numerus) {
 		setNumerus(numerus);
 		return this;
 	}
 
-	public TermAffixes type(AffixType type) {
+	public TermAffix type(AffixType type) {
 		setType(type);
 		return this;
 	}
 
-	public TermAffixes toUmlaut(boolean toUmlaut) {
+	public TermAffix toUmlaut(boolean toUmlaut) {
 		setToUmlaut(toUmlaut);
 		return this;
 	}
@@ -94,10 +94,10 @@ public class TermAffixes implements DisplayableParent {
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) return true;
-		if (!(o instanceof TermAffixes)) {
+		if (!(o instanceof TermAffix)) {
 			return false;
 		}
-		TermAffixes termEndings = (TermAffixes) o;
+		TermAffix termEndings = (TermAffix) o;
 		return Objects.equals(radix, termEndings.radix) && Objects.equals(numerus, termEndings.numerus) && toUmlaut == termEndings.toUmlaut;
 	}
 

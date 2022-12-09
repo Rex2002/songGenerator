@@ -68,12 +68,12 @@ public class WordList implements Iterable<WordWithData> {
 	private int binSearch(String s, int start, int end) {
 		s = s.toLowerCase();
 		int mid = (end + start) / 2;
-		while (end - start > 1) {
+		while (end > start) {
 			mid = (end + start) / 2;
-			int x = store.get(mid).get(baseKey).toLowerCase().compareTo(s);
+			int x = store.get(mid).get(baseKey).compareTo(s);
 			if (x == 0) return mid;
 			else if (x > 0) end = mid;
-			else start = mid;
+			else start = mid + 1;
 		}
 		return mid;
 	}
@@ -94,7 +94,7 @@ public class WordList implements Iterable<WordWithData> {
 		store.sort(new Comparator<WordWithData>() {
 			@Override
 			public int compare(WordWithData o1, WordWithData o2) {
-				return o1.get(baseKey).toLowerCase().compareTo(o2.get(baseKey).toLowerCase());
+				return o1.get(baseKey).compareTo(o2.get(baseKey));
 			}
 		});
 	}
@@ -102,10 +102,10 @@ public class WordList implements Iterable<WordWithData> {
 	public boolean insert(WordWithData h) {
 		if (!h.containsKey(baseKey)) return false;
 
+		h.put(baseKey, h.get(baseKey).toLowerCase());
 		if (elementWithLongestBase != null && cmpBaseLengths(h, elementWithLongestBase) > 0) {
 			elementWithLongestBase = h;
 		}
-		h.put(baseKey, h.get(baseKey).toLowerCase());
 		int i = binSearch(h.get(baseKey));
 		store.add(i, h);
 		return true;

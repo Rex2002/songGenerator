@@ -2,12 +2,12 @@ package org.se.text.analysis.model;
 
 import java.util.*;
 
-import org.se.text.analysis.dict.TermAffixes;
+import org.se.text.analysis.dict.TermAffix;
 
 /**
  * @author Val Richter
  */
-public class Conjugation extends TermAffixes {
+public class Conjugation extends TermAffix {
 	public Person person;
 	public Tense tense;
 
@@ -21,7 +21,7 @@ public class Conjugation extends TermAffixes {
 	}
 
 	@Override
-	public boolean grammarticallyEquals(TermAffixes other) {
+	public boolean grammarticallyEquals(TermAffix other) {
 		if (!(other instanceof Conjugation)) return false;
 		Conjugation conjugation = (Conjugation) other;
 		return super.grammarticallyEquals(conjugation) && person == conjugation.person && tense == conjugation.tense;

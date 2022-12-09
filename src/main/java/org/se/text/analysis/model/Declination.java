@@ -2,12 +2,12 @@ package org.se.text.analysis.model;
 
 import java.util.Objects;
 
-import org.se.text.analysis.dict.TermAffixes;
+import org.se.text.analysis.dict.TermAffix;
 
 /**
  * @author Val Richter
  */
-public class Declination extends TermAffixes {
+public class Declination extends TermAffix {
 	public GrammaticalCase grammaticalCase;
 	public Gender gender;
 
@@ -21,7 +21,7 @@ public class Declination extends TermAffixes {
 	}
 
 	@Override
-	public boolean grammarticallyEquals(TermAffixes other) {
+	public boolean grammarticallyEquals(TermAffix other) {
 		if (!(other instanceof Declination)) return false;
 		Declination declination = (Declination) other;
 		return super.grammarticallyEquals(declination) && grammaticalCase == declination.grammaticalCase && gender == declination.gender;

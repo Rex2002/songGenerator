@@ -83,8 +83,10 @@ public class Parser {
 	}
 
 	public static Tense parseTense(String s) {
-		// No logic required, since currently only present tense is supported
-		return Tense.PRESENT;
+		s = s.toLowerCase();
+		if (s.startsWith("pr")) return Tense.PRESENT;
+		else if (s.startsWith("pas")) return Tense.PAST;
+		else return Tense.PARTICIPLE;
 	}
 
 	public static Gender parseGender(String s) {
@@ -230,8 +232,13 @@ public class Parser {
 	}
 
 	public static void readCSV(Path filepath, WordList list) throws IOException {
+		// TODO:
+		// When inserting the rows normally via list::insert, no verbs are found
+		// There must be something wrong with the WordList class
+		// Since it only affects verbs, there might be some edge-case with some of the verbforms, that causes the error
+		// Since the uncheckedInsert with additional sorting afterwards fixes the problem apparently,
+		// I won't spend more time on trying to find the bug for now
 		parseCSV(filepath, list::uncheckedInsert);
 		list.sort();
-		// parseCSV(filepath, list::insert);
 	}
 }
