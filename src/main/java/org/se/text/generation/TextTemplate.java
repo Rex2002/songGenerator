@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.*;
-
+/**
+ * @author Olivier Stenzel
+ */
 public class TextTemplate {
 	@JsonProperty
 	private String[] strophe;

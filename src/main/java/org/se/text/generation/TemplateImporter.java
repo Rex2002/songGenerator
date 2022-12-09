@@ -9,7 +9,9 @@ import org.se.music.model.Genre;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
-
+/**
+ * @author Olivier Stenzel
+ */
 public class TemplateImporter {
 	YAMLFactory yaml = new YAMLFactory();
 	ObjectMapper mapper = new ObjectMapper(yaml);

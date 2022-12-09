@@ -19,35 +19,7 @@
 #-----------------------------
 # | sagt neuer Takt anfangen
 
-#1
-length: 8
-strophe:
-    - 'Deine $v,11,1,10$|machen mich gluecklich'
-    - 'Eure $v,12,1,10$|machen mich gluecklich'
-    - 'Unsere $n,f,p,n,13,2,10$|machen mich gluecklich'
-    - 'Keiner $n,f,p,n,14,2,10$|machen mich gluecklich'
----
-#2
-length: 8
-strophe:
-    - 'Der $n,m,s,n,21,1,10$ |macht mich traurig!'
-    - 'Sie $n,m,s,n,22,1,10$ |macht mich auch traurig'
-    - 'Die $n,f,p,n,23,1,10$ |machen mich ebenfalls traurig'
-    - 'Diese $n,f,s,2n,3,1,10$ |macht mich auch traurig'
----
-#3
-length: 16
-strophe:
-    - 'Wir $n,m,p,n,31,1,10$ |machen mich abhaengig'
-    - 'Ihr $n,f,p,n,32,1,10$ |machen mich abhaengig'
-    - 'Soe $n,f,p,n,33,1,10$ |machen mich abhaengig'
-    - 'Meine $n,f,p,n,34,2,10$ |machen mich abhaengig'
-    - 'Wir $n,m,p,n,35,1,10$ |machen mich abhaengig'
-    - 'Ihr $n,f,p,n,36,1,10$ |machen mich abhaengig'
-    - 'Soe $n,f,p,n,37,1,10$ |machen mich abhaengig'
-    - 'Meine $n,f,p,n,38,2,10$ |machen mich abhaengig'
 
----
 #4
 length: 8
 strophe:
@@ -120,7 +92,7 @@ strophe:
     - 'Hallo, mein $n,m,s,n,91,2,8$| ich $v,m,s,n,92,2,8$ Dich.'
     - 'Du bist die $n,m,s,n,93,2,8$| für mich.'
     - 'Die anderen $n,m,s,n,94,2,8$|sind alle alle doof'
-    - 'deswegen mach ich Dir den Hof.'
+    - 'deswegen mach ich Dir| den Hof.'
 
 ---
 #10

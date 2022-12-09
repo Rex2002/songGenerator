@@ -9,7 +9,9 @@ import org.se.text.analysis.model.Gender;
 import org.se.text.analysis.model.GrammaticalCase;
 import org.se.text.analysis.model.Numerus;
 import org.se.text.metric.Hyphenizer;
-
+/**
+ * @author Olivier Stenzel
+ */
 public class SongTextGenerator {
 
 	private TemplateImporter templateImporter;
@@ -18,7 +20,7 @@ public class SongTextGenerator {
 	public static void main(String[] args) throws IOException {
 		SongTextGenerator g = new SongTextGenerator();
 		Random ran = new Random();
-		Config.loadConfig();
+		Config.loadConfig(Genre.POP);
 		List<Structure> strucs = Config.getStructures();
 		Structure structure = strucs.get(ran.nextInt(Config.getStructures().size()));
 		structure.setGenre(Genre.POP);
