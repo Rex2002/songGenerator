@@ -15,23 +15,28 @@ public class NounTerm extends Term {
 	public boolean changeableGender = false;
 
 	public NounTerm(String radix, String word, Numerus numerus, GrammaticalCase grammaticalCase, Gender gender, boolean changeableGender) {
-		super(radix, word, numerus);
+		super(capitalize(radix), word, numerus);
 		this.grammaticalCase = grammaticalCase;
 		this.gender = gender;
 		this.changeableGender = changeableGender;
 	}
 
 	public NounTerm(String radix, String word, Numerus numerus, GrammaticalCase grammaticalCase, Gender gender) {
-		super(radix, word, numerus);
+		super(capitalize(radix), word, numerus);
 		this.grammaticalCase = grammaticalCase;
 		this.gender = gender;
 	}
 
 	public NounTerm(String word) {
 		// TODO: Change hardcoded defaults to programmatically determined ones
-		super(word);
+		super(capitalize(word));
 		this.grammaticalCase = GrammaticalCase.NOMINATIVE;
 		this.gender = Gender.FEMALE;
+	}
+
+	public static String capitalize(String s) {
+		if (s.isEmpty()) return s;
+		else return Character.toUpperCase(s.charAt(0)) + s.substring(1);
 	}
 
 	public boolean fitsGender(Gender g) {

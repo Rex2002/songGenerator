@@ -26,8 +26,8 @@ public class Dict {
 	WordList umlautChanges = new WordList();
 	WordList compoundParts = new WordList();
 	WordList genderChangeSuffixes = new WordList();
-	List<Declination> declinatedSuffixes = new ArrayList<>();
-	List<Conjugation> conjugatedSuffixes = new ArrayList<>();
+	List<Declination> declinatedAffixes = new ArrayList<>();
+	List<Conjugation> conjugatedAffixes = new ArrayList<>();
 	final String baseKey;
 
 	static final String GENDER_KEY = "gender";
@@ -37,8 +37,8 @@ public class Dict {
 	static final String DEFAULT_BASE_KEY = "radix";
 
 	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs,
-			WordList diphtongs, WordList umlautChanges, WordList compoundParts, WordList genderChangeSuffixes, List<Declination> declinatedSuffixes,
-			List<Conjugation> conjugatedSuffixes) {
+			WordList diphtongs, WordList umlautChanges, WordList compoundParts, WordList genderChangeSuffixes, List<Declination> declinatedAffixes,
+			List<Conjugation> conjugatedAffixes) {
 		this.nounSuffixes = nounSuffixes;
 		this.nounPrefixes = nounPrefixes;
 		this.nouns = nouns;
@@ -48,8 +48,8 @@ public class Dict {
 		this.diphtongs = diphtongs;
 		this.umlautChanges = umlautChanges;
 		this.compoundParts = compoundParts;
-		this.declinatedSuffixes = declinatedSuffixes;
-		this.conjugatedSuffixes = conjugatedSuffixes;
+		this.declinatedAffixes = declinatedAffixes;
+		this.conjugatedAffixes = conjugatedAffixes;
 		this.genderChangeSuffixes = genderChangeSuffixes;
 		this.baseKey = DEFAULT_BASE_KEY;
 	}
@@ -82,8 +82,8 @@ public class Dict {
 					break;
 			}
 		});
-		Parser.parseCSV(dirPath.resolve("declinatedSuffixes"), declinatedSuffixes, Declination.class);
-		Parser.parseCSV(dirPath.resolve("conjugatedSuffixes"), conjugatedSuffixes, Conjugation.class);
+		Parser.parseCSV(dirPath.resolve("declinatedAffixes"), declinatedAffixes, Declination.class);
+		Parser.parseCSV(dirPath.resolve("conjugatedAffixes"), conjugatedAffixes, Conjugation.class);
 	}
 
 	public Dict addDictionary(Dict dict) {
@@ -96,8 +96,8 @@ public class Dict {
 		this.umlautChanges.insertAll(dict.getUmlautChanges());
 		this.compoundParts.insertAll(dict.getCompoundParts());
 		this.genderChangeSuffixes.insertAll(dict.getGenderChangeSuffixes());
-		this.declinatedSuffixes.addAll(dict.getDeclinatedSuffixes());
-		this.conjugatedSuffixes.addAll(dict.getConjugatedSuffixes());
+		this.declinatedAffixes.addAll(dict.getDeclinatedSuffixes());
+		this.conjugatedAffixes.addAll(dict.getConjugatedSuffixes());
 		return this;
 	}
 
@@ -108,16 +108,16 @@ public class Dict {
 	// Make word into a term
 
 	public List<WordStemmer> getPossibleNounStems(String s) {
-		return getPossibleStems(s, nouns, declinatedSuffixes, nounSuffixes, nounPrefixes);
+		return getPossibleStems(s, nouns, declinatedAffixes, nounSuffixes, nounPrefixes);
 	}
 
 	public List<WordStemmer> getPossibleVerbStems(String s) {
-		return getPossibleStems(s, verbs, conjugatedSuffixes, verbSuffixes, nounPrefixes);
+		return getPossibleStems(s, verbs, conjugatedAffixes, verbSuffixes, nounPrefixes);
 	}
 
-	private List<WordStemmer> getPossibleStems(String s, WordList terms, List<? extends TermEndings> termEndings, WordList suffixes,
+	private List<WordStemmer> getPossibleStems(String s, WordList terms, List<? extends TermAffixes> termAffixes, WordList suffixes,
 			WordList prefixes) {
-		WordStemmer[] l = WordStemmer.radicalize(s, terms, termEndings, suffixes, prefixes, compoundParts, 2, diphtongs, umlautChanges, baseKey);
+		WordStemmer[] l = WordStemmer.radicalize(s, terms, termAffixes, suffixes, prefixes, compoundParts, 2, diphtongs, umlautChanges, baseKey);
 		List<WordStemmer> res = new ArrayList<>();
 
 		for (WordStemmer w : l) {
@@ -153,7 +153,7 @@ public class Dict {
 				if (dictEntry.isPresent()) {
 					Gender dictGender = dictEntry.get().get(GENDER_KEY, Gender.class).get();
 
-					if (((Declination) stem.getGrammartizedSuffix()).getGender() == dictGender) count += DECLINATED_SUFFIX_GENDER_BIAS;
+					if (((Declination) stem.getGrammartizedAffix()).getGender() == dictGender) count += DECLINATED_SUFFIX_GENDER_BIAS;
 
 					if (!stem.getSuffixes().isEmpty()) {
 						if (stem.getSuffixes().get(stem.getSuffixes().size() - 1).get(GENDER_KEY, Gender.class).get() == dictGender) {
@@ -246,38 +246,42 @@ public class Dict {
 	}
 
 	public Optional<NounTerm> buildNounTerm(Tag t) {
-		addWordStemmerData(t, true);
+		try {
+			addWordStemmerData(t, true);
 
-		if (t.getData().isEmpty()) {
+			if (t.getData().isEmpty()) {
+				return Optional.empty();
+			}
+
+			// TODO: Currently this function converts the grammartizedAffix into a
+			// Declination, which is only safe as long as this function is only called for
+			// nouns. There should probably be some better way to do this.
+			// This is currently not an actual issue, though, and thus has a low priority
+
+			WordStemmer data = t.getData().get();
+			Declination declinatedSuffix = (Declination) data.getGrammartizedAffix();
+
+			StringBuilder radixBuilder = new StringBuilder();
+			for (WordWithData w : data.getAdditionalCompounds()) {
+				radixBuilder.append(w.get());
+			}
+			radixBuilder.append(data.getStem());
+
+			Numerus numerus = declinatedSuffix.getNumerus();
+			GrammaticalCase grammaticalCase = declinatedSuffix.getGrammaticalCase();
+			Gender gender = declinatedSuffix.getGender();
+
+			return Optional.of(new NounTerm(radixBuilder.toString(), t.word, numerus, grammaticalCase, gender));
+		} catch (Exception e) {
 			return Optional.empty();
 		}
-
-		// TODO: Currently this function converts the grammartizedSuffix into a
-		// Declination, which is only safe as long as this function is only called for
-		// nouns. There should probably be some better way to do this.
-		// This is currently not an actual issue, though, and thus has a low priority
-
-		WordStemmer data = t.getData().get();
-		Declination declinatedSuffix = (Declination) data.getGrammartizedSuffix();
-
-		StringBuilder radixBuilder = new StringBuilder();
-		for (WordWithData w : data.getAdditionalCompounds()) {
-			radixBuilder.append(w.get());
-		}
-		radixBuilder.append(data.getStem());
-
-		Numerus numerus = declinatedSuffix.getNumerus();
-		GrammaticalCase grammaticalCase = declinatedSuffix.getGrammaticalCase();
-		Gender gender = declinatedSuffix.getGender();
-
-		return Optional.of(new NounTerm(radixBuilder.toString(), t.word, numerus, grammaticalCase, gender));
 	}
 
 	public Optional<VerbTerm> buildVerbTerm(Tag t) {
 		addWordStemmerData(t, false);
 
 		// TODO: Update this function potentially
-		// TODO: Update conjugatedSuffixes.csv
+		// TODO: Update conjugatedAffixes.csv
 
 		if (t.getData().isEmpty()) {
 			return Optional.empty();
@@ -289,7 +293,7 @@ public class Dict {
 		if (verbs.has(radix)) infinitive = verbs.get(radix).get().get("infinitive");
 		else if (verbs.has(t.getWord())) infinitive = verbs.get(t.getWord()).get().get("infinitive");
 
-		VerbTerm verb = new VerbTerm(radix, t.getWord(), data.getGrammartizedSuffix().getNumerus(), infinitive);
+		VerbTerm verb = new VerbTerm(radix, t.getWord(), data.getGrammartizedAffix().getNumerus(), infinitive);
 		return Optional.of(verb);
 	}
 
@@ -315,7 +319,7 @@ public class Dict {
 
 	private NounTerm createNounTermHelper(final String radix, WordWithData genderChangeSuffix, Gender gender, GrammaticalCase grammaticalCase,
 			Numerus numerus) {
-		List<Declination> suffixes = Util.findAll(declinatedSuffixes,
+		List<Declination> suffixes = Util.findAll(declinatedAffixes,
 				s -> s.getGender() == gender && s.getGrammaticalCase() == grammaticalCase && s.getNumerus() == numerus && !radix.endsWith(s.radix));
 
 		if (!suffixes.isEmpty()) {
@@ -470,11 +474,11 @@ public class Dict {
 	}
 
 	public List<Declination> getDeclinatedSuffixes() {
-		return this.declinatedSuffixes;
+		return this.declinatedAffixes;
 	}
 
-	public void setDeclinatedSuffixes(List<Declination> declinatedSuffixes) {
-		this.declinatedSuffixes = declinatedSuffixes;
+	public void setDeclinatedSuffixes(List<Declination> declinatedAffixes) {
+		this.declinatedAffixes = declinatedAffixes;
 	}
 
 	public String getBaseKey() {
@@ -491,27 +495,27 @@ public class Dict {
 		return this;
 	}
 
-	public Dict declinatedSuffixes(List<Declination> declinatedSuffixes) {
-		setDeclinatedSuffixes(declinatedSuffixes);
+	public Dict declinatedAffixes(List<Declination> declinatedAffixes) {
+		setDeclinatedSuffixes(declinatedAffixes);
 		return this;
 	}
 
 	public List<Conjugation> getConjugatedSuffixes() {
-		return this.conjugatedSuffixes;
+		return this.conjugatedAffixes;
 	}
 
-	public void setConjugatedSuffixes(List<Conjugation> conjugatedSuffixes) {
-		this.conjugatedSuffixes = conjugatedSuffixes;
+	public void setConjugatedSuffixes(List<Conjugation> conjugatedAffixes) {
+		this.conjugatedAffixes = conjugatedAffixes;
 	}
 
-	public Dict conjugatedSuffixes(List<Conjugation> conjugatedSuffixes) {
-		setConjugatedSuffixes(conjugatedSuffixes);
+	public Dict conjugatedAffixes(List<Conjugation> conjugatedAffixes) {
+		setConjugatedSuffixes(conjugatedAffixes);
 		return this;
 	}
 
 	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs,
-			WordList diphtongs, WordList umlautChanges, WordList compoundParts, List<Declination> declinatedSuffixes,
-			List<Conjugation> conjugatedSuffixes, String baseKey) {
+			WordList diphtongs, WordList umlautChanges, WordList compoundParts, List<Declination> declinatedAffixes,
+			List<Conjugation> conjugatedAffixes, String baseKey) {
 		this.nounSuffixes = nounSuffixes;
 		this.nounPrefixes = nounPrefixes;
 		this.nouns = nouns;
@@ -521,8 +525,8 @@ public class Dict {
 		this.diphtongs = diphtongs;
 		this.umlautChanges = umlautChanges;
 		this.compoundParts = compoundParts;
-		this.declinatedSuffixes = declinatedSuffixes;
-		this.conjugatedSuffixes = conjugatedSuffixes;
+		this.declinatedAffixes = declinatedAffixes;
+		this.conjugatedAffixes = conjugatedAffixes;
 		this.baseKey = baseKey;
 	}
 

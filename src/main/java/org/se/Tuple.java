@@ -24,8 +24,7 @@ public class Tuple<X, Y> {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this)
-			return true;
+		if (o == this) return true;
 		if (!(o instanceof Tuple)) {
 			return false;
 		}
@@ -40,9 +39,6 @@ public class Tuple<X, Y> {
 
 	@Override
 	public String toString() {
-		return "{" +
-				" x='" + getX() + "'" +
-				", y='" + getY() + "'" +
-				"}";
+		return "{" + " x='" + getX() + "'" + ", y='" + getY() + "'" + "}";
 	}
 }

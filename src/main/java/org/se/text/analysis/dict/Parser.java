@@ -8,14 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
-
-import org.se.text.analysis.*;
-import org.se.text.analysis.model.CompoundPart;
-import org.se.text.analysis.model.Gender;
-import org.se.text.analysis.model.GrammaticalCase;
-import org.se.text.analysis.model.Numerus;
-import org.se.text.analysis.model.Person;
-import org.se.text.analysis.model.Tense;
+import org.se.text.analysis.model.*;
 
 /**
  * @author Val Richter
@@ -38,6 +31,7 @@ public class Parser {
 		else if (cls == Gender.class) return Optional.ofNullable(cls.cast(parseGender(s)));
 		else if (cls == Numerus.class) return Optional.ofNullable(cls.cast(parseNumerus(s)));
 		else if (cls == CompoundPart.class) return Optional.ofNullable(cls.cast(parseCompoundPart(s)));
+		else if (cls == AffixType.class) return Optional.ofNullable(cls.cast(parseAffixType(s)));
 		else if (cls == Boolean.class) return Optional.ofNullable(cls.cast(parseBool(s)));
 		else if (cls == Integer.class) return Optional.ofNullable(cls.cast(parseInt(s)));
 		else if (cls == List.class) return Optional.ofNullable(cls.cast(parseList(s)));
@@ -128,6 +122,15 @@ public class Parser {
 
 			default:
 				return CompoundPart.ADDITION;
+		}
+	}
+
+	public static AffixType parseAffixType(String s) {
+		switch (s.toLowerCase().charAt(0)) {
+			case 's':
+				return AffixType.SUFFIX;
+			default:
+				return AffixType.PREFIX;
 		}
 	}
 
@@ -227,6 +230,8 @@ public class Parser {
 	}
 
 	public static void readCSV(Path filepath, WordList list) throws IOException {
-		parseCSV(filepath, list::insert);
+		parseCSV(filepath, list::uncheckedInsert);
+		list.sort();
+		// parseCSV(filepath, list::insert);
 	}
 }

@@ -15,7 +15,7 @@ public class Analyzer {
 	private Analyzer() {
 	}
 
-	public static TermCollection analyze(String text, Dict dict) throws IOException {
+	public static TermCollection analyze(String text, Dict dict) {
 		List<Sentence> sentences = Analyzer.preprocess(text);
 		List<List<Tag>> tags = Analyzer.tag(sentences, dict);
 		return Analyzer.buildTerms(tags, dict);

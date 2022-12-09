@@ -2,22 +2,29 @@ package org.se.text.analysis.model;
 
 import java.util.Objects;
 
-import org.se.text.analysis.dict.TermEndings;
+import org.se.text.analysis.dict.TermAffixes;
 
 /**
  * @author Val Richter
  */
-public class Declination extends TermEndings {
+public class Declination extends TermAffixes {
 	public GrammaticalCase grammaticalCase;
 	public Gender gender;
 
-	public Declination(String radix, GrammaticalCase grammaticalCase, Gender gender, Numerus numerus, boolean toUmlaut) {
-		super(radix, numerus, toUmlaut);
+	public Declination(String radix, GrammaticalCase grammaticalCase, Gender gender, Numerus numerus, AffixType type, boolean toUmlaut) {
+		super(radix, numerus, type, toUmlaut);
 		this.grammaticalCase = grammaticalCase;
 		this.gender = gender;
 	}
 
 	public Declination() {
+	}
+
+	@Override
+	public boolean grammarticallyEquals(TermAffixes other) {
+		if (!(other instanceof Declination)) return false;
+		Declination declination = (Declination) other;
+		return super.grammarticallyEquals(declination) && grammaticalCase == declination.grammaticalCase && gender == declination.gender;
 	}
 
 	public GrammaticalCase getGrammaticalCase() {

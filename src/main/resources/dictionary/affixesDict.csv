@@ -1,6 +1,6 @@
 radix,type,gender,syllables,certain,compound
 tung,nounSuffix,female,,t,f
-ant,nounSuffix,male,,t,f
+ant,nounSuffix,male,,f,f
 s,nounSuffix,male,,f,f
 ig,nounSuffix,male,,f,f
 ich,nounSuffix,male,,f,f
@@ -8,9 +8,9 @@ eur,nounSuffix,male,,t,f
 ismus,nounSuffix,male,,t,f
 iker,nounSuffix,male,,t,f
 or,nounSuffix,male,,f,f
-ist,nounSuffix,male,,t,f
+ist,nounSuffix,male,,f,f
 ier,nounSuffix,male,,f,f
-ler,nounSuffix,male,,t,f
+ler,nounSuffix,male,,f,f
 er,nounSuffix,male,,f,f
 ling,nounSuffix,male,,t,f
 loge,nounSuffix,male,0-2,t,f

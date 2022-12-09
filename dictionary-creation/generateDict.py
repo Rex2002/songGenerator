@@ -10,8 +10,8 @@ nouns = list()
 verbs = list()
 
 
-forbiddenNouns = ("der", "die", "das", "ich", "du", "er", "sie", "es", "wir", "ihr", "sie", "bei", "in", "im", "am", "um", "als")
-forbiddenVerbs = ("ein")
+forbiddenNouns = ("der", "die", "das", "ich", "du", "er", "sie", "es", "wir", "ihr", "sie", "bei", "in", "im", "am", "um", "als", "hart", "habe", "hab")
+forbiddenVerbs = ("ein", "hab", "sein", "könn", "woll")
 forbiddenSymbols = ("’", " ", "ǃ")
 forbiddenStarts = ("\"", "'", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-")
 changeableGenderNouns = ("arzt")
@@ -132,7 +132,7 @@ with open("./verbs.csv", encoding="utf8") as csvFile:
 		elif radix.endswith("n"):
 			radix = radix[:-1]
 
-		if radix.lower() in forbiddenVerbs:
+		if radix.lower() in forbiddenVerbs or len(radix.split(" ")) > 1:
 			continue
 
 		current.append(radix)
