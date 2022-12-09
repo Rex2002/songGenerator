@@ -220,10 +220,7 @@ public class SongTextGenerator {
 		//if id was already used
 		if(usedWords.containsKey(id))return usedWords.get(id);
 
-
 		List<? extends Term>  termList;
-
-
 
 		String[] test = new String[]{"n"};
 		if (isNoun(requirements)) {
@@ -297,13 +294,31 @@ public class SongTextGenerator {
 	}
 
 	private List<VerbTerm> getVerbsTermListFromRequirements(String[] requirements) {
-		return termCollection.queryVerbsBy(true);//TODO Val????? wie korrekt?
+		int syllMin, syllMax;
+		// detect min Syll
+		try {
+			syllMin = Integer.parseInt(requirements[2]);
+		} catch (NumberFormatException ex) {
+			syllMin = 0;
+		}
+
+		// detect max Syll
+		try {
+			syllMax = Integer.parseInt(requirements[3]);
+		} catch (NumberFormatException ex) {
+			syllMax = 15;
+		}
+
+		return termCollection.queryVerbsBySyllableRange(syllMin, syllMax);
 
 	}
 
 	private int getIdFromRequirements(String[] requirements) {
+		int position = 1;
+		//for nouns
+		if(isNoun(requirements)) position = 4;
 		try {
-			return Integer.parseInt(requirements[4]);
+			return Integer.parseInt(requirements[position]);
 		} catch (NumberFormatException ex) {
 			return 4; // should be a random Number but would require a Math library
 
