@@ -14,12 +14,12 @@ public class SongTextGenerator {
 
 	private TemplateImporter templateImporter;
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args, Genre genre) throws IOException {
 		SongTextGenerator g = new SongTextGenerator();
 		Random ran = new Random();
-		Config.loadConfig();
+		Config.loadConfig(genre);
 		List<Structure> strucs = Config.getStructures();
-		Structure structure = strucs.get(ran.nextInt(Config.getStructures().size()));
+		Structure structure = strucs.get(ran.nextInt(strucs.size()));
 		structure.setGenre(Genre.POP);
 
 		HashMap<String, List<String[][]>> partTextMap = g.generateSongText(structure, TermExample.getExample());

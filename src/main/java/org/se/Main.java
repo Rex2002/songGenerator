@@ -18,12 +18,12 @@ import java.util.Map;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
-		String filepath = args.length > 0 ? args[0] : "test.txt";
-		Map<String, Object> settings = Map.of("genre", Genre.POP, "nsfw", false, "tempo", 120);
 		Dict dictionary = Dict.getDefault();
 
-		Config.loadConfig();
-		Config.getStructures().get(0).setGenre(Genre.POP);
+		// these are test values that will eventually be passed by UI and TextAnalyzer
+		String filepath = args.length > 0 ? args[0] : "test.txt";
+		Map<String, Object> settings = Map.of("genre", Genre.BLUES, "nsfw", false, "tempo", 120);
+		Config.loadConfig((Genre) settings.get("genre"));
 
 		String content = FileReader.main(filepath);
 		TermCollection terms = Analyzer.analyze(content, dictionary);

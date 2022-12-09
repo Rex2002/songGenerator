@@ -14,9 +14,8 @@ public class StructureGenerator {
 	private static final Map<Integer, Integer> trackMapping = new HashMap<>();
 
 	public static void generateStructure(Map<String, Object> settings, Map<String, Integer> metrics, TermCollection terms) {
-		Random ran = new Random(379875934);
-		Config.setGenreFlag((Genre) settings.get("genre"));
-		structure = Config.getStructures().get(0);//ran.nextInt(Config.getStructures().size()));
+		Random ran = new Random();
+		structure = Config.getStructures().get(ran.nextInt(Config.getStructures().size()));
 		structure.setGenre((Genre) settings.get("genre"));
 		structure.setKey(new MusicalKey());
 		if (settings.get("tempo") != null) {
