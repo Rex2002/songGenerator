@@ -194,7 +194,7 @@ public class SongTextGenerator {
 		String requirementsVariableString = rawString.substring(beginning + 1, end);
 		String[] strArr = getStringArrFromRequirementsVariableString(requirementsVariableString);
 
-		return (rawString.substring(0, beginning) + getTerm(strArr) + rawString.substring(end + 1));
+		return (getVerse(rawString.substring(0, beginning)) + getTerm(strArr) + getVerse(rawString.substring(end + 1)));
 	}
 
 	private String[] getStringArrFromRequirementsVariableString(String requirementsVariableString) {

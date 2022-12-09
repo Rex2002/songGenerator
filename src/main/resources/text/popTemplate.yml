@@ -120,7 +120,7 @@ strophe:
  - "Hallo, mein $n,m,s,n,91,2,8$| ich $v,m,s,n,92,2,8$ Dich."
  - "Du bist die $n,m,s,n,93,2,8$| für mich."
  - "Die anderen $n,m,s,n,94,2,8$|sind alle alle doof"
- - "deswegen mach ich Dir den Hof."
+ - "deswegen mach ich| Dir den Hof."
 
 ---
 #10

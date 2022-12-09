@@ -1,0 +1,35 @@
+#BLUUUUUUUUUUUUUUUUUEEEEEEEEEEEEEEEEEEEESSSSSSSSSSSSS
+#for a variable write: $(v,int id,int syllMin,int syllMax)|(n,f|m|n,p|s,n|a|d|g,int id,int syllMin,int syllMax)$
+# #############
+#
+#1. Nomen oder Verb (n/v)
+#Für NOMEN:
+#2 m/f/n männ, weib, neut
+#3 singular plural s/p
+#4 Fall (n/g/a/d)
+#5 ID besteht aus "YamlNummer" + "hochzählen"
+#6 mind silben
+#7 max silben
+#----------------------
+#Für Verben
+#2 ID besteht aus "YamlNummer" + "hochzählen"
+#3 mind silben
+#4 max silben
+#-----------------------------
+# | sagt neuer Takt anfangen
+
+#1
+length: 8
+strophe:
+  - "Ich bin traurig $v,11,1,10$|machen mich gluecklich"
+  - "Eure $v,12,1,10$|machen mich gluecklich"
+  - "Unsere $n,f,p,n,13,2,10$|machen mich gluecklich"
+  - "Keiner $n,f,p,n,14,2,10$|machen mich gluecklich"
+---
+#2
+length: 8
+strophe:
+  - "Traurig $n,m,s,n,21,1,10$ |macht mich traurig!"
+  - "Sie $n,m,s,n,22,1,10$ |macht mich auch traurig"
+  - "Die $n,f,p,n,23,1,10$ |machen mich ebenfalls traurig"
+  - "Diese $n,f,s,2n,3,1,10$ |macht mich auch traurig"
