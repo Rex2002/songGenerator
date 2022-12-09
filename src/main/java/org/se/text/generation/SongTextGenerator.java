@@ -22,8 +22,7 @@ public class SongTextGenerator {
 		Structure structure = strucs.get(ran.nextInt(Config.getStructures().size()));
 		structure.setGenre(Genre.POP);
 
-		HashMap<String, String[][]> partTextMap = g.generateSongText(structure, TermExample.getExample());
-		System.out.println(partTextMap);
+		HashMap<String, List<String[][]>> partTextMap = g.generateSongText(structure, TermExample.getExample());
 	}
 
 	private MusicalKey key;
@@ -41,7 +40,7 @@ public class SongTextGenerator {
 	private List<Integer> usedStrophes = new ArrayList<>(); // to check if a strophe was used in the Song before
 
 	// Midi-Sequence Generator calls SongTextGenerator()
-	public HashMap<String,String[][]> generateSongText(Structure structure, TermCollection termCollection) {
+	public HashMap<String,List<String[][]>> generateSongText(Structure structure, TermCollection termCollection) {
 
 		List<String[]> songText = new ArrayList<>();
 		this.termCollection = termCollection;
@@ -50,40 +49,42 @@ public class SongTextGenerator {
 
 
 		List<String> order = structure.getOrder();
-
 		for (String s : order) {
 			songText.add(generateStrophe(structure.getGenre(), structure.getParts().get(s).getLength()));
 		}
 
-
 		printSongtext(songText,order);
 
-		HashMap<String,String[][]> partTextMap;
+		HashMap<String,List<String[][]>> partTextMap;
 		partTextMap = getPartText(order,songText);
 
 
 		return partTextMap;
 	}
 
-	private HashMap<String, String[][]> getPartText(List<String> order, List<String[]> songText) {
-		HashMap<String, String[][]> partTextMap = new HashMap<>();
+	private HashMap<String, List<String[][]>> getPartText(List<String> order, List<String[]> songText) {
+		HashMap<String, List<String[][]>> partTextMap = new HashMap<>();
 		for (int i = 0; i < order.size(); i++) {
 			//for example the second verse
 			String partName = order.get(i);
-			int j = 1;
-			while (partTextMap.containsKey(partName)){
-				j++;
-
-				try{
-					if(Integer.parseInt(partName.substring(partName.length()-1)) <= 10 )partName = partName.substring(0,partName.length()-1);
-				}
-				catch (NumberFormatException ex){}
-
-				partName += Integer.toString(j);//TODO kommt was komisches raus von der Reihenfolge her
+			if(!partTextMap.containsKey(partName)){
+				partTextMap.put(partName, new ArrayList<>());
 			}
-
-
-			partTextMap.put(partName,getPartSyllSmoosh(songText.get(i)));
+			partTextMap.get(partName).add(getPartSyllSmoosh(songText.get(i)));
+//			int j = 1;
+//			while (partTextMap.containsKey(partName)){
+//				j++;
+//
+//				try{
+//					if(Integer.parseInt(partName.substring(partName.length()-1)) <= 10 )partName = partName.substring(0,partName.length()-1);
+//				}
+//				catch (NumberFormatException ignored){}
+//
+//				partName += Integer.toString(j);//TODO kommt was komisches raus von der Reihenfolge her
+//			}
+//
+//
+//			partTextMap.put(partName,getPartSyllSmoosh(songText.get(i)));
 		}
 		return partTextMap;
 	}
@@ -120,9 +121,7 @@ public class SongTextGenerator {
 	}
 
 	private String[] generateStrophe(Genre genre, int partLength) {
-		if (genre == Genre.BLUES) {
-			return null;
-		} else if (genre == Genre.POP) {
+		if (genre == Genre.POP || genre == Genre.BLUES) {
 			templateImporter = new TemplateImporter();
 			List<PopTemplate> popTemplateList = templateImporter.getTemplate(genre);
 
@@ -133,9 +132,11 @@ public class SongTextGenerator {
 			for (int i = 0; i < partLength/2; i++) {
 				verse[i] = getVerse(popTemplate.getStrophe()[i]);
 			}
-
 			return getPartText(verse, partLength);
 
+		}
+		else if (genre == Genre.BLUES) {
+			return null;
 		}
 
 		return null;
@@ -151,7 +152,6 @@ public class SongTextGenerator {
 				return popTemplate;
 			}
 		}
-		System.out.println("pop Template bc useless: " + popTemplate);
 		return popTemplate;
 
 		// TODO popTemplate length does not fit requirements

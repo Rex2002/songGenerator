@@ -46,14 +46,14 @@ public class Part {
 	 * @param trackMapping
 	 *            - the Instrument-track-mapping of the sequence
 	 */
-	public void fillPart(List<List<String>> chordProgression, MusicalKey key, Map<Integer, Integer> trackMapping) {
+	public void fillPart(List<List<String>> chordProgression, MusicalKey key, Map<Integer, Integer> trackMapping, int themeLength) {
 		this.chordProgression = chordProgression;
-		fillPart(key, trackMapping);
+		fillPart(key, trackMapping, themeLength);
 	}
 
-	private void fillPart(MusicalKey key, Map<Integer, Integer> trackMapping) {
+	private void fillPart(MusicalKey key, Map<Integer, Integer> trackMapping, int themeLength) {
 		int beatNo = ran.nextInt(BeatContainer.getDrumBeats().size());
-		Theme theme = new Theme(key, chordProgression);
+		Theme theme = new Theme(key, chordProgression, themeLength);
 		MidiPlayable m;
 		PitchedPlayable p;
 		MidiText t;
@@ -91,7 +91,7 @@ public class Part {
 					m = new BassContainer(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar, key,
 							chordProgression.get(bar % chordProgression.size()), chordProgression.get((bar + 1) % chordProgression.size()));
 					midiPlayables.add(m);
-				} else if (bar % 4 == 0) {
+				} else if (bar % theme.getLengthInBars() == 0) {
 					if (instr.toString().equals("melody2")) {
 						m = new ThemeVariation(theme, trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar, false);
 					} else {
@@ -113,9 +113,9 @@ public class Part {
 	 * @param trackMapping
 	 *            - the Instrument-track-mapping of the sequence
 	 */
-	public void fillRandomly(MusicalKey key, Map<Integer, Integer> trackMapping) {
+	public void fillRandomly(MusicalKey key, Map<Integer, Integer> trackMapping, int themeLength) {
 		chordProgression = Config.getChordProgressions().get(ran.nextInt(Config.getChordProgressions().size()));
-		fillPart(key, trackMapping);
+		fillPart(key, trackMapping, themeLength);
 	}
 
 	@Override
