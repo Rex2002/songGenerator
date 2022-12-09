@@ -1,5 +1,8 @@
 package org.se.text.metric;
 
+/**
+ * @author Jakob Kautz
+ */
 public class Hyphenizer {
 	public static int CountSyllabes(String terms) {
 		int count = 0;

@@ -1,9 +1,11 @@
 package org.se.text.metric;
 
 import java.util.*;
-
 import org.se.text.analysis.TermCollection;
 
+/**
+ * @author Jakob Kautz
+ */
 public class MetricAnalyzer {
 	public static int metricsGet(String content, TermCollection terms) {
 		// Find Average length for sentences and hyphen in order to determine text speed

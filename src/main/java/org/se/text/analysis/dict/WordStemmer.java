@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import org.se.Tuple;
-import org.se.Util;
 import org.se.text.analysis.model.AffixType;
 import org.se.text.analysis.model.CompoundPart;
 

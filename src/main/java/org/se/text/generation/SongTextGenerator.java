@@ -10,6 +10,9 @@ import org.se.text.analysis.model.GrammaticalCase;
 import org.se.text.analysis.model.Numerus;
 import org.se.text.metric.Hyphenizer;
 
+/**
+ * @author Olivier stenzel
+ */
 public class SongTextGenerator {
 
 	private TemplateImporter templateImporter;
@@ -36,28 +39,26 @@ public class SongTextGenerator {
 	// this
 	private String[] partText;
 
-	private HashMap<Integer,String> usedWords = new HashMap<>(); // to check if a Term was used in the Song before
+	private HashMap<Integer, String> usedWords = new HashMap<>(); // to check if a Term was used in the Song before
 	private List<Integer> usedStrophes = new ArrayList<>(); // to check if a strophe was used in the Song before
 
 	// Midi-Sequence Generator calls SongTextGenerator()
-	public HashMap<String,List<String[][]>> generateSongText(Structure structure, TermCollection termCollection) {
+	public HashMap<String, List<String[][]>> generateSongText(Structure structure, TermCollection termCollection) {
 
 		List<String[]> songText = new ArrayList<>();
 		this.termCollection = termCollection;
 		key = structure.getKey();
 		parts = structure.getParts();
 
-
 		List<String> order = structure.getOrder();
 		for (String s : order) {
 			songText.add(generateStrophe(structure.getGenre(), structure.getParts().get(s).getLength()));
 		}
 
-		printSongtext(songText,order);
+		printSongtext(songText, order);
 
-		HashMap<String,List<String[][]>> partTextMap;
-		partTextMap = getPartText(order,songText);
-
+		HashMap<String, List<String[][]>> partTextMap;
+		partTextMap = getPartText(order, songText);
 
 		return partTextMap;
 	}
@@ -65,26 +66,26 @@ public class SongTextGenerator {
 	private HashMap<String, List<String[][]>> getPartText(List<String> order, List<String[]> songText) {
 		HashMap<String, List<String[][]>> partTextMap = new HashMap<>();
 		for (int i = 0; i < order.size(); i++) {
-			//for example the second verse
+			// for example the second verse
 			String partName = order.get(i);
-			if(!partTextMap.containsKey(partName)){
+			if (!partTextMap.containsKey(partName)) {
 				partTextMap.put(partName, new ArrayList<>());
 			}
 			partTextMap.get(partName).add(getPartSyllSmoosh(songText.get(i)));
-//			int j = 1;
-//			while (partTextMap.containsKey(partName)){
-//				j++;
-//
-//				try{
-//					if(Integer.parseInt(partName.substring(partName.length()-1)) <= 10 )partName = partName.substring(0,partName.length()-1);
-//				}
-//				catch (NumberFormatException ignored){}
-//
-//				partName += Integer.toString(j);//TODO kommt was komisches raus von der Reihenfolge her
-//			}
-//
-//
-//			partTextMap.put(partName,getPartSyllSmoosh(songText.get(i)));
+			// int j = 1;
+			// while (partTextMap.containsKey(partName)){
+			// j++;
+			//
+			// try{
+			// if(Integer.parseInt(partName.substring(partName.length()-1)) <= 10 )partName = partName.substring(0,partName.length()-1);
+			// }
+			// catch (NumberFormatException ignored){}
+			//
+			// partName += Integer.toString(j);//TODO kommt was komisches raus von der Reihenfolge her
+			// }
+			//
+			//
+			// partTextMap.put(partName,getPartSyllSmoosh(songText.get(i)));
 		}
 		return partTextMap;
 	}
@@ -92,9 +93,9 @@ public class SongTextGenerator {
 	private String[][] getPartSyllSmoosh(String[] stropheText) {
 		String[][] textSyllSmoosh = new String[stropheText.length][2];
 
-		for(int i = 0; i < stropheText.length;i++){
+		for (int i = 0; i < stropheText.length; i++) {
 			textSyllSmoosh[i][0] = stropheText[i];
-			textSyllSmoosh[i][1] =  Integer.toString(countSyllables(stropheText[i]));	//TODO
+			textSyllSmoosh[i][1] = Integer.toString(countSyllables(stropheText[i])); // TODO
 		}
 
 		return textSyllSmoosh;
@@ -104,16 +105,16 @@ public class SongTextGenerator {
 		int sylCounter = 0;
 		String[] words = s.split(" ");
 
-		for(int i = 0; i < words.length;i++) {
+		for (int i = 0; i < words.length; i++) {
 			sylCounter += Hyphenizer.CountSyllabes(words[i]);
 		}
 		return sylCounter;
 	}
 
-	private void printSongtext(List<String[]> songText,List<String> order) {
-		for(int j = 0; j < songText.size();j++) {
+	private void printSongtext(List<String[]> songText, List<String> order) {
+		for (int j = 0; j < songText.size(); j++) {
 			System.out.println(order.get(j));
-			//print part-Content
+			// print part-Content
 			for (int i = 0; i < songText.get(j).length; i++) {
 				System.out.println("Takt" + (i + 1) + ": " + songText.get(j)[i]);
 			}
@@ -129,13 +130,12 @@ public class SongTextGenerator {
 
 			// go through the strophe and store the verses
 			String[] verse = new String[partLength / 2];
-			for (int i = 0; i < partLength/2; i++) {
+			for (int i = 0; i < partLength / 2; i++) {
 				verse[i] = getVerse(popTemplate.getStrophe()[i]);
 			}
 			return getPartText(verse, partLength);
 
-		}
-		else if (genre == Genre.BLUES) {
+		} else if (genre == Genre.BLUES) {
 			return null;
 		}
 
@@ -184,8 +184,8 @@ public class SongTextGenerator {
 		int beginning = rawString.indexOf('$');
 		int end = rawString.indexOf('$', beginning + 1);
 
-		//if ther's no variable Word in the verse
-		if(end < 0)return rawString;
+		// if ther's no variable Word in the verse
+		if (end < 0) return rawString;
 
 		System.out.println(beginning + 1);
 		System.out.println(end);
@@ -198,7 +198,7 @@ public class SongTextGenerator {
 	}
 
 	private String[] getStringArrFromRequirementsVariableString(String requirementsVariableString) {
-		String[] strArr = new String[]{"","","","","","",""}; //to have empty (not null) values in String[]
+		String[] strArr = new String[] { "", "", "", "", "", "", "" }; // to have empty (not null) values in String[]
 		int index = 0;
 		while (requirementsVariableString.length() > 0) {
 			if (requirementsVariableString.charAt(0) == ',') index++;
@@ -224,20 +224,18 @@ public class SongTextGenerator {
 
 	private String getTerm(String[] requirements) {
 		int id = getIdFromRequirements(requirements);
-		//if id was already used
-		if(usedWords.containsKey(id))return usedWords.get(id);
+		// if id was already used
+		if (usedWords.containsKey(id)) return usedWords.get(id);
 
-		List<? extends Term>  termList;
+		List<? extends Term> termList;
 
-		String[] test = new String[]{"n"};
+		String[] test = new String[] { "n" };
 		if (isNoun(requirements)) {
 			termList = getNounsTermListFromRequirements(requirements);
 		} else {
 			termList = getVerbsTermListFromRequirements(requirements);// hier fürs Beispiel nomen Statt Verben TODO!!
 
 		}
-
-
 
 		// System.out.println(termList);
 
@@ -246,7 +244,7 @@ public class SongTextGenerator {
 		int position; // default 0
 		if (termListSize != 0) {
 			position = getCorrectPosition(termList, id);
-			usedWords.put(id,termList.get(position).getWord());
+			usedWords.put(id, termList.get(position).getWord());
 			return termList.get(position).getWord();
 		} else {
 			return "DaPasstWohlNichts";
@@ -322,8 +320,8 @@ public class SongTextGenerator {
 
 	private int getIdFromRequirements(String[] requirements) {
 		int position = 1;
-		//for nouns
-		if(isNoun(requirements)) position = 4;
+		// for nouns
+		if (isNoun(requirements)) position = 4;
 		try {
 			return Integer.parseInt(requirements[position]);
 		} catch (NumberFormatException ex) {
@@ -339,12 +337,12 @@ public class SongTextGenerator {
 		} else return null;
 	}
 
-	private int getCorrectPosition(List<? extends Term>  termList, int id) {
+	private int getCorrectPosition(List<? extends Term> termList, int id) {
 		Random ran = new Random();
 		int termListSize = termList.size();
 
-		for(int i = 0; i < termListSize;i++){
-			//word was not used yet
+		for (int i = 0; i < termListSize; i++) {
+			// word was not used yet
 			if (!usedWords.containsValue(termList.get(i))) {
 				return i;
 			}
@@ -373,7 +371,6 @@ public class SongTextGenerator {
 	private List<String> getNounsExamples() {
 		return List.of(getOneTermTesting().get(0).getWord());
 	}
-
 
 	private String AlleMeineEntchen(List<Term> terms) {
 		String vari = terms.get(0).getWord();

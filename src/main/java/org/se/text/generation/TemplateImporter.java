@@ -2,16 +2,16 @@ package org.se.text.generation;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-
 import org.se.music.model.Genre;
 import org.se.text.generation.PopTemplate;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
 
+/**
+ * @author Olivier stenzel
+ */
 public class TemplateImporter {
 	YAMLFactory yaml = new YAMLFactory();
 	ObjectMapper mapper = new ObjectMapper(yaml);

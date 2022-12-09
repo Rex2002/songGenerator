@@ -10,6 +10,9 @@ import java.nio.file.Paths;
 
 //Reurn ist string!!!
 
+/**
+ * @author Jakob Kautz
+ */
 public class FileReader {
 	public static String main(String path) throws IOException {
 		// Bekomme Pfad von UI

@@ -1,3 +1,5 @@
+# @author Olivier Stenzel
+# @author Jakob Kautz
 
 #for a variable write: $(v,int id,int syllMin,int syllMax)|(n,f|m|n,p|s,n|a|d|g,int id,int syllMin,int syllMax)$
 # #############
@@ -20,113 +22,111 @@
 #1
 length: 8
 strophe:
-  - "Deine $v,11,1,10$|machen mich gluecklich"
-  - "Eure $v,12,1,10$|machen mich gluecklich"
-  - "Unsere $n,f,p,n,13,2,10$|machen mich gluecklich"
-  - "Keiner $n,f,p,n,14,2,10$|machen mich gluecklich"
+    - 'Deine $v,11,1,10$|machen mich gluecklich'
+    - 'Eure $v,12,1,10$|machen mich gluecklich'
+    - 'Unsere $n,f,p,n,13,2,10$|machen mich gluecklich'
+    - 'Keiner $n,f,p,n,14,2,10$|machen mich gluecklich'
 ---
 #2
 length: 8
 strophe:
-  - "Der $n,m,s,n,21,1,10$ |macht mich traurig!"
-  - "Sie $n,m,s,n,22,1,10$ |macht mich auch traurig"
-  - "Die $n,f,p,n,23,1,10$ |machen mich ebenfalls traurig"
-  - "Diese $n,f,s,2n,3,1,10$ |macht mich auch traurig"
+    - 'Der $n,m,s,n,21,1,10$ |macht mich traurig!'
+    - 'Sie $n,m,s,n,22,1,10$ |macht mich auch traurig'
+    - 'Die $n,f,p,n,23,1,10$ |machen mich ebenfalls traurig'
+    - 'Diese $n,f,s,2n,3,1,10$ |macht mich auch traurig'
 ---
 #3
 length: 16
 strophe:
-  - "Wir $n,m,p,n,31,1,10$ |machen mich abhaengig"
-  - "Ihr $n,f,p,n,32,1,10$ |machen mich abhaengig"
-  - "Soe $n,f,p,n,33,1,10$ |machen mich abhaengig"
-  - "Meine $n,f,p,n,34,2,10$ |machen mich abhaengig"
-  - "Wir $n,m,p,n,35,1,10$ |machen mich abhaengig"
-  - "Ihr $n,f,p,n,36,1,10$ |machen mich abhaengig"
-  - "Soe $n,f,p,n,37,1,10$ |machen mich abhaengig"
-  - "Meine $n,f,p,n,38,2,10$ |machen mich abhaengig"
+    - 'Wir $n,m,p,n,31,1,10$ |machen mich abhaengig'
+    - 'Ihr $n,f,p,n,32,1,10$ |machen mich abhaengig'
+    - 'Soe $n,f,p,n,33,1,10$ |machen mich abhaengig'
+    - 'Meine $n,f,p,n,34,2,10$ |machen mich abhaengig'
+    - 'Wir $n,m,p,n,35,1,10$ |machen mich abhaengig'
+    - 'Ihr $n,f,p,n,36,1,10$ |machen mich abhaengig'
+    - 'Soe $n,f,p,n,37,1,10$ |machen mich abhaengig'
+    - 'Meine $n,f,p,n,38,2,10$ |machen mich abhaengig'
 
-  
 ---
 #4
 length: 8
 strophe:
- - "$n,m,s,n,41,4,4$ ist ganz mein Thema| hier bekommt ihr mich nicht weg"
- - "Alles was ich brauch im Leb'n|mit $n,m,s,n,42,1,1$ und $n,m,s,n,43,1,1$ hat es ein Zweck"
- - "Jeder sagt mir lass es bleiben| das hat alles keinen Sinn"
- - "Doch wie soll ich sonst verbleiben|$n,f,s,n,44,1,10$ ist voll mein Ding"
+    - '$n,m,s,n,41,4,4$ ist ganz mein Thema| hier bekommt ihr mich nicht weg'
+    - "Alles was ich brauch im Leb'n|mit $n,m,s,n,42,1,1$ und $n,m,s,n,43,1,1$ hat es ein Zweck"
+    - 'Jeder sagt mir lass es bleiben| das hat alles keinen Sinn'
+    - 'Doch wie soll ich sonst verbleiben|$n,f,s,n,44,1,10$ ist voll mein Ding'
 
 ---
-   #4
+#4
 length: 8
 strophe:
-  - "$n,m,s,n,41,4,4$ ist ganz mein Thema| hier bekommt ihr mich nicht weg"
-  - "Alles was ich brauch im Leb'n|mit $n,m,s,n,42,1,1$ und $n,m,s,n,43,1,1$ hat es ein Zweck"
-  - "Jeder sagt mir lass es bleiben| das hat alles keinen Sinn"
-  - "Doch wie soll ich sonst verbleiben|$n,f,s,n,44,1,10$ ist voll mein Ding"
+    - '$n,m,s,n,41,4,4$ ist ganz mein Thema| hier bekommt ihr mich nicht weg'
+    - "Alles was ich brauch im Leb'n|mit $n,m,s,n,42,1,1$ und $n,m,s,n,43,1,1$ hat es ein Zweck"
+    - 'Jeder sagt mir lass es bleiben| das hat alles keinen Sinn'
+    - 'Doch wie soll ich sonst verbleiben|$n,f,s,n,44,1,10$ ist voll mein Ding'
 
 ---
 #5
 length: 16
 strophe:
- - "Ich lieb mein $n,m,s,n,51,1,4$|geh' hier nicht weg"
- - "Genau wo ich bin|da ist mein Platz"
- - "hier werd ich $v,n,p,n,52,1,4$| an diesem Fleck"
- - "Ich lieb mein $n,m,p,n,51,1,4$|ich geh' hier nicht weg"
- - "Ich hab ne tolle $n,f,s,n,53,1,4$| mein $n,f,s,n,54,1,4$ im Gepäck"
- - "und just in case für alle Fälle| mein eigenes versteck"
- - "ich hab mein $n,m,p,n,51,1,4$ | an diesem Ort"
- - "denkst ich bin hier doch ich bind dort|und begehe ab und zu ein Mord"
- 
+    - "Ich lieb mein $n,m,s,n,51,1,4$|geh' hier nicht weg"
+    - 'Genau wo ich bin|da ist mein Platz'
+    - 'hier werd ich $v,n,p,n,52,1,4$| an diesem Fleck'
+    - "Ich lieb mein $n,m,p,n,51,1,4$|ich geh' hier nicht weg"
+    - 'Ich hab ne tolle $n,f,s,n,53,1,4$| mein $n,f,s,n,54,1,4$ im Gepäck'
+    - 'und just in case für alle Fälle| mein eigenes versteck'
+    - 'ich hab mein $n,m,p,n,51,1,4$ | an diesem Ort'
+    - 'denkst ich bin hier doch ich bind dort|und begehe ab und zu ein Mord'
 
 ---
 #6
 length: 16
 strophe:
- - "Ich weiß das ich weiß was die $n,m,s,n,61,2,8$ wirklich heißt|und doch steh ich vor Verständnislosigkeit"
- - "$v,n,s,n,62,1,8$$v,n,s,n,63,2,8$$v,n,s,n,64,1,8$$v,n,s,n,65,2,8$| versteh nicht was ihr seid"
- - "Konnt früher mal jeden Kniff|mir alles mir gemerkt"
- - "Doch jetzt, was älter frag ich mich|$n,m,s,n,66,2,8$ bist dus wirklich Wert"
- - "Immer nur noch neue Dinge|wann hört der Wahnsinn auf"
- - "$v,n,s,n,67,1,8$ jedes mal aufs neue|bist nur noch der größte Graus"
- - "Ich dachte das ich wüsste was $n,m,s,n,61,2,8$ wirklich heißt|doch jeden Tag den seh ich wieder"
- - "das ich keine Ahnung hab|$n,m,s,n,61,2,8$ du machst mich platt"
+    - 'Ich weiß das ich weiß was die $n,m,s,n,61,2,8$ wirklich heißt|und doch steh ich vor Verständnislosigkeit'
+    - '$v,n,s,n,62,1,8$$v,n,s,n,63,2,8$$v,n,s,n,64,1,8$$v,n,s,n,65,2,8$| versteh nicht was ihr seid'
+    - 'Konnt früher mal jeden Kniff|mir alles mir gemerkt'
+    - 'Doch jetzt, was älter frag ich mich|$n,m,s,n,66,2,8$ bist dus wirklich Wert'
+    - 'Immer nur noch neue Dinge|wann hört der Wahnsinn auf'
+    - '$v,n,s,n,67,1,8$ jedes mal aufs neue|bist nur noch der größte Graus'
+    - 'Ich dachte das ich wüsste was $n,m,s,n,61,2,8$ wirklich heißt|doch jeden Tag den seh ich wieder'
+    - 'das ich keine Ahnung hab|$n,m,s,n,61,2,8$ du machst mich platt'
 
 ---
 #7
 length: 8
 strophe:
- - "neunundneunzig $n,m,s,n,71,2,8$|$v,n,s,n,72,1,8$ überm $n,m,s,n,73,2,8$"
- - "Man hielt ihn für $n,n,s,n,74,2,8$ aus dem $n,m,s,n,75,3,8$| So schickte man ein $n,m,s,n,76,3,8$"
- - "und noch ne $n,m,s,n,77,1,4$ dazu|hoffte auf ein Rendevou"
- - "Doch leider passierte nichts| denn wie das Thema ist dieses Lied ein Witz"
- 
+    - 'neunundneunzig $n,m,s,n,71,2,8$|$v,n,s,n,72,1,8$ überm $n,m,s,n,73,2,8$'
+    - 'Man hielt ihn für $n,n,s,n,74,2,8$ aus dem $n,m,s,n,75,3,8$| So schickte man ein $n,m,s,n,76,3,8$'
+    - 'und noch ne $n,m,s,n,77,1,4$ dazu|hoffte auf ein Rendevou'
+    - 'Doch leider passierte nichts| denn wie das Thema ist dieses Lied ein Witz'
+
 ---
 #8
 length: 16
 strophe:
- - "Alle meine $n,m,p,n,81,2,8$ | $v,m,s,n,82,2,8$ auf dem $n,m,s,n,83,2,8$"
- - "$v,m,s,n,82,2,8$ auf dem |$n,m,s,n,83,2,8$"
- - "$v,m,s,n,84,2,8$ in das Wasser | $n,m,s,n,85,2,8$ in die höh"
- - "Alle zusammen, kommt singt mit| machen wir den Song zum hit"
- - "Alle meine $n,m,p,n,81,2,8$ | $v,m,s,n,82,2,8$ auf dem $n,m,s,n,83,2,8$"
- - "$v,m,s,n,82,2,8$ auf dem |$n,m,s,n,83,2,8$"
- - "$v,m,s,n,84,2,8$ in das Wasser | $n,m,s,n,85,2,8$ in die höh"
- - "Und jetzt nochma seit bereit|jetzt ists $n,m,s,n,81,2,8$ Zeit"
- 
+    - 'Alle meine $n,m,p,n,81,2,8$ | $v,m,s,n,82,2,8$ auf dem $n,m,s,n,83,2,8$'
+    - '$v,m,s,n,82,2,8$ auf dem |$n,m,s,n,83,2,8$'
+    - '$v,m,s,n,84,2,8$ in das Wasser | $n,m,s,n,85,2,8$ in die höh'
+    - 'Alle zusammen, kommt singt mit| machen wir den Song zum hit'
+    - 'Alle meine $n,m,p,n,81,2,8$ | $v,m,s,n,82,2,8$ auf dem $n,m,s,n,83,2,8$'
+    - '$v,m,s,n,82,2,8$ auf dem |$n,m,s,n,83,2,8$'
+    - '$v,m,s,n,84,2,8$ in das Wasser | $n,m,s,n,85,2,8$ in die höh'
+    - 'Und jetzt nochma seit bereit|jetzt ists $n,m,s,n,81,2,8$ Zeit'
+
 ---
 #9
 length: 8
 strophe:
- - "Hallo, mein $n,m,s,n,91,2,8$| ich $v,m,s,n,92,2,8$ Dich."
- - "Du bist die $n,m,s,n,93,2,8$| für mich."
- - "Die anderen $n,m,s,n,94,2,8$|sind alle alle doof"
- - "deswegen mach ich Dir den Hof."
+    - 'Hallo, mein $n,m,s,n,91,2,8$| ich $v,m,s,n,92,2,8$ Dich.'
+    - 'Du bist die $n,m,s,n,93,2,8$| für mich.'
+    - 'Die anderen $n,m,s,n,94,2,8$|sind alle alle doof'
+    - 'deswegen mach ich Dir den Hof.'
 
 ---
 #10
 length: 8
 strophe:
- - "Ich lieb mein $n,m,s,n,101,2,8$|Lalalala Lalalala Lalalala Lalala"
- - "Ich lieb mein $n,m,s,n,101,2,8$|Lalalala Lalalala Lalalala Lalala"
- - "Ich lieb mein $n,m,s,n,101,2,8$|Lalalala Lalalala Lalalala Lalala"
- - "Ja ich lieb dich|yeah yeah"
+    - 'Ich lieb mein $n,m,s,n,101,2,8$|Lalalala Lalalala Lalalala Lalala'
+    - 'Ich lieb mein $n,m,s,n,101,2,8$|Lalalala Lalalala Lalalala Lalala'
+    - 'Ich lieb mein $n,m,s,n,101,2,8$|Lalalala Lalalala Lalalala Lalala'
+    - 'Ja ich lieb dich|yeah yeah'

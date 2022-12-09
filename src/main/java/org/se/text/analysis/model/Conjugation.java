@@ -1,7 +1,6 @@
 package org.se.text.analysis.model;
 
 import java.util.*;
-
 import org.se.text.analysis.dict.TermAffix;
 
 /**

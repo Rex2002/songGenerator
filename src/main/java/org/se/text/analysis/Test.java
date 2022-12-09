@@ -1,9 +1,11 @@
 package org.se.text.analysis;
 
 import java.io.IOException;
-
 import org.se.text.analysis.dict.Dict;
 
+/**
+ * @author Val Richter
+ */
 public class Test {
 	public static void main(String[] args) throws IOException {
 		Dict dict = Dict.getDefault();

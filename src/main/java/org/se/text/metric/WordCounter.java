@@ -1,5 +1,8 @@
 package org.se.text.metric;
 
+/**
+ * @author Jakob Kautz
+ */
 public class WordCounter {
 	public static int[] countWords(String content) {
 		String c = content;
