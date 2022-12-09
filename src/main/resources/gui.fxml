@@ -7,7 +7,7 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane blendMode="DARKEN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.Controller">
+<AnchorPane blendMode="DARKEN" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="794.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.se.gui.Controller">
    <children>
       <Label fx:id="load_pane_drag" alignment="CENTER" blendMode="DARKEN" layoutX="37.0" layoutY="152.0" onDragDropped="#dropFile" onDragOver="#dragFile" prefHeight="231.0" prefWidth="720.0" style="-fx-background-color: gray;" text="Drag .pdf or .txt file here!" textAlignment="CENTER" />
       <Button fx:id="load_pane_load" layoutX="37.0" layoutY="44.0" mnemonicParsing="false" onAction="#loadClicked" onMouseClicked="#loadClicked" prefHeight="53.0" prefWidth="158.0" text="Load" />
