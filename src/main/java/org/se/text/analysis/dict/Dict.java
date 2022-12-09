@@ -319,8 +319,8 @@ public class Dict {
 
 	private NounTerm createNounTermHelper(final String radix, WordWithData genderChangeSuffix, Gender gender, GrammaticalCase grammaticalCase,
 			Numerus numerus) {
-		List<Declination> suffixes = Util.findAll(declinatedAffixes,
-				s -> s.getGender() == gender && s.getGrammaticalCase() == grammaticalCase && s.getNumerus() == numerus && !radix.endsWith(s.radix));
+		List<Declination> suffixes = Util.findAll(declinatedAffixes, s -> s.getGender() == gender && s.getGrammaticalCase() == grammaticalCase
+				&& s.getNumerus() == numerus && !radix.endsWith(s.getRadix()) && !radix.endsWith(s.getRadix().substring(0, 1)));
 
 		if (!suffixes.isEmpty()) {
 			Declination suffix = suffixes.get(0);
