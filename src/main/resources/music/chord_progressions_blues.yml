@@ -1,4 +1,14 @@
 # @author Malte Richert
-# @author Benjamin Frahm
-# TODO actual blues progressions still need to be added
-- [['0'], ['0'], ['07'], ['07'], ['3'], ['37'], ['0'], ['07'], ['47'], ['37'], ['0'], ['0']]
+# @reviewer Benjamin Frahm
+# each list in the list describes one bar. If there are multiple elements in the inner list, the bar is split equally
+# first char indicates the step of the scale (0: tonic, 4: dominant etc.), the rest is a modifier as configured in chord_modifiers.yml
+# 0, 3, 4 in major, others minor
+#
+# Standard pattern
+- [["07"], ["07"], ["07"], ["07"],["37"], ["37"], ["07"], ["07"],["47"], ["37"], ["07"], ["07"]]
+# pattern with turnaround
+- [["07"], ["07"], ["07"], ["07"],["37"], ["37"], ["07"], ["07"],["47"], ["37"], ["07"], ["47"]]
+# pattern with quick change
+- [["07"], ["37"], ["07"], ["07"],["37"], ["37"], ["07"], ["07"],["47"], ["37"], ["07"], ["07"]]
+# pattern with quick change and turnaround
+- [["07"], ["37"], ["07"], ["07"],["37"], ["37"], ["07"], ["07"],["47"], ["37"], ["07"], ["47"]]
