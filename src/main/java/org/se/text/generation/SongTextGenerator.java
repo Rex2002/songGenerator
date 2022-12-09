@@ -184,6 +184,13 @@ public class SongTextGenerator {
 		int beginning = rawString.indexOf('$');
 		int end = rawString.indexOf('$', beginning + 1);
 
+		//if ther's no variable Word in the verse
+		if(end < 0)return rawString;
+
+		System.out.println(beginning + 1);
+		System.out.println(end);
+		System.out.println(rawString.length());
+
 		String requirementsVariableString = rawString.substring(beginning + 1, end);
 		String[] strArr = getStringArrFromRequirementsVariableString(requirementsVariableString);
 

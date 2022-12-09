@@ -17,7 +17,6 @@
 #-----------------------------
 # | sagt neuer Takt anfangen
 
-
 #1
 length: 8
 strophe:
@@ -55,7 +54,16 @@ strophe:
  - "Alles was ich brauch im Leb'n|mit $n,m,s,n,42,1,1$ und $n,m,s,n,43,1,1$ hat es ein Zweck"
  - "Jeder sagt mir lass es bleiben| das hat alles keinen Sinn"
  - "Doch wie soll ich sonst verbleiben|$n,f,s,n,44,1,10$ ist voll mein Ding"
- 
+
+---
+   #4
+length: 8
+strophe:
+  - "$n,m,s,n,41,4,4$ ist ganz mein Thema| hier bekommt ihr mich nicht weg"
+  - "Alles was ich brauch im Leb'n|mit $n,m,s,n,42,1,1$ und $n,m,s,n,43,1,1$ hat es ein Zweck"
+  - "Jeder sagt mir lass es bleiben| das hat alles keinen Sinn"
+  - "Doch wie soll ich sonst verbleiben|$n,f,s,n,44,1,10$ ist voll mein Ding"
+
 ---
 #5
 length: 16
@@ -70,7 +78,7 @@ strophe:
  - "denkst ich bin hier doch ich bind dort|und begehe ab und zu ein Mord"
  
 
- ---
+---
 #6
 length: 16
 strophe:
@@ -85,7 +93,7 @@ strophe:
 
 ---
 #7
-length: 16
+length: 8
 strophe:
  - "neunundneunzig $n,m,s,n,71,2,8$|$v,n,s,n,72,1,8$ überm $n,m,s,n,73,2,8$"
  - "Man hielt ihn für $n,n,s,n,74,2,8$ aus dem $n,m,s,n,75,3,8$| So schickte man ein $n,m,s,n,76,3,8$"
@@ -107,7 +115,7 @@ strophe:
  
 ---
 #9
-length: 16
+length: 8
 strophe:
  - "Hallo, mein $n,m,s,n,91,2,8$| ich $v,m,s,n,92,2,8$ Dich."
  - "Du bist die $n,m,s,n,93,2,8$| für mich."
@@ -116,7 +124,7 @@ strophe:
 
 ---
 #10
-length: 16
+length: 8
 strophe:
  - "Ich lieb mein $n,m,s,n,101,2,8$|Lalalala Lalalala Lalalala Lalala"
  - "Ich lieb mein $n,m,s,n,101,2,8$|Lalalala Lalalala Lalalala Lalala"
