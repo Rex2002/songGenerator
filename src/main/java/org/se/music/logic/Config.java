@@ -21,11 +21,12 @@ public class Config {
 	private static List<Structure> structuresPop, structuresBlues;
 	private static List<List<List<String>>> chordProgressionsPop, chordProgressionsBlues;
 	private static HashMap<String, Integer> instrumentMapping;
-	private static Genre genreFlag;
+	private static Genre genre;
 
-	public static void loadConfig() {
+	public static void loadConfig(Genre inputGenre) {
 		YAMLFactory yaml = new YAMLFactory();
 		ObjectMapper mapper = new ObjectMapper(yaml);
+		genre = inputGenre;
 
 		// load drum program config into BeatContainer
 		try {
@@ -98,18 +99,17 @@ public class Config {
 	}
 
 	public static List<Structure> getStructures() {
-		return genreFlag == Genre.BLUES ? structuresBlues : structuresPop;
+		return switch (genre) {
+			case POP -> structuresPop;
+			case BLUES -> structuresBlues;
+		};
 	}
 
 	public static List<List<List<String>>> getChordProgressions() {
-		return genreFlag == Genre.BLUES ? chordProgressionsBlues : chordProgressionsPop;
+		return genre == Genre.BLUES ? chordProgressionsBlues : chordProgressionsPop;
 	}
 
 	public static HashMap<String, Integer> getInstrumentMapping() {
 		return instrumentMapping;
-	}
-
-	public static void setGenreFlag(Genre genre) {
-		genreFlag = genre;
 	}
 }

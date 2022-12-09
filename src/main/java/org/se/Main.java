@@ -18,12 +18,12 @@ import java.util.Map;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
-		Config.loadConfig();
 		Dict dictionary = Dict.getDefault();
 
 		// these are test values that will eventually be passed by UI and TextAnalyzer
 		String filepath = args.length > 0 ? args[0] : "test.txt";
 		Map<String, Object> settings = Map.of("genre", Genre.BLUES, "nsfw", false, "tempo", 120);
+		Config.loadConfig((Genre) settings.get("genre"));
 
 
 		String content = FileReader.main(filepath);
