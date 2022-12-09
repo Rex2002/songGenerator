@@ -1,5 +1,6 @@
 package org.se.music.logic;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
@@ -30,7 +31,8 @@ public class Config {
 
 		// load drum program config into BeatContainer
 		try {
-			BeatContainer.setDrumPrograms(mapper.readValue(new File("./src/main/resources/music/drum_prog_no.yml"), HashMap.class));
+			TypeReference<HashMap<String, Integer>> type = new TypeReference<>() {};
+			BeatContainer.setDrumPrograms(mapper.readValue(new File("./src/main/resources/music/drum_prog_no.yml"), type));
 		} catch (IOException e) {
 			System.out.println("Encountered exception while trying to read drum_prog config.");
 			e.printStackTrace();
@@ -69,7 +71,8 @@ public class Config {
 
 		// load chord modifiers into Chord class
 		try {
-			Chord.setChordModifiers(mapper.readValue(new File("./src/main/resources/music/chord_modifiers.yml"), HashMap.class));
+			TypeReference<HashMap<String, ArrayList<Integer>>> type = new TypeReference<>() {};
+			Chord.setChordModifiers(mapper.readValue(new File("./src/main/resources/music/chord_modifiers.yml"), type));
 		} catch (IOException e) {
 			System.out.println("Encountered exception while trying to read Chord modifiers from config.");
 			e.printStackTrace();
@@ -77,13 +80,15 @@ public class Config {
 
 		// load chord progressions
 		try {
-			chordProgressionsPop = mapper.readValue(new File("./src/main/resources/music/chord_progressions_pop.yml"), ArrayList.class);
+			TypeReference<List<List<List<String>>>> type = new TypeReference<>() {};
+			chordProgressionsPop = mapper.readValue(new File("./src/main/resources/music/chord_progressions_pop.yml"), type);
 		} catch (IOException e) {
 			System.out.println("Encountered exception while trying to read Chord progressions for pop from template.");
 			e.printStackTrace();
 		}
 		try {
-			chordProgressionsBlues = mapper.readValue(new File("./src/main/resources/music/chord_progressions_blues.yml"), ArrayList.class);
+			TypeReference<List<List<List<String>>>> type = new TypeReference<>() {};
+			chordProgressionsBlues = mapper.readValue(new File("./src/main/resources/music/chord_progressions_blues.yml"), type);
 		} catch (IOException e) {
 			System.out.println("Encountered exception while trying to read Chord progressions for blues from template.");
 			e.printStackTrace();
@@ -91,7 +96,8 @@ public class Config {
 
 		// load instrument mappings
 		try {
-			instrumentMapping = mapper.readValue(new File("./src/main/resources/music/instrument_mapping.yml"), HashMap.class);
+			TypeReference<HashMap<String, Integer>> type = new TypeReference<>() {};
+			instrumentMapping = mapper.readValue(new File("./src/main/resources/music/instrument_mapping.yml"), type);
 		} catch (IOException e) {
 			System.out.println("Encountered exception while trying to read Instrument mappings from config.");
 			e.printStackTrace();
