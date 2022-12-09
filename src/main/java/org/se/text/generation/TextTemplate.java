@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.*;
 
-public class PopTemplate {
+public class TextTemplate {
 	@JsonProperty
 	private String[] strophe;
 	@JsonProperty
 	private int length;
 
-	public PopTemplate(@JsonProperty("strophe") String[] strophe,@JsonProperty("length") int length) {
+	public TextTemplate(@JsonProperty("strophe") String[] strophe, @JsonProperty("length") int length) {
 		this.strophe = strophe;
 		this.length = length;
 	}
@@ -23,7 +23,7 @@ public class PopTemplate {
 
 	@Override
 	public String toString() {
-		return "PopTemplate{" +
+		return "Template{" +
 				"strophe=" + Arrays.toString(strophe) +
 				", length=" + length +
 				'}';

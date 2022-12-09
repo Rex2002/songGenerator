@@ -20,7 +20,7 @@ public class SongTextGenerator {
 		Config.loadConfig();
 		List<Structure> strucs = Config.getStructures();
 		Structure structure = strucs.get(ran.nextInt(Config.getStructures().size()));
-		structure.setGenre(Genre.POP);
+		structure.setGenre(Genre.BLUES);
 
 		HashMap<String, List<String[][]>> partTextMap = g.generateSongText(structure, TermExample.getExample());
 	}
@@ -121,38 +121,31 @@ public class SongTextGenerator {
 	}
 
 	private String[] generateStrophe(Genre genre, int partLength) {
-		if (genre == Genre.POP || genre == Genre.BLUES) {
-			templateImporter = new TemplateImporter();
-			List<PopTemplate> popTemplateList = templateImporter.getTemplate(genre);
 
-			PopTemplate popTemplate = getUnusedStrophe(popTemplateList, partLength, 1000);
+			templateImporter = new TemplateImporter();
+			List<TextTemplate> textTemplateList = templateImporter.getTemplate(genre);
+
+			TextTemplate textTemplate = getUnusedStrophe(textTemplateList, partLength, 10, genre);//TODO set value 1000
 
 			// go through the strophe and store the verses
 			String[] verse = new String[partLength / 2];
 			for (int i = 0; i < partLength/2; i++) {
-				verse[i] = getVerse(popTemplate.getStrophe()[i]);
+				verse[i] = getVerse(textTemplate.getStrophe()[i]);
 			}
 			return getPartText(verse, partLength);
 
-		}
-		else if (genre == Genre.BLUES) {
-			return null;
-		}
-
-		return null;
-
 	}
 
-	private PopTemplate getUnusedStrophe(List<PopTemplate> popTemplateList, int partLength, int templateTries) {
-		PopTemplate popTemplate = popTemplateList.get(0);
+	private TextTemplate getUnusedStrophe(List<TextTemplate> textTemplateList, int partLength, int templateTries, Genre genre) {
+		TextTemplate textTemplate = textTemplateList.get(0);
 		for (int i = 0; i < templateTries; i++) {
-			popTemplate = getRandomNotUsedValue(popTemplateList);// get random template
+			textTemplate = getRandomNotUsedValue(textTemplateList, genre);// get random template
 
-			if (popTemplate.getLength() == partLength) {
-				return popTemplate;
+			if (textTemplate.getLength() == partLength) {
+				return textTemplate;
 			}
 		}
-		return popTemplate;
+		return textTemplate;
 
 		// TODO popTemplate length does not fit requirements
 	}
@@ -187,10 +180,6 @@ public class SongTextGenerator {
 		//if ther's no variable Word in the verse
 		if(end < 0)return rawString;
 
-		System.out.println(beginning + 1);
-		System.out.println(end);
-		System.out.println(rawString.length());
-
 		String requirementsVariableString = rawString.substring(beginning + 1, end);
 		String[] strArr = getStringArrFromRequirementsVariableString(requirementsVariableString);
 
@@ -210,13 +199,13 @@ public class SongTextGenerator {
 		return strArr;
 	}
 
-	private PopTemplate getRandomNotUsedValue(List<PopTemplate> unusedTemplates) {
+	private TextTemplate getRandomNotUsedValue(List<TextTemplate> unusedTemplates, Genre genre) {
 		Random ran = new Random();
 
 		if (unusedTemplates.size() == 0) {
-			unusedTemplates = templateImporter.getTemplate(Genre.POP);
+			unusedTemplates = templateImporter.getTemplate(genre);
 		}
-		PopTemplate pTemplate = unusedTemplates.get(ran.nextInt(unusedTemplates.size()));
+		TextTemplate pTemplate = unusedTemplates.get(ran.nextInt(unusedTemplates.size()));
 		unusedTemplates.remove(pTemplate);
 		return pTemplate;
 

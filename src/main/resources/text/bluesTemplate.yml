@@ -19,16 +19,26 @@
 # | sagt neuer Takt anfangen
 
 #1
-length: 8
+length: 12
 strophe:
   - "Ich bin traurig $v,11,1,10$|machen mich gluecklich"
   - "Eure $v,12,1,10$|machen mich gluecklich"
   - "Unsere $n,f,p,n,13,2,10$|machen mich gluecklich"
   - "Keiner $n,f,p,n,14,2,10$|machen mich gluecklich"
+  - "Unsere $n,f,p,n,13,2,10$|machen mich gluecklich"
+  - "Keiner $n,f,p,n,14,2,10$|machen mich gluecklich"
 ---
 #2
-length: 8
+length: 24
 strophe:
+  - "Traurig $n,m,s,n,21,1,10$ |macht mich traurig!"
+  - "Sie $n,m,s,n,22,1,10$ |macht mich auch traurig"
+  - "Die $n,f,p,n,23,1,10$ |machen mich ebenfalls traurig"
+  - "Diese $n,f,s,2n,3,1,10$ |macht mich auch traurig"
+  - "Traurig $n,m,s,n,21,1,10$ |macht mich traurig!"
+  - "Sie $n,m,s,n,22,1,10$ |macht mich auch traurig"
+  - "Die $n,f,p,n,23,1,10$ |machen mich ebenfalls traurig"
+  - "Diese $n,f,s,2n,3,1,10$ |macht mich auch traurig"
   - "Traurig $n,m,s,n,21,1,10$ |macht mich traurig!"
   - "Sie $n,m,s,n,22,1,10$ |macht mich auch traurig"
   - "Die $n,f,p,n,23,1,10$ |machen mich ebenfalls traurig"

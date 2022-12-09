@@ -2,11 +2,9 @@ package org.se.text.generation;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.se.music.model.Genre;
-import org.se.text.generation.PopTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -18,22 +16,23 @@ public class TemplateImporter {
 
 	// private static List<PopTemplate> =;
 
-	public List<PopTemplate> getTemplate(Genre genre) {
-		if (genre == Genre.POP) {
+	public List<TextTemplate> getTemplate(Genre genre) {
+		YAMLParser yamlParser;
 			// load Templates from yml
 			try {
-				YAMLParser yamlParser = yaml.createParser(new File("./src/main/resources/text/popTemplate.yml"));
-
-				return mapper.readValues(yamlParser, PopTemplate.class).readAll();
+				if(genre == Genre.POP) {
+					yamlParser = yaml.createParser(new File("./src/main/resources/text/popTemplate.yml"));
+				}else{
+					yamlParser = yaml.createParser(new File("./src/main/resources/text/bluesTemplate.yml"));
+				}
+				return mapper.readValues(yamlParser, TextTemplate.class).readAll();
 
 			} catch (IOException e) {
-				System.out.println("Encountered exception while trying to read popTemplate.");
+				System.out.println("Encountered exception while trying to read " + genre + "-Template.");
 				e.printStackTrace();
 
 				return List.of();
 			}
 
-		}
-		return List.of();
 	}
 }
