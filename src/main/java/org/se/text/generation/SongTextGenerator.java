@@ -13,6 +13,7 @@ import org.se.text.metric.Hyphenizer;
 public class SongTextGenerator {
 
 	private TemplateImporter templateImporter;
+	List<TextTemplate> unusedTextTemplateList;
 
 	public static void main(String[] args) throws IOException {
 		SongTextGenerator g = new SongTextGenerator();
@@ -20,137 +21,150 @@ public class SongTextGenerator {
 		Config.loadConfig();
 		List<Structure> strucs = Config.getStructures();
 		Structure structure = strucs.get(ran.nextInt(Config.getStructures().size()));
-		structure.setGenre(Genre.BLUES);
+		structure.setGenre(Genre.POP);
 
 		HashMap<String, List<String[][]>> partTextMap = g.generateSongText(structure, TermExample.getExample());
+
 	}
-
-	private MusicalKey key;
-	private Map<String, Part> parts;
-
-	private int partLength;
 
 	// text
 	private TermCollection termCollection;
+	private HashMap<Integer, String> usedWords = new HashMap<>(); // to check if a Term was used in the Song before
 
-	// this
-	private String[] partText;
-
-	private HashMap<Integer,String> usedWords = new HashMap<>(); // to check if a Term was used in the Song before
-	private List<Integer> usedStrophes = new ArrayList<>(); // to check if a strophe was used in the Song before
-
-	// Midi-Sequence Generator calls SongTextGenerator()
-	public HashMap<String,List<String[][]>> generateSongText(Structure structure, TermCollection termCollection) {
+	/**
+	 * returns a Hashmap which contains the Songtext split into parts with the number of syllable in each part
+	 */
+	public HashMap<String, List<String[][]>> generateSongText(Structure structure, TermCollection termCollection) {
 
 		List<String[]> songText = new ArrayList<>();
 		this.termCollection = termCollection;
-		key = structure.getKey();
-		parts = structure.getParts();
-
-
 		List<String> order = structure.getOrder();
+		templateImporter = new TemplateImporter();
+		unusedTextTemplateList = templateImporter.getTemplate(structure.getGenre());
+
 		for (String s : order) {
 			songText.add(generateStrophe(structure.getGenre(), structure.getParts().get(s).getLength()));
 		}
 
-		printSongtext(songText,order);
+		printSongtext(songText, order);    //only for Testing
 
-		HashMap<String,List<String[][]>> partTextMap;
-		partTextMap = getPartText(order,songText);
-
-
-		return partTextMap;
+		return getPartText(order, songText);
 	}
 
-	private HashMap<String, List<String[][]>> getPartText(List<String> order, List<String[]> songText) {
-		HashMap<String, List<String[][]>> partTextMap = new HashMap<>();
-		for (int i = 0; i < order.size(); i++) {
-			//for example the second verse
-			String partName = order.get(i);
-			if(!partTextMap.containsKey(partName)){
-				partTextMap.put(partName, new ArrayList<>());
-			}
-			partTextMap.get(partName).add(getPartSyllSmoosh(songText.get(i)));
-//			int j = 1;
-//			while (partTextMap.containsKey(partName)){
-//				j++;
-//
-//				try{
-//					if(Integer.parseInt(partName.substring(partName.length()-1)) <= 10 )partName = partName.substring(0,partName.length()-1);
-//				}
-//				catch (NumberFormatException ignored){}
-//
-//				partName += Integer.toString(j);//TODO kommt was komisches raus von der Reihenfolge her
-//			}
-//
-//
-//			partTextMap.put(partName,getPartSyllSmoosh(songText.get(i)));
-		}
-		return partTextMap;
-	}
-
-	private String[][] getPartSyllSmoosh(String[] stropheText) {
-		String[][] textSyllSmoosh = new String[stropheText.length][2];
-
-		for(int i = 0; i < stropheText.length;i++){
-			textSyllSmoosh[i][0] = stropheText[i];
-			textSyllSmoosh[i][1] =  Integer.toString(countSyllables(stropheText[i]));	//TODO
-		}
-
-		return textSyllSmoosh;
-	}
-
-	private int countSyllables(String s) {
-		int sylCounter = 0;
-		String[] words = s.split(" ");
-
-		for(int i = 0; i < words.length;i++) {
-			sylCounter += Hyphenizer.CountSyllabes(words[i]);
-		}
-		return sylCounter;
-	}
-
-	private void printSongtext(List<String[]> songText,List<String> order) {
-		for(int j = 0; j < songText.size();j++) {
-			System.out.println(order.get(j));
-			//print part-Content
-			for (int i = 0; i < songText.get(j).length; i++) {
-				System.out.println("Takt" + (i + 1) + ": " + songText.get(j)[i]);
-			}
-		}
-	}
-
+	/**
+	 * returns a Text (strophe) split into parts (Takte)
+	 */
 	private String[] generateStrophe(Genre genre, int partLength) {
 
-			templateImporter = new TemplateImporter();
-			List<TextTemplate> textTemplateList = templateImporter.getTemplate(genre);
+		TextTemplate textTemplate = getUnusedStrophe(partLength, 1000, genre);//1000 just for the feeling
 
-			TextTemplate textTemplate = getUnusedStrophe(textTemplateList, partLength, 10, genre);//TODO set value 1000
-
-			// go through the strophe and store the verses
-			String[] verse = new String[partLength / 2];
-			for (int i = 0; i < partLength/2; i++) {
-				verse[i] = getVerse(textTemplate.getStrophe()[i]);
-			}
-			return getPartText(verse, partLength);
+		// go through the strophe and store the verses
+		String[] verse = new String[partLength / 2];
+		for (int i = 0; i < partLength / 2; i++) {
+			verse[i] = getVerse(textTemplate.getStrophe()[i]);
+		}
+		return getPartsInString(verse, partLength);
 
 	}
 
-	private TextTemplate getUnusedStrophe(List<TextTemplate> textTemplateList, int partLength, int templateTries, Genre genre) {
-		TextTemplate textTemplate = textTemplateList.get(0);
+	/**
+	 * retuns a strophe-template which was not yet used in the songtext
+	 */
+	private TextTemplate getUnusedStrophe(int partLength, int templateTries, Genre genre) {
+		Random ran = new Random();
+		if (unusedTextTemplateList.size() == 0)unusedTextTemplateList = templateImporter.getTemplate(genre);
+		TextTemplate textTemplate = unusedTextTemplateList.get(ran.nextInt(unusedTextTemplateList.size()));
 		for (int i = 0; i < templateTries; i++) {
-			textTemplate = getRandomNotUsedValue(textTemplateList, genre);// get random template
+			textTemplate = getRandomNotUsedValue(genre);// get random template
 
 			if (textTemplate.getLength() == partLength) {
 				return textTemplate;
 			}
 		}
 		return textTemplate;
-
-		// TODO popTemplate length does not fit requirements
 	}
 
-	private String[] getPartText(String[] verse, int partNumber) {
+	/**
+	 * ähhh....
+	 */
+	private TextTemplate getRandomNotUsedValue(Genre genre) {
+		Random ran = new Random();
+
+		if (unusedTextTemplateList.size() == 0) {
+			unusedTextTemplateList = templateImporter.getTemplate(genre);
+		}
+		TextTemplate pTemplate = unusedTextTemplateList.get(ran.nextInt(unusedTextTemplateList.size()));
+		unusedTextTemplateList.remove(pTemplate);
+		return pTemplate;
+
+	}
+
+	/**
+	 * returns a variable-free-verse based on the a verse from the template
+	 */
+	private String getVerse(String rawString) {
+
+		int beginning = rawString.indexOf('$');
+		int end = rawString.indexOf('$', beginning + 1);
+
+		//if ther's no variable Word in the verse
+		if (end < 0) return rawString;
+
+		String requirementsVariableString = rawString.substring(beginning + 1, end);
+		String[] strArr = getStringArrFromRequirementsVariableString(requirementsVariableString);
+
+		return (getVerse(rawString.substring(0, beginning)) + getTerm(strArr) + getVerse(rawString.substring(end + 1)));
+	}
+
+	/**
+	 * returns a unused word based on the given requirements
+	 */
+	private String getTerm(String[] requirements) {
+		int id = getIdFromRequirements(requirements);
+		//if id was already used
+		if (usedWords.containsKey(id)) return usedWords.get(id);
+
+		List<? extends Term> termList;
+
+		if (isNoun(requirements)) {
+			termList = getNounsTermListFromRequirements(requirements);
+		} else {
+			termList = getVerbsTermListFromRequirements(requirements);// hier fürs Beispiel nomen Statt Verben TODO!!
+
+		}
+
+		// index gives the position of the noun in termList
+		int termListSize = termList.size();
+		int position; // default 0
+		if (termListSize != 0) {
+			position = getCorrectPosition(termList);
+			usedWords.put(id, termList.get(position).getWord());
+			return termList.get(position).getWord();
+		} else {
+			return "DaPasstWohlNichts";
+		}
+	}
+
+	/**
+	 * returns String Arr based on RequirementsVariableString
+	 */
+	private String[] getStringArrFromRequirementsVariableString(String requirementsVariableString) {
+		String[] strArr = new String[]{"", "", "", "", "", "", ""}; //to have empty (not null) values in String[]
+		int index = 0;
+		while (requirementsVariableString.length() > 0) {
+			if (requirementsVariableString.charAt(0) == ',') index++;
+			else {
+				strArr[index] = strArr[index] + requirementsVariableString.charAt(0); // Stringbuilder
+			}
+			requirementsVariableString = requirementsVariableString.substring(1);
+		}
+		return strArr;
+	}
+
+	/**
+	 * returns all the parts which where in the verse
+	 */
+	private String[] getPartsInString(String[] verse, int partNumber) {
 		StringBuilder allVerses = new StringBuilder();
 
 		int index = 0;
@@ -171,77 +185,65 @@ public class SongTextGenerator {
 
 	}
 
-	private String getVerse(String rawString) {
-
-		// System.out.println(rawString);
-		int beginning = rawString.indexOf('$');
-		int end = rawString.indexOf('$', beginning + 1);
-
-		//if ther's no variable Word in the verse
-		if(end < 0)return rawString;
-
-		String requirementsVariableString = rawString.substring(beginning + 1, end);
-		String[] strArr = getStringArrFromRequirementsVariableString(requirementsVariableString);
-
-		return (getVerse(rawString.substring(0, beginning)) + getTerm(strArr) + getVerse(rawString.substring(end + 1)));
-	}
-
-	private String[] getStringArrFromRequirementsVariableString(String requirementsVariableString) {
-		String[] strArr = new String[]{"","","","","","",""}; //to have empty (not null) values in String[]
-		int index = 0;
-		while (requirementsVariableString.length() > 0) {
-			if (requirementsVariableString.charAt(0) == ',') index++;
-			else {
-				strArr[index] = strArr[index] + requirementsVariableString.charAt(0); // Stringbuilder
+	/**
+	 * returns a Hashmap which contains the Songtext split into parts with the number of syllable in each part, based on the given songtext
+	 */
+	private HashMap<String, List<String[][]>> getPartText(List<String> order, List<String[]> songText) {
+		HashMap<String, List<String[][]>> partTextMap = new HashMap<>();
+		for (int i = 0; i < order.size(); i++) {
+			//for example the second verse
+			String partName = order.get(i);
+			if (!partTextMap.containsKey(partName)) {
+				partTextMap.put(partName, new ArrayList<>());
 			}
-			requirementsVariableString = requirementsVariableString.substring(1);
+			partTextMap.get(partName).add(getPartSyllSmoosh(songText.get(i)));
 		}
-		return strArr;
+		return partTextMap;
 	}
 
-	private TextTemplate getRandomNotUsedValue(List<TextTemplate> unusedTemplates, Genre genre) {
-		Random ran = new Random();
+	/**
+	 * returns a Arr for euach strophe which contains each part and the number of syllables in this part
+	 */
+	private String[][] getPartSyllSmoosh(String[] stropheText) {
+		String[][] textSyllSmoosh = new String[stropheText.length][2];
 
-		if (unusedTemplates.size() == 0) {
-			unusedTemplates = templateImporter.getTemplate(genre);
+		for (int i = 0; i < stropheText.length; i++) {
+			textSyllSmoosh[i][0] = stropheText[i];
+			textSyllSmoosh[i][1] = Integer.toString(countSyllables(stropheText[i]));    //TODO reihenfolge
 		}
-		TextTemplate pTemplate = unusedTemplates.get(ran.nextInt(unusedTemplates.size()));
-		unusedTemplates.remove(pTemplate);
-		return pTemplate;
 
+		return textSyllSmoosh;
 	}
 
-	private String getTerm(String[] requirements) {
-		int id = getIdFromRequirements(requirements);
-		//if id was already used
-		if(usedWords.containsKey(id))return usedWords.get(id);
+	/**
+	 * returns number of syllables of a given String
+	 */
+	private int countSyllables(String s) {
+		int sylCounter = 0;
+		String[] words = s.split(" ");
 
-		List<? extends Term>  termList;
-
-		String[] test = new String[]{"n"};
-		if (isNoun(requirements)) {
-			termList = getNounsTermListFromRequirements(requirements);
-		} else {
-			termList = getVerbsTermListFromRequirements(requirements);// hier fürs Beispiel nomen Statt Verben TODO!!
-
+		for (String word : words) {
+			sylCounter += Hyphenizer.CountSyllabes(word);
 		}
+		return sylCounter;
+	}
 
-
-
-		// System.out.println(termList);
-
-		// index gives the position of the noun in termList
-		int termListSize = termList.size();
-		int position; // default 0
-		if (termListSize != 0) {
-			position = getCorrectPosition(termList, id);
-			usedWords.put(id,termList.get(position).getWord());
-			return termList.get(position).getWord();
-		} else {
-			return "DaPasstWohlNichts";
+	/**
+	 * print songtext in the console
+	 */
+	private void printSongtext(List<String[]> songText, List<String> order) {
+		for (int j = 0; j < songText.size(); j++) {
+			System.out.println(order.get(j));
+			//print part-Content
+			for (int i = 0; i < songText.get(j).length; i++) {
+				System.out.println("Takt" + (i + 1) + ": " + songText.get(j)[i]);
+			}
 		}
 	}
 
+	/**
+	 * returns a noun based on the requirements
+	 */
 	private List<NounTerm> getNounsTermListFromRequirements(String[] requirements) {
 		// requirements looks like [n,f,p,n,1,1,10]
 		// [Noun,Gender,Plural,Case,id,syllMin,syllMax]
@@ -289,6 +291,9 @@ public class SongTextGenerator {
 		return termCollection.query(grammaticalCase, gender, numerus, syllMin, syllMax);
 	}
 
+	/**
+	 * returns a verb based on the requirements
+	 */
 	private List<VerbTerm> getVerbsTermListFromRequirements(String[] requirements) {
 		int syllMin, syllMax;
 		// detect min Syll
@@ -309,10 +314,13 @@ public class SongTextGenerator {
 
 	}
 
+	/**
+	 * returns id specified in the requirements
+	 */
 	private int getIdFromRequirements(String[] requirements) {
 		int position = 1;
 		//for nouns
-		if(isNoun(requirements)) position = 4;
+		if (isNoun(requirements)) position = 4;
 		try {
 			return Integer.parseInt(requirements[position]);
 		} catch (NumberFormatException ex) {
@@ -321,18 +329,15 @@ public class SongTextGenerator {
 		}
 	}
 
-	public static Integer getLastElement(List<Integer> list) {
-		if ((null != list) && (!list.isEmpty())) {
-			int lastIdx = list.size() - 1;
-			return list.get(lastIdx);
-		} else return null;
-	}
 
-	private int getCorrectPosition(List<? extends Term>  termList, int id) {
+	/**
+	 * returns returns the position of a word not yet used
+	 */
+	private int getCorrectPosition(List<? extends Term> termList) {
 		Random ran = new Random();
 		int termListSize = termList.size();
 
-		for(int i = 0; i < termListSize;i++){
+		for (int i = 0; i < termListSize; i++) {
 			//word was not used yet
 			if (!usedWords.containsValue(termList.get(i))) {
 				return i;
@@ -341,41 +346,10 @@ public class SongTextGenerator {
 		return ran.nextInt(termListSize);
 	}
 
+	/**
+	 * check if searched word is a noun
+	 */
 	private boolean isNoun(String[] requirements) {
 		return (requirements[0].equals("n"));
-	}
-
-	// -----------------Testing---------------\\
-	private List<NounTerm> getOneTermTesting() {
-		return termCollection.query(GrammaticalCase.NOMINATIVE, Gender.FEMALE, Numerus.SINGULAR, 1, 100);
-
-	}
-
-	private List<String> getVerbsExamples() {
-		List<String> verbExamples = new ArrayList<>();
-		verbExamples.add("spielen");
-		verbExamples.add("hüpfen");
-		verbExamples.add("addieren");
-		return verbExamples;
-	}
-
-	private List<String> getNounsExamples() {
-		return List.of(getOneTermTesting().get(0).getWord());
-	}
-
-
-	private String AlleMeineEntchen(List<Term> terms) {
-		String vari = terms.get(0).getWord();
-
-		String AlleMeineEntchen = "Alle meine " + vari + "\n" + "Schwimmen auf dem See\n" + "Schwimmen auf dem See\n" + "Köpfchen in das Wasser\n"
-				+ "Schwänzchen in die Höh\n" + "\n" + "Alle meine Täubchen\n" + "Gurren auf dem Dach\n" + "Gurren auf dem Dach\n"
-				+ "Fliegt eins in die Lüfte\n" + "Fliegen alle nach\n" + "\n" + "\n" + "Alle meine Hühner\n" + "Scharren in dem Stroh\n"
-				+ "Scharren in dem Stroh\n" + "Finden sie ein Körnchen\n" + "Sind sie alle froh\n" + "\n" + "Alle meine Gänschen\n"
-				+ "Watscheln durch den Grund\n" + "Watscheln durch den Grund\n" + "Suchen in dem Tümpel\n" + "Werden kugelrund\n" + "\n"
-				+ "Alle meine " + vari + "\n" + "Schwimmen auf dem See\n" + "Schwimmen auf dem See\n" + "Köpfchen in das Wasser\n"
-				+ "Schwänzchen in die Höh\n" + "Köpfchen in das Wasser\n" + "Schwänzchen in die Höh";
-
-		return ("Alle meine " + vari + ": \n\n" + AlleMeineEntchen);
-
 	}
 }

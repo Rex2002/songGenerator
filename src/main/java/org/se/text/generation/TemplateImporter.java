@@ -14,8 +14,9 @@ public class TemplateImporter {
 	YAMLFactory yaml = new YAMLFactory();
 	ObjectMapper mapper = new ObjectMapper(yaml);
 
-	// private static List<PopTemplate> =;
-
+	/**
+	 * returns all templates based on the genre
+	 */
 	public List<TextTemplate> getTemplate(Genre genre) {
 		YAMLParser yamlParser;
 			// load Templates from yml
