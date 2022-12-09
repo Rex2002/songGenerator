@@ -66,13 +66,14 @@ public class WordList implements Iterable<WordWithData> {
 	}
 
 	private int binSearch(String s, int start, int end) {
+		s = s.toLowerCase();
 		int mid = (end + start) / 2;
-		while (end - start > 1) {
+		while (end > start) {
 			mid = (end + start) / 2;
 			int x = store.get(mid).get(baseKey).compareTo(s);
 			if (x == 0) return mid;
 			else if (x > 0) end = mid;
-			else start = mid;
+			else start = mid + 1;
 		}
 		return mid;
 	}
@@ -81,14 +82,30 @@ public class WordList implements Iterable<WordWithData> {
 		return binSearch(s, 0, size());
 	}
 
+	public boolean uncheckedInsert(WordWithData h) {
+		if (!h.containsKey(baseKey)) return false;
+
+		h.put(baseKey, h.get(baseKey).toLowerCase());
+		store.add(h);
+		return true;
+	}
+
+	public void sort() {
+		store.sort(new Comparator<WordWithData>() {
+			@Override
+			public int compare(WordWithData o1, WordWithData o2) {
+				return o1.get(baseKey).compareTo(o2.get(baseKey));
+			}
+		});
+	}
+
 	public boolean insert(WordWithData h) {
-		if (!h.containsKey(baseKey)) {
-			return false;
-		}
+		if (!h.containsKey(baseKey)) return false;
+
+		h.put(baseKey, h.get(baseKey).toLowerCase());
 		if (elementWithLongestBase != null && cmpBaseLengths(h, elementWithLongestBase) > 0) {
 			elementWithLongestBase = h;
 		}
-		h.put(baseKey, h.get(baseKey).toLowerCase());
 		int i = binSearch(h.get(baseKey));
 		store.add(i, h);
 		return true;
@@ -179,7 +196,7 @@ public class WordList implements Iterable<WordWithData> {
 		s = s.toLowerCase();
 		int i = binSearch(s);
 		WordWithData h = store.get(i);
-		if (Objects.equals(h.get(baseKey), s)) {
+		if (h.get(baseKey).equalsIgnoreCase(s)) {
 			return Optional.ofNullable(h.get(key));
 		}
 		return Optional.empty();

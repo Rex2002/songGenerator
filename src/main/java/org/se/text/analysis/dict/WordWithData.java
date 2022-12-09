@@ -30,6 +30,19 @@ public class WordWithData extends HashMap<String, String> {
 		else return false;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder strbuilder = new StringBuilder();
+		for (Entry<String, String> entry : entrySet()) {
+			strbuilder.append(", ");
+			strbuilder.append(entry.getKey());
+			strbuilder.append("='");
+			strbuilder.append(entry.getValue());
+			strbuilder.append("'");
+		}
+		return "{" + " baseKey='" + getBaseKey() + "'" + strbuilder.toString() + "}";
+	}
+
 	// Since parseInt accepts a third argument, this method must exist, even though
 	// all other <getType> methods were replaced with the generic get(Class<T> cls)
 	// There might be a better workaround, but I find this more elegant than having
@@ -73,10 +86,4 @@ public class WordWithData extends HashMap<String, String> {
 	public int hashCode() {
 		return Objects.hashCode(baseKey);
 	}
-
-	@Override
-	public String toString() {
-		return "{" + " baseKey='" + getBaseKey() + "'" + "}";
-	}
-
 }

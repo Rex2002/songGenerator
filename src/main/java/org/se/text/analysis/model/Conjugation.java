@@ -1,23 +1,29 @@
 package org.se.text.analysis.model;
 
 import java.util.*;
-
-import org.se.text.analysis.dict.TermEndings;
+import org.se.text.analysis.dict.TermAffix;
 
 /**
  * @author Val Richter
  */
-public class Conjugation extends TermEndings {
+public class Conjugation extends TermAffix {
 	public Person person;
 	public Tense tense;
 
 	public Conjugation() {
 	}
 
-	public Conjugation(String radix, Numerus numerus, Person person, Tense tense, boolean toUmlaut) {
-		super(radix, numerus, toUmlaut);
+	public Conjugation(String radix, Numerus numerus, Person person, Tense tense, AffixType type, boolean toUmlaut) {
+		super(radix, numerus, type, toUmlaut);
 		this.person = person;
 		this.tense = tense;
+	}
+
+	@Override
+	public boolean grammarticallyEquals(TermAffix other) {
+		if (!(other instanceof Conjugation)) return false;
+		Conjugation conjugation = (Conjugation) other;
+		return super.grammarticallyEquals(conjugation) && person == conjugation.person && tense == conjugation.tense;
 	}
 
 	public Person getPerson() {

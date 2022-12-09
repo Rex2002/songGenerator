@@ -1,6 +1,9 @@
 # @author Malte Richert
+# @reviewer Benjamin Frahm
+# each list in the list describes one bar. If there are multiple elements in the inner list, the bar is split equally
+# first char indicates the step of the scale (0: tonic, 4: dominant etc.), the rest is a modifier as configured in chord_modifiers.yml
 # 0, 3, 4 in major, others minor
-# each list in the list describes one bar, when there are multiple elements in the inner list, the bar is split equally
+#
 - [["0"], ["3"], ["4"], ["0"]]
 - [["0"], ["4"], ["3"], ["0"]]
 - [["0"], ["4"], ["3", "4"], ["0"]]

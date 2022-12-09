@@ -1,7 +1,6 @@
 package org.se.text.analysis;
 
 import java.util.*;
-
 import org.se.text.analysis.dict.WordStemmer;
 import org.se.text.analysis.model.TagType;
 

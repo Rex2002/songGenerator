@@ -21,7 +21,7 @@ public class MidiTest {
 
 		playMidiSeq();
 		System.exit(0);
-		Config.loadConfig();
+		Config.loadConfig(Genre.POP);
 
 		MidiSequence m = new MidiSequence(10);
 		int drumTrackNo = 9;

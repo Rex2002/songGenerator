@@ -62,24 +62,27 @@ public class BassContainer extends PitchedPlayable {
 			}
 			// play transition steps
 			if (distance == 2 || (distance == 3 && chordEights - indexInChord == 2)) {
-				addNoteToContent(count, scale[(rootNote + 1) % 7] % 12 + 36);
+				addNoteToContent(count, scale[(descaler.get(rootNote%12) + 1) % 7]);
 				continue;
 			}
 			if (distance == -2 || (distance == -3 && chordEights - indexInChord == 2)) {
-				addNoteToContent(count, scale[(rootNote - 1) % 7] % 12 + 36);
+				int scalar = (descaler.get(rootNote%12) - 1) % 7;
+				addNoteToContent(count, scale[scalar>=0 ? scalar : scalar+7]);
 				continue;
 			}
 			if (distance == 3) {
-				addNoteToContent(count, scale[(rootNote + 2) % 7] % 12 + 36);
+				addNoteToContent(count, scale[(descaler.get(rootNote%12) + 2) % 7]);
 				continue;
 			}
 			if (distance == -3) {
-				addNoteToContent(count, scale[(rootNote - 2) % 7] % 12 + 36);
+				int scalar = (descaler.get(rootNote%12) - 2) % 7;
+				addNoteToContent(count, scale[scalar>=0 ? scalar : scalar+7]);
 			}
 		}
 	}
 
 	private void addNoteToContent(int count, int pitch) {
+		pitch = pitch % 12 + 36;
 		List<Integer> posAndLen = new ArrayList<>();
 		posAndLen.add(count * 12);
 		posAndLen.add(12);

@@ -1,5 +1,9 @@
 package org.se.music.model;
 
+/**
+ * @author Malte Richert
+ * @author Benjamin Frahm
+ */
 public class MidiText {
 	private int bar;
 	private final int relativeOffset, trackNo;
