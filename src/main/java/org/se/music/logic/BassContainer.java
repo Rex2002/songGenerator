@@ -10,6 +10,7 @@ import org.se.music.model.MusicalKey;
 import org.se.music.model.PitchedPlayable;
 
 /**
+ * Midi-playable model of a bass line
  * @author Malte Richert
  * @reviewer Benjamin Frahm
  */

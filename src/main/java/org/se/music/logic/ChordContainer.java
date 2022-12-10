@@ -6,6 +6,9 @@ import org.se.music.model.MusicalKey;
 import org.se.music.model.PitchedPlayable;
 
 /**
+ * Midi-playable model of a Chord. If isBassTrack is not set,
+ * the given chords will be distributed equally among the 4 quarters of the bar
+ * If isBassTrack is set, the root-note of the given chords will be distributed equally among the 4 quarters
  * @author Benjamin Frahm
  * @reviewer Malte Richert
  */

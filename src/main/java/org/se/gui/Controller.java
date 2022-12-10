@@ -3,25 +3,23 @@ package org.se.gui;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.se.Settings;
+import org.se.SongGenerator;
+import org.se.music.model.Genre;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.ResourceBundle;
-
-import org.se.Settings;
-import org.se.SongGenerator;
-import org.se.music.model.Genre;
 
 /**
  * Controller-Klasse für die UI.
@@ -35,6 +33,8 @@ public class Controller implements Initializable {
 
 	// fileSaver öffnet den Datei-Explorer (andere Einstellungen als fileChooser)
 	FileChooser fileSaver = new FileChooser();
+	SongGenerator songGenerator;
+
 
 	// userName gibt den Namen des aktuellen Benutzers -> Pfad zum Laden / Speichern (nur für Windows-User)
 	// String userName = System.getProperty("user.name");
@@ -202,7 +202,7 @@ public class Controller implements Initializable {
 		generate_pane_progress.setProgress(0);
 		if (file != null) {
 			Settings settings = new Settings(file.getAbsolutePath(), Genre.POP, bpm);
-			SongGenerator songGenerator = new SongGenerator(settings);
+			songGenerator = new SongGenerator(settings);
 			generate_pane_progress.progressProperty().bind(songGenerator.progressProperty());
 			songGenerator.messageProperty().addListener((observable, oldVal, newVal) -> generate_pane_progressLbl.setText(newVal));
 
@@ -219,12 +219,14 @@ public class Controller implements Initializable {
 	 */
 	@FXML
 	void saveFile() {
-		if (song != null) {
+		if (songGenerator.getSeq() != null) {
 			File saveSong = fileSaver.showSaveDialog(new Stage());
 			if (saveSong != null) {
 				try {
-					Files.copy(song.toPath(), saveSong.toPath());
-				} catch (IOException e) {
+					songGenerator.getSeq().createFile(String.valueOf(saveSong.toPath()));
+					((Stage)setting_pane_cb.getScene().getWindow()).close();
+
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
@@ -269,7 +271,7 @@ public class Controller implements Initializable {
 		// fileChooser.setInitialDirectory(new File("C:/Users/" + userName + "/Desktop"));
 
 		// allow only mdi-filter
-		fileSaver.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("MDI", "*.mdi"));
+		fileSaver.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("MIDI", "*.mid"));
 
 		fileSaver.setTitle("Select directory and name file");
 

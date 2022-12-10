@@ -9,9 +9,6 @@ import java.util.*;
 
 public class ThemeVariation extends MidiPlayable {
 
-	// some instruments swing better with smaller number of syllables (aka notes), others, like violin, can handle larger numbers without sounding
-	// crappy
-	int minSyllablesPerBar = 6;
 	Theme theme;
 	Map<Integer, List<List<Integer>>> transposedContent;
 	String[][] text;

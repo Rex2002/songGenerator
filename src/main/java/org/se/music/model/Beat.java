@@ -1,28 +1,23 @@
 package org.se.music.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 import java.util.Map;
 
 /**
+ * Class modelling a parsed drumbeat.
+ * Parsing is done by the BeatData-class
  * @author Malte Richert
  * @reviewer Benjamin Frahm
  */
 
 public class Beat {
-	@JsonProperty
 	Map<String, List<List<Integer>>> mainPattern;
-	@JsonProperty
 	Map<String, List<List<Integer>>> bigFill;
-	@JsonProperty
 	Map<String, List<List<Integer>>> smallFill;
 
-	@JsonCreator
-	public Beat(@JsonProperty("mainPattern") Map<String, List<List<Integer>>> mainPattern,
-			@JsonProperty("bigFill") Map<String, List<List<Integer>>> bigFill,
-			@JsonProperty("smallFill") Map<String, List<List<Integer>>> smallFill) {
+	public Beat(Map<String, List<List<Integer>>> mainPattern,
+			Map<String, List<List<Integer>>> bigFill,
+			Map<String, List<List<Integer>>> smallFill) {
 
 		this.mainPattern = mainPattern;
 		this.bigFill = bigFill;

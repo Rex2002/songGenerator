@@ -17,6 +17,7 @@ import javafx.concurrent.Task;
  */
 public class SongGenerator extends Task<MidiSequence> {
 	private final Settings settings;
+	private MidiSequence seq;
 
 	public SongGenerator(Settings settings) {
 		this.settings = settings;
@@ -47,17 +48,22 @@ public class SongGenerator extends Task<MidiSequence> {
 
 			updateMessage("Writing your Song...");
 			updateProgress(80, 100);
-			StructureGenerator.generateStructure(settings, Map.of("tempo", metrics), terms);
+			MidiSequence seq = StructureGenerator.generateStructure(settings, Map.of("tempo", metrics), terms);
 
 			if (isCancelled()) return null;
 
 			updateMessage("Done");
 			updateProgress(100, 100);
-			return null;
+			this.seq = seq;
+			return seq;
 		} catch (IOException e) {
 			updateMessage("Something went wrong reading a file...");
 			updateValue(null);
 			return null;
 		}
+	}
+
+	public MidiSequence getSeq() {
+		return seq;
 	}
 }

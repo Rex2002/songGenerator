@@ -188,7 +188,7 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * returns a Hashmap which contains the Songtext split into parts with the number of syllable in each part, based on the given songtext
+	 * returns a Hashmap which contains the songtext split into parts with the number of syllable in each part, based on the given songtext
 	 */
 	private HashMap<String, List<String[][]>> getPartText(List<String> order, List<String[]> songText) {
 		HashMap<String, List<String[][]>> partTextMap = new HashMap<>();
@@ -204,7 +204,7 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * returns a Arr for euach strophe which contains each part and the number of syllables in this part
+	 * returns an array for each strophe which contains each part and the number of syllables in this part
 	 */
 	private String[][] getPartSyllSmoosh(String[] stropheText) {
 		String[][] textSyllSmoosh = new String[stropheText.length][2];

@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.util.*;
 
 /**
+ * master-class of actually handling Midi.
+ * Provides methods to set speed, title, track numbers, etc. of a midi sequence
+ * and add MidiPlayables or MidiText to the midi sequence.
  * @author Benjamin Frahm
  * @reviewer Malte Richert
  */

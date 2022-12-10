@@ -6,6 +6,7 @@ import org.se.music.model.Beat;
 import org.se.music.model.MidiPlayable;
 
 /**
+ * Midi-playable model of a beat. The blueprints are taken from the drumBeats-list as Beat-Objects
  * @author Benjamin Frahm
  * @reviewer Malte Richert
  */

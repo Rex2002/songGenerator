@@ -8,6 +8,7 @@ import org.se.text.analysis.TermCollection;
 import org.se.text.generation.SongTextGenerator;
 
 /**
+ * Generates a full song based on the provided inputs
  * @author Malte Richert
  * @author Benjamin Frahm
  */
@@ -15,7 +16,7 @@ public class StructureGenerator {
 	private static Structure structure;
 	private static final Map<Integer, Integer> trackMapping = new HashMap<>();
 
-	public static void generateStructure(Settings settings, Map<String, Integer> metrics, TermCollection terms) {
+	public static MidiSequence generateStructure(Settings settings, Map<String, Integer> metrics, TermCollection terms) {
 		Random ran = new Random();
 		structure = Config.getStructures().get(0);//Config.getStructures().get(ran.nextInt(Config.getStructures().size()));
 		structure.setGenre(settings.getGenre());
@@ -78,7 +79,8 @@ public class StructureGenerator {
 			 }
 			barOffset += structure.getPart(partName).getLength();
 		}
-		seq.createFile("structureTest");
+		return seq;
+		//seq.createFile("structureTest");
 	}
 
 	public static MidiSequence initMidiSequence(Structure s) {
