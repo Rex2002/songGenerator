@@ -35,26 +35,30 @@ public class MetricAnalyzer {
 		if (averageH <= 1 && averageS <= 9) {
 			bpm = 180;
 		}
-		if (averageH == 2 || averageH == 3 && averageS <= 9) {
+		else if (averageH == 2 || averageH == 3 && averageS <= 9) {
 			bpm = 160;
 		}
-		if (averageH == 2 || averageH == 3 && averageS >= 9 && averageS <= 18) {
+		else if (averageH == 2 || averageH == 3 && averageS >= 9 && averageS <= 18) {
 			bpm = 140;
 		}
-		if (averageH == 2 || averageH == 3 && averageS >= 19) {
+		else if (averageH == 2 || averageH == 3 && averageS >= 19) {
 			bpm = 120;
 		}
-		if (averageH >= 4 && averageS <= 9) {
+		else if (averageH >= 4 && averageS <= 9) {
 			bpm = 100;
 		}
-		if (averageH >= 4 && averageS >= 9 && averageS <= 18) {
+		else if (averageH >= 4 && averageS >= 9 && averageS <= 18) {
 			bpm = 80;
 		}
-		if (averageH >= 4 && averageS >= 19) {
+		else if (averageH >= 4 && averageS >= 19) {
 			bpm = 60;
 		}
 		return bpm;
 	}
+	
+/*
+*Berechnet Durchschnittliche Silbenlänge
+*/
 
 	static int totalHyphens = 0;
 
@@ -65,6 +69,9 @@ public class MetricAnalyzer {
 		int averageH = totalHyphens / terms.size();
 		return averageH;
 	}
+/*
+* Berechnet Durchschnittliche Satzlänge
+*/
 
 	public static int averageSentence(String content) {
 		String c = content;
