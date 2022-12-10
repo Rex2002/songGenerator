@@ -200,6 +200,11 @@ public class Controller implements Initializable {
 	void generateSong() {
 		progress = 0;
 		generate_pane_progress.setProgress(0);
+
+		// show progressbar
+	        generate_pane_progress.setVisible(true);
+	        generate_pane_progressLbl.setVisible(true);
+
 		if (file != null) {
 			Settings settings = new Settings(file.getAbsolutePath(), Genre.POP, bpm);
 			songGenerator = new SongGenerator(settings);
@@ -261,6 +266,10 @@ public class Controller implements Initializable {
 		// can not generate or save song unless a file is loaded
 		song_generate.setDisable(true);
 		song_save.setDisable(true);
+
+	        // progress not visible on launch
+	        generate_pane_progress.setVisible(false);
+	        generate_pane_progressLbl.setVisible(false);
 
 		// allow only pdf/txt-filter
 		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(".txt or .pdf", "*.txt", "PDF", "*.pdf"));
