@@ -61,7 +61,6 @@ public class ThemeVariation extends MidiPlayable {
 					else if (posNextBigger - posNextSmaller >= 48
 							&& themeContent.get(posNextBigger).get(0).get(0).equals(themeContent.get(posNextSmaller).get(0).get(0))
 							&& ran.nextInt(2) == 0) {
-								System.out.println("run");
 								int[] gamut = MusicalKey.getCloseNotesInKey(theme.getKey().getBaseNote(),
 										themeContent.get(posNextBigger).get(0).get(0));
 								int index = MusicalKey.findIndexOfNoteInScale(gamut, themeContent.get(posNextBigger).get(0).get(0));

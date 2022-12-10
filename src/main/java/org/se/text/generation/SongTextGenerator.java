@@ -1,14 +1,20 @@
 package org.se.text.generation;
 
-import java.io.IOException;
-import java.util.*;
-import org.se.music.Config;
-import org.se.music.model.*;
-import org.se.text.analysis.*;
+import org.se.music.model.Genre;
+import org.se.music.model.Structure;
+import org.se.text.analysis.NounTerm;
+import org.se.text.analysis.Term;
+import org.se.text.analysis.TermCollection;
+import org.se.text.analysis.VerbTerm;
 import org.se.text.analysis.model.Gender;
 import org.se.text.analysis.model.GrammaticalCase;
 import org.se.text.analysis.model.Numerus;
 import org.se.text.metric.Hyphenizer;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 /**
  * @author Olivier Stenzel
  */
@@ -17,18 +23,9 @@ public class SongTextGenerator {
 	private TemplateImporter templateImporter;
 	List<TextTemplate> unusedTextTemplateList;
 
-	public static void main(String[] args) throws IOException {
-		SongTextGenerator g = new SongTextGenerator();
-		Random ran = new Random();
-		Config.loadConfig(Genre.POP);
-		List<Structure> strucs = Config.getStructures();
-		Structure structure = strucs.get(ran.nextInt(Config.getStructures().size()));
-		structure.setGenre(Genre.POP);
-	}
-
 	// text
 	private TermCollection termCollection;
-	private HashMap<Integer, String> usedWords = new HashMap<>(); // to check if a Term was used in the Song before
+	private final HashMap<Integer, String> usedWords = new HashMap<>(); // to check if a Term was used in the Song before
 
 	/**
 	 * returns a Hashmap which contains the Songtext split into parts with the number of syllable in each part
@@ -51,7 +48,7 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * returns a Text (strophe) split into parts (Takte)
+	 * returns a Text (strophe) split into parts (Bars)
 	 */
 	private String[] generateStrophe(Genre genre, int partLength) {
 
@@ -84,7 +81,7 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * ähhh....
+	 * ähhh....I don't know what to do either
 	 */
 	private TextTemplate getRandomNotUsedValue(Genre genre) {
 		Random ran = new Random();
@@ -99,7 +96,7 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * returns a variable-free-verse based on the a verse from the template
+	 * returns a variable-free-verse based on the A verse from the template
 	 */
 	private String getVerse(String rawString) {
 
@@ -116,7 +113,7 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * returns a unused word based on the given requirements
+	 * returns an unused word based on the given requirements
 	 */
 	private String getTerm(String[] requirements) {
 		int id = getIdFromRequirements(requirements);
@@ -128,7 +125,7 @@ public class SongTextGenerator {
 		if (isNoun(requirements)) {
 			termList = getNounsTermListFromRequirements(requirements);
 		} else {
-			termList = getVerbsTermListFromRequirements(requirements);// hier fürs Beispiel nomen Statt Verben TODO!!
+			termList = getVerbsTermListFromRequirements(requirements);// for testing purpose only with nouns TODO!!
 
 		}
 
@@ -153,7 +150,7 @@ public class SongTextGenerator {
 		while (requirementsVariableString.length() > 0) {
 			if (requirementsVariableString.charAt(0) == ',') index++;
 			else {
-				strArr[index] = strArr[index] + requirementsVariableString.charAt(0); // Stringbuilder
+				strArr[index] = strArr[index] + requirementsVariableString.charAt(0); // String builder
 			}
 			requirementsVariableString = requirementsVariableString.substring(1);
 		}
@@ -185,7 +182,7 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * returns a Hashmap which contains the songtext split into parts with the number of syllable in each part, based on the given songtext
+	 * returns a Hashmap which contains the song text split into parts with the number of syllable in each part, based on the given song text
 	 */
 	private HashMap<String, List<String[][]>> getPartText(List<String> order, List<String[]> songText) {
 		HashMap<String, List<String[][]>> partTextMap = new HashMap<>();
@@ -195,7 +192,7 @@ public class SongTextGenerator {
 			if (!partTextMap.containsKey(partName)) {
 				partTextMap.put(partName, new ArrayList<>());
 			}
-			partTextMap.get(partName).add(getPartSyllSmoosh(songText.get(i)));
+			partTextMap.get(partName).add(getPartSyllConcatenation(songText.get(i)));
 		}
 		return partTextMap;
 	}
@@ -203,15 +200,15 @@ public class SongTextGenerator {
 	/**
 	 * returns an array for each strophe which contains each part and the number of syllables in this part
 	 */
-	private String[][] getPartSyllSmoosh(String[] stropheText) {
-		String[][] textSyllSmoosh = new String[stropheText.length][2];
+	private String[][] getPartSyllConcatenation(String[] stropheText) {
+		String[][] textSyllConcatenation = new String[stropheText.length][2];
 
 		for (int i = 0; i < stropheText.length; i++) {
-			textSyllSmoosh[i][0] = stropheText[i];
-			textSyllSmoosh[i][1] = Integer.toString(countSyllables(stropheText[i])); // TODO reihenfolge
+			textSyllConcatenation[i][0] = stropheText[i];
+			textSyllConcatenation[i][1] = Integer.toString(countSyllables(stropheText[i])); // TODO order
 		}
 
-		return textSyllSmoosh;
+		return textSyllConcatenation;
 	}
 
 	/**
@@ -228,14 +225,14 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * print songtext in the console
+	 * print song text in the console
 	 */
 	private void printSongtext(List<String[]> songText, List<String> order) {
 		for (int j = 0; j < songText.size(); j++) {
 			System.out.println(order.get(j));
 			// print part-Content
 			for (int i = 0; i < songText.get(j).length; i++) {
-				System.out.println("Takt" + (i + 1) + ": " + songText.get(j)[i]);
+				System.out.println("Bar" + (i + 1) + ": " + songText.get(j)[i]);
 			}
 		}
 	}

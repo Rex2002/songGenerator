@@ -17,7 +17,7 @@ import org.se.text.analysis.model.Numerus;
 public class TermCollection {
 	public Map<String, TermVariations<NounTerm>> nouns;
 	public Map<String, TermVariations<VerbTerm>> verbs;
-	private Dict dict;
+	private final Dict dict;
 	static final Random rand = new Random();
 
 	public TermCollection(Dict dict) {

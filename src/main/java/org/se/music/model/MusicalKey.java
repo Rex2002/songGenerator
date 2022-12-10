@@ -1,6 +1,5 @@
 package org.se.music.model;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -49,7 +48,6 @@ public class MusicalKey {
 				return index;
 			}
 		}
-		System.out.println("failed to find value in key: " + note + ", " + Arrays.toString(notesInKey));
 		return 0;
 	}
 

@@ -26,8 +26,7 @@ public class WordWithData extends HashMap<String, String> {
 
 	public <T> boolean equals(String key, T y) {
 		Optional<?> x = get(key, y.getClass());
-		if (x.isPresent()) return Objects.equals((T) x.get(), y);
-		else return false;
+        return x.filter(o -> Objects.equals((T) o, y)).isPresent();
 	}
 
 	@Override

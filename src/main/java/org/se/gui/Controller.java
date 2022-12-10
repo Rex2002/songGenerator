@@ -37,9 +37,9 @@ public class Controller implements Initializable {
 
 	int bpm = 100;
 
-	String[] genres = { "Blues", "Pop" };
+	String[] genres = Genre.names();
 
-	String genre = "POP";
+	Genre genre = Genre.POP;
 
 	double progress = 0;
 
@@ -169,9 +169,9 @@ public class Controller implements Initializable {
 	* event handler for genre drop-down selector
 	 */
 	public void setGenre() {
-		String newGenre = setting_pane_cb.getValue();
+		Genre newGenre = Genre.valueOf(setting_pane_cb.getValue());
 		setting_pane_genre.setText("Genre: " + newGenre);
-		genre = newGenre.toUpperCase();
+		genre = newGenre;
 	}
 
 	/**
@@ -184,6 +184,7 @@ public class Controller implements Initializable {
 
 		// show progressbar
 	        generate_pane_progress.setVisible(true);
+			song_save.setVisible(true);
 	        generate_pane_progressLbl.setVisible(true);
 
 		if (file != null) {
@@ -249,6 +250,7 @@ public class Controller implements Initializable {
 
 	        // progress not visible on launch
 	        generate_pane_progress.setVisible(false);
+			song_save.setVisible(false);
 	        generate_pane_progressLbl.setVisible(false);
 
 		// allow only pdf/txt-filter
@@ -278,6 +280,9 @@ public class Controller implements Initializable {
 
 		// set choice options (genres) for choiceBox
 		setting_pane_cb.getItems().addAll(genres);
+		setting_pane_cb.setValue(genre.toString());
+		setting_pane_genre.setText("Genre: " + genre.toString());
+
 		setting_pane_cb.setOnAction(actionEvent -> setGenre());
 	}
 }

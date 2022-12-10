@@ -9,9 +9,9 @@ import java.util.*;
  */
 public class TextTemplate {
 	@JsonProperty
-	private String[] strophe;
+	private final String[] strophe;
 	@JsonProperty
-	private int length;
+	private final int length;
 
 	public TextTemplate(@JsonProperty("strophe") String[] strophe, @JsonProperty("length") int length) {
 		this.strophe = strophe;

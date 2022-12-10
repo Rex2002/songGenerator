@@ -6,7 +6,7 @@ import java.util.*;
  * @author Val Richter
  */
 class TermComp<T extends Term> implements Comparator<T> {
-	private Map<String, TermVariations<T>> terms;
+	private final Map<String, TermVariations<T>> terms;
 	private int generalTermBias = 1;
 	private int specialVariationBias = 1;
 
