@@ -22,39 +22,25 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Controller-Klasse für die UI.
+ * Controller-class for UI
  *
  * @author Marek Fischer
  */
 public class Controller implements Initializable {
 
-	// fileChooser öffnet den Datei-Explorer
 	FileChooser fileChooser = new FileChooser();
 
-	// fileSaver öffnet den Datei-Explorer (andere Einstellungen als fileChooser)
 	FileChooser fileSaver = new FileChooser();
 	SongGenerator songGenerator;
 
-
-	// userName gibt den Namen des aktuellen Benutzers -> Pfad zum Laden / Speichern (nur für Windows-User)
-	// String userName = System.getProperty("user.name");
-
-	// file enthält die zu untersuchende txt-/pdf-Datei
 	File file = null;
 
-	// song enthält den generierten Song (.midi-Datei)
-	File song = null;
-
-	// bpm gibt die im Song zu verwendenden Beats per Minute an
 	int bpm = 100;
 
-	// genres beinhaltet die Auswahl an verfügbaren Musik-Genres
 	String[] genres = { "Blues", "Pop" };
 
-	// genre gibt das aktuell ausgewählte Genre an
 	String genre = "POP";
 
-	// progress zeigt den Fortschritt der Songgenerierung an
 	double progress = 0;
 
 	@FXML
@@ -100,7 +86,7 @@ public class Controller implements Initializable {
 	private Button song_save;
 
 	/**
-	 * Öffnet den Datei-Explorer und lädt die ausgewählte Datei.
+	 * opens native file explorer and stores selected file in file
 	 */
 	@FXML
 	void loadClicked() {
@@ -111,15 +97,14 @@ public class Controller implements Initializable {
 		song_generate.setDisable(false);
 	}
 
-	// TODO: diese Funktion nutzen, um den Fortschrittsbalken zu verändern
+	// TODO: use this method to update the progress bar
 	/**
-	 * Erhöht den Fortschrittsbalken und zeigt die fertigen Funktionen an.
+	 * increases the value of the progress bar and shows completed steps
 	 *
-	 * @param msg
-	 *            die abgeschloßene Funktion
-	 * @param val
-	 *            Wert, um den der Fortschritt erhöht wird
+	 * @param msg - completed step that is to be added to the list
+	 * @param val - value by which the progress is supposed to be increased
 	 */
+	@SuppressWarnings("unused")
 	void increaseProgress(String msg, double val) {
 		generate_pane_progressLbl.setText("Progress: " + msg + " done...");
 		progress += val;
@@ -127,7 +112,7 @@ public class Controller implements Initializable {
 	}
 
 	/**
-	 * Setzt alle Load-Elemente auf "Unsichtbar" und alle Setting-Elemente auf "Sichtbar" und umgekehrt.
+	 * toggles the visibility of all elements (load and generating have different initial values)
 	 */
 	@FXML
 	void toggleClicked() {
@@ -147,11 +132,9 @@ public class Controller implements Initializable {
 	}
 
 	/**
-	 * Gibt an, ob ein File eine .pdf- oder .txt-Datei ist.
-	 *
-	 * @param fileName
-	 *            die zu überprüfende Datei
-	 * @return ist .pdf- oder .txt-Datei
+	 * checks if the ending of the given filepath is valid (pdf or txt)
+	 * @param fileName - name of the file to be checked
+	 * @return if file name is valid
 	 */
 	boolean isValidFile(String fileName) {
 		String fileType = "";
@@ -161,8 +144,7 @@ public class Controller implements Initializable {
 	}
 
 	/**
-	 * Reagiert onDrag.
-	 * Lässt valide Dateien in den Drag&Drop-Bereich ziehen.
+	 * allows valid files to be dragged and dropped
 	 */
 	@FXML
 	void dragFile(DragEvent event) {
@@ -171,8 +153,7 @@ public class Controller implements Initializable {
 	}
 
 	/**
-	 * Reagiert onDrop.
-	 * Schreibt die Datei in die dafür vorgesehene Variable und zeigt den Dateipfad an.
+	 * handles onDrop event
 	 */
 	@FXML
 	void dropFile(DragEvent event) {
@@ -185,7 +166,7 @@ public class Controller implements Initializable {
 	}
 
 	/**
-	 * Setzt das Genre aus der ChoiceBox (DropDownMenu).
+	* event handler for genre drop-down selector
 	 */
 	public void setGenre() {
 		String newGenre = setting_pane_cb.getValue();
@@ -194,7 +175,7 @@ public class Controller implements Initializable {
 	}
 
 	/**
-	 * Startet die Songgenerierung.
+	 * generates song
 	 */
 	@FXML
 	void generateSong() {
@@ -215,7 +196,7 @@ public class Controller implements Initializable {
 	}
 
 	/**
-	 * Öffnet den Datei-Explorer und speichert den Song in dem ausgewählten Ordner.
+	 * opens native file explorer and stores song at selected location
 	 */
 	@FXML
 	void saveFile() {
@@ -234,7 +215,7 @@ public class Controller implements Initializable {
 	}
 
 	/**
-	 * Öffnet das Benutzerhandbuch.
+	 * opens the user guide
 	 */
 	@FXML
 	void showGuide() {
@@ -247,7 +228,7 @@ public class Controller implements Initializable {
 	}
 
 	/**
-	 * Setzt verschiedene Einstellungen beim starten der UI.
+	 * sets initial settings
 	 */
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {

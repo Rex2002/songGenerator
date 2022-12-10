@@ -1,11 +1,11 @@
 package org.se.music.logic;
 
-import java.util.*;
-
 import org.se.Settings;
 import org.se.music.model.*;
 import org.se.text.analysis.TermCollection;
 import org.se.text.generation.SongTextGenerator;
+
+import java.util.*;
 
 /**
  * Generates a full song based on the provided inputs
@@ -63,24 +63,24 @@ public class StructureGenerator {
 				m.setBar(m.getBar() - barOffset);
 			}
 			seq.addText(barOffset * 4, 0, partName);
+			if(partContainsVocal(structure.getPart(partName))){
+				Part p = structure.getPart(partName);
+				MidiText t;
+				for(int bar = 0; bar < p.getLength(); bar += 1){
+					t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get("vocals")), bar + barOffset,
+							structure.getText().get(partName).get(0)[bar][0]);
+					System.out.println("adding midi text @ " + t.getBar());
+					seq.addMidiText(t);
+				}
+			}
 			for (MidiText t : structure.getPart(partName).getMidiTexts()) {
 				t.setBar(t.getBar() + barOffset);
 				seq.addMidiText(t);
 				t.setBar(t.getBar() - barOffset);
 			}
-			 if(partContainsVocal(structure.getPart(partName))){
-				 Part p = structure.getPart(partName);
-				 MidiText t;
-				 for(int bar = 0; bar < p.getLength(); bar += 1){
-					 t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get("vocals")), bar + barOffset,
-					 structure.getText().get(partName).get(0)[bar][0]);
-					 seq.addMidiText(t);
-			 	}
-			 }
 			barOffset += structure.getPart(partName).getLength();
 		}
 		return seq;
-		//seq.createFile("structureTest");
 	}
 
 	public static MidiSequence initMidiSequence(Structure s) {
@@ -115,7 +115,6 @@ public class StructureGenerator {
 				seq.setInstrument(instr, trackMapping.get(instr));
 			}
 			seq.setKey(structure.getKey().getBase(), trackMapping.get(instr));
-			seq.addText(2, trackMapping.get(instr), instr.toString());
 			// seq.addNote(60, 0, 24, trackMapping.get(instr));
 		}
 		seq.setBPM(structure.getTempo());

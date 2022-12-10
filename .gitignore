@@ -1,6 +1,6 @@
 .idea/
+.vscode/
 target/
-/midi-file.mid
 *.mid
 *.mp3
 *.iml

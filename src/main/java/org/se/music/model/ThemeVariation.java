@@ -33,7 +33,6 @@ public class ThemeVariation extends MidiPlayable {
 		Map<Integer, List<List<Integer>>> themeContent = theme.transposedContent;
 		int pos, posNextSmaller, posNextBigger, newNote, newLength;
 		List<Integer> posAndLength;
-		System.out.println("creating theme variation with length: " + Arrays.deepToString(text));
 		for (int bar = 0; bar < theme.getLengthInBars(); bar++) {
 			while (getNoteCountInBar(bar) < Integer.parseInt(text[bar][1])) {
 				pos = ran.nextInt(16) * 6 + bar * 96;

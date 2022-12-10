@@ -1,18 +1,18 @@
 package org.se.music.logic;
 
-import javax.sound.midi.*;
-
 import org.se.music.model.Chord;
 import org.se.music.model.MidiPlayable;
 import org.se.music.model.MidiText;
 import org.se.music.model.MusicalKey;
 
+import javax.sound.midi.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
- * master-class of actually handling Midi.
+ * masterclass of actually handling Midi.
  * Provides methods to set speed, title, track numbers, etc. of a midi sequence
  * and add MidiPlayables or MidiText to the midi sequence.
  * @author Benjamin Frahm
@@ -215,7 +215,7 @@ public class MidiSequence {
 			return;
 		}
 		try {
-			File f = new File(filename + ".mid");
+			File f = new File(filename);
 			MidiSystem.write(seq, 1, f);
 		} catch (IOException e) {
 			e.printStackTrace();

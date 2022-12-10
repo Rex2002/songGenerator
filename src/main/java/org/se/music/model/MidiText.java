@@ -36,7 +36,7 @@ public class MidiText {
 	}
 
 	public int getPos() {
-		return bar * 4 + (isChordName ? relativeOffset : 0);
+		return bar * 4 + (isChordName ? relativeOffset : 1);
 	}
 
 	public String getText() {
