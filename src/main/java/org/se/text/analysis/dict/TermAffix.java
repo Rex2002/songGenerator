@@ -3,13 +3,12 @@ package org.se.text.analysis.dict;
 import java.util.*;
 
 import org.se.text.analysis.model.AffixType;
-import org.se.text.analysis.model.DisplayableParent;
 import org.se.text.analysis.model.Numerus;
 
 /**
  * @author Val Richter
  */
-public class TermAffix implements DisplayableParent {
+public class TermAffix {
 	public String radix;
 	public Numerus numerus;
 	public AffixType type;
@@ -29,7 +28,6 @@ public class TermAffix implements DisplayableParent {
 		return numerus == other.numerus;
 	}
 
-	@Override
 	public String toStringHelper() {
 		return " radix='" + getRadix() + "'" + ", numerus='" + getNumerus() + "'" + ", type='" + getType() + "'" + ", toUmlaut='" + getToUmlaut()
 				+ "'";
@@ -59,45 +57,16 @@ public class TermAffix implements DisplayableParent {
 		this.type = type;
 	}
 
-	public boolean isToUmlaut() {
-		return this.toUmlaut;
-	}
-
 	public boolean getToUmlaut() {
 		return this.toUmlaut;
-	}
-
-	public void setToUmlaut(boolean toUmlaut) {
-		this.toUmlaut = toUmlaut;
-	}
-
-	public TermAffix radix(String radix) {
-		setRadix(radix);
-		return this;
-	}
-
-	public TermAffix numerus(Numerus numerus) {
-		setNumerus(numerus);
-		return this;
-	}
-
-	public TermAffix type(AffixType type) {
-		setType(type);
-		return this;
-	}
-
-	public TermAffix toUmlaut(boolean toUmlaut) {
-		setToUmlaut(toUmlaut);
-		return this;
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) return true;
-		if (!(o instanceof TermAffix)) {
+		if (!(o instanceof TermAffix termEndings)) {
 			return false;
 		}
-		TermAffix termEndings = (TermAffix) o;
 		return Objects.equals(radix, termEndings.radix) && Objects.equals(numerus, termEndings.numerus) && toUmlaut == termEndings.toUmlaut;
 	}
 

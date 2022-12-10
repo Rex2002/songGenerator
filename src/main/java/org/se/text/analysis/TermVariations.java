@@ -19,39 +19,11 @@ public class TermVariations<T extends Term> {
 	public String radix;
 	private Random rand = new Random();
 
-	public TermVariations() {
-		this.variations = new HashMap<>();
-		this.frequency = 0;
-		this.radix = "";
-	}
-
 	public TermVariations(T term) {
 		this.variations = new HashMap<>();
 		this.variations.put(term.hashData(), term);
 		this.frequency = 1;
 		this.radix = term.radix;
-	}
-
-	public TermVariations(List<T> terms) {
-		this.variations = new HashMap<>();
-		for (T term : terms) {
-			variations.put(term.hashData(), term);
-		}
-		this.frequency = terms.size();
-		this.radix = terms.get(0).radix;
-	}
-
-	public TermVariations(Map<Integer, T> variations, Integer frequency, String radix) {
-		this.variations = variations;
-		this.frequency = frequency;
-		this.radix = radix;
-	}
-
-	public TermVariations(Map<Integer, T> variations, Integer frequency, String radix, Random rand) {
-		this.variations = variations;
-		this.frequency = frequency;
-		this.radix = radix;
-		this.rand = rand;
 	}
 
 	public void forEach(Consumer<? super T> f) {
@@ -78,10 +50,6 @@ public class TermVariations<T extends Term> {
 
 	public List<T> queryBy(Predicate<? super T> f) {
 		return this.variations.values().stream().filter(f).collect(Collectors.toList());
-	}
-
-	public List<T> queryBySyllableRange(int minSyllableAmount, int maxSyllableAmount) {
-		return this.queryBy(x -> minSyllableAmount <= x.syllableAmount && x.syllableAmount >= maxSyllableAmount);
 	}
 
 	public void add(TermVariations<T> variations) {
@@ -118,7 +86,7 @@ public class TermVariations<T extends Term> {
 
 	// Same as getTerm, except it allows the program to automatically create the
 	// queried variation if necessary
-	// Automatically created variations can be very wrong and should avoided if
+	// Automatically created variations can be very wrong and should be avoided if
 	// possible
 	public static Optional<NounTerm> createTerm(TermVariations<NounTerm> nounVariations, Gender gender, GrammaticalCase grammaticalCase,
 			Numerus numerus, Dict dict) {
@@ -126,11 +94,6 @@ public class TermVariations<T extends Term> {
 		if (res.isPresent()) return res;
 
 		return dict.createNounTerm(nounVariations, gender, grammaticalCase, numerus);
-	}
-
-	public static boolean hasType(TermVariations<NounTerm> nounVariations, Gender gender, GrammaticalCase grammaticalCase, Numerus numerus) {
-		int hash = NounTerm.hashData(gender, grammaticalCase, numerus);
-		return nounVariations.variations.containsKey(hash);
 	}
 
 	// Boilerplate:
@@ -143,20 +106,8 @@ public class TermVariations<T extends Term> {
 		return this.variations;
 	}
 
-	public void setVariations(Map<Integer, T> variations) {
-		this.variations = variations;
-	}
-
 	public Integer getFrequency() {
 		return this.frequency;
-	}
-
-	public void setFrequency(Integer frequency) {
-		this.frequency = frequency;
-	}
-
-	public void setRadix(String radix) {
-		this.radix = radix;
 	}
 
 	@Override

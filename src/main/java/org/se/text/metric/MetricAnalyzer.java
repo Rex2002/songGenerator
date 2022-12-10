@@ -1,17 +1,17 @@
 package org.se.text.metric;
 
-import java.util.*;
 import org.se.text.analysis.TermCollection;
 
 /**
  * @author Jakob Kautz
  */
 public class MetricAnalyzer {
+	static int totalHyphens = 0;
+
 	public static int metricsGet(String content, TermCollection terms) {
 		// Find average length for sentences and hyphen in order to determine text speed
 		int averageH = averageHyphen(terms);
 		int averageS = averageSentence(content);
-		int bpm = 0;
 
 		/*
 		 * Define bpm for several sentence/hyphen length combinations
@@ -33,52 +33,45 @@ public class MetricAnalyzer {
 		 * 180 bpm short short
 		 */
 		if (averageH <= 1 && averageS <= 9) {
-			bpm = 180;
+			return 180;
 		}
-		else if (averageH == 2 || averageH == 3 && averageS <= 9) {
-			bpm = 160;
+		if ((averageH == 2 || averageH == 3) && averageS <= 9) {
+			return 160;
 		}
-		else if (averageH == 2 || averageH == 3 && averageS >= 9 && averageS <= 18) {
-			bpm = 140;
+		if ((averageH == 2 || averageH == 3) && averageS <= 18) {
+			return 140;
 		}
-		else if (averageH == 2 || averageH == 3 && averageS >= 19) {
-			bpm = 120;
+		if (averageH == 2 || averageH == 3) {
+			return 120;
 		}
-		else if (averageH >= 4 && averageS <= 9) {
-			bpm = 100;
+		if (averageH >= 4 && averageS <= 9) {
+			return 100;
 		}
-		else if (averageH >= 4 && averageS >= 9 && averageS <= 18) {
-			bpm = 80;
+		if (averageH >= 4 && averageS <= 18) {
+			return 80;
 		}
-		else if (averageH >= 4 && averageS >= 19) {
-			bpm = 60;
+		if (averageH >= 4) {
+			return 60;
 		}
-		return bpm;
+		return 120;
 	}
-	
-/*
-*Berechnet Durchschnittliche Silbenlänge
-*/
-
-	static int totalHyphens = 0;
-
+	/*
+	 * Berechnet durchschnittliche Silbenlänge
+	 */
 	public static int averageHyphen(TermCollection terms) {
 		totalHyphens = 0;
 		terms.flatIter(term -> totalHyphens += term.getSyllableAmount());
 
-		int averageH = totalHyphens / terms.size();
-		return averageH;
+		return totalHyphens / terms.size();
 	}
-/*
-* Berechnet Durchschnittliche Satzlänge
-*/
 
+	/*
+	 * Berechnet durchschnittliche Satzlänge
+	 */
 	public static int averageSentence(String content) {
-		String c = content;
-		int[] termAndSentences = WordCounter.countWords(c);
+		int[] termAndSentences = WordCounter.countWords(content);
 		int wordsTotal = termAndSentences[0];
 		int cTcSTotal = termAndSentences[1];
-		int sentenceAverage = wordsTotal / cTcSTotal;
-		return sentenceAverage;
+		return wordsTotal / cTcSTotal;
 	}
 }

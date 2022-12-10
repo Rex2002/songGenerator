@@ -34,18 +34,17 @@ public class FileReader {
 													// data input
 	}
 
-	public static String readPdf(String p) throws IOException {
+	public static String readPdf(String path) throws IOException {
 		StringBuffer buff = new StringBuffer();
 		try {
-			PdfReader reader = new PdfReader(p); // konstrukter mit pfad p
+			PdfReader reader = new PdfReader(path);
 			int numberOfPages = reader.getNumberOfPages();
 			String s;
 			for (int i = 1; i <= numberOfPages; i++) {
 				s = PdfTextExtractor.getTextFromPage(reader, i);
-				buff.append(s + "\n");
+				buff.append(s).append("\n");
 			}
-			String content = buff.toString();
-			return content;
+			return buff.toString();
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw e;
@@ -57,8 +56,7 @@ public class FileReader {
 			CharsetDetector detector = new CharsetDetector();
 			Path path = Paths.get(p);
 			byte[] bytes = Files.readAllBytes(path);
-			String content = detector.getString(bytes, "");
-			return content;
+			return detector.getString(bytes, "");
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

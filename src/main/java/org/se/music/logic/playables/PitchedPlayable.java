@@ -1,6 +1,5 @@
 package org.se.music.logic.playables;
 
-import org.se.music.logic.playables.MidiPlayable;
 import org.se.music.model.Chord;
 import org.se.music.model.MusicalKey;
 
@@ -14,9 +13,9 @@ import java.util.List;
  */
 abstract public class PitchedPlayable extends MidiPlayable {
 
-	protected Chord[] chords;
+	protected final Chord[] chords;
 	protected Chord[] inflatedChords;
-	protected MusicalKey key;
+	protected final MusicalKey key;
 
 	public PitchedPlayable(int trackNo, int bar, MusicalKey key, List<String> chord) {
 		super(trackNo, bar);

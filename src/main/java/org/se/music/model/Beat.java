@@ -11,9 +11,9 @@ import java.util.Map;
  */
 
 public class Beat {
-	Map<String, List<List<Integer>>> mainPattern;
-	Map<String, List<List<Integer>>> bigFill;
-	Map<String, List<List<Integer>>> smallFill;
+	final Map<String, List<List<Integer>>> mainPattern;
+	final Map<String, List<List<Integer>>> bigFill;
+	final Map<String, List<List<Integer>>> smallFill;
 
 	public Beat(Map<String, List<List<Integer>>> mainPattern,
 			Map<String, List<List<Integer>>> bigFill,

@@ -28,16 +28,16 @@ import java.util.ResourceBundle;
  */
 public class Controller implements Initializable {
 
-	FileChooser fileChooser = new FileChooser();
+	final FileChooser fileChooser = new FileChooser();
 
-	FileChooser fileSaver = new FileChooser();
+	final FileChooser fileSaver = new FileChooser();
 	SongGenerator songGenerator;
 
 	File file = null;
 
 	int bpm = 100;
 
-	String[] genres = Genre.names();
+	final String[] genres = Genre.names();
 
 	Genre genre = Genre.POP;
 
@@ -149,7 +149,8 @@ public class Controller implements Initializable {
 	@FXML
 	void dragFile(DragEvent event) {
 		Dragboard dB = event.getDragboard();
-		if (isValidFile(dB.getUrl())) event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+		if (isValidFile(dB.getUrl()))
+			event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
 	}
 
 	/**

@@ -1,7 +1,5 @@
 package org.se.music.logic;
 
-import org.se.music.logic.playables.BeatContainer;
-import org.se.music.model.Chord;
 import org.se.music.logic.playables.MidiPlayable;
 import org.se.music.model.MidiText;
 import org.se.music.model.MusicalKey;
@@ -98,15 +96,6 @@ public class MidiSequence {
 		}
 	}
 
-	public void setTrackName(String name) {
-		try {
-			MetaMessage mt = new MetaMessage();
-			mt.setMessage(0x03, name.getBytes(), name.length());
-		} catch (InvalidMidiDataException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public void setInstrument(int instrument, int trackNumber) {
 		setInstrument(instrument, trackNumber, false);
 	}
@@ -179,13 +168,6 @@ public class MidiSequence {
 		}
 	}
 
-	@Deprecated
-	public void addChord(Chord chord, long start, long length, int trackNumber) {
-		for (int modifier : chord.getChordModifier()) {
-			addNote(chord.getRootNote() + modifier, start, length, trackNumber);
-		}
-	}
-
 	public void addMidiPlayable(MidiPlayable m) {
 		Map<Integer, List<List<Integer>>> content = m.getContent();
 		int bar = m.getBar();
@@ -199,16 +181,6 @@ public class MidiSequence {
 
 	public void addMidiText(MidiText t) {
 		addText(t.getPos(), t.getTrackNo(), t.getText());
-	}
-
-	@Deprecated
-	public void addBeat(BeatContainer beat, int bar) {
-		Map<Integer, List<List<Integer>>> beatContent = beat.getContent();
-		for (int drumNo : beatContent.keySet()) {
-			for (List<Integer> o : beatContent.get(drumNo)) {
-				addNote(drumNo, bar * 96L + o.get(0).longValue(), o.get(1).longValue(), 0);
-			}
-		}
 	}
 
 	public void createFile(String filename) {

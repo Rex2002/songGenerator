@@ -21,8 +21,7 @@ public class Conjugation extends TermAffix {
 
 	@Override
 	public boolean grammaticallyEquals(TermAffix other) {
-		if (!(other instanceof Conjugation)) return false;
-		Conjugation conjugation = (Conjugation) other;
+		if (!(other instanceof Conjugation conjugation)) return false;
 		return super.grammaticallyEquals(conjugation) && person == conjugation.person && tense == conjugation.tense;
 	}
 
@@ -42,23 +41,12 @@ public class Conjugation extends TermAffix {
 		this.tense = tense;
 	}
 
-	public Conjugation person(Person person) {
-		setPerson(person);
-		return this;
-	}
-
-	public Conjugation tense(Tense tense) {
-		setTense(tense);
-		return this;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) return true;
-		if (!(o instanceof Conjugation)) {
+		if (!(o instanceof Conjugation conjugation)) {
 			return false;
 		}
-		Conjugation conjugation = (Conjugation) o;
 		return Objects.equals(person, conjugation.person) && Objects.equals(tense, conjugation.tense);
 	}
 

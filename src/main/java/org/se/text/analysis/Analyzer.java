@@ -21,10 +21,6 @@ public class Analyzer {
 		return Analyzer.buildTerms(tags, dict);
 	}
 
-	public static String readFile(Path filepath) throws IOException {
-		return Files.readString(filepath, StandardCharsets.UTF_8);
-	}
-
 	static List<Sentence> preprocess(String text) {
 		// I'm sure there must be a better way to do this
 		// Maybe there's something you could do with streams to make this more readable
@@ -40,8 +36,7 @@ public class Analyzer {
 		char[] chars = text.toCharArray();
 		StringBuilder currentWord = new StringBuilder();
 
-		for (int i = 0; i < chars.length; i++) {
-			char c = chars[i];
+		for (char c : chars) {
 			// ignore whitespace
 			if (Character.isWhitespace(c)) {
 				if (!currentWord.isEmpty() && !splitLastWord) {

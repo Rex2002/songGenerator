@@ -27,7 +27,7 @@ public class Dict {
 	WordList verbSuffixes = new WordList();
 	WordList verbPrefixes = new WordList();
 	WordList verbs = new WordList();
-	WordList diphtongs = new WordList();
+	WordList diphthongs = new WordList();
 	WordList umlautChanges = new WordList();
 	WordList compoundParts = new WordList();
 	WordList genderChangeSuffixes = new WordList();
@@ -36,74 +36,28 @@ public class Dict {
 	final String baseKey;
 
 	static final String GENDER_KEY = "gender";
-	static final String GRAMMATICAL_CASE_KEY = "grammaticalCase";
-	static final String NUMERUS_KEY = "numerus";
 	static final String TO_UMLAUT_KEY = "toUmlaut";
 	static final String DEFAULT_BASE_KEY = "radix";
-
-	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs,
-			WordList diphtongs, WordList umlautChanges, WordList compoundParts, WordList genderChangeSuffixes, List<Declination> declinatedAffixes,
-			List<Conjugation> conjugatedAffixes) {
-		this.nounSuffixes = nounSuffixes;
-		this.nounPrefixes = nounPrefixes;
-		this.nouns = nouns;
-		this.verbSuffixes = verbSuffixes;
-		this.verbPrefixes = verbPrefixes;
-		this.verbs = verbs;
-		this.diphtongs = diphtongs;
-		this.umlautChanges = umlautChanges;
-		this.compoundParts = compoundParts;
-		this.declinatedAffixes = declinatedAffixes;
-		this.conjugatedAffixes = conjugatedAffixes;
-		this.genderChangeSuffixes = genderChangeSuffixes;
-		this.baseKey = DEFAULT_BASE_KEY;
-	}
 
 	public Dict(Path dirPath) throws IOException {
 		this.baseKey = DEFAULT_BASE_KEY;
 
 		Parser.readCSV(dirPath.resolve("nounsDict"), this.nouns);
 		Parser.readCSV(dirPath.resolve("verbsDict"), this.verbs);
-		Parser.readCSV(dirPath.resolve("diphtongs"), this.diphtongs);
+		Parser.readCSV(dirPath.resolve("diphtongs"), this.diphthongs);
 		Parser.readCSV(dirPath.resolve("umlautChanges"), this.umlautChanges);
 		Parser.readCSV(dirPath.resolve("compoundParts"), this.compoundParts);
 		Parser.readCSV(dirPath.resolve("genderChangeSuffixes"), genderChangeSuffixes);
 		Parser.parseCSV(dirPath.resolve("affixesDict"), row -> {
 			switch (row.get("type")) {
-				case "nounSuffix":
-					nounSuffixes.insert(row);
-					break;
-
-				case "nounPrefix":
-					nounPrefixes.insert(row);
-					break;
-
-				case "verbSuffix":
-					verbSuffixes.insert(row);
-					break;
-
-				case "verbPrefix":
-					verbPrefixes.insert(row);
-					break;
+				case "nounSuffix" -> nounSuffixes.insert(row);
+				case "nounPrefix" -> nounPrefixes.insert(row);
+				case "verbSuffix" -> verbSuffixes.insert(row);
+				case "verbPrefix" -> verbPrefixes.insert(row);
 			}
 		});
 		Parser.parseCSV(dirPath.resolve("declinatedAffixes"), declinatedAffixes, Declination.class);
 		Parser.parseCSV(dirPath.resolve("conjugatedAffixes"), conjugatedAffixes, Conjugation.class);
-	}
-
-	public Dict addDictionary(Dict dict) {
-		this.nounSuffixes.insertAll(dict.getNounSuffixes());
-		this.nounPrefixes.insertAll(dict.getNounPrefixes());
-		this.nouns.insertAll(dict.getNouns());
-		this.verbSuffixes.insertAll(dict.getVerbSuffixes());
-		this.verbSuffixes.insertAll(dict.getVerbSuffixes());
-		this.verbs.insertAll(dict.getVerbs());
-		this.umlautChanges.insertAll(dict.getUmlautChanges());
-		this.compoundParts.insertAll(dict.getCompoundParts());
-		this.genderChangeSuffixes.insertAll(dict.getGenderChangeSuffixes());
-		this.declinatedAffixes.addAll(dict.getDeclinatedSuffixes());
-		this.conjugatedAffixes.addAll(dict.getConjugatedSuffixes());
-		return this;
 	}
 
 	public static Dict getDefault() throws IOException {
@@ -122,13 +76,12 @@ public class Dict {
 
 	private List<WordStemmer> getPossibleStems(String s, WordList terms, List<? extends TermAffix> termAffixes, WordList suffixes,
 			WordList prefixes) {
-		WordStemmer[] l = WordStemmer.radicalize(s, terms, termAffixes, suffixes, prefixes, compoundParts, 2, diphtongs, umlautChanges, baseKey);
+		WordStemmer[] l = WordStemmer.radicalize(s, terms, termAffixes, suffixes, prefixes, compoundParts, 2, diphthongs, umlautChanges, baseKey);
 		List<WordStemmer> res = new ArrayList<>();
 
 		for (WordStemmer w : l) {
-			if (terms.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.any(w.getSuffixes(), data -> {
-				return data.containsKey("certain") && Parser.parseBool(data.get("certain"));
-			}))) {
+			if (terms.has(w.getStem()) || (w.getSuffixes().size() > 1 && Util.any(w.getSuffixes(), data
+					-> data.containsKey("certain") && Parser.parseBool(data.get("certain"))))) {
 				res.add(w);
 			}
 		}
@@ -231,11 +184,7 @@ public class Dict {
 		}
 
 		Optional<WordStemmer> verb = getBestOfStems(getPossibleVerbStems(s), false);
-		if (verb.isPresent()) {
-			return new Tag(s, TagType.Verb, verb.get());
-		}
-
-		return new Tag(s, TagType.Other);
+		return (verb.isPresent()) ? new Tag(s, TagType.Verb, verb.get()) : new Tag(s, TagType.Other);
 	}
 
 	private void addWordStemmerData(Tag t, boolean areNouns) {
@@ -311,8 +260,7 @@ public class Dict {
 		} else if (tmp.changeableGender) {
 			Optional<WordWithData> genderChangeSuffix = genderChangeSuffixes.find(suffix -> {
 				Optional<Gender> suffixGender = suffix.get(GENDER_KEY, Gender.class);
-				if (suffixGender.isPresent()) return suffixGender.get().equals(gender);
-				else return false;
+				return suffixGender.isPresent() && suffixGender.get().equals(gender);
 			});
 
 			if (genderChangeSuffix.isPresent()) {
@@ -332,7 +280,7 @@ public class Dict {
 			boolean toUmlaut = suffix.getToUmlaut() || (genderChangeSuffix != null && genderChangeSuffix.get(TO_UMLAUT_KEY, Boolean.class).get());
 
 			StringBuilder strbuilder = new StringBuilder(radix);
-			if (toUmlaut) strbuilder = new StringBuilder(changeUmlaut(umlautChanges, diphtongs, radix, true));
+			if (toUmlaut) strbuilder = new StringBuilder(changeUmlaut(umlautChanges, diphthongs, radix, true));
 			if (genderChangeSuffix != null) strbuilder.append(genderChangeSuffix.get());
 			strbuilder.append(suffix.getRadix());
 
@@ -361,6 +309,7 @@ public class Dict {
 					for (int j = 0; comparison && j < initial.length && j + i < chars.length; j++) {
 						if (initial[j] != chars[i + j]) {
 							comparison = false;
+							break;
 						}
 					}
 					// If the comparison was correct, update the umlaut sequence
@@ -370,7 +319,7 @@ public class Dict {
 						for (int j = 0; comparison && j < updated.length && j + i < chars.length; j++) {
 							chars[i + j] = updated[j];
 						}
-						// Increae i to avoid checking the same characters, that just got updated
+						// Increase i to avoid checking the same characters that just got updated
 						// Yes, it's bad to increase the loop counter from within the loop body, but it
 						// should be more efficient
 						i += updated.length - 1;
@@ -383,191 +332,36 @@ public class Dict {
 	}
 
 	// Getters, Setters & other Boilerplate
-
 	public WordList getNounSuffixes() {
 		return this.nounSuffixes;
-	}
-
-	public void setNounSuffixes(WordList nounSuffixes) {
-		this.nounSuffixes = nounSuffixes;
 	}
 
 	public WordList getNounPrefixes() {
 		return this.nounPrefixes;
 	}
 
-	public void setNounPrefixes(WordList nounPrefixes) {
-		this.nounPrefixes = nounPrefixes;
-	}
-
 	public WordList getNouns() {
 		return this.nouns;
-	}
-
-	public void setNouns(WordList nouns) {
-		this.nouns = nouns;
 	}
 
 	public WordList getVerbSuffixes() {
 		return this.verbSuffixes;
 	}
 
-	public void setVerbSuffixes(WordList verbSuffixes) {
-		this.verbSuffixes = verbSuffixes;
-	}
-
 	public WordList getVerbPrefixes() {
 		return this.verbPrefixes;
-	}
-
-	public void setVerbPrefixes(WordList verbPrefixes) {
-		this.verbPrefixes = verbPrefixes;
 	}
 
 	public WordList getVerbs() {
 		return this.verbs;
 	}
 
-	public void setVerbs(WordList verbs) {
-		this.verbs = verbs;
-	}
-
-	public Dict nounSuffixes(WordList nounSuffixes) {
-		setNounSuffixes(nounSuffixes);
-		return this;
-	}
-
-	public Dict nounPrefixes(WordList nounPrefixes) {
-		setNounPrefixes(nounPrefixes);
-		return this;
-	}
-
-	public Dict nouns(WordList nouns) {
-		setNouns(nouns);
-		return this;
-	}
-
-	public Dict verbSuffixes(WordList verbSuffixes) {
-		setVerbSuffixes(verbSuffixes);
-		return this;
-	}
-
-	public Dict verbPrefixes(WordList verbPrefixes) {
-		setVerbPrefixes(verbPrefixes);
-		return this;
-	}
-
-	public Dict verbs(WordList verbs) {
-		setVerbs(verbs);
-		return this;
-	}
-
-	public WordList getDiphtongs() {
-		return this.diphtongs;
-	}
-
-	public void setDiphtongs(WordList diphtongs) {
-		this.diphtongs = diphtongs;
-	}
-
-	public WordList getUmlautChanges() {
-		return this.umlautChanges;
-	}
-
-	public void setUmlautChanges(WordList umlautChanges) {
-		this.umlautChanges = umlautChanges;
-	}
-
-	public List<Declination> getDeclinatedSuffixes() {
-		return this.declinatedAffixes;
-	}
-
-	public void setDeclinatedSuffixes(List<Declination> declinatedAffixes) {
-		this.declinatedAffixes = declinatedAffixes;
-	}
-
-	public String getBaseKey() {
-		return this.baseKey;
-	}
-
-	public Dict diphtongs(WordList diphtongs) {
-		setDiphtongs(diphtongs);
-		return this;
-	}
-
-	public Dict umlautChanges(WordList umlautChanges) {
-		setUmlautChanges(umlautChanges);
-		return this;
-	}
-
-	public Dict declinatedAffixes(List<Declination> declinatedAffixes) {
-		setDeclinatedSuffixes(declinatedAffixes);
-		return this;
-	}
-
-	public List<Conjugation> getConjugatedSuffixes() {
-		return this.conjugatedAffixes;
-	}
-
-	public void setConjugatedSuffixes(List<Conjugation> conjugatedAffixes) {
-		this.conjugatedAffixes = conjugatedAffixes;
-	}
-
-	public Dict conjugatedAffixes(List<Conjugation> conjugatedAffixes) {
-		setConjugatedSuffixes(conjugatedAffixes);
-		return this;
-	}
-
-	public Dict(WordList nounSuffixes, WordList nounPrefixes, WordList nouns, WordList verbSuffixes, WordList verbPrefixes, WordList verbs,
-			WordList diphtongs, WordList umlautChanges, WordList compoundParts, List<Declination> declinatedAffixes,
-			List<Conjugation> conjugatedAffixes, String baseKey) {
-		this.nounSuffixes = nounSuffixes;
-		this.nounPrefixes = nounPrefixes;
-		this.nouns = nouns;
-		this.verbSuffixes = verbSuffixes;
-		this.verbPrefixes = verbPrefixes;
-		this.verbs = verbs;
-		this.diphtongs = diphtongs;
-		this.umlautChanges = umlautChanges;
-		this.compoundParts = compoundParts;
-		this.declinatedAffixes = declinatedAffixes;
-		this.conjugatedAffixes = conjugatedAffixes;
-		this.baseKey = baseKey;
-	}
-
-	public WordList getCompoundParts() {
-		return this.compoundParts;
-	}
-
-	public void setCompoundParts(WordList compoundParts) {
-		this.compoundParts = compoundParts;
-	}
-
-	public Dict compoundParts(WordList compoundParts) {
-		setCompoundParts(compoundParts);
-		return this;
-	}
-
-	public WordList getGenderChangeSuffixes() {
-		return this.genderChangeSuffixes;
-	}
-
-	public void setGenderChangeSuffixes(WordList genderChangeSuffixes) {
-		this.genderChangeSuffixes = genderChangeSuffixes;
-	}
-
-	public Dict genderChangeSuffixes(WordList genderChangeSuffixes) {
-		setGenderChangeSuffixes(genderChangeSuffixes);
-		return this;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) return true;
-		if (!(o instanceof Dict)) {
+		if (!(o instanceof Dict dictionary)) {
 			return false;
 		}
-		Dict dictionary = (Dict) o;
 		return Objects.equals(nounSuffixes, dictionary.nounSuffixes) && Objects.equals(nounPrefixes, dictionary.nounPrefixes)
 				&& Objects.equals(nouns, dictionary.nouns) && Objects.equals(verbSuffixes, dictionary.verbSuffixes)
 				&& Objects.equals(verbPrefixes, dictionary.verbPrefixes) && Objects.equals(verbs, dictionary.verbs);

@@ -52,28 +52,12 @@ public class Tag {
 		this.data = data;
 	}
 
-	public Tag type(TagType type) {
-		setType(type);
-		return this;
-	}
-
-	public Tag word(String word) {
-		setWord(word);
-		return this;
-	}
-
-	public Tag data(Optional<WordStemmer> data) {
-		setData(data);
-		return this;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) return true;
-		if (!(o instanceof Tag)) {
+		if (!(o instanceof Tag tag)) {
 			return false;
 		}
-		Tag tag = (Tag) o;
 		return Objects.equals(type, tag.type) && Objects.equals(word, tag.word);
 	}
 

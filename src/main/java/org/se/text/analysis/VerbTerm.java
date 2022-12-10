@@ -17,23 +17,6 @@ public class VerbTerm extends Term {
 		this.infinitive = infinitive;
 	}
 
-	public VerbTerm(String word, Dict dict) {
-		// TODO: Change hardcoded defaults to programmatically determined ones
-		super(word);
-		Optional<WordWithData> tmp = dict.getVerbs().get(word);
-		if (tmp.isPresent()) {
-			this.infinitive = tmp.get().get("infinitive");
-		} else {
-			this.infinitive = word;
-		}
-	}
-
-	public VerbTerm(String word) {
-		// TODO: Change hardcoded defaults to programmatically determined ones
-		super(word);
-		this.infinitive = word;
-	}
-
 	@Override
 	public String toString() {
 		return "{" + super.toStringHelper() + " infinitive='" + getInfinitive() + "'" + "}";
@@ -52,10 +35,9 @@ public class VerbTerm extends Term {
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) return true;
-		if (!(o instanceof VerbTerm)) {
+		if (!(o instanceof VerbTerm verbTerm)) {
 			return false;
 		}
-		VerbTerm verbTerm = (VerbTerm) o;
 		return super.equals(verbTerm) && Objects.equals(infinitive, verbTerm.infinitive);
 	}
 
@@ -67,10 +49,5 @@ public class VerbTerm extends Term {
 
 	public void setInfinitive(String infinitive) {
 		this.infinitive = infinitive;
-	}
-
-	public VerbTerm infinitive(String infinitive) {
-		setInfinitive(infinitive);
-		return this;
 	}
 }

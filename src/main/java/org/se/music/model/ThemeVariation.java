@@ -13,10 +13,10 @@ import java.util.*;
 
 public class ThemeVariation extends MidiPlayable {
 
-	Theme theme;
+	final Theme theme;
 	Map<Integer, List<List<Integer>>> transposedContent;
 	String[][] text;
-	static Random ran = new Random();
+	static final Random ran = new Random();
 
 	public ThemeVariation(Theme theme, int trackNo, int bar, String[][] text) {
 		super(trackNo, bar);

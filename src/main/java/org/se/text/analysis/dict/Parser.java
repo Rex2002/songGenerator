@@ -14,72 +14,58 @@ import org.se.text.analysis.model.*;
  * @author Val Richter
  */
 public class Parser {
-	private Parser() {
-	}
-
-	// List of classes that are supported for parsing
-	static Class<?>[] supportedClasses = { Integer.class, Boolean.class, List.class, GrammaticalCase.class, Person.class, Tense.class, Gender.class,
-			Numerus.class };
-
+	/**
+	 * Supported types are: Integer, Boolean, List, GrammaticalCase, Person, Tense, Gender, Numerus
+	 */
 	public static <T> Optional<T> parse(String s, Class<T> cls) {
-		// Why can't I do a switch statement on Class<T>,
-		// ugghhhhhhh why Java, why!!!????
-		if (cls == String.class) return Optional.ofNullable(cls.cast(s));
-		else if (cls == GrammaticalCase.class) return Optional.ofNullable(cls.cast(parseGrammaticalCase(s)));
-		else if (cls == Person.class) return Optional.ofNullable(cls.cast(parsePerson(s)));
-		else if (cls == Tense.class) return Optional.ofNullable(cls.cast(parseTense(s)));
-		else if (cls == Gender.class) return Optional.ofNullable(cls.cast(parseGender(s)));
-		else if (cls == Numerus.class) return Optional.ofNullable(cls.cast(parseNumerus(s)));
-		else if (cls == CompoundPart.class) return Optional.ofNullable(cls.cast(parseCompoundPart(s)));
-		else if (cls == AffixType.class) return Optional.ofNullable(cls.cast(parseAffixType(s)));
-		else if (cls == Boolean.class) return Optional.ofNullable(cls.cast(parseBool(s)));
-		else if (cls == Integer.class) return Optional.ofNullable(cls.cast(parseInt(s)));
-		else if (cls == List.class) return Optional.ofNullable(cls.cast(parseList(s)));
+		if (cls == String.class)
+			return Optional.ofNullable(cls.cast(s));
+		else if (cls == GrammaticalCase.class)
+			return Optional.ofNullable(cls.cast(parseGrammaticalCase(s)));
+		else if (cls == Person.class)
+			return Optional.ofNullable(cls.cast(parsePerson(s)));
+		else if (cls == Tense.class)
+			return Optional.ofNullable(cls.cast(parseTense(s)));
+		else if (cls == Gender.class)
+			return Optional.ofNullable(cls.cast(parseGender(s)));
+		else if (cls == Numerus.class)
+			return Optional.ofNullable(cls.cast(parseNumerus(s)));
+		else if (cls == CompoundPart.class)
+			return Optional.ofNullable(cls.cast(parseCompoundPart(s)));
+		else if (cls == AffixType.class)
+			return Optional.ofNullable(cls.cast(parseAffixType(s)));
+		else if (cls == Boolean.class)
+			return Optional.of(cls.cast(parseBool(s)));
+		else if (cls == Integer.class)
+			return Optional.ofNullable(cls.cast(parseInt(s)));
+		else if (cls == List.class)
+			return Optional.of(cls.cast(parseList(s)));
 
 		return Optional.empty();
 	}
 
 	public static GrammaticalCase parseGrammaticalCase(String s) {
 		s = s.toLowerCase();
-		switch (s.charAt(0)) {
-			case 'n':
-				return GrammaticalCase.NOMINATIVE;
-
-			case 'g':
-				return GrammaticalCase.GENITIVE;
-
-			case 'd':
-				return GrammaticalCase.DATIVE;
-
-			case 'a':
-				return GrammaticalCase.ACCUSATIVE;
-
-			default:
-				return GrammaticalCase.NOMINATIVE;
-		}
+		return switch (s.charAt(0)) {
+			case 'n' -> GrammaticalCase.NOMINATIVE;
+			case 'g' -> GrammaticalCase.GENITIVE;
+			case 'd' -> GrammaticalCase.DATIVE;
+			case 'a' -> GrammaticalCase.ACCUSATIVE;
+			default -> GrammaticalCase.NOMINATIVE;
+		};
 	}
 
 	public static Person parsePerson(String s) {
 		s = s.toLowerCase();
-		switch (s.charAt(0)) {
-			case '1':
-				return Person.FIRST;
-			case 'f':
-				return Person.FIRST;
-
-			case '2':
-				return Person.SECOND;
-			case 's':
-				return Person.SECOND;
-
-			case '3':
-				return Person.THIRD;
-			case 't':
-				return Person.THIRD;
-
-			default:
-				return Person.FIRST;
-		}
+		return switch (s.charAt(0)) {
+			case '1' -> Person.FIRST;
+			case 'f' -> Person.FIRST;
+			case '2' -> Person.SECOND;
+			case 's' -> Person.SECOND;
+			case '3' -> Person.THIRD;
+			case 't' -> Person.THIRD;
+			default -> Person.FIRST;
+		};
 	}
 
 	public static Tense parseTense(String s) {
@@ -90,50 +76,36 @@ public class Parser {
 	}
 
 	public static Gender parseGender(String s) {
-		switch (s.toLowerCase().charAt(0)) {
-			case 'm':
-				return Gender.MALE;
-
-			case 'f':
-				return Gender.FEMALE;
-
-			default:
-				return Gender.NEUTRAL;
-		}
+		return switch (s.toLowerCase().charAt(0)) {
+			case 'm' -> Gender.MALE;
+			case 'f' -> Gender.FEMALE;
+			default -> Gender.NEUTRAL;
+		};
 	}
 
 	public static Numerus parseNumerus(String s) {
-		switch (s.toLowerCase().charAt(0)) {
+		return switch (s.toLowerCase().charAt(0)) {
 			// t for true
-			case 't':
-				return Numerus.PLURAL;
+			case 't' -> Numerus.PLURAL;
 
 			// p for plural
-			case 'p':
-				return Numerus.PLURAL;
-
-			default:
-				return Numerus.SINGULAR;
-		}
+			case 'p' -> Numerus.PLURAL;
+			default -> Numerus.SINGULAR;
+		};
 	}
 
 	public static CompoundPart parseCompoundPart(String s) {
-		switch (s.toLowerCase().charAt(0)) {
-			case 's':
-				return CompoundPart.SUBTRACTION;
-
-			default:
-				return CompoundPart.ADDITION;
+		if (s.toLowerCase().charAt(0) == 's') {
+			return CompoundPart.SUBTRACTION;
 		}
+		return CompoundPart.ADDITION;
 	}
 
 	public static AffixType parseAffixType(String s) {
-		switch (s.toLowerCase().charAt(0)) {
-			case 's':
-				return AffixType.SUFFIX;
-			default:
-				return AffixType.PREFIX;
+		if (s.toLowerCase().charAt(0) == 's') {
+			return AffixType.SUFFIX;
 		}
+		return AffixType.PREFIX;
 	}
 
 	public static Integer parseInt(String s) {
@@ -156,24 +128,9 @@ public class Parser {
 		return s.split("-");
 	}
 
-	public static List<String[]> readCSV(Path filepath) throws IOException {
-		if (!filepath.toString().endsWith(".csv") && !Files.exists(filepath)) {
-			filepath = Path.of(filepath.toString() + ".csv");
-		}
-
-		String[] rows = Files.readString(filepath).split("\\r?\\n");
-		List<String[]> res = new ArrayList<>();
-
-		for (int i = 0; i < rows.length; i++) {
-			res.add(rows[i].split(","));
-		}
-
-		return res;
-	}
-
 	public static void parseCSV(Path filepath, Consumer<? super WordWithData> forEachRow) throws IOException {
 		if (!filepath.toString().endsWith(".csv") && !Files.exists(filepath)) {
-			filepath = Path.of(filepath.toString() + ".csv");
+			filepath = Path.of(filepath + ".csv");
 		}
 
 		String[] rows = Files.readString(filepath).split("\\r?\\n");
@@ -221,23 +178,13 @@ public class Parser {
 
 				list.add(t);
 			} catch (Exception e) {
-				// TODO: Add sensible ErrorHandling
-				System.err.println(e);
+				System.out.println("Encountered exception while parsing csv-file.");
+				e.printStackTrace();
 			}
 		});
 	}
 
-	public static void readCSV(Path filepath, List<WordWithData> list) throws IOException {
-		parseCSV(filepath, list::add);
-	}
-
 	public static void readCSV(Path filepath, WordList list) throws IOException {
-		// TODO:
-		// When inserting the rows normally via list::insert, no verbs are found
-		// There must be something wrong with the WordList class
-		// Since it only affects verbs, there might be some edge-case with some of the verbforms, that causes the error
-		// Since the uncheckedInsert with additional sorting afterwards fixes the problem apparently,
-		// I won't spend more time on trying to find the bug for now
 		parseCSV(filepath, list::uncheckedInsert);
 		list.sort();
 	}

@@ -20,7 +20,7 @@ import java.util.Random;
  */
 public class SongTextGenerator {
 
-	private TemplateImporter templateImporter;
+	private final TemplateImporter templateImporter = new TemplateImporter();
 	List<TextTemplate> unusedTextTemplateList;
 
 	// text
@@ -35,14 +35,11 @@ public class SongTextGenerator {
 		List<String[]> songText = new ArrayList<>();
 		this.termCollection = termCollection;
 		List<String> order = structure.getOrder();
-		templateImporter = new TemplateImporter();
 		unusedTextTemplateList = templateImporter.getTemplate(structure.getGenre());
 
 		for (String s : order) {
 			songText.add(generateStrophe(structure.getGenre(), structure.getParts().get(s).getLength()));
 		}
-
-		printSongtext(songText, order); // only for Testing
 
 		return getPartText(order, songText);
 	}
@@ -52,7 +49,7 @@ public class SongTextGenerator {
 	 */
 	private String[] generateStrophe(Genre genre, int partLength) {
 
-		TextTemplate textTemplate = getUnusedStrophe(partLength, 1000, genre);// 1000 just for the feeling
+		TextTemplate textTemplate = getUnusedStrophe(partLength, genre);// 1000 just for the feeling
 
 		// go through the strophe and store the verses
 		String[] verse = new String[partLength / 2];
@@ -66,11 +63,11 @@ public class SongTextGenerator {
 	/**
 	 * retuns a strophe-template which was not yet used in the songtext
 	 */
-	private TextTemplate getUnusedStrophe(int partLength, int templateTries, Genre genre) {
+	private TextTemplate getUnusedStrophe(int partLength, Genre genre) {
 		Random ran = new Random();
 		if (unusedTextTemplateList.size() == 0) unusedTextTemplateList = templateImporter.getTemplate(genre);
 		TextTemplate textTemplate = unusedTextTemplateList.get(ran.nextInt(unusedTextTemplateList.size()));
-		for (int i = 0; i < templateTries; i++) {
+		for (int i = 0; i < 1000; i++) {
 			textTemplate = getRandomNotUsedValue(genre);// get random template
 
 			if (textTemplate.getLength() == partLength) {
@@ -342,7 +339,7 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * check if searched word is a noun
+	 * check whether searched word is a noun
 	 */
 	private boolean isNoun(String[] requirements) {
 		return (requirements[0].equals("n"));

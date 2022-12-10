@@ -10,7 +10,7 @@ import org.se.text.analysis.dict.Dict;
 import org.se.text.analysis.model.Gender;
 import org.se.text.analysis.model.GrammaticalCase;
 import org.se.text.analysis.model.Numerus;
-
+//TODO check whether unused methods can be removed
 /**
  * @author Val Richter
  */
@@ -243,7 +243,7 @@ public class TermCollection {
 		int i = rand.nextInt(terms.size());
 		Collection<T> ts = terms.get(i).variations.values();
 		int j = rand.nextInt(ts.size());
-		return ts.stream().collect(Collectors.toList()).get(j);
+		return ts.stream().toList().get(j);
 	}
 
 	// Boilerplate:
@@ -267,10 +267,9 @@ public class TermCollection {
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) return true;
-		if (!(o instanceof TermCollection)) {
+		if (!(o instanceof TermCollection termCollection)) {
 			return false;
 		}
-		TermCollection termCollection = (TermCollection) o;
 		return Objects.equals(nouns, termCollection.nouns) && Objects.equals(verbs, termCollection.verbs);
 	}
 

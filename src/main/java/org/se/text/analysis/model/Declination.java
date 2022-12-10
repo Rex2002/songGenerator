@@ -22,8 +22,7 @@ public class Declination extends TermAffix {
 
 	@Override
 	public boolean grammaticallyEquals(TermAffix other) {
-		if (!(other instanceof Declination)) return false;
-		Declination declination = (Declination) other;
+		if (!(other instanceof Declination declination)) return false;
 		return super.grammaticallyEquals(declination) && grammaticalCase == declination.grammaticalCase && gender == declination.gender;
 	}
 
@@ -43,11 +42,6 @@ public class Declination extends TermAffix {
 		this.gender = gender;
 	}
 
-	public Declination grammaticalCase(GrammaticalCase grammaticalCase) {
-		setGrammaticalCase(grammaticalCase);
-		return this;
-	}
-
 	public Declination gender(Gender gender) {
 		setGender(gender);
 		return this;
@@ -56,10 +50,9 @@ public class Declination extends TermAffix {
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) return true;
-		if (!(o instanceof Declination)) {
+		if (!(o instanceof Declination declination)) {
 			return false;
 		}
-		Declination declination = (Declination) o;
 		return Objects.equals(radix, declination.radix) && Objects.equals(grammaticalCase, declination.grammaticalCase)
 				&& Objects.equals(gender, declination.gender) && Objects.equals(numerus, declination.numerus);
 	}

@@ -7,6 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 /**
  * @author Marek Fischer
  */
@@ -14,7 +16,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Parent root = FXMLLoader.load(getClass().getResource("/ui/gui.fxml"));
+		Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/ui/gui.fxml")));
 		primaryStage.setTitle("SongGenerator");
 		primaryStage.getIcons().add(new Image("/ui/icon.png"));
 		primaryStage.setScene(new Scene(root, 800, 450));

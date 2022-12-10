@@ -24,7 +24,7 @@ public class SongGenerator extends Task<MidiSequence> {
 	}
 
 	@Override
-	protected MidiSequence call() throws Exception {
+	protected MidiSequence call() {
 		try {
 			updateMessage("Setting everything up...");
 			updateProgress(0, 100);

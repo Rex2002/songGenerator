@@ -15,9 +15,6 @@ public class AnalysisTest {
 		Dict dict = Dict.getDefault();
 		String content = FileReader.main("src/test/resources/test2.txt");
 		TermCollection terms = Analyzer.analyze(content, dict);
-		terms.flatIter(term -> System.out.println(term));
-
-		// List<NounTerm> res = terms.query(GrammaticalCase.ACCUSATIVE, Gender.MALE, Numerus.PLURAL);
-		// System.out.println(res);
+		terms.flatIter(System.out::println);
 	}
 }

@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class MusicalKey {
 
-	public static int[] keyMaj = { 0, 2, 4, 5, 7, 9, 11 };
+	public static final int[] keyMaj = { 0, 2, 4, 5, 7, 9, 11 };
 	private final int baseNote;
 	private final String base;
 

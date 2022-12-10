@@ -13,8 +13,8 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
  * @author Olivier Stenzel
  */
 public class TemplateImporter {
-	YAMLFactory yaml = new YAMLFactory();
-	ObjectMapper mapper = new ObjectMapper(yaml);
+	final YAMLFactory yaml = new YAMLFactory();
+	final ObjectMapper mapper = new ObjectMapper(yaml);
 
 	/**
 	 * returns all templates based on the genre
@@ -24,9 +24,9 @@ public class TemplateImporter {
 			// load Templates from yml
 			try {
 				if(genre == Genre.POP) {
-					yamlParser = yaml.createParser(new File("./src/main/resources/text/popTemplate.yml"));
-				}else{
-					yamlParser = yaml.createParser(new File("./src/main/resources/text/bluesTemplate.yml"));
+					yamlParser = yaml.createParser(new File("./src/main/resources/text/text_templates_pop.yml"));
+				} else{
+					yamlParser = yaml.createParser(new File("./src/main/resources/text/text_templates_blues.yml"));
 				}
 				return mapper.readValues(yamlParser, TextTemplate.class).readAll();
 

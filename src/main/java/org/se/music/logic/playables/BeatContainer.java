@@ -14,10 +14,6 @@ public class BeatContainer extends MidiPlayable {
 	public static Map<String, Integer> drumPrograms;
 	public static List<Beat> drumBeats;
 
-	public BeatContainer(int beatNo, int bar, int trackNo) {
-		this(beatNo, bar, -1, trackNo);
-	}
-
 	public BeatContainer(int beatNo, int bar, int fill, int trackNo) {
 		super(trackNo, bar); // 118 is drumset instrument
 		Beat beat = drumBeats.get(beatNo);

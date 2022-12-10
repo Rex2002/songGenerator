@@ -37,10 +37,6 @@ public class Chord {
 		return rootNote;
 	}
 
-	public ArrayList<Integer> getChordModifier() {
-		return chordModifier;
-	}
-
 	public ArrayList<Integer> getChord() {
 		ArrayList<Integer> k = new ArrayList<>();
 		for (int modifier : chordModifier) {
@@ -52,11 +48,6 @@ public class Chord {
 
 	public static void setChordModifiers(HashMap<String, ArrayList<Integer>> chordModifiers) {
 		Chord.chordModifiers = chordModifiers;
-	}
-
-	@Deprecated
-	public static HashMap<String, ArrayList<Integer>> getChordModifiers() {
-		return chordModifiers;
 	}
 
 	@Override

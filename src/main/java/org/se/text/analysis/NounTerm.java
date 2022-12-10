@@ -27,20 +27,9 @@ public class NounTerm extends Term {
 		this.gender = gender;
 	}
 
-	public NounTerm(String word) {
-		// TODO: Change hardcoded defaults to programmatically determined ones
-		super(capitalize(word));
-		this.grammaticalCase = GrammaticalCase.NOMINATIVE;
-		this.gender = Gender.FEMALE;
-	}
-
 	public static String capitalize(String s) {
 		if (s.isEmpty()) return s;
 		else return Character.toUpperCase(s.charAt(0)) + s.substring(1);
-	}
-
-	public boolean fitsGender(Gender g) {
-		return changeableGender || gender.equals(g);
 	}
 
 	@Override
@@ -66,25 +55,16 @@ public class NounTerm extends Term {
 		return this.grammaticalCase;
 	}
 
-	public void setGrammaticalCase(GrammaticalCase grammaticalCase) {
-		this.grammaticalCase = grammaticalCase;
-	}
-
 	public Gender getGender() {
 		return this.gender;
-	}
-
-	public void setGender(Gender gender) {
-		this.gender = gender;
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) return true;
-		if (!(o instanceof NounTerm)) {
+		if (!(o instanceof NounTerm nounTerm)) {
 			return false;
 		}
-		NounTerm nounTerm = (NounTerm) o;
 		return super.equals(nounTerm) && Objects.equals(grammaticalCase, nounTerm.grammaticalCase) && Objects.equals(gender, nounTerm.gender);
 	}
 

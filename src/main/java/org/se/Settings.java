@@ -87,10 +87,9 @@ public class Settings {
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) return true;
-		if (!(o instanceof Settings)) {
+		if (!(o instanceof Settings settings)) {
 			return false;
 		}
-		Settings settings = (Settings) o;
 		return Objects.equals(filepath, settings.filepath) && Objects.equals(genre, settings.genre) && Objects.equals(tempo, settings.tempo)
 				&& nsfw == settings.nsfw;
 	}

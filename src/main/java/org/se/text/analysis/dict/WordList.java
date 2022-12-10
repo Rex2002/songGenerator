@@ -16,26 +16,9 @@ public class WordList implements Iterable<WordWithData> {
 		this.baseKey = "radix";
 	}
 
-	public WordList(String baseKey) {
-		this.baseKey = baseKey;
-	}
-
-	public WordList(Iterable<String> strings) {
-		this.baseKey = "radix";
-		for (String s : strings) {
-			WordWithData h = new WordWithData();
-			h.put(baseKey, s);
-			this.insert(h);
-		}
-	}
-
 	@Override
 	public Iterator<WordWithData> iterator() {
 		return store.iterator();
-	}
-
-	public boolean isEmpty() {
-		return store.isEmpty();
 	}
 
 	public int size() {
@@ -57,12 +40,10 @@ public class WordList implements Iterable<WordWithData> {
 	}
 
 	public WordWithData getElementWithLongestBase() {
-		if (elementWithLongestBase != null) {
-			return elementWithLongestBase;
-		} else {
+		if (elementWithLongestBase == null) {
 			updateElementWithLongestBase();
-			return elementWithLongestBase;
 		}
+		return elementWithLongestBase;
 	}
 
 	private int binSearch(String s, int start, int end) {
@@ -82,21 +63,15 @@ public class WordList implements Iterable<WordWithData> {
 		return binSearch(s, 0, size());
 	}
 
-	public boolean uncheckedInsert(WordWithData h) {
-		if (!h.containsKey(baseKey)) return false;
+	public void uncheckedInsert(WordWithData h) {
+		if (!h.containsKey(baseKey)) return;
 
 		h.put(baseKey, h.get(baseKey).toLowerCase());
 		store.add(h);
-		return true;
-	}
+    }
 
 	public void sort() {
-		store.sort(new Comparator<WordWithData>() {
-			@Override
-			public int compare(WordWithData o1, WordWithData o2) {
-				return o1.get(baseKey).compareTo(o2.get(baseKey));
-			}
-		});
+		store.sort((o1, o2) -> o1.get(baseKey).compareTo(o2.get(baseKey)));
 	}
 
 	public boolean insert(WordWithData h) {
@@ -117,27 +92,7 @@ public class WordList implements Iterable<WordWithData> {
 		return insert(h);
 	}
 
-	public boolean insertAll(WordWithData[] list) {
-		boolean res = true;
-		for (WordWithData hashMap : list) {
-			if (!insert(hashMap)) {
-				res = false;
-			}
-		}
-		return res;
-	}
-
-	public boolean insertAll(String[] strings) {
-		boolean res = true;
-		for (String s : strings) {
-			if (!insert(s)) {
-				res = false;
-			}
-		}
-		return res;
-	}
-
-	public boolean insertAll(WordList list) {
+	public void insertAll(WordList list) {
 		boolean res = true;
 		for (WordWithData h : list.store) {
 			if (!Objects.equals(list.baseKey, this.baseKey)) {
@@ -147,8 +102,7 @@ public class WordList implements Iterable<WordWithData> {
 				res = false;
 			}
 		}
-		return res;
-	}
+    }
 
 	public Optional<WordWithData> find(Predicate<? super WordWithData> f) {
 		for (WordWithData w : store) {
@@ -164,7 +118,6 @@ public class WordList implements Iterable<WordWithData> {
 	 * @param f
 	 *            Function determining for each element, whether it should be in the
 	 *            newly created {@link WordList}
-	 * @return
 	 */
 	public WordList filter(Predicate<? super WordWithData> f) {
 		WordList res = new WordList();
@@ -178,18 +131,6 @@ public class WordList implements Iterable<WordWithData> {
 			}
 		}
 		return res;
-	}
-
-	/**
-	 * Same as filter, but mutates this WordList object
-	 *
-	 * @param f
-	 *            Function determining for each element, whether it should stay in
-	 *            this {@link WordList}
-	 */
-	public void filterMut(Predicate<? super WordWithData> f) {
-		elementWithLongestBase = null;
-		store = store.stream().filter(f).collect(Collectors.toList());
 	}
 
 	public Optional<String> get(String s, String key) {
@@ -210,10 +151,6 @@ public class WordList implements Iterable<WordWithData> {
 			return Optional.of(h);
 		}
 		return Optional.empty();
-	}
-
-	public Optional<String> getDefault(String s) {
-		return get(s, baseKey);
 	}
 
 	public boolean has(String s) {

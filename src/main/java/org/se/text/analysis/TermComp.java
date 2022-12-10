@@ -10,12 +10,6 @@ class TermComp<T extends Term> implements Comparator<T> {
 	private int generalTermBias = 1;
 	private int specialVariationBias = 1;
 
-	public TermComp(Map<String, TermVariations<T>> terms, int generalTermBias, int specialVariationBias) {
-		this.terms = terms;
-		this.generalTermBias = generalTermBias;
-		this.specialVariationBias = specialVariationBias;
-	}
-
 	public TermComp(Map<String, TermVariations<T>> terms) {
 		this.terms = terms;
 	}

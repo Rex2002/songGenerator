@@ -21,16 +21,8 @@ public class WordStemmer {
 	final String baseKey;
 
 	final static String DEFAULT_BASE_KEY = "radix";
+
 	// Constructors:
-
-	public WordStemmer() {
-		this.baseKey = DEFAULT_BASE_KEY;
-	}
-
-	public WordStemmer(String stem) {
-		this.baseKey = DEFAULT_BASE_KEY;
-		this.stem = stem;
-	}
 
 	public WordStemmer(String baseKey, String stem) {
 		this.baseKey = baseKey;
@@ -50,28 +42,6 @@ public class WordStemmer {
 		this.grammartizedPrefix = grammartizedPrefix;
 	}
 
-	public WordStemmer(String stem, List<WordWithData> prefixes, List<WordWithData> suffixes) {
-		this.baseKey = DEFAULT_BASE_KEY;
-		this.stem = stem;
-		this.prefixes = prefixes;
-		this.suffixes = suffixes;
-	}
-
-	public WordStemmer(String baseKey, String stem, List<WordWithData> prefixes, List<WordWithData> suffixes) {
-		this.baseKey = baseKey;
-		this.stem = stem;
-		this.prefixes = prefixes;
-		this.suffixes = suffixes;
-	}
-
-	public WordStemmer(String stem, TermAffix grammartizedSuffix, List<WordWithData> prefixes, List<WordWithData> suffixes, String baseKey) {
-		this.stem = stem;
-		this.grammartizedSuffix = grammartizedSuffix;
-		this.prefixes = prefixes;
-		this.suffixes = suffixes;
-		this.baseKey = baseKey;
-	}
-
 	public WordStemmer(String stem, WordWithData additionlCompound, TermAffix grammartizedPrefix, TermAffix grammartizedSuffix,
 			List<WordWithData> prefixes, List<WordWithData> suffixes, String baseKey) {
 		this.stem = stem;
@@ -83,39 +53,27 @@ public class WordStemmer {
 		this.baseKey = baseKey;
 	}
 
-	public WordStemmer(String stem, List<WordWithData> additionalCompounds, TermAffix grammartizedPrefix, TermAffix grammartizedSuffix,
-			List<WordWithData> prefixes, List<WordWithData> suffixes, String baseKey) {
-		this.stem = stem;
-		this.additionalCompounds = additionalCompounds;
-		this.grammartizedPrefix = grammartizedPrefix;
-		this.grammartizedSuffix = grammartizedSuffix;
-		this.prefixes = prefixes;
-		this.suffixes = suffixes;
-		this.baseKey = baseKey;
-	}
-
 	// Actual Logic:
 
 	public int affixesCount() {
 		int count = suffixes.size() + prefixes.size();
-		if (grammartizedSuffix != null && grammartizedSuffix.radix != "") count += 1;
+		if (grammartizedSuffix != null && !grammartizedSuffix.radix.equals("")) count += 1;
 		return count;
 	}
 
 	public static WordStemmer[] radicalize(String s, WordList terms, List<? extends TermAffix> grammartizedAffixes, WordList suffixes,
 			WordList prefixes, WordList compoundParts, int minStemLength, WordList diphtongs, WordList umlautChanges, String baseKey) {
-		List<WordStemmer> res = new LinkedList<>();
 		WordList addableCompoundParts = compoundParts
 				.filter(x -> x.containsKey("type") && x.get("type", CompoundPart.class).get() == CompoundPart.ADDITION);
 		WordList subtractabeCompoundParts = compoundParts
 				.filter(x -> x.containsKey("type") && x.get("type", CompoundPart.class).get() == CompoundPart.SUBTRACTION);
 
 		List<WordStemmer> grammartizedRes = findGrammartizedAffixes(s, grammartizedAffixes, umlautChanges, minStemLength, diphtongs, baseKey);
-		res.addAll(grammartizedRes);
+		List<WordStemmer> res = new LinkedList<>(grammartizedRes);
 		for (WordStemmer u : grammartizedRes) {
 			for (WordStemmer v : u.findSuffixes(suffixes, minStemLength, diphtongs)) {
 				for (WordStemmer w : v.findPreffixes(prefixes, minStemLength, diphtongs)) {
-					res.addAll(w.findCompounds(terms, minStemLength, addableCompoundParts, subtractabeCompoundParts, diphtongs, true));
+					res.addAll(w.findCompounds(terms, minStemLength, addableCompoundParts, subtractabeCompoundParts, diphtongs));
 				}
 			}
 		}
@@ -165,16 +123,14 @@ public class WordStemmer {
 	}
 
 	public List<WordStemmer> findCompounds(WordList terms, int minStemLength, WordList addableCompoundParts, WordList subtractableCompoundParts,
-			WordList diphtongs, boolean firstCall) {
-		List<WordStemmer> res = new LinkedList<>();
-		List<WordStemmer> nextCompounds = findNextCompound(terms, minStemLength, addableCompoundParts, subtractableCompoundParts, diphtongs);
+			WordList diphthongs) {
+		List<WordStemmer> nextCompounds = findNextCompound(terms, minStemLength, addableCompoundParts, subtractableCompoundParts, diphthongs);
 
-		// if (firstCall) res.add(this);
-		res.addAll(nextCompounds);
+		List<WordStemmer> res = new LinkedList<>(nextCompounds);
 
 		for (WordStemmer w : nextCompounds) {
-			List<WordStemmer> furtherCompounds = w.findCompounds(terms, minStemLength, addableCompoundParts, subtractableCompoundParts, diphtongs,
-					false);
+			List<WordStemmer> furtherCompounds = w.findCompounds(terms, minStemLength, addableCompoundParts, subtractableCompoundParts, diphthongs
+			);
 			res.addAll(furtherCompounds);
 		}
 
@@ -182,17 +138,17 @@ public class WordStemmer {
 	}
 
 	public List<WordStemmer> findNextCompound(WordList terms, int minStemLength, WordList addableCompoundParts, WordList subtractabeCompoundParts,
-			WordList diphtongs) {
+			WordList diphthongs) {
 		List<WordStemmer> res = new LinkedList<>();
 		StringBuilder strbuilder = new StringBuilder(stem.substring(0, minStemLength));
 		char[] chars = stem.toCharArray();
-		boolean lastWasDiphtong = minStemLength > 2 && diphtongs.has(chars[minStemLength - 2] + "" + chars[minStemLength - 1]);
+		boolean lastWasDiphtong = minStemLength > 2 && diphthongs.has(chars[minStemLength - 2] + "" + chars[minStemLength - 1]);
 
 		for (int i = minStemLength; i < chars.length - minStemLength; i++) {
 			strbuilder.append(chars[i]);
 
 			// Check that the character isn't the start of a diphtong
-			if (lastWasDiphtong || i + 1 >= chars.length || !diphtongs.has(chars[i] + "" + chars[i + 1])) {
+			if (lastWasDiphtong || i + 1 >= chars.length || !diphthongs.has(chars[i] + "" + chars[i + 1])) {
 				for (WordWithData addable : addableCompoundParts) {
 					for (WordWithData subtractable : subtractabeCompoundParts) {
 						String str = strbuilder.toString();
@@ -222,7 +178,7 @@ public class WordStemmer {
 
 	private List<WordStemmer> findAffixes(WordList affixes, int minStemLength, WordList diphtongs, boolean firstCall, boolean getPrefixes) {
 		List<WordStemmer> res = new LinkedList<>();
-		List<WordStemmer> nextAffixes = findNextAffix(affixes, minStemLength, diphtongs, false);
+		List<WordStemmer> nextAffixes = findNextAffix(affixes, minStemLength, diphtongs);
 
 		if (firstCall) res.add(this);
 		res.addAll(nextAffixes);
@@ -240,40 +196,40 @@ public class WordStemmer {
 		return res;
 	}
 
-	private List<WordStemmer> findNextAffix(WordList affixes, int minStemLength, WordList diphtongs, boolean getPefixes) {
+	private List<WordStemmer> findNextAffix(WordList affixes, int minStemLength, WordList diphthongs) {
 		int initialIndex;
 		Predicate<? super Integer> condition;
 		Consumer<? super Integer> afterIteration;
 		Function<WordStemmer, List<WordWithData>> getWordAffixes;
-		Predicate<Tuple<Integer, char[]>> additionalDiphtongCheck;
-		if (getPefixes) {
+		Predicate<Tuple<Integer, char[]>> additionalDiphthongCheck;
+		if (false) {
 			initialIndex = 0;
 			condition = i -> i < stem.length() - minStemLength;
 			afterIteration = i -> i++;
 			getWordAffixes = WordStemmer::getPrefixes;
-			additionalDiphtongCheck = t -> {
+			additionalDiphthongCheck = t -> {
 				char[] chars = t.y;
 				Integer i = t.x;
-				return i <= 0 || !diphtongs.has(chars[i - 1] + "" + chars[i]);
+				return i <= 0 || !diphthongs.has(chars[i - 1] + "" + chars[i]);
 			};
 		} else {
 			initialIndex = stem.length() - 1;
 			condition = i -> i > minStemLength;
 			afterIteration = i -> i--;
 			getWordAffixes = WordStemmer::getSuffixes;
-			additionalDiphtongCheck = t -> {
+			additionalDiphthongCheck = t -> {
 				char[] chars = t.y;
 				Integer i = t.x;
-				return i - 1 <= 0 || !diphtongs.has(chars[i - 2] + "" + chars[i - 1]);
+				return i - 1 <= 0 || !diphthongs.has(chars[i - 2] + "" + chars[i - 1]);
 			};
 		}
 
-		return findNextAffix(affixes, minStemLength, diphtongs, initialIndex, condition, afterIteration, getWordAffixes, additionalDiphtongCheck);
+		return findNextAffix(affixes, diphthongs, initialIndex, condition, afterIteration, getWordAffixes, additionalDiphthongCheck);
 	}
 
-	private List<WordStemmer> findNextAffix(WordList affixes, int minStemLength, WordList diphtongs, int initialIndex,
-			Predicate<? super Integer> condition, Consumer<? super Integer> afterIteration, Function<WordStemmer, List<WordWithData>> getWordAffixes,
-			Predicate<Tuple<Integer, char[]>> additionalDiphtongCheck) {
+	private List<WordStemmer> findNextAffix(WordList affixes, WordList diphtongs, int initialIndex,
+											Predicate<? super Integer> condition, Consumer<? super Integer> afterIteration, Function<WordStemmer, List<WordWithData>> getWordAffixes,
+											Predicate<Tuple<Integer, char[]>> additionalDiphtongCheck) {
 		List<WordStemmer> res = new ArrayList<>();
 		char[] chars = stem.toCharArray();
 		StringBuilder currentStringPart = new StringBuilder();
@@ -281,17 +237,17 @@ public class WordStemmer {
 		WordWithData longestAffix = affixes.getElementWithLongestBase();
 		int longestAffixLength = longestAffix == null ? 0 : longestAffix.size();
 
-		for (int i = initialIndex, counter = 0; counter < longestAffixLength && condition.test(i); counter++) {
+		for (int counter = 0; counter < longestAffixLength && condition.test(initialIndex); counter++) {
 			boolean isPartOfDiphtong = false;
-			currentStringPart.insert(0, chars[i]);
+			currentStringPart.insert(0, chars[initialIndex]);
 
-			// Check if current character is part of a diphtong
+			// Check whether current character is part of a diphthong
 			// To do so, first check that there even is another character after this one
-			Integer icopy = Integer.valueOf(i);
-			afterIteration.accept(icopy);
-			if (condition.test(icopy)) {
-				if (diphtongs.has(chars[icopy] + "" + chars[i])) {
-					if (additionalDiphtongCheck == null || additionalDiphtongCheck.test(new Tuple<>(i, chars))) {
+			Integer iCopy = initialIndex;
+			afterIteration.accept(iCopy);
+			if (condition.test(iCopy)) {
+				if (diphtongs.has(chars[iCopy] + "" + chars[initialIndex])) {
+					if (additionalDiphtongCheck == null || additionalDiphtongCheck.test(new Tuple<>(initialIndex, chars))) {
 						isPartOfDiphtong = true;
 					}
 				}
@@ -299,12 +255,12 @@ public class WordStemmer {
 
 			String str = currentStringPart.toString();
 			if (!isPartOfDiphtong && affixes.has(str)) {
-				WordStemmer w = new WordStemmer(baseKey, stem.substring(0, i));
+				WordStemmer w = new WordStemmer(baseKey, stem.substring(0, initialIndex));
 				getWordAffixes.apply(w).add(affixes.get(str).get());
 				res.add(w);
 			}
 
-			afterIteration.accept(i);
+			afterIteration.accept(initialIndex);
 		}
 
 		return res;
@@ -324,83 +280,32 @@ public class WordStemmer {
 		return this.grammartizedSuffix;
 	}
 
-	public void setGrammartizedSuffix(TermAffix grammartizedSuffix) {
-		this.grammartizedSuffix = grammartizedSuffix;
-	}
-
 	public TermAffix getGrammartizedPrefix() {
 		return this.grammartizedPrefix;
-	}
-
-	public void setGrammartizedPrefix(TermAffix grammartizedPrefix) {
-		this.grammartizedPrefix = grammartizedPrefix;
 	}
 
 	public List<WordWithData> getPrefixes() {
 		return this.prefixes;
 	}
 
-	public void setPrefixes(List<WordWithData> prefixes) {
-		this.prefixes = prefixes;
-	}
-
 	public List<WordWithData> getSuffixes() {
 		return this.suffixes;
-	}
-
-	public void setSuffixes(List<WordWithData> suffixes) {
-		this.suffixes = suffixes;
 	}
 
 	public String getBaseKey() {
 		return this.baseKey;
 	}
 
-	public WordStemmer stem(String stem) {
-		setStem(stem);
-		return this;
-	}
-
-	public WordStemmer grammartizedSuffix(TermAffix grammartizedSuffix) {
-		setGrammartizedSuffix(grammartizedSuffix);
-		return this;
-	}
-
-	public WordStemmer grammartizedPrefix(TermAffix grammartizedPrefix) {
-		setGrammartizedPrefix(grammartizedPrefix);
-		return this;
-	}
-
-	public WordStemmer prefixes(List<WordWithData> prefixes) {
-		setPrefixes(prefixes);
-		return this;
-	}
-
-	public WordStemmer suffixes(List<WordWithData> suffixes) {
-		setSuffixes(suffixes);
-		return this;
-	}
-
 	public List<WordWithData> getAdditionalCompounds() {
 		return this.additionalCompounds;
-	}
-
-	public void setAdditionalCompounds(List<WordWithData> additionalCompounds) {
-		this.additionalCompounds = additionalCompounds;
-	}
-
-	public WordStemmer additionalCompounds(List<WordWithData> additionalCompounds) {
-		setAdditionalCompounds(additionalCompounds);
-		return this;
 	}
 
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) return true;
-		if (!(o instanceof WordStemmer)) {
+		if (!(o instanceof WordStemmer wordStemmer)) {
 			return false;
 		}
-		WordStemmer wordStemmer = (WordStemmer) o;
 		return Objects.equals(stem, wordStemmer.stem) && Objects.equals(grammartizedSuffix, wordStemmer.grammartizedSuffix)
 				&& Objects.equals(grammartizedPrefix, wordStemmer.grammartizedPrefix) && Objects.equals(prefixes, wordStemmer.prefixes)
 				&& Objects.equals(suffixes, wordStemmer.suffixes) && Objects.equals(baseKey, wordStemmer.baseKey);
