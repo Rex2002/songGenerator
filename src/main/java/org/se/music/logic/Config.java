@@ -14,7 +14,7 @@ import java.util.List;
 import org.se.music.model.*;
 
 /**
- * Static configuration class to provide access to the parsed templates
+ * Static configuration class to parse music templates and provide access.
  * @author Malte Richert
  * @reviewer Benjamin Frahm
  */

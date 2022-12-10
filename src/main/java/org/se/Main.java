@@ -31,9 +31,3 @@ public class Main {
 		StructureGenerator.generateStructure(settings, Map.of("tempo", metrics), terms);
 	}
 }
-
-/**
- * Map<String, Object> settings = Map.of("genre", Genre.POP, "nsfw", false, "tempo", 120);
- * Map<String, Integer> metrics = Map.of("tempo", 70);
- * StructureGenerator.generateStructure(settings, metrics);
- */

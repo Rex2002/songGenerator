@@ -3,8 +3,8 @@ package org.se.music.model;
 /**
  * This class can be passed to an instance of the MidiSequence-class,
  * the text will then be displayed in the midi at the specified locations
- * @author Malte Richert
  * @author Benjamin Frahm
+ * @reviewer Malte Richert
  */
 public class MidiText {
 	private int bar;

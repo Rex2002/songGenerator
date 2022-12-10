@@ -39,12 +39,9 @@ public class Part {
 	/**
 	 * method for filling a part based on a given chord progression
 	 *
-	 * @param chordProgression
-	 *            - the chord progression that is meant to be used
-	 * @param key
-	 *            - the key of the part
-	 * @param trackMapping
-	 *            - the Instrument-track-mapping of the sequence
+	 * @param chordProgression the chord progression that is meant to be used
+	 * @param key the key of the part
+	 * @param trackMapping the instrument-track-mapping of the sequence
 	 */
 	public void fillPart(List<List<String>> chordProgression, MusicalKey key, Map<Integer, Integer> trackMapping, int themeLength, String[][] text) {
 		this.chordProgression = chordProgression;
@@ -97,8 +94,6 @@ public class Part {
 					} else {
 						m = new ThemeVariation(theme, trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar, Arrays.copyOfRange(text, bar, bar+theme.getLengthInBars()));
 					}
-					// m = new Melody(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar, key, chordProgression.get(bar %
-					// chordProgression.size()));
 					midiPlayables.add(m);
 				}
 			}

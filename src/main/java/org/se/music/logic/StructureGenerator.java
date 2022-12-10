@@ -18,7 +18,7 @@ public class StructureGenerator {
 
 	public static MidiSequence generateStructure(Settings settings, Map<String, Integer> metrics, TermCollection terms) {
 		Random ran = new Random();
-		structure = Config.getStructures().get(0);//Config.getStructures().get(ran.nextInt(Config.getStructures().size()));
+		structure = Config.getStructures().get(0);//ran.nextInt(Config.getStructures().size()));
 		structure.setGenre(settings.getGenre());
 		structure.setKey(new MusicalKey());
 		if (settings.getTempo() != null) {
@@ -130,11 +130,15 @@ public class StructureGenerator {
 		return length;
 	}
 
-	private static List<String> getImportantChords(List<List<String>> basePartChords) {
-		// Idee: Stufen ranken nach Wichtigkeit: 0,4,3,2,1,5,6
+	/**
+	 * Returns most important chords by ordering: 0,4,3,2,1,5,6
+	 * @param chords any list of chords in chord_progression template format
+	 * @return list of two most important of the input chords
+	 */
+	private static List<String> getImportantChords(List<List<String>> chords) {
 		Map<String, Integer> chordImportanceMap = Map.of("0", 0, "4", 1, "3", 2, "2", 3, "1", 4, "5", 5, "6", 6);
 		List<String> importantChords = new ArrayList<>();
-		for (List<String> bar : basePartChords) {
+		for (List<String> bar : chords) {
 			for (String chord : bar) {
 				if (importantChords.contains(chord)) {
 					continue;
