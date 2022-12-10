@@ -36,6 +36,7 @@ parts:
       - chords
       - bass
       - drums
+      - vocals
     opt:
       - melody
 ---
@@ -60,7 +61,7 @@ parts:
       - chords
       - bass
       - drums
-      - melody
+      - vocals
     opt: []
   chorus:
     length: 12
@@ -68,7 +69,7 @@ parts:
       - chords
       - bass2
       - drums
-      - melody
+      - vocals
     opt:
       - chords2
   redChorus:
@@ -76,7 +77,7 @@ parts:
     randomizationLevel: 0
     req:
       - chords
-      - melody
+      - vocals
     opt:
       - bass
 ---
@@ -94,7 +95,7 @@ parts:
     length: 12
     req:
       - chords
-      - melody
+      - vocals
       - bass
     opt:
       - drums
@@ -103,7 +104,7 @@ parts:
     randomizationLevel: 2
     req:
       - chords
-      - melody
+      - vocals
     opt:
       - bass
   instrumental:
@@ -112,6 +113,7 @@ parts:
     req:
       - chords
       - bass
+      - melody
     opt:
       - drums
       - melody2
@@ -137,7 +139,7 @@ parts:
     length: 12
     req:
       - chords
-      - melody
+      - vocals
       - bass
     opt:
       - drums
@@ -146,7 +148,7 @@ parts:
     randomizationLevel: 2
     req:
       - chords
-      - melody
+      - vocals
     opt:
       - bass
   instrumental:
@@ -181,7 +183,7 @@ parts:
     randomizationLevel: 2
     req:
       - chords
-      - melody
+      - vocals
       - bass
     opt:
       - drums
@@ -189,7 +191,7 @@ parts:
     length: 12
     req:
       - chords
-      - melody
+      - vocals
     opt:
       - bass
   instrumental:
@@ -225,7 +227,7 @@ parts:
     length: 12
     req:
       - chords
-      - melody
+      - vocals
       - bass
       - drums
     opt: []
@@ -234,7 +236,7 @@ parts:
     randomizationLevel: 2
     req:
       - chords
-      - melody
+      - vocals
       - bass
       - drums
     opt: []
@@ -272,7 +274,7 @@ parts:
     length: 12
     req:
       - chords
-      - melody
+      - vocals
       - bass
       - drums
     opt: []
@@ -281,7 +283,7 @@ parts:
     randomizationLevel: 2
     req:
       - chords
-      - melody
+      - vocals
       - bass
       - drums
     opt: []
@@ -292,6 +294,7 @@ parts:
       - chords
       - bass
       - drums
+      - melody
     opt:
       - melody2
   outro:

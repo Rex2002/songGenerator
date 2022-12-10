@@ -37,6 +37,7 @@ parts:
       - chords
       - bass
       - drums
+      - vocals
     opt:
       - melody
   bridge:
@@ -46,6 +47,7 @@ parts:
       - chords
       - bass
       - melody
+      - vocals
     opt:
       - chords2
 ---
@@ -70,7 +72,7 @@ parts:
       - chords
       - bass
       - drums
-      - melody
+      - vocals
     opt: []
   preChorus:
     length: 8
@@ -79,7 +81,7 @@ parts:
       - chords
       - bass
       - drums
-      - melody
+      - vocals
     opt:
       - chords2
   chorus:
@@ -88,7 +90,7 @@ parts:
       - chords
       - bass2
       - drums
-      - melody
+      - vocals
     opt:
       - chords2
   danceChorus:
@@ -106,7 +108,7 @@ parts:
     randomizationLevel: 0
     req:
       - chords
-      - melody
+      - vocals
     opt:
       - bass
 ---
@@ -124,7 +126,7 @@ parts:
     length: 8
     req:
       - chords
-      - melody
+      - vocals
       - bass
     opt:
       - drums
@@ -133,7 +135,7 @@ parts:
     randomizationLevel: 2
     req:
       - chords
-      - melody
+      - vocals
     opt:
       - bass
   instrumental:
@@ -142,6 +144,7 @@ parts:
     req:
       - chords
       - bass
+      - melody
     opt:
       - drums
       - melody2
@@ -167,7 +170,7 @@ parts:
     length: 8
     req:
       - chords
-      - melody
+      - vocals
       - bass
     opt:
       - drums
@@ -176,7 +179,7 @@ parts:
     randomizationLevel: 2
     req:
       - chords
-      - melody
+      - vocals
     opt:
       - bass
   instrumental:
@@ -185,6 +188,7 @@ parts:
     req:
       - chords
       - bass
+      - melody
     opt:
       - drums
       - melody2
@@ -211,7 +215,7 @@ parts:
     randomizationLevel: 2
     req:
       - chords
-      - melody
+      - vocals
       - bass
     opt:
       - drums
@@ -219,7 +223,7 @@ parts:
     length: 16
     req:
       - chords
-      - melody
+      - vocals
     opt:
       - bass
   instrumental:
@@ -228,6 +232,7 @@ parts:
     req:
       - chords
       - bass
+      - melody
     opt:
       - drums
       - melody2
@@ -255,7 +260,7 @@ parts:
     length: 8
     req:
       - chords
-      - melody
+      - vocals
       - bass
       - drums
     opt: []
@@ -264,7 +269,7 @@ parts:
     randomizationLevel: 2
     req:
       - chords
-      - melody
+      - vocals
       - bass
       - drums
     opt: []
@@ -275,6 +280,7 @@ parts:
       - chords
       - bass
       - drums
+      - melody
     opt:
       - melody2
   outro:
@@ -302,7 +308,7 @@ parts:
     length: 8
     req:
       - chords
-      - melody
+      - vocals
       - bass
       - drums
     opt: []
@@ -311,7 +317,7 @@ parts:
     randomizationLevel: 2
     req:
       - chords
-      - melody
+      - vocals
       - bass
       - drums
     opt: []
@@ -322,6 +328,7 @@ parts:
       - chords
       - bass
       - drums
+      - melody
     opt:
       - melody2
   outro:
@@ -350,7 +357,7 @@ parts:
     randomizationLevel: 2
     req:
       - chords
-      - melody
+      - vocals
       - bass
       - drums
     opt: []
@@ -358,7 +365,7 @@ parts:
     length: 16
     req:
       - chords
-      - melody
+      - vocals
       - bass
       - drums
     opt: []
@@ -369,6 +376,7 @@ parts:
       - chords
       - bass
       - drums
+      - vocals
     opt:
       - melody2
   outro:
@@ -391,14 +399,14 @@ parts:
       - chords
       - bass
       - drums
-      - melody2
+      - melody
     opt: []
   preChorus:
     length: 8
     randomizationLevel: 1
     req:
       - chords
-      - melody
+      - vocals
       - bass
       - drums
     opt: []
@@ -406,7 +414,7 @@ parts:
     length: 8
     req:
       - chords
-      - melody
+      - vocals
       - bass
       - drums
     opt: []
@@ -415,7 +423,7 @@ parts:
     randomizationLevel: 2
     req:
       - chords
-      - melody
+      - vocals
       - bass
       - drums
     opt: []
@@ -425,7 +433,7 @@ parts:
     req:
       - chords
       - bass
-      - melody
+      - vocals
     opt:
       - drums
   outro:
@@ -434,6 +442,6 @@ parts:
     req:
       - chords
       - bass
-      - melody2
+      - melody
     opt:
       - drums
