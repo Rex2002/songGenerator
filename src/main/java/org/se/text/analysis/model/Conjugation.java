@@ -20,10 +20,10 @@ public class Conjugation extends TermAffix {
 	}
 
 	@Override
-	public boolean grammarticallyEquals(TermAffix other) {
+	public boolean grammaticallyEquals(TermAffix other) {
 		if (!(other instanceof Conjugation)) return false;
 		Conjugation conjugation = (Conjugation) other;
-		return super.grammarticallyEquals(conjugation) && person == conjugation.person && tense == conjugation.tense;
+		return super.grammaticallyEquals(conjugation) && person == conjugation.person && tense == conjugation.tense;
 	}
 
 	public Person getPerson() {

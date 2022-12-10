@@ -1,9 +1,9 @@
-package org.se.music.logic;
+package org.se.music.logic.playables;
 
 import java.util.*;
 
+import org.se.music.Config;
 import org.se.music.model.MusicalKey;
-import org.se.music.model.PitchedPlayable;
 
 /**
  * Midi-playable model of a Chord. If isBassTrack is not set,

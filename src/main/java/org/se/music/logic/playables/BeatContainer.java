@@ -1,9 +1,8 @@
-package org.se.music.logic;
+package org.se.music.logic.playables;
 
 import java.util.*;
 
 import org.se.music.model.Beat;
-import org.se.music.model.MidiPlayable;
 
 /**
  * Midi-playable model of a drum beat. The templates are taken from the drumBeats-list as Beat-Objects

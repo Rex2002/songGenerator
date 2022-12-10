@@ -1,6 +1,9 @@
 package org.se.music.logic;
 
 import org.se.Settings;
+import org.se.music.Config;
+import org.se.music.logic.playables.ChordContainer;
+import org.se.music.logic.playables.MidiPlayable;
 import org.se.music.model.*;
 import org.se.text.analysis.TermCollection;
 import org.se.text.generation.SongTextGenerator;
@@ -30,7 +33,6 @@ public class StructureGenerator {
 
 		SongTextGenerator textGenerator = new SongTextGenerator();
 		HashMap<String,List<String[][]>> songText = textGenerator.generateSongText(structure, terms);
-		structure.setText(songText);
 
 		MidiSequence seq = initMidiSequence(structure);
 
@@ -68,7 +70,7 @@ public class StructureGenerator {
 				MidiText t;
 				for(int bar = 0; bar < p.getLength(); bar += 1){
 					t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get("vocals")), bar + barOffset,
-							structure.getText().get(partName).get(0)[bar][0]);
+							songText.get(partName).get(0)[bar][0]);
 					System.out.println("adding midi text @ " + t.getBar());
 					seq.addMidiText(t);
 				}

@@ -1,4 +1,4 @@
-package org.se.music.logic;
+package org.se.music;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.se.music.logic.playables.BeatContainer;
 import org.se.music.model.*;
 
 /**
@@ -113,7 +114,10 @@ public class Config {
 	}
 
 	public static List<List<List<String>>> getChordProgressions() {
-		return genre == Genre.BLUES ? chordProgressionsBlues : chordProgressionsPop;
+		return switch (genre) {
+			case POP -> chordProgressionsPop;
+			case BLUES -> chordProgressionsBlues;
+		};
 	}
 
 	public static HashMap<String, Integer> getInstrumentMapping() {

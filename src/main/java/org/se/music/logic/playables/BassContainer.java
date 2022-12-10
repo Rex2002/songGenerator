@@ -1,4 +1,4 @@
-package org.se.music.logic;
+package org.se.music.logic.playables;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.se.music.model.Chord;
 import org.se.music.model.MusicalKey;
-import org.se.music.model.PitchedPlayable;
+import org.se.music.logic.playables.PitchedPlayable;
 
 /**
  * Midi-playable model of a bass line.

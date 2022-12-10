@@ -5,16 +5,13 @@ package org.se.text.metric;
  */
 public class WordCounter {
 	public static int[] countWords(String content) {
-		String c = content;
-		String[] sentenceParts = c.split(".!?");
+		String[] sentenceParts = content.split(".!?");
 		int ctCsTotal = sentenceParts.length;
 		int wordsTotal = 0;
-		int words = 0;
-		int sentenceAverage = 0;
+		int words;
 
-		for (int i = 0; i < sentenceParts.length; i++) {
+		for (String currentSentence : sentenceParts) {
 
-			String currentSentence = sentenceParts[i];
 			words = 0;
 			for (int j = 0; j < currentSentence.length(); j++) {
 
@@ -30,8 +27,6 @@ public class WordCounter {
 
 		}
 
-		int[] wordArray = { wordsTotal, ctCsTotal };
-
-		return wordArray;
+		return new int[]{ wordsTotal, ctCsTotal };
 	}
 }

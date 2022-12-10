@@ -8,7 +8,7 @@ import org.se.text.analysis.TermCollection;
  */
 public class MetricAnalyzer {
 	public static int metricsGet(String content, TermCollection terms) {
-		// Find Average length for sentences and hyphen in order to determine text speed
+		// Find average length for sentences and hyphen in order to determine text speed
 		int averageH = averageHyphen(terms);
 		int averageS = averageSentence(content);
 		int bpm = 0;
@@ -20,7 +20,7 @@ public class MetricAnalyzer {
 		 * 18+ words is long sentence
 		 * Hyphen
 		 * 1 hyphen is short word
-		 * 2/3 hyphen is averae word
+		 * 2/3 hyphen is average word
 		 * 4+ hyphen is long word
 		 *
 		 * bpm (hyphen sentence)

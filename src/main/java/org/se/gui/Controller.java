@@ -225,8 +225,7 @@ public class Controller implements Initializable {
 	@FXML
 	void showGuide() {
 		try {
-			// TODO: Bugfix the file-path
-			Desktop.getDesktop().open(new File("/guide.pdf"));
+			Desktop.getDesktop().open(new File("src/main/resources/ui/guide.pdf"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

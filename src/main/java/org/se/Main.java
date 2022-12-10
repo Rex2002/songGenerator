@@ -1,33 +1,28 @@
 package org.se;
 
-import org.se.music.logic.Config;
-import org.se.music.logic.StructureGenerator;
-import org.se.music.model.Genre;
-import org.se.text.analysis.Analyzer;
-import org.se.text.analysis.FileReader;
-import org.se.text.analysis.TermCollection;
-import org.se.text.analysis.dict.Dict;
-import org.se.text.metric.MetricAnalyzer;
-import java.io.IOException;
-import java.util.Map;
+import javafx.application.Application;
+import javafx.scene.image.Image;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 /**
- * @author Malte Richert
- * @author Benjamin Frahm
+ * @author Marek Fischer
  */
+public class Main extends Application {
 
-public class Main {
-	public static void main(String[] args) throws IOException {
-		Dict dictionary = Dict.getDefault();
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		Parent root = FXMLLoader.load(getClass().getResource("/ui/gui.fxml"));
+		primaryStage.setTitle("SongGenerator");
+		primaryStage.getIcons().add(new Image("/ui/icon.png"));
+		primaryStage.setScene(new Scene(root, 800, 450));
+		primaryStage.setResizable(false);
+		primaryStage.show();
+	}
 
-		// these are test values that will eventually be passed by UI and TextAnalyzer
-		String filepath = args.length > 0 ? args[0] : "test.txt";
-		Settings settings = new Settings(filepath, Genre.POP, 12);
-		Config.loadConfig(settings.getGenre());
-
-		String content = FileReader.main(settings.getFilepath());
-		TermCollection terms = Analyzer.analyze(content, dictionary);
-		int metrics = MetricAnalyzer.metricsGet(content, terms);
-		StructureGenerator.generateStructure(settings, Map.of("tempo", metrics), terms);
+	public static void main(String[] args) {
+		launch(args);
 	}
 }

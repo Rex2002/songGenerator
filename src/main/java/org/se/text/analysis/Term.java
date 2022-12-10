@@ -29,7 +29,7 @@ public class Term implements DisplayableParent {
 		this.radix = radix;
 		this.word = word;
 		this.numerus = numerus;
-		this.syllableAmount = Hyphenizer.CountSyllabes(word);
+		this.syllableAmount = Hyphenizer.CountSyllables(word);
 	}
 
 	public void increaseFrequency() {

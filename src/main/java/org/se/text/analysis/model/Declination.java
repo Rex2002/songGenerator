@@ -21,10 +21,10 @@ public class Declination extends TermAffix {
 	}
 
 	@Override
-	public boolean grammarticallyEquals(TermAffix other) {
+	public boolean grammaticallyEquals(TermAffix other) {
 		if (!(other instanceof Declination)) return false;
 		Declination declination = (Declination) other;
-		return super.grammarticallyEquals(declination) && grammaticalCase == declination.grammaticalCase && gender == declination.gender;
+		return super.grammaticallyEquals(declination) && grammaticalCase == declination.grammaticalCase && gender == declination.gender;
 	}
 
 	public GrammaticalCase getGrammaticalCase() {

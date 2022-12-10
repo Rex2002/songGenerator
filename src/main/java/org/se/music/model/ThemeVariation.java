@@ -1,5 +1,7 @@
 package org.se.music.model;
 
+import org.se.music.logic.playables.MidiPlayable;
+
 import java.util.*;
 
 /**

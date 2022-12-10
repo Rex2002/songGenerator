@@ -8,7 +8,7 @@ import java.util.*;
  * Model class for structure-yaml-templates
  * consists of a list with the existing parts, the order of these
  * and the name of the basePart.
- * Furthermore it stores the key, the speed and the genre of the structure
+ * It also stores the key, the speed and the genre of the structure
  * @author Malte Richert
  * @reviewer Benjamin Frahm
  */

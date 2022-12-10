@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import org.se.Tuple;
+
 import org.se.text.analysis.model.AffixType;
 import org.se.text.analysis.model.CompoundPart;
 
@@ -136,7 +136,7 @@ public class WordStemmer {
 		for (T suffix : grammartizedAffixes) {
 			if (suffix.getType() == AffixType.SUFFIX && s.endsWith(suffix.getRadix())) {
 				List<T> prefixes = grammartizedAffixes.stream()
-						.filter(affix -> affix.getType() == AffixType.PREFIX && affix.grammarticallyEquals(suffix)).toList();
+						.filter(affix -> affix.getType() == AffixType.PREFIX && affix.grammaticallyEquals(suffix)).toList();
 				final String scopy = s.substring(0, s.length() - suffix.getRadix().length());
 
 				if (scopy.length() >= minStemLength) {

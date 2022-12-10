@@ -2,7 +2,7 @@ package org.se;
 
 import java.io.IOException;
 import java.util.Map;
-import org.se.music.logic.Config;
+import org.se.music.Config;
 import org.se.music.logic.MidiSequence;
 import org.se.music.logic.StructureGenerator;
 import org.se.text.analysis.Analyzer;

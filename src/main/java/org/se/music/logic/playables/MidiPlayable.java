@@ -1,4 +1,4 @@
-package org.se.music.model;
+package org.se.music.logic.playables;
 
 import java.util.ArrayList;
 import java.util.HashMap;

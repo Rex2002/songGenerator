@@ -1,7 +1,8 @@
 package org.se.music.logic;
 
+import org.se.music.logic.playables.BeatContainer;
 import org.se.music.model.Chord;
-import org.se.music.model.MidiPlayable;
+import org.se.music.logic.playables.MidiPlayable;
 import org.se.music.model.MidiText;
 import org.se.music.model.MusicalKey;
 

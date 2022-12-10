@@ -1,4 +1,8 @@
-package org.se.music.model;
+package org.se.music.logic.playables;
+
+import org.se.music.logic.playables.MidiPlayable;
+import org.se.music.model.Chord;
+import org.se.music.model.MusicalKey;
 
 import java.util.List;
 

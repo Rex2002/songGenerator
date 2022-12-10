@@ -1,4 +1,4 @@
-package org.se;
+package org.se.text.analysis.dict;
 
 import java.util.ArrayList;
 import java.util.List;

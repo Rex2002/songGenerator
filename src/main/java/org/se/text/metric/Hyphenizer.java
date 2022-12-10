@@ -4,7 +4,7 @@ package org.se.text.metric;
  * @author Jakob Kautz
  */
 public class Hyphenizer {
-	public static int CountSyllabes(String terms) {
+	public static int CountSyllables(String terms) {
 		int count = 0;
 		terms = terms.toLowerCase();
 
@@ -12,7 +12,7 @@ public class Hyphenizer {
 			if (terms.charAt(i) == '\"' || terms.charAt(i) == '\'' || terms.charAt(i) == '-' || terms.charAt(i) == ',' || terms.charAt(i) == ')'
 					|| terms.charAt(i) == '(') {
 				// if at any point, we encounter any such expression, we substring the string from start till that point and further.
-				terms = terms.substring(0, i) + terms.substring(i + 1, terms.length());
+				terms = terms.substring(0, i) + terms.substring(i + 1);
 			}
 		}
 
@@ -22,7 +22,7 @@ public class Hyphenizer {
 			if (terms.contains("a") || terms.contains("e") || terms.contains("i") || terms.contains("o") || terms.contains("u")) {
 				// checking if character is a vowel and if the last letter of the word is 'e' or not
 				if (isVowel(terms.charAt(j)) && !((terms.charAt(j) == 'e') && (j == terms.length() - 1))) {
-					if (isPrevVowel == false) {
+					if (!isPrevVowel) {
 						count++;
 						isPrevVowel = true;
 					}

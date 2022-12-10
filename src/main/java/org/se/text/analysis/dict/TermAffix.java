@@ -25,7 +25,7 @@ public class TermAffix implements DisplayableParent {
 		this.toUmlaut = toUmlaut;
 	}
 
-	public boolean grammarticallyEquals(TermAffix other) {
+	public boolean grammaticallyEquals(TermAffix other) {
 		return numerus == other.numerus;
 	}
 

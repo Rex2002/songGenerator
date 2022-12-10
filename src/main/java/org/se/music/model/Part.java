@@ -2,10 +2,12 @@ package org.se.music.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.se.music.logic.BassContainer;
-import org.se.music.logic.BeatContainer;
-import org.se.music.logic.ChordContainer;
-import org.se.music.logic.Config;
+import org.se.music.logic.playables.BassContainer;
+import org.se.music.logic.playables.BeatContainer;
+import org.se.music.logic.playables.ChordContainer;
+import org.se.music.Config;
+import org.se.music.logic.playables.MidiPlayable;
+import org.se.music.logic.playables.PitchedPlayable;
 
 import java.util.*;
 

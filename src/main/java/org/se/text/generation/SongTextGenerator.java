@@ -2,7 +2,7 @@ package org.se.text.generation;
 
 import java.io.IOException;
 import java.util.*;
-import org.se.music.logic.Config;
+import org.se.music.Config;
 import org.se.music.model.*;
 import org.se.text.analysis.*;
 import org.se.text.analysis.model.Gender;
@@ -24,9 +24,6 @@ public class SongTextGenerator {
 		List<Structure> strucs = Config.getStructures();
 		Structure structure = strucs.get(ran.nextInt(Config.getStructures().size()));
 		structure.setGenre(Genre.POP);
-
-		HashMap<String, List<String[][]>> partTextMap = g.generateSongText(structure, TermExample.getExample());
-
 	}
 
 	// text
@@ -225,7 +222,7 @@ public class SongTextGenerator {
 		String[] words = s.split(" ");
 
 		for (String word : words) {
-			sylCounter += Hyphenizer.CountSyllabes(word);
+			sylCounter += Hyphenizer.CountSyllables(word);
 		}
 		return sylCounter;
 	}
