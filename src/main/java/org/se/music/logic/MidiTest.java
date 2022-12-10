@@ -1,14 +1,15 @@
 package org.se.music.logic;
 
+import org.se.music.model.Genre;
+import org.se.music.model.MidiPlayable;
+
 import javax.sound.midi.*;
-
-import org.se.music.model.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
 /**
+ * @deprecated
  * @author Benjamin Frahm
  */
 

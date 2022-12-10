@@ -6,6 +6,10 @@ import java.util.Map;
 import java.util.Random;
 
 /**
+ * Model of a musical key.
+ * Provides methods to get the notes of the corresponding scale,
+ * check if a note is in the corresponding scale
+ * and translate midi note numbers to human-readable strings
  * @author Benjamin Frahm
  * @reviewer Malte Richert
  */

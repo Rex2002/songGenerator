@@ -5,6 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.*;
 
 /**
+ * Model class for structure-yaml-templates
+ * consists of a list with the existing parts, the order of these
+ * and the name of the basePart.
+ * Furthermore it stores the key, the speed and the genre of the structure
  * @author Malte Richert
  * @reviewer Benjamin Frahm
  */
@@ -16,7 +20,6 @@ public class Structure {
 	@JsonProperty
 	private final String basePartKey;
 	private MusicalKey key;
-	private HashMap<String,List<String[][]>> text;
 	private Genre genre;
 	private int tempo;
 
@@ -66,14 +69,6 @@ public class Structure {
 
 	public void setTempo(int tempo) {
 		this.tempo = tempo;
-	}
-
-	public void setText(HashMap<String, List<String[][]>> text) {
-		this.text = text;
-	}
-
-	public HashMap<String, List<String[][]>> getText() {
-		return text;
 	}
 
 	@Override

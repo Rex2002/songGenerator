@@ -3,6 +3,8 @@ package org.se.music.model;
 import java.util.*;
 
 /**
+ * Provided an instance of the Theme class, this class can be used to
+ * create a MidiPlayable modeling a variation of the theme.
  * @author Benjamin Frahm
  * @reviewer Malte Richert
  */

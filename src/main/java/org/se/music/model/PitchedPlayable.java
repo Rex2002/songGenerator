@@ -3,6 +3,8 @@ package org.se.music.model;
 import java.util.List;
 
 /**
+ * Base-class for pitched instruments providing methods
+ * to work with chords, inflate chords to fit length, etc.
  * @author Benjamin Frahm
  * @reviewer Malte Richert
  */

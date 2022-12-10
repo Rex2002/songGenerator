@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
+ * Models a chord as a combination of rootNote and chordModifier.
  * @author Benjamin Frahm
  * @reviewer Malte Richert
  */

@@ -3,6 +3,9 @@ package org.se.music.model;
 import java.util.*;
 
 /**
+ * Class providing a theme.
+ * A theme consists of notes selected from the notes of the chord of each quarter-note.
+ * Can be pass to the ThemeVariation to create a variation over the theme.
  * @author Benjamin Frahm
  * @reviewer Malte Richert
  */

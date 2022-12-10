@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.*;
 
 /**
+ * parses a beat-yaml-template to be an object of the Beat-class
  * @author Malte Richert
  * @reviewer Benjamin Frahm
  */

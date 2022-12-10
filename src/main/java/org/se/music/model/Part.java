@@ -2,12 +2,18 @@ package org.se.music.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.se.music.logic.BassContainer;
+import org.se.music.logic.BeatContainer;
+import org.se.music.logic.ChordContainer;
+import org.se.music.logic.Config;
 
 import java.util.*;
 
-import org.se.music.logic.*;
-
 /**
+ * Model of a part in a music piece.
+ * Consists of a length, required instruments, optional instruments
+ * and methods to fill the part with MidiPlayables according to the
+ * specifications provided
  * @author Malte Richert
  * @author Benjamin Frahm
  */
@@ -54,6 +60,11 @@ public class Part {
 		MidiPlayable m;
 		PitchedPlayable p;
 		MidiText t;
+		for(InstrumentEnum instr : optInsts){
+			if(ran.nextInt(3) == 0){
+				reqInsts.add(instr);
+			}
+		}
 		for (int bar = 0; bar < length; bar++) {
 			for (InstrumentEnum instr : reqInsts) {
 				if (instrEnumBeginsWith(instr, "chords")) {
