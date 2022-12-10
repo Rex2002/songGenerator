@@ -1,5 +1,5 @@
 # @author Malte Richert
-# maps chord modifiers to their notes.
+# Maps chord modifiers to their notes.
 # Every note is given as the number of half-steps above the root, e.g. [0,4,7] for maj.
 maj:  [0,4,7]
 min:  [0,3,7]

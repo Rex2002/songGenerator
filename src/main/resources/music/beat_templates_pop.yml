@@ -1,7 +1,8 @@
 # @author Malte Richert
-# readable beat specification inspired by E. Kruse:
-# one line per drum/cymbal. x is a note, - is a rest
-# resolution holds length of each char, specified in 96th from bar start
+# Readable beat specification inspired by Prof. Dr. E. Kruse:
+# One line per drum/cymbal. x is a note, - is a rest.
+# Every drum/cymbal has to be configured in drum_prog_no.yml.
+# Resolution holds length of each char, specified in 96th from bar start:
 # quarter: 24
 # eighth: 12
 # sixteenth: 6

@@ -1,17 +1,19 @@
 # @author Benjamin Frahm
-# mapping for drum <=> midi note
+# @reviewer Malte Richert
+# Maps each drum/cymbal to its midi value.
+# Drums/cymbals have to be configured here to be used in beat templates.
 #
-bass   : 36       # confirmed very low bass
-bass2  : 35       # confirmed, slightly higher bass
-snare  : 38       # confirmed
-sideStick: 37     # confirmed
-woodClick: 39     # confirmed
+bass   : 36
+bass2  : 35
+snare  : 38
+sideStick: 37
+woodClick: 39
 hiHat  : 42
-oHiHat : 46       # confirmed
-ride   : 51       # confirmed
+oHiHat : 46
+ride   : 51
 mTom   : 47
 hTom   : 50
-lTom   : 45       # confirmed
-click  : 32       # tongue clicking
-chimes : 33       # confirmed
+lTom   : 45
+click  : 32
+chimes : 33
 crash  : 49

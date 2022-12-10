@@ -1,4 +1,8 @@
 # @author Benjamin Frahm
+# @reviewer Malte Richert
+# Maps each instrument to its midi value.
+# Instruments have to be configured here to be used in structure templates.
+#
 chords  : 1
 chords2 : 2
 melody  : 40
