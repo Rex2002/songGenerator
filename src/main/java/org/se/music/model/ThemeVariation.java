@@ -14,11 +14,13 @@ public class ThemeVariation extends MidiPlayable {
 	int minSyllablesPerBar = 6;
 	Theme theme;
 	Map<Integer, List<List<Integer>>> transposedContent;
+	String[][] text;
 	static Random ran = new Random();
 
-	public ThemeVariation(Theme theme, int trackNo, int bar) {
+	public ThemeVariation(Theme theme, int trackNo, int bar, String[][] text) {
 		super(trackNo, bar);
 		this.theme = theme;
+		this.text = text;
 		setContent(theme.deepCopy());
 		createVariation();
 	}
@@ -34,9 +36,9 @@ public class ThemeVariation extends MidiPlayable {
 		Map<Integer, List<List<Integer>>> themeContent = theme.transposedContent;
 		int pos, posNextSmaller, posNextBigger, newNote, newLength;
 		List<Integer> posAndLength;
-
+		System.out.println("creating theme variation with length: " + Arrays.deepToString(text));
 		for (int bar = 0; bar < theme.getLengthInBars(); bar++) {
-			while (getNoteCountInBar(bar) < minSyllablesPerBar) {
+			while (getNoteCountInBar(bar) < Integer.parseInt(text[bar][1])) {
 				pos = ran.nextInt(16) * 6 + bar * 96;
 				posNextSmaller = getPosNext(pos, false);
 				posNextBigger = getPosNext(pos, true);

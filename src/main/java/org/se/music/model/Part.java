@@ -46,12 +46,12 @@ public class Part {
 	 * @param trackMapping
 	 *            - the Instrument-track-mapping of the sequence
 	 */
-	public void fillPart(List<List<String>> chordProgression, MusicalKey key, Map<Integer, Integer> trackMapping, int themeLength) {
+	public void fillPart(List<List<String>> chordProgression, MusicalKey key, Map<Integer, Integer> trackMapping, int themeLength, String[][] text) {
 		this.chordProgression = chordProgression;
-		fillPart(key, trackMapping, themeLength);
+		fillPart(key, trackMapping, themeLength, text);
 	}
 
-	private void fillPart(MusicalKey key, Map<Integer, Integer> trackMapping, int themeLength) {
+	private void fillPart(MusicalKey key, Map<Integer, Integer> trackMapping, int themeLength, String[][] text) {
 		int beatNo = ran.nextInt(BeatContainer.getDrumBeats().size());
 		Theme theme = new Theme(key, chordProgression, themeLength);
 		MidiPlayable m;
@@ -95,7 +95,7 @@ public class Part {
 					if (instr.toString().equals("melody2")) {
 						m = new ThemeVariation(theme, trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar, false);
 					} else {
-						m = new ThemeVariation(theme, trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar);
+						m = new ThemeVariation(theme, trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar, Arrays.copyOfRange(text, bar, bar+theme.getLengthInBars()));
 					}
 					// m = new Melody(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar, key, chordProgression.get(bar %
 					// chordProgression.size()));
@@ -113,9 +113,9 @@ public class Part {
 	 * @param trackMapping
 	 *            - the Instrument-track-mapping of the sequence
 	 */
-	public void fillRandomly(MusicalKey key, Map<Integer, Integer> trackMapping, int themeLength) {
+	public void fillRandomly(MusicalKey key, Map<Integer, Integer> trackMapping, int themeLength, String[][] text) {
 		chordProgression = Config.getChordProgressions().get(ran.nextInt(Config.getChordProgressions().size()));
-		fillPart(key, trackMapping, themeLength);
+		fillPart(key, trackMapping, themeLength, text);
 	}
 
 	@Override

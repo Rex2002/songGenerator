@@ -5,6 +5,7 @@ import java.util.*;
 import org.se.Settings;
 import org.se.music.model.*;
 import org.se.text.analysis.TermCollection;
+import org.se.text.generation.SongTextGenerator;
 
 /**
  * @author Malte Richert
@@ -16,7 +17,7 @@ public class StructureGenerator {
 
 	public static void generateStructure(Settings settings, Map<String, Integer> metrics, TermCollection terms) {
 		Random ran = new Random();
-		structure = Config.getStructures().get(ran.nextInt(Config.getStructures().size()));
+		structure = Config.getStructures().get(0);//Config.getStructures().get(ran.nextInt(Config.getStructures().size()));
 		structure.setGenre(settings.getGenre());
 		structure.setKey(new MusicalKey());
 		if (settings.getTempo() != null) {
@@ -26,18 +27,19 @@ public class StructureGenerator {
 		}
 		System.out.println(structure);
 
-		// SongTextGenerator textGenerator = new SongTextGenerator();
-		// HashMap<String,List<String[][]>> songText = textGenerator.generateSongText(structure, terms);
+		SongTextGenerator textGenerator = new SongTextGenerator();
+		HashMap<String,List<String[][]>> songText = textGenerator.generateSongText(structure, terms);
+		structure.setText(songText);
 
 		MidiSequence seq = initMidiSequence(structure);
 
-		structure.getPart(structure.getBasePartKey()).fillRandomly(structure.getKey(), trackMapping, structure.getGenre() == Genre.POP ? 4 : 12);
+		structure.getPart(structure.getBasePartKey()).fillRandomly(structure.getKey(), trackMapping, structure.getGenre() == Genre.POP ? 4 : 12, songText.get(structure.getBasePartKey()).get(0));
 
-		for (String key : structure.getParts().keySet()) {
-			if (key.equals(structure.getBasePartKey())) {
+		for (String partName : structure.getParts().keySet()) {
+			if (partName.equals(structure.getBasePartKey())) {
 				continue;
 			}
-			Part part = structure.getPart(key);
+			Part part = structure.getPart(partName);
 			List<List<String>> progression;
 			if (part.getRandomizationLevel() == 0) {
 				progression = structure.getPart(structure.getBasePartKey()).getChords();
@@ -48,7 +50,7 @@ public class StructureGenerator {
 			} else {
 				progression = Config.getChordProgressions().get(ran.nextInt(Config.getChordProgressions().size()));
 			}
-			part.fillPart(progression, structure.getKey(), trackMapping, structure.getGenre() == Genre.POP ? 4 : 12);
+			part.fillPart(progression, structure.getKey(), trackMapping, structure.getGenre() == Genre.POP ? 4 : 12, songText.get(partName).get(0));
 		}
 
 		seq.setEnd(calculateLength());
@@ -65,15 +67,15 @@ public class StructureGenerator {
 				seq.addMidiText(t);
 				t.setBar(t.getBar() - barOffset);
 			}
-			// if(partContainsVocal(structure.getPart(partName))){
-			// Part p = structure.getPart(partName);
-			// MidiText t;
-			// for(int bar = 0; bar < p.getLength(); bar += 1){
-			// t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get("vocals")), bar + barOffset,
-			// songText.get(partName).get(0)[bar][0]);
-			// seq.addMidiText(t);
-			// }
-			// }
+			 if(partContainsVocal(structure.getPart(partName))){
+				 Part p = structure.getPart(partName);
+				 MidiText t;
+				 for(int bar = 0; bar < p.getLength(); bar += 1){
+					 t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get("vocals")), bar + barOffset,
+					 structure.getText().get(partName).get(0)[bar][0]);
+					 seq.addMidiText(t);
+			 	}
+			 }
 			barOffset += structure.getPart(partName).getLength();
 		}
 		seq.createFile("structureTest");

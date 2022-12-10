@@ -30,7 +30,7 @@ public class Theme extends MidiPlayable {
 		Map<Integer, List<List<Integer>>> content = new HashMap<>();
 		Random ran = new Random();
 		for (int i = 0; i < 8 * length; i++) {
-			if (ran.nextInt(8) == 0 || (i % 2 == 0 && ran.nextInt(4) != 0)) {
+			if (ran.nextInt(8) == 0 || (i % 2 == 0 && ran.nextInt(3) != 0)) {
 				Integer chordNote = inflatedChords[i / 2].getChord().get(ran.nextInt(inflatedChords[i / 2].getChord().size()));
 				List<Integer> posAndLength = new ArrayList<>();
 				posAndLength.add(i * 12);
