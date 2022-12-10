@@ -170,9 +170,8 @@ public class Controller implements Initializable {
 	* event handler for genre drop-down selector
 	 */
 	public void setGenre() {
-		Genre newGenre = Genre.valueOf(setting_pane_cb.getValue());
-		setting_pane_genre.setText("Genre: " + newGenre);
-		genre = newGenre;
+		genre = Genre.valueOf(setting_pane_cb.getValue());
+		setting_pane_genre.setText("Genre: " + genre);
 	}
 
 	/**
@@ -189,7 +188,7 @@ public class Controller implements Initializable {
 	        generate_pane_progressLbl.setVisible(true);
 
 		if (file != null) {
-			Settings settings = new Settings(file.getAbsolutePath(), Genre.POP, bpm);
+			Settings settings = new Settings(file.getAbsolutePath(), genre, bpm);
 			songGenerator = new SongGenerator(settings);
 			generate_pane_progress.progressProperty().bind(songGenerator.progressProperty());
 			songGenerator.messageProperty().addListener((observable, oldVal, newVal) -> generate_pane_progressLbl.setText(newVal));
