@@ -54,6 +54,7 @@ public class SongGenerator extends Task<MidiSequence> {
 			updateMessage("Done");
 			updateProgress(100, 100);
 			return null;
+			//TODO return actual midi sequence
 		} catch (IOException e) {
 			updateMessage("Something went wrong reading a file...");
 			updateValue(null);
