@@ -22,10 +22,10 @@ public class Main {
 
 		// these are test values that will eventually be passed by UI and TextAnalyzer
 		String filepath = args.length > 0 ? args[0] : "test.txt";
-		Settings settings = new Settings(Genre.POP, 12, false);
-		Config.loadConfig((Genre) settings.getGenre());
+		Settings settings = new Settings(filepath, Genre.POP, 12);
+		Config.loadConfig(settings.getGenre());
 
-		String content = FileReader.main(filepath);
+		String content = FileReader.main(settings.getFilepath());
 		TermCollection terms = Analyzer.analyze(content, dictionary);
 		int metrics = MetricAnalyzer.metricsGet(content, terms);
 		StructureGenerator.generateStructure(settings, Map.of("tempo", metrics), terms);
