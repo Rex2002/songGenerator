@@ -21,7 +21,7 @@ public class StructureGenerator {
 
 	public static MidiSequence generateStructure(Settings settings, TermCollection terms) {
 		Random ran = new Random();
-		structure = Config.getStructures().get(0);// ran.nextInt(Config.getStructures().size()));
+		structure = Config.getStructures().get(ran.nextInt(Config.getStructures().size()));
 		structure.setGenre(settings.getGenre());
 		structure.setKey(new MusicalKey());
 		structure.setTempo(settings.getTempo());
