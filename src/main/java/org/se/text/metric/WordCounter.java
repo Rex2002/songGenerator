@@ -13,13 +13,12 @@ public class WordCounter {
 		for (String currentSentence : sentenceParts) {
 
 			words = 0;
-			for (int j = 0; j <= currentSentence.length(); j++) {
+			for (int j = 0; j < currentSentence.length(); j++) {
 
 				int state = 0;
-				if(currentSentence.charAt(j)=='-' && currentSentence.charAt(j+1)=='\n'){
+				if (j + 1 < currentSentence.length() && currentSentence.charAt(j) == '-' && currentSentence.charAt(j + 1) == '\n') {
 					state = 0;
-				}
-				else if (currentSentence.charAt(j) == ' ' || currentSentence.charAt(j) == '\n' || currentSentence.charAt(j) == '\t') {
+				} else if (currentSentence.charAt(j) == ' ' || currentSentence.charAt(j) == '\n' || currentSentence.charAt(j) == '\t') {
 					state = 1;
 				}
 				if (state == 1) {
