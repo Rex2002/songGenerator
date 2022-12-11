@@ -10,11 +10,11 @@ import org.se.text.analysis.model.Gender;
 import org.se.text.analysis.model.GrammaticalCase;
 import org.se.text.analysis.model.Numerus;
 import org.se.text.metric.Hyphenizer;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+
 /**
  * @author Olivier Stenzel
  */
@@ -25,10 +25,12 @@ public class SongTextGenerator {
 
 	// text
 	private TermCollection termCollection;
-	private final HashMap<Integer, String> usedWords = new HashMap<>(); // to check if a Term was used in the Song before
+	private final HashMap<Integer, String> usedWords = new HashMap<>(); // to check if a Term was used in the Song
+																		// before
 
 	/**
-	 * returns a Hashmap which contains the Songtext split into parts with the number of syllable in each part
+	 * returns a Hashmap which contains the Songtext split into parts with the
+	 * number of syllable in each part
 	 */
 	public HashMap<String, List<String[][]>> generateSongText(Structure structure, TermCollection termCollection) {
 
@@ -65,7 +67,8 @@ public class SongTextGenerator {
 	 */
 	private TextTemplate getUnusedStrophe(int partLength, Genre genre) {
 		Random ran = new Random();
-		if (unusedTextTemplateList.size() == 0) unusedTextTemplateList = templateImporter.getTemplate(genre);
+		if (unusedTextTemplateList.size() == 0)
+			unusedTextTemplateList = templateImporter.getTemplate(genre);
 		TextTemplate textTemplate = unusedTextTemplateList.get(ran.nextInt(unusedTextTemplateList.size()));
 		for (int i = 0; i < 1000; i++) {
 			textTemplate = getRandomNotUsedValue(genre);// get random template
@@ -101,7 +104,8 @@ public class SongTextGenerator {
 		int end = rawString.indexOf('$', beginning + 1);
 
 		// if ther's no variable Word in the verse
-		if (end < 0) return rawString;
+		if (end < 0)
+			return rawString;
 
 		String requirementsVariableString = rawString.substring(beginning + 1, end);
 		String[] strArr = getStringArrFromRequirementsVariableString(requirementsVariableString);
@@ -115,7 +119,8 @@ public class SongTextGenerator {
 	private String getTerm(String[] requirements) {
 		int id = getIdFromRequirements(requirements);
 		// if id was already used
-		if (usedWords.containsKey(id)) return usedWords.get(id);
+		if (usedWords.containsKey(id))
+			return usedWords.get(id);
 
 		List<? extends Term> termList;
 
@@ -145,7 +150,8 @@ public class SongTextGenerator {
 		String[] strArr = new String[] { "", "", "", "", "", "", "" }; // to have empty (not null) values in String[]
 		int index = 0;
 		while (requirementsVariableString.length() > 0) {
-			if (requirementsVariableString.charAt(0) == ',') index++;
+			if (requirementsVariableString.charAt(0) == ',')
+				index++;
 			else {
 				strArr[index] = strArr[index] + requirementsVariableString.charAt(0); // String builder
 			}
@@ -179,7 +185,8 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * returns a Hashmap which contains the song text split into parts with the number of syllable in each part, based on the given song text
+	 * returns a Hashmap which contains the song text split into parts with the
+	 * number of syllable in each part, based on the given song text
 	 */
 	private HashMap<String, List<String[][]>> getPartText(List<String> order, List<String[]> songText) {
 		HashMap<String, List<String[][]>> partTextMap = new HashMap<>();
@@ -195,7 +202,8 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * returns an array for each strophe which contains each part and the number of syllables in this part
+	 * returns an array for each strophe which contains each part and the number of
+	 * syllables in this part
 	 */
 	private String[][] getPartSyllConcatenation(String[] stropheText) {
 		String[][] textSyllConcatenation = new String[stropheText.length][2];
@@ -313,7 +321,8 @@ public class SongTextGenerator {
 	private int getIdFromRequirements(String[] requirements) {
 		int position = 1;
 		// for nouns
-		if (isNoun(requirements)) position = 4;
+		if (isNoun(requirements))
+			position = 4;
 		try {
 			return Integer.parseInt(requirements[position]);
 		} catch (NumberFormatException ex) {

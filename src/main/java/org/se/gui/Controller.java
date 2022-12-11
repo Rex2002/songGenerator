@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 import org.se.Settings;
 import org.se.SongGenerator;
 import org.se.music.model.Genre;
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -101,8 +100,10 @@ public class Controller implements Initializable {
 	/**
 	 * increases the value of the progress bar and shows completed steps
 	 *
-	 * @param msg - completed step that is to be added to the list
-	 * @param val - value by which the progress is supposed to be increased
+	 * @param msg
+	 *            - completed step that is to be added to the list
+	 * @param val
+	 *            - value by which the progress is supposed to be increased
 	 */
 	@SuppressWarnings("unused")
 	void increaseProgress(String msg, double val) {
@@ -133,7 +134,9 @@ public class Controller implements Initializable {
 
 	/**
 	 * checks if the ending of the given filepath is valid (pdf or txt)
-	 * @param fileName - name of the file to be checked
+	 * 
+	 * @param fileName
+	 *            - name of the file to be checked
 	 * @return if file name is valid
 	 */
 	boolean isValidFile(String fileName) {
@@ -149,8 +152,7 @@ public class Controller implements Initializable {
 	@FXML
 	void dragFile(DragEvent event) {
 		Dragboard dB = event.getDragboard();
-		if (isValidFile(dB.getUrl()))
-			event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+		if (isValidFile(dB.getUrl())) event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
 	}
 
 	/**
@@ -167,7 +169,7 @@ public class Controller implements Initializable {
 	}
 
 	/**
-	* event handler for genre drop-down selector
+	 * event handler for genre drop-down selector
 	 */
 	public void setGenre() {
 		genre = Genre.valueOf(setting_pane_cb.getValue());
@@ -183,9 +185,9 @@ public class Controller implements Initializable {
 		generate_pane_progress.setProgress(0);
 
 		// show progressbar
-	        generate_pane_progress.setVisible(true);
-			song_save.setVisible(true);
-	        generate_pane_progressLbl.setVisible(true);
+		generate_pane_progress.setVisible(true);
+		song_save.setVisible(true);
+		generate_pane_progressLbl.setVisible(true);
 
 		if (file != null) {
 			Settings settings = new Settings(file.getAbsolutePath(), genre, bpm);
@@ -211,7 +213,7 @@ public class Controller implements Initializable {
 			if (saveSong != null) {
 				try {
 					songGenerator.getSeq().createFile(String.valueOf(saveSong.toPath()));
-					((Stage)setting_pane_cb.getScene().getWindow()).close();
+					((Stage) setting_pane_cb.getScene().getWindow()).close();
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -248,10 +250,10 @@ public class Controller implements Initializable {
 		song_generate.setDisable(true);
 		song_save.setDisable(true);
 
-	        // progress not visible on launch
-	        generate_pane_progress.setVisible(false);
-			song_save.setVisible(false);
-	        generate_pane_progressLbl.setVisible(false);
+		// progress not visible on launch
+		generate_pane_progress.setVisible(false);
+		song_save.setVisible(false);
+		generate_pane_progressLbl.setVisible(false);
 
 		// allow only pdf/txt-filter
 		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(".txt or .pdf", "*.txt", "PDF", "*.pdf"));

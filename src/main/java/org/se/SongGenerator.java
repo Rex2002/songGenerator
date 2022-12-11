@@ -10,51 +10,46 @@ import org.se.text.analysis.FileReader;
 import org.se.text.analysis.TermCollection;
 import org.se.text.analysis.dict.Dict;
 import org.se.text.metric.MetricAnalyzer;
-import javafx.concurrent.Task;
 
 /**
  * @author Val Richter
  */
-public class SongGenerator extends Task<MidiSequence> {
+public class SongGenerator extends PartialProgressTask<MidiSequence> {
 	private final Settings settings;
 	private MidiSequence seq;
 
 	public SongGenerator(Settings settings) {
+		super(4);
 		this.settings = settings;
 	}
 
 	@Override
-	protected MidiSequence call() {
+	protected MidiSequence call() throws Exception {
 		try {
+			updateProgress(0);
 			updateMessage("Setting everything up...");
-			updateProgress(0, 100);
 			Dict dict = Dict.getDefault();
 			Config.loadConfig(settings.getGenre());
-
-			if (isCancelled()) return null;
+			procedureDone();
 
 			updateMessage("Reading Input File...");
-			updateProgress(20, 100);
 			String content = FileReader.main(settings.getFilepath());
-
-			if (isCancelled()) return null;
+			procedureDone();
 
 			updateMessage("Analyzing Input File...");
-			updateProgress(50, 100);
-			TermCollection terms = Analyzer.analyze(content, dict);
+			Analyzer analyzer = new Analyzer(content, dict);
+			analyzer.progressProperty().addListener((observable, oldVal, newVal) -> updateProgress(newVal.doubleValue()));
+			analyzer.messageProperty().addListener((observable, oldVal, newVal) -> updateMessage(newVal));
+			analyzer.run();
+			TermCollection terms = analyzer.get();
 			int metrics = MetricAnalyzer.metricsGet(content, terms);
-
-			if (isCancelled()) return null;
+			procedureDone();
 
 			updateMessage("Writing your Song...");
-			updateProgress(80, 100);
-			MidiSequence seq = StructureGenerator.generateStructure(settings, Map.of("tempo", metrics), terms);
-
-			if (isCancelled()) return null;
+			seq = StructureGenerator.generateStructure(settings, Map.of("tempo", metrics), terms);
+			procedureDone();
 
 			updateMessage("Done");
-			updateProgress(100, 100);
-			this.seq = seq;
 			return seq;
 		} catch (IOException e) {
 			updateMessage("Something went wrong reading a file...");
