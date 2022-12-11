@@ -124,9 +124,7 @@ public class ThemeVariation extends MidiPlayable {
 		setTransposedContent();
 		for (Map.Entry<Integer, List<List<Integer>>> entry : transposedContent.entrySet()) {
 			if (bar * 96 <= entry.getKey() && entry.getKey() <= (bar + 1) * 96) {
-				for (List<Integer> x : entry.getValue()) {
-					count++;
-				}
+				count += entry.getValue().size();
 			}
 		}
 		return count;

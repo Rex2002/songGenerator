@@ -44,12 +44,12 @@ public abstract class MidiPlayable {
 
 	public Map<Integer, List<Integer[]>> deepCopy() {
 		Map<Integer, List<Integer[]>> deepCopy = new HashMap<>();
-		for (Integer note : content.keySet()) {
+		for (Map.Entry<Integer, List<Integer[]>> note : content.entrySet()) {
 			List<Integer[]> k = new ArrayList<>();
-			for (Integer[] innerList : content.get(note)) {
+			for (Integer[] innerList : note.getValue()) {
 				k.add(innerList.clone());
 			}
-			deepCopy.put(note, k);
+			deepCopy.put(note.getKey(), k);
 		}
 		return deepCopy;
 	}
