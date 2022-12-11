@@ -41,51 +41,36 @@ public class Controller implements Initializable {
 	Genre genre = Genre.POP;
 
 	double progress = 0;
-
 	@FXML
-	private Button setting_pane_back;
-
+	private Button settingPaneBack;
 	@FXML
-	private CheckBox setting_pane_metrics;
-
+	private CheckBox settingPaneMetrics;
 	@FXML
-	private Label setting_pane_genre;
-
+	private Label settingPaneGenre;
 	@FXML
-	private Label load_pane_drag;
-
+	private Label loadPaneDrag;
 	@FXML
-	private Button load_pane_load;
-
+	private Button loadPaneLoad;
 	@FXML
-	private Label load_pane_path;
-
+	private Label loadPanePath;
 	@FXML
-	private Label load_pane_label;
-
+	private Label loadPaneLabel;
 	@FXML
-	private Label setting_pane_bpm;
-
+	private Label settingPaneBpm;
 	@FXML
-	private Button load_pane_settings;
-
+	private Button loadPaneSettings;
 	@FXML
-	private Slider setting_pane_slider;
-
+	private Slider settingPaneSlider;
 	@FXML
-	private ChoiceBox<String> setting_pane_cb;
-
+	private ChoiceBox<String> settingPaneCb;
 	@FXML
-	private ProgressBar generate_pane_progress;
-
+	private ProgressBar generatePaneProgress;
 	@FXML
-	private Label generate_pane_progressLbl;
-
+	private Label generatePaneProgressLbl;
 	@FXML
-	private Button song_generate;
-
+	private Button songGenerate;
 	@FXML
-	private Button song_save;
+	private Button songSave;
 
 	/**
 	 * opens native file explorer and stores selected file in file
@@ -93,26 +78,10 @@ public class Controller implements Initializable {
 	@FXML
 	void loadClicked() {
 		file = fileChooser.showOpenDialog(new Stage());
-		if (file != null) load_pane_path.setText(file.getPath());
+		if (file != null) loadPanePath.setText(file.getPath());
 
 		// generating song now enabled
-		song_generate.setDisable(false);
-	}
-
-	// TODO: use this method to update the progress bar
-	/**
-	 * increases the value of the progress bar and shows completed steps
-	 *
-	 * @param msg
-	 *            - completed step that is to be added to the list
-	 * @param val
-	 *            - value by which the progress is supposed to be increased
-	 */
-	@SuppressWarnings("unused")
-	void increaseProgress(String msg, double val) {
-		generate_pane_progressLbl.setText("Progress: " + msg + " done...");
-		progress += val;
-		generate_pane_progress.setProgress(progress);
+		songGenerate.setDisable(false);
 	}
 
 	/**
@@ -120,25 +89,25 @@ public class Controller implements Initializable {
 	 */
 	@FXML
 	void toggleClicked() {
-		boolean showLoad = load_pane_path.isVisible();
+		boolean showLoad = loadPanePath.isVisible();
 
-		load_pane_path.setVisible(!showLoad);
-		load_pane_load.setVisible(!showLoad);
-		load_pane_label.setVisible(!showLoad);
-		load_pane_settings.setVisible(!showLoad);
-		load_pane_drag.setVisible(!showLoad);
+		loadPanePath.setVisible(!showLoad);
+		loadPaneLoad.setVisible(!showLoad);
+		loadPaneLabel.setVisible(!showLoad);
+		loadPaneSettings.setVisible(!showLoad);
+		loadPaneDrag.setVisible(!showLoad);
 
-		setting_pane_bpm.setVisible(showLoad);
-		setting_pane_slider.setVisible(showLoad);
-		setting_pane_metrics.setVisible(showLoad);
-		setting_pane_back.setVisible(showLoad);
-		setting_pane_genre.setVisible(showLoad);
-		setting_pane_cb.setVisible(showLoad);
+		settingPaneBpm.setVisible(showLoad);
+		settingPaneSlider.setVisible(showLoad);
+		settingPaneMetrics.setVisible(showLoad);
+		settingPaneBack.setVisible(showLoad);
+		settingPaneGenre.setVisible(showLoad);
+		settingPaneCb.setVisible(showLoad);
 	}
 
 	/**
 	 * checks if the ending of the given filepath is valid (pdf or txt)
-	 * 
+	 *
 	 * @param fileName
 	 *            - name of the file to be checked
 	 * @return if file name is valid
@@ -151,14 +120,13 @@ public class Controller implements Initializable {
 	}
 
 	@FXML
-	void toggleUseMetrics(){
-		if(setting_pane_metrics.isSelected()){
-			setting_pane_slider.setDisable(true);
-			setting_pane_bpm.setText("BPM");
-		}
-		else{
-			setting_pane_slider.setDisable(false);
-			setting_pane_bpm.setText("BPM: " + bpm);
+	void toggleUseMetrics() {
+		if (settingPaneMetrics.isSelected()) {
+			settingPaneSlider.setDisable(true);
+			settingPaneBpm.setText("BPM");
+		} else {
+			settingPaneSlider.setDisable(false);
+			settingPaneBpm.setText("BPM: " + bpm);
 		}
 	}
 
@@ -178,17 +146,17 @@ public class Controller implements Initializable {
 	void dropFile(DragEvent event) {
 		Dragboard dB = event.getDragboard();
 		file = dB.getFiles().get(0);
-		load_pane_path.setText(file.getPath());
+		loadPanePath.setText(file.getPath());
 
 		// generating song now enabled
-		song_generate.setDisable(false);
+		songGenerate.setDisable(false);
 	}
 
 	/**
 	 * event handler for genre drop-down selector
 	 */
 	public void setGenre() {
-		genre = Genre.valueOf(setting_pane_cb.getValue());
+		genre = Genre.valueOf(settingPaneCb.getValue());
 	}
 
 	/**
@@ -197,25 +165,25 @@ public class Controller implements Initializable {
 	@FXML
 	void generateSong() {
 		progress = 0;
-		generate_pane_progress.setProgress(0);
+		generatePaneProgress.setProgress(0);
 
 		// show progressbar
-		generate_pane_progress.setVisible(true);
-		song_save.setVisible(true);
-		generate_pane_progressLbl.setVisible(true);
+		generatePaneProgress.setVisible(true);
+		songSave.setVisible(true);
+		generatePaneProgressLbl.setVisible(true);
 
 		if (file != null) {
 
-			Settings settings = new Settings(file.getAbsolutePath(), genre, setting_pane_metrics.isSelected()? -1 : bpm);
+			Settings settings = new Settings(file.getAbsolutePath(), genre, settingPaneMetrics.isSelected() ? -1 : bpm);
 			songGenerator = new SongGenerator(settings);
-			generate_pane_progress.progressProperty().bind(songGenerator.progressProperty());
-			songGenerator.messageProperty().addListener((observable, oldVal, newVal) -> generate_pane_progressLbl.setText(newVal));
+			generatePaneProgress.progressProperty().bind(songGenerator.progressProperty());
+			songGenerator.messageProperty().addListener((observable, oldVal, newVal) -> generatePaneProgressLbl.setText(newVal));
 
 			Thread th = new Thread(songGenerator);
 			th.setDaemon(true);
 			th.start();
 
-			song_save.setDisable(false);
+			songSave.setDisable(false);
 		}
 	}
 
@@ -229,7 +197,7 @@ public class Controller implements Initializable {
 			if (saveSong != null) {
 				try {
 					songGenerator.getSeq().createFile(String.valueOf(saveSong.toPath()));
-					((Stage) setting_pane_cb.getScene().getWindow()).close();
+					((Stage) settingPaneCb.getScene().getWindow()).close();
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -256,21 +224,21 @@ public class Controller implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		// hide setting elements on launch
-		setting_pane_bpm.setVisible(false);
-		setting_pane_slider.setVisible(false);
-		setting_pane_back.setVisible(false);
-		setting_pane_genre.setVisible(false);
-		setting_pane_cb.setVisible(false);
-		setting_pane_metrics.setVisible(false);
+		settingPaneBpm.setVisible(false);
+		settingPaneSlider.setVisible(false);
+		settingPaneBack.setVisible(false);
+		settingPaneGenre.setVisible(false);
+		settingPaneCb.setVisible(false);
+		settingPaneMetrics.setVisible(false);
 
 		// can not generate or save song unless a file is loaded
-		song_generate.setDisable(true);
-		song_save.setDisable(true);
+		songGenerate.setDisable(true);
+		songSave.setDisable(true);
 
 		// progress not visible on launch
-		generate_pane_progress.setVisible(false);
-		song_save.setVisible(false);
-		generate_pane_progressLbl.setVisible(false);
+		generatePaneProgress.setVisible(false);
+		songSave.setVisible(false);
+		generatePaneProgressLbl.setVisible(false);
 
 		// allow only pdf/txt-filter
 		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(".txt or .pdf", "*.txt", "PDF", "*.pdf"));
@@ -292,15 +260,15 @@ public class Controller implements Initializable {
 		// fileSaver.setInitialDirectory(new File("C:/Users/" + userName + "/Desktop"));
 
 		// handle slider changes
-		setting_pane_slider.valueProperty().addListener((ObservableValue<? extends Number> num, Number oldVal, Number newVal) -> {
-			setting_pane_bpm.setText("BPM: " + newVal.intValue());
+		settingPaneSlider.valueProperty().addListener((ObservableValue<? extends Number> num, Number oldVal, Number newVal) -> {
+			settingPaneBpm.setText("BPM: " + newVal.intValue());
 			bpm = newVal.intValue();
 		});
 
 		// set choice options (genres) for choiceBox
-		setting_pane_cb.getItems().addAll(genres);
-		setting_pane_cb.setValue(genre.toString());
+		settingPaneCb.getItems().addAll(genres);
+		settingPaneCb.setValue(genre.toString());
 
-		setting_pane_cb.setOnAction(actionEvent -> setGenre());
+		settingPaneCb.setOnAction(actionEvent -> setGenre());
 	}
 }
