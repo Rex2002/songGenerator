@@ -64,11 +64,14 @@ public class StructureGenerator {
 			if(partContainsVocal(structure.getPart(partName))){
 				Part p = structure.getPart(partName);
 				MidiText t;
-				for(int bar = 0; bar < p.getLength(); bar += 1){
+				for(int bar = 0; bar < p.getLength(); bar++){
 					t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get("vocals")), bar + barOffset,
 							songText.get(partName).get(0)[bar][0]);
+					System.out.println("adding text: " + partName+ ", " + Arrays.deepToString(songText.get(partName).get(0)) + ", " + bar);
 					seq.addMidiText(t);
 				}
+				if(!partName.contains("horus")){songText.get(partName).remove(0);}
+
 			}
 			for (MidiText t : structure.getPart(partName).getMidiTexts()) {
 				t.setBar(t.getBar() + barOffset);
