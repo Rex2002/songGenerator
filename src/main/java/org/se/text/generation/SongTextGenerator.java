@@ -331,7 +331,7 @@ public class SongTextGenerator {
 
 		for (int i = 0; i < termListSize; i++) {
 			// word was not used yet
-			if (!usedWords.containsValue(termList.get(i))) {
+			if (!usedWords.containsValue(termList.get(i).getWord())) {
 				return i;
 			}
 		}
