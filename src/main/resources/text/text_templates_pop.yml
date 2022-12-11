@@ -19,21 +19,11 @@
 #-----------------------------
 # | sagt neuer Takt anfangen
 
-
 #4
 length: 8
 strophe:
     - '$n,m,s,n,41,4,4$ ist ganz mein Thema| hier bekommt ihr mich nicht weg'
-    - "Alles was ich brauch im Leb'n|mit $n,m,s,n,42,1,1$ und $n,m,s,n,43,1,1$ hat es ein Zweck"
-    - 'Jeder sagt mir lass es bleiben| das hat alles keinen Sinn'
-    - 'Doch wie soll ich sonst verbleiben|$n,f,s,n,44,1,10$ ist voll mein Ding'
-
----
-#4
-length: 8
-strophe:
-    - '$n,m,s,n,41,4,4$ ist ganz mein Thema| hier bekommt ihr mich nicht weg'
-    - "Alles was ich brauch im Leb'n|mit $n,m,s,n,42,1,1$ und $n,m,s,n,43,1,1$ hat es ein Zweck"
+    - "Alles was ich brauch im Leb'n|mit $n,m,s,n,42,1,1$ und $n,m,s,n,43,1,1$ hat es ein' Zweck"
     - 'Jeder sagt mir lass es bleiben| das hat alles keinen Sinn'
     - 'Doch wie soll ich sonst verbleiben|$n,f,s,n,44,1,10$ ist voll mein Ding'
 
@@ -41,34 +31,34 @@ strophe:
 #5
 length: 16
 strophe:
-    - "Ich lieb mein $n,m,s,n,51,1,4$|geh' hier nicht weg"
+    - "Ich lieb meinen $n,m,s,n,51,1,4$|geh' hier nicht weg"
     - 'Genau wo ich bin|da ist mein Platz'
     - 'hier werd ich $v,n,p,n,52,1,4$| an diesem Fleck'
-    - "Ich lieb mein $n,m,p,n,51,1,4$|ich geh' hier nicht weg"
-    - 'Ich hab ne tolle $n,f,s,n,53,1,4$| mein $n,f,s,n,54,1,4$ im Gepäck'
-    - 'und just in case für alle Fälle| mein eigenes versteck'
-    - 'ich hab mein $n,m,p,n,51,1,4$ | an diesem Ort'
-    - 'denkst ich bin hier doch ich bind dort|und begehe ab und zu ein Mord'
+    - "Ich lieb meinen $n,m,p,n,51,1,4$|ich geh' hier nicht weg"
+    - "Ich hab 'ne tolle $n,f,s,n,53,1,4$| meine $n,f,s,n,54,1,4$ im Gepäck"
+    - 'und just in case für alle Fälle| mein eigenes Versteck'
+    - 'ich hab meinen $n,m,p,n,51,1,4$ | an diesem Ort'
+    - "denkst ich bin hier doch ich bind dort|und begehe ab und zu ein' Mord"
 
 ---
 #6
 length: 16
 strophe:
-    - 'Ich weiß das ich weiß was die $n,m,s,n,61,2,8$ wirklich heißt|und doch steh ich vor Verständnislosigkeit'
+    - 'Ich weiß dass ich weiß was die $n,f,s,n,61,2,8$ wirklich heißt|und doch steh ich vor Verständnislosigkeit'
     - '$v,n,s,n,62,1,8$$v,n,s,n,63,2,8$$v,n,s,n,64,1,8$$v,n,s,n,65,2,8$| versteh nicht was ihr seid'
-    - 'Konnt früher mal jeden Kniff|mir alles mir gemerkt'
-    - 'Doch jetzt, was älter frag ich mich|$n,m,s,n,66,2,8$ bist dus wirklich Wert'
+    - "Konnt' früher mal jeden Kniff|hab alles mir gemerkt"
+    - "Doch jetzt, was älter frag ich mich|$n,m,s,n,66,2,8$ bist du's wirklich Wert"
     - 'Immer nur noch neue Dinge|wann hört der Wahnsinn auf'
     - '$v,n,s,n,67,1,8$ jedes mal aufs neue|bist nur noch der größte Graus'
-    - 'Ich dachte das ich wüsste was $n,m,s,n,61,2,8$ wirklich heißt|doch jeden Tag den seh ich wieder'
-    - 'das ich keine Ahnung hab|$n,m,s,n,61,2,8$ du machst mich platt'
+    - "Ich dachte dass ich wüsste was $n,m,s,n,61,2,8$ wirklich heißt|doch jeden Tag den seh' ich wieder"
+    - 'dass ich keine Ahnung hab|$n,m,s,n,61,2,8$ du machst mich platt'
 
 ---
 #7
 length: 8
 strophe:
-    - 'neunundneunzig $n,m,s,n,71,2,8$|$v,n,s,n,72,1,8$ überm $n,m,s,n,73,2,8$'
-    - 'Man hielt ihn für $n,n,s,n,74,2,8$ aus dem $n,m,s,n,75,3,8$| So schickte man ein $n,m,s,n,76,3,8$'
+    - "neunundneunzig $n,m,p,n,71,3,8$|$v,n,s,n,72,1,8$ über'm $n,m,s,n,73,2,8$"
+    - "Man hielt ihn für $n,n,s,n,74,2,8$ aus dem $n,m,s,n,75,3,8$| So schickte man ein' $n,m,s,n,76,3,8$"
     - 'und noch ne $n,m,s,n,77,1,4$ dazu|hoffte auf ein Rendezvous'
     - 'Doch leider passierte nichts| denn wie das Thema ist dieses Lied ein Witz'
 
@@ -78,12 +68,12 @@ length: 16
 strophe:
     - 'Alle meine $n,m,p,n,81,2,8$ | $v,m,s,n,82,2,8$ auf dem $n,m,s,n,83,2,8$'
     - '$v,m,s,n,82,2,8$ auf dem |$n,m,s,n,83,2,8$'
-    - '$v,m,s,n,84,2,8$ in das Wasser | $n,m,s,n,85,2,8$ in die höh'
-    - 'Alle zusammen, kommt singt mit| machen wir den Song zum hit'
+    - "$v,m,p,n,84,2,8$ in das Wasser | $n,m,p,n,85,2,8$ in die Höh'"
+    - 'Alle zusammen, kommt singt mit| machen wir den Song zum Hit'
     - 'Alle meine $n,m,p,n,81,2,8$ | $v,m,s,n,82,2,8$ auf dem $n,m,s,n,83,2,8$'
     - '$v,m,s,n,82,2,8$ auf dem |$n,m,s,n,83,2,8$'
-    - '$v,m,s,n,84,2,8$ in das Wasser | $n,m,s,n,85,2,8$ in die höh'
-    - 'Und jetzt nochma seit bereit|jetzt ists $n,m,s,n,81,2,8$ Zeit'
+    - "$v,m,p,n,84,2,8$ in das Wasser | $n,m,p,n,85,2,8$ in die Höh'"
+    - "Und jetzt nochmal seid bereit|jetzt ist's $n,m,s,n,81,2,8$ Zeit"
 
 ---
 #9
@@ -98,7 +88,7 @@ strophe:
 #10
 length: 8
 strophe:
-    - 'Ich lieb mein $n,m,s,n,101,2,8$|Lalalala Lalalala Lalalala Lalala'
-    - 'Ich lieb mein $n,m,s,n,101,2,8$|Lalalala Lalalala Lalalala Lalala'
-    - 'Ich lieb mein $n,m,s,n,101,2,8$|Lalalala Lalalala Lalalala Lalala'
+    - 'Ich lieb meinen $n,m,s,n,101,2,8$| Lalalala Lalala'
+    - 'Ich lieb meinen $n,m,s,n,101,2,8$| Lalalala Lalala'
+    - 'Ich lieb meinen $n,m,s,n,101,2,8$| Lalalala Lalala'
     - 'Ja ich lieb dich|yeah yeah'
