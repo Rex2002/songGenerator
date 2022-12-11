@@ -71,7 +71,6 @@ public class StructureGenerator {
 				for(int bar = 0; bar < p.getLength(); bar += 1){
 					t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get("vocals")), bar + barOffset,
 							songText.get(partName).get(0)[bar][0]);
-					System.out.println("adding midi text @ " + t.getBar());
 					seq.addMidiText(t);
 				}
 			}
