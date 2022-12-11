@@ -88,11 +88,11 @@ public class StructureGenerator {
 
 	public static MidiSequence initMidiSequence(Structure s) {
 		int currentTrackNo = 0;
-		for (String partName : s.getParts().keySet()) {
-			for (InstrumentEnum instrument : s.getParts().get(partName).getReqInsts()) {
+		for (Part part : s.getParts().values()) {
+			for (InstrumentEnum instrument : part.getReqInsts()) {
 				currentTrackNo = putTrackNo(currentTrackNo, instrument);
 			}
-			for (InstrumentEnum instrument : s.getParts().get(partName).getOptInsts()) {
+			for (InstrumentEnum instrument : part.getOptInsts()) {
 				currentTrackNo = putTrackNo(currentTrackNo, instrument);
 			}
 		}
@@ -115,7 +115,7 @@ public class StructureGenerator {
 	private static int putTrackNo(int currentTrackNo, InstrumentEnum instrument) {
 		if (!trackMapping.containsKey(Config.getInstrumentMapping().get(instrument.toString()))) {
 			trackMapping.put(Config.getInstrumentMapping().get(instrument.toString()), currentTrackNo);
-			if (instrument.equals(InstrumentEnum.CHORDS) || instrument.equals(InstrumentEnum.CHORDS2)) {
+			if (instrument.equals(InstrumentEnum.chords) || instrument.equals(InstrumentEnum.chords2)) {
 				currentTrackNo++;
 			}
 			currentTrackNo++;

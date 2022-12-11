@@ -5,5 +5,5 @@ package org.se.music.model;
  * @author Benjamin Frahm
  */
 public enum InstrumentEnum {
-	CHORDS, CHORDS2, MELODY, MELODY2, DRUMS, DRUMS2, BASS, BASS2, VOCALS
+	chords, chords2, melody, melody2, drums, drums2, bass, bass2, vocals
 }

@@ -6,8 +6,9 @@ import java.util.Objects;
  * @author Val Richter
  */
 public class Declination extends TermAffix {
-	private GrammaticalCase grammaticalCase;
-	private Gender gender;
+	// Attributes must be public for the CSV-Parser to access them
+	public GrammaticalCase grammaticalCase;
+	public Gender gender;
 
 	public Declination(String radix, GrammaticalCase grammaticalCase, Gender gender, Numerus numerus, AffixType type, boolean toUmlaut) {
 		super(radix, numerus, type, toUmlaut);

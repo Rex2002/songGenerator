@@ -6,8 +6,9 @@ import java.util.*;
  * @author Val Richter
  */
 public class Conjugation extends TermAffix {
-	private Person person;
-	private Tense tense;
+	// Attributes must be public for the CSV-Parser to access them
+	public Person person;
+	public Tense tense;
 
 	public Conjugation() {
 	}

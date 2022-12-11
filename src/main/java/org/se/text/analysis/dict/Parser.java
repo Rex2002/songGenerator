@@ -90,9 +90,7 @@ public class Parser {
 	}
 
 	public static AffixType parseAffixType(String s) {
-		if (s.toLowerCase().charAt(0) == 's') {
-			return AffixType.SUFFIX;
-		}
+		if (s.toLowerCase().charAt(0) == 's') return AffixType.SUFFIX;
 		return AffixType.PREFIX;
 	}
 
@@ -151,9 +149,7 @@ public class Parser {
 						s = row.get(fieldName);
 					} else {
 						String tmp = fieldName.toLowerCase();
-						if (row.containsKey(tmp)) {
-							s = row.get(tmp);
-						}
+						if (row.containsKey(tmp)) s = row.get(tmp);
 					}
 
 					if (s != null) {

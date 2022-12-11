@@ -42,6 +42,7 @@ public class SongGenerator extends PartialProgressTask<MidiSequence> {
 			analyzer.messageProperty().addListener((observable, oldVal, newVal) -> updateMessage(newVal));
 			analyzer.run();
 			TermCollection terms = analyzer.get();
+			updateMessage("Retrieving Metrics from the Input File..");
 			int metrics = MetricAnalyzer.metricsGet(content, terms);
 			procedureDone();
 			if (settings.getTempo() == -1) settings.setTempo(metrics);
