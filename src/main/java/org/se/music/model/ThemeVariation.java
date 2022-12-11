@@ -35,10 +35,12 @@ public class ThemeVariation extends MidiPlayable {
 
 	private void createVariation() {
 		Map<Integer, List<Integer[]>> themeContent = theme.transposedContent;
-		int pos, posNextSmaller, posNextBigger, newNote,newLength;
+		int pos, posNextSmaller, posNextBigger, newNote,newLength, loopCounter;
         Integer[] posAndLength;
 		for (int bar = 0; bar < theme.getLengthInBars(); bar++) {
-			while (getNoteCountInBar(bar) < Integer.parseInt(text[bar][1])) {
+			loopCounter = 0;
+			while (getNoteCountInBar(bar) < Integer.parseInt(text[bar][1]) && loopCounter < 50) {
+				loopCounter++;
 				pos = ran.nextInt(16) * 6 + bar * 96;
 				posNextSmaller = getPosNext(pos, false);
 				posNextBigger = getPosNext(pos, true);
@@ -61,39 +63,39 @@ public class ThemeVariation extends MidiPlayable {
 					else if (posNextBigger - posNextSmaller >= 48
 							&& themeContent.get(posNextBigger).get(0)[0].equals(themeContent.get(posNextSmaller).get(0)[0])
 							&& ran.nextInt(2) == 0) {
-								int[] gamut = MusicalKey.getCloseNotesInKey(theme.getKey().getBaseNote(),
-                                        themeContent.get(posNextBigger).get(0)[0]);
-								int index = MusicalKey.findIndexOfNoteInScale(gamut, themeContent.get(posNextBigger).get(0)[0]);
-								if (index >= 4) {
-									newNote = gamut[index - 2];
-									newLength = 12;
-									posAndLength = new Integer[]{posNextBigger -24, newLength};
-									addPosAndLengthToContent(newNote, posAndLength);
-									newNote = gamut[index - 1];
-								} else {
-									newNote = gamut[index + 2];
-									newLength = 12;
-									posAndLength = new Integer[]{posNextBigger -24, newLength};
-									addPosAndLengthToContent(newNote, posAndLength);
-									newNote = gamut[index + 1];
-								}
-								posAndLength[0] =  posNextBigger - 36;
-								addPosAndLengthToContent(newNote, posAndLength);
-								posAndLength[0] = posNextBigger - 12;
-								addPosAndLengthToContent(newNote, posAndLength);
-							} else {
-								int[] gamut = MusicalKey.getCloseNotesInKey(theme.getKey().getBaseNote(),
-                                        themeContent.get(posNextBigger).get(0)[0]);
+						int[] gamut = MusicalKey.getCloseNotesInKey(theme.getKey().getBaseNote(),
+								themeContent.get(posNextBigger).get(0)[0]);
+						int index = MusicalKey.findIndexOfNoteInScale(gamut, themeContent.get(posNextBigger).get(0)[0]);
+						if (index >= 4) {
+							newNote = gamut[index - 2];
+							newLength = 12;
+							posAndLength = new Integer[]{posNextBigger -24, newLength};
+							addPosAndLengthToContent(newNote, posAndLength);
+							newNote = gamut[index - 1];
+						} else {
+							newNote = gamut[index + 2];
+							newLength = 12;
+							posAndLength = new Integer[]{posNextBigger -24, newLength};
+							addPosAndLengthToContent(newNote, posAndLength);
+							newNote = gamut[index + 1];
+						}
+						posAndLength[0] =  posNextBigger - 36;
+						addPosAndLengthToContent(newNote, posAndLength);
+						posAndLength[0] = posNextBigger - 12;
+						addPosAndLengthToContent(newNote, posAndLength);
+					} else {
+						int[] gamut = MusicalKey.getCloseNotesInKey(theme.getKey().getBaseNote(),
+								themeContent.get(posNextBigger).get(0)[0]);
 
-								int index1 = MusicalKey.findIndexOfNoteInScale(gamut, themeContent.get(posNextBigger).get(0)[0]);
-								int index2 = MusicalKey.findIndexOfNoteInScale(gamut, themeContent.get(posNextSmaller).get(0)[0]);
-								int newIndexInGamut = (index1 + index2) / 2;
-								newLength = posNextBigger - pos;
-								posAndLength = new Integer[]{pos, newLength};
-								newNote = gamut[newIndexInGamut];
+						int index1 = MusicalKey.findIndexOfNoteInScale(gamut, themeContent.get(posNextBigger).get(0)[0]);
+						int index2 = MusicalKey.findIndexOfNoteInScale(gamut, themeContent.get(posNextSmaller).get(0)[0]);
+						int newIndexInGamut = (index1 + index2) / 2;
+						newLength = posNextBigger - pos;
+						posAndLength = new Integer[]{pos, newLength};
+						newNote = gamut[newIndexInGamut];
 
-								addPosAndLengthToContent(newNote, posAndLength);
-							}
+						addPosAndLengthToContent(newNote, posAndLength);
+					}
 				}
 			}
 		}
