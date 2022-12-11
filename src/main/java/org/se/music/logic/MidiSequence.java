@@ -141,7 +141,7 @@ public class MidiSequence {
 	public void addText(int position, int trackNumber, String text) {
 		try {
 			MetaMessage mt = new MetaMessage();
-			mt.setMessage(0x01, text.getBytes(), text.length());
+			mt.setMessage(0x01, text.getBytes(), text.getBytes().length);
 			MidiEvent me = new MidiEvent(mt, position * 24L);
 			t[trackNumber].add(me);
 		} catch (InvalidMidiDataException e) {
