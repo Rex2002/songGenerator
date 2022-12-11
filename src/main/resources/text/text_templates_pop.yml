@@ -92,3 +92,43 @@ strophe:
     - 'Ich lieb meinen $n,m,s,n,101,2,8$| Lalalala Lalala'
     - 'Ich lieb meinen $n,m,s,n,101,2,8$| Lalalala Lalala'
     - 'Ja ich lieb dich|yeah yeah'
+
+---
+#11
+length: 16
+strophe:
+    - "Ich sitze bei meinem $n,n,s,d,112,1,3$ | und ich starre zu dem $n,m,s,d,113,2,4$"
+    - "Und ich wünsche dir $n,f,p,n,110,2,5$ | an den Hals"
+    - "Lässt mich hier $v,114,1,4$ | einfach so, aber vielleicht"
+    - "Vielleicht $verbst$ du ja | bald"
+
+---
+#12
+length: 8
+strophe:
+    - "Und ich sitz' schon | wieder"
+    - "Barfuß am $n,m,s,n,20,2,4$ | "
+    - "Ich träume | $n,f,p,a,42,3,5$"
+    - "Und sing dabei von | Dir"
+
+---
+#13
+length: 16
+strophe:
+    - "Ich glaub', ich mach' heut | $n,m,p,n,5,2,5$"
+    - "Ich glaub', ich mach' heut | $n,f,s,n,9,1,3$"
+    - "Ich glaub', ich les' heut' | $n,n,p,n,10,2,4$"
+    - "Und bleib' allein zu- | haus"
+    - "Ich glaub', ich mach' heut | $n,m,p,n,5,2,5$"
+    - "Ich glaub', ich mach' heut | $n,f,s,n,9,1,3$"
+    - "Ich glaub', ich les' heut' | $n,n,p,n,10,2,4$"
+    - "Und bleib' allein zu- | haus"
+
+---
+#14
+length: 8
+strophe:
+    - "Wir lieben $n,m,p,a,148,3,5$! | "
+    - "ay ay ay ay! | "
+    - "Wir lieben $n,m,p,a,148,3,5$! | "
+    - "ay ay ay ay! | "
