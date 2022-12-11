@@ -11,28 +11,28 @@ import java.util.Map;
  */
 
 public class Beat {
-	final Map<String, List<List<Integer>>> mainPattern;
-	final Map<String, List<List<Integer>>> bigFill;
-	final Map<String, List<List<Integer>>> smallFill;
+	final Map<String, List<Integer[]>> mainPattern;
+	final Map<String, List<Integer[]>> bigFill;
+	final Map<String, List<Integer[]>> smallFill;
 
-	public Beat(Map<String, List<List<Integer>>> mainPattern,
-			Map<String, List<List<Integer>>> bigFill,
-			Map<String, List<List<Integer>>> smallFill) {
+	public Beat(Map<String, List<Integer[]>> mainPattern,
+				Map<String, List<Integer[]>> bigFill,
+				Map<String, List<Integer[]>> smallFill) {
 
 		this.mainPattern = mainPattern;
 		this.bigFill = bigFill;
 		this.smallFill = smallFill;
 	}
 
-	public Map<String, List<List<Integer>>> getMainPattern() {
+	public Map<String, List<Integer[]>> getMainPattern() {
 		return mainPattern;
 	}
 
-	public Map<String, List<List<Integer>>> getBigFill() {
+	public Map<String, List<Integer[]>> getBigFill() {
 		return bigFill;
 	}
 
-	public Map<String, List<List<Integer>>> getSmallFill() {
+	public Map<String, List<Integer[]>> getSmallFill() {
 		return smallFill;
 	}
 }

@@ -1,9 +1,9 @@
 package org.se.music.logic.playables;
 
-import java.util.*;
-
 import org.se.music.Config;
 import org.se.music.model.MusicalKey;
+
+import java.util.*;
 
 /**
  * Midi-playable model of a Chord. If isBassTrack is not set,
@@ -45,7 +45,7 @@ public class ChordContainer extends PitchedPlayable {
 	}
 
 	private void setContent() {
-		Map<Integer, List<List<Integer>>> content = new HashMap<>();
+		Map<Integer, List<Integer[]>> content = new HashMap<>();
 		inflateChordList();
 		for (int count = 0; count < 4; count++) {
 			List<Integer> singleChord = inflatedChords[count].getChord();
@@ -53,16 +53,16 @@ public class ChordContainer extends PitchedPlayable {
 				singleChord = List.of(inflatedChords[count].getRootNote() - 24);
 			}
 			for (Integer note : singleChord) {
-				List<Integer> posAndLen;
+				Integer[] posAndLen;
 				if (isBassTrack && count == 3) {
-					posAndLen = List.of(count * 24 + 12, 12);
+					posAndLen = new Integer[]{count * 24 + 12, 12};
 				} else {
-					posAndLen = List.of(count * 24, 24);
+					posAndLen = new Integer[]{count*24, 24};
 				}
 				if (content.containsKey(note)) {
 					content.get(note).add(posAndLen);
 				} else {
-					List<List<Integer>> posAndLenList = new ArrayList<>();
+					List<Integer[]> posAndLenList = new ArrayList<>();
 					posAndLenList.add(posAndLen);
 					content.put(note, posAndLenList);
 				}

@@ -1,13 +1,12 @@
 package org.se.music.logic.playables;
 
+import org.se.music.model.Chord;
+import org.se.music.model.MusicalKey;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.se.music.model.Chord;
-import org.se.music.model.MusicalKey;
-import org.se.music.logic.playables.PitchedPlayable;
 
 /**
  * Midi-playable model of a bass line.
@@ -97,13 +96,11 @@ public class BassContainer extends PitchedPlayable {
 	 */
 	private void addNoteToContent(int count, int pitch) {
 		pitch = pitch % 12 + 36;
-		List<Integer> posAndLen = new ArrayList<>();
-		posAndLen.add(count * 12);
-		posAndLen.add(12);
+		Integer[] posAndLen = new Integer[]{count *12, 12};
 		if (super.getContent().containsKey(pitch)) {
 			super.getContent().get(pitch).add(posAndLen);
 		} else {
-			List<List<Integer>> posAndLenList = new ArrayList<>();
+			List<Integer[]> posAndLenList = new ArrayList<>();
 			posAndLenList.add(posAndLen);
 			super.getContent().put(pitch, posAndLenList);
 		}

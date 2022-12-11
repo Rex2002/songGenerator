@@ -1,8 +1,10 @@
 package org.se.music.logic.playables;
 
-import java.util.*;
-
 import org.se.music.model.Beat;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Midi-playable model of a drum beat. The templates are taken from the drumBeats-list as Beat-Objects
@@ -17,7 +19,7 @@ public class BeatContainer extends MidiPlayable {
 	public BeatContainer(int beatNo, int bar, int fill, int trackNo) {
 		super(trackNo, bar); // 118 is drumset instrument
 		Beat beat = drumBeats.get(beatNo);
-		Map<String, List<List<Integer>>> beatShape;
+		Map<String, List<Integer[]>> beatShape;
 		if (fill == 0) {
 			beatShape = beat.getSmallFill();
 		} else if (fill == 1) {
@@ -25,7 +27,7 @@ public class BeatContainer extends MidiPlayable {
 		} else {
 			beatShape = beat.getMainPattern();
 		}
-		Map<Integer, List<List<Integer>>> c = new HashMap<>();
+		Map<Integer, List<Integer[]>> c = new HashMap<>();
 		for (String instr : beatShape.keySet()) {
 			c.put(drumPrograms.get(instr), beatShape.get(instr));
 		}
