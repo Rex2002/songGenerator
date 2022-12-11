@@ -1,7 +1,5 @@
 package org.se;
 
-import java.io.IOException;
-import java.util.Map;
 import org.se.music.Config;
 import org.se.music.logic.MidiSequence;
 import org.se.music.logic.StructureGenerator;
@@ -10,6 +8,8 @@ import org.se.text.analysis.FileReader;
 import org.se.text.analysis.TermCollection;
 import org.se.text.analysis.dict.Dict;
 import org.se.text.metric.MetricAnalyzer;
+
+import java.io.IOException;
 
 /**
  * @author Val Richter
@@ -28,6 +28,7 @@ public class SongGenerator extends PartialProgressTask<MidiSequence> {
 		try {
 			updateProgress(0);
 			updateMessage("Setting everything up...");
+			updateProgress(0, 100);
 			Dict dict = Dict.getDefault();
 			Config.loadConfig(settings.getGenre());
 			procedureDone();
@@ -44,12 +45,15 @@ public class SongGenerator extends PartialProgressTask<MidiSequence> {
 			TermCollection terms = analyzer.get();
 			int metrics = MetricAnalyzer.metricsGet(content, terms);
 			procedureDone();
+			if(settings.tempo == -1){settings.tempo = metrics;}
+			if (isCancelled()) return null;
 
 			updateMessage("Writing your Song...");
-			seq = StructureGenerator.generateStructure(settings, Map.of("tempo", metrics), terms);
+			seq = StructureGenerator.generateStructure(settings, terms);
 			procedureDone();
 
 			updateMessage("Done");
+			updateProgress(100, 100);
 			return seq;
 		} catch (IOException e) {
 			updateMessage("Something went wrong reading a file...");
