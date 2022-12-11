@@ -19,16 +19,12 @@ public class StructureGenerator {
 	private static Structure structure;
 	private static final Map<Integer, Integer> trackMapping = new HashMap<>();
 
-	public static MidiSequence generateStructure(Settings settings, Map<String, Integer> metrics, TermCollection terms) {
+	public static MidiSequence generateStructure(Settings settings, TermCollection terms) {
 		Random ran = new Random();
 		structure = Config.getStructures().get(0);//ran.nextInt(Config.getStructures().size()));
 		structure.setGenre(settings.getGenre());
 		structure.setKey(new MusicalKey());
-		if (settings.getTempo() != null) {
-			structure.setTempo(settings.getTempo());
-		} else {
-			structure.setTempo(metrics.get("tempo"));
-		}
+		structure.setTempo(settings.getTempo());
 		System.out.println(structure);
 
 		SongTextGenerator textGenerator = new SongTextGenerator();
@@ -68,12 +64,14 @@ public class StructureGenerator {
 			if(partContainsVocal(structure.getPart(partName))){
 				Part p = structure.getPart(partName);
 				MidiText t;
-				for(int bar = 0; bar < p.getLength(); bar += 1){
+				for(int bar = 0; bar < p.getLength(); bar++){
 					t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get("vocals")), bar + barOffset,
 							songText.get(partName).get(0)[bar][0]);
-					System.out.println("adding midi text @ " + t.getBar());
+					System.out.println("adding text: " + partName+ ", " + Arrays.deepToString(songText.get(partName).get(0)) + ", " + bar);
 					seq.addMidiText(t);
 				}
+				if(!partName.contains("horus")){songText.get(partName).remove(0);}
+
 			}
 			for (MidiText t : structure.getPart(partName).getMidiTexts()) {
 				t.setBar(t.getBar() + barOffset);

@@ -17,7 +17,7 @@ public class Theme extends MidiPlayable {
 	private final MusicalKey key;
 	private Chord[][] chords;
 	private Chord[] inflatedChords;
-	HashMap<Integer, List<List<Integer>>> transposedContent;
+	Map<Integer, List<Integer[]>> transposedContent;
 	private final int length;
 
 	public Theme(MusicalKey key, List<List<String>> chordProgression, int length) {
@@ -32,18 +32,16 @@ public class Theme extends MidiPlayable {
 	}
 
 	public void setContent() {
-		Map<Integer, List<List<Integer>>> content = new HashMap<>();
+		Map<Integer, List<Integer[]>> content = new HashMap<>();
 		Random ran = new Random();
 		for (int i = 0; i < 8 * length; i++) {
 			if (ran.nextInt(8) == 0 || (i % 2 == 0 && ran.nextInt(3) != 0)) {
 				Integer chordNote = inflatedChords[i / 2].getChord().get(ran.nextInt(inflatedChords[i / 2].getChord().size()));
-				List<Integer> posAndLength = new ArrayList<>();
-				posAndLength.add(i * 12);
-				posAndLength.add(12 + 12 * ran.nextInt(3));
+				Integer[] posAndLength = new Integer[]{i*12, 12 + 12 * ran.nextInt(3)};
 				if (content.containsKey(chordNote)) {
 					content.get(chordNote).add(posAndLength);
 				} else {
-					List<List<Integer>> l = new ArrayList<>();
+					List<Integer[]> l = new ArrayList<>();
 					l.add(posAndLength);
 					content.put(chordNote, l);
 				}
@@ -55,16 +53,15 @@ public class Theme extends MidiPlayable {
 	public void setTransposedContent() {
 		transposedContent = new HashMap<>();
 		for (int note : getContent().keySet()) {
-			for (List<Integer> posAndLength : getContent().get(note)) {
-				List<Integer> noteAndLength = new ArrayList<>();
-				noteAndLength.add(note);
-				noteAndLength.add(posAndLength.get(1));
-				if (transposedContent.containsKey(posAndLength.get(0))) {
-					transposedContent.get(posAndLength.get(0)).add(noteAndLength);
+			for (Integer[] posAndLength : getContent().get(note)) {
+				Integer[] noteAndLength = new Integer[]{note, posAndLength[1]};
+
+				if (transposedContent.containsKey(posAndLength[0])) {
+					transposedContent.get(posAndLength[0]).add(noteAndLength);
 				} else {
-					List<List<Integer>> tmp = new ArrayList<>();
+					List<Integer[]> tmp = new ArrayList<>();
 					tmp.add(noteAndLength);
-					transposedContent.put(posAndLength.get(0), tmp);
+					transposedContent.put(posAndLength[0], tmp);
 				}
 			}
 		}

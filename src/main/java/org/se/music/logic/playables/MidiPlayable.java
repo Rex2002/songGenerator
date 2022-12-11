@@ -17,18 +17,18 @@ import java.util.Map;
 public abstract class MidiPlayable {
 	private final int trackNo;
 	private int bar;
-	private Map<Integer, List<List<Integer>>> content = new HashMap<>();
+	private Map<Integer, List<Integer[]>> content = new HashMap<>();
 
 	public MidiPlayable(int trackNo, int bar) {
 		this.bar = bar;
 		this.trackNo = trackNo;
 	}
 
-	public void setContent(Map<Integer, List<List<Integer>>> content) {
+	public void setContent(Map<Integer, List<Integer[]>> content) {
 		this.content = content;
 	}
 
-	public Map<Integer, List<List<Integer>>> getContent() {
+	public Map<Integer, List<Integer[]>> getContent() {
 		return content;
 	}
 
@@ -44,13 +44,12 @@ public abstract class MidiPlayable {
 		this.bar = bar;
 	}
 
-	public Map<Integer, List<List<Integer>>> deepCopy() {
-		Map<Integer, List<List<Integer>>> deepCopy = new HashMap<>();
+	public Map<Integer, List<Integer[]>> deepCopy() {
+		Map<Integer, List<Integer[]>> deepCopy = new HashMap<>();
 		for (Integer note : content.keySet()) {
-			List<List<Integer>> k = new ArrayList<>();
-			for (List<Integer> innerList : content.get(note)) {
-				List<Integer> l = new ArrayList<>(innerList);
-				k.add(l);
+			List<Integer[]> k = new ArrayList<>();
+			for (Integer[] innerList : content.get(note)) {
+				k.add(innerList.clone());
 			}
 			deepCopy.put(note, k);
 		}

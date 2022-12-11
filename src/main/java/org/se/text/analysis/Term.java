@@ -10,10 +10,10 @@ import org.se.text.metric.Hyphenizer;
  */
 public class Term {
 	protected int frequency;
-	protected String radix;
-	protected String word;
-	protected Integer syllableAmount;
-	protected Numerus numerus;
+	protected final String radix;
+	protected final String word;
+	protected final Integer syllableAmount;
+	protected final Numerus numerus;
 
 	public Term(String word) {
 		this.frequency = 1;
@@ -40,8 +40,8 @@ public class Term {
 	}
 
 	public String toStringHelper() {
-		return " frequency='" + getFrequency() + "'" + ", radix='" + getRadix() + "'" + ", word='" + getWord() + "'" + ", syllableAmount='"
-				+ getSyllableAmount() + "'" + ", numerus='" + getNumerus() + "'";
+		return " frequency='" + getFrequency() + "'" + ", radix='" + getRadix() + "'" + ", word='" + getWord() + "'"
+				+ ", syllableAmount='" + getSyllableAmount() + "'" + ", numerus='" + getNumerus() + "'";
 	}
 
 	@Override
@@ -72,7 +72,8 @@ public class Term {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this) return true;
+		if (o == this)
+			return true;
 		if (!(o instanceof Term term)) {
 			return false;
 		}

@@ -46,7 +46,7 @@ public class BeatData {
 			positions = new HashSet<>(positions).stream().sorted().toList();
 
 			for (String instrument : map.keySet()) {
-				List<List<Integer>> notes = new ArrayList<>();
+				List<Integer[]> notes = new ArrayList<>();
 				for (int i = 0; i < map.get(instrument).length(); i++) {
 					String symbol = map.get(instrument).substring(i, i + 1);
 
@@ -59,7 +59,7 @@ public class BeatData {
 						} else {
 							duration = 96 - position;
 						}
-						List<Integer> note = List.of(position, duration);
+						Integer[] note = new Integer[]{position, duration};
 						notes.add(note);
 					}
 				}

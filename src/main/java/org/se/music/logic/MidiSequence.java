@@ -141,7 +141,7 @@ public class MidiSequence {
 	public void addText(int position, int trackNumber, String text) {
 		try {
 			MetaMessage mt = new MetaMessage();
-			mt.setMessage(0x01, text.getBytes(), text.length());
+			mt.setMessage(0x01, text.getBytes(), text.getBytes().length);
 			MidiEvent me = new MidiEvent(mt, position * 24L);
 			t[trackNumber].add(me);
 		} catch (InvalidMidiDataException e) {
@@ -169,12 +169,12 @@ public class MidiSequence {
 	}
 
 	public void addMidiPlayable(MidiPlayable m) {
-		Map<Integer, List<List<Integer>>> content = m.getContent();
+		Map<Integer, List<Integer[]>> content = m.getContent();
 		int bar = m.getBar();
 		int track = m.getTrackNo();
 		for (int instrNo : content.keySet()) {
-			for (List<Integer> o : content.get(instrNo)) {
-				addNote(instrNo, bar * 96L + o.get(0).longValue(), o.get(1).longValue(), track);
+			for (Integer[] o : content.get(instrNo)) {
+				addNote(instrNo, bar * 96L + o[0].longValue(), o[1].longValue(), track);
 			}
 		}
 	}

@@ -1,27 +1,42 @@
 package org.se.text.analysis;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
+
+import org.se.PartialProgressTask;
 import org.se.text.analysis.dict.*;
 import org.se.text.analysis.model.*;
 
 /**
  * @author Val Richter
  */
-public class Analyzer {
-	private Analyzer() {
+// TODO: Extending Task means that the Analyzer can only be used with the UI
+public class Analyzer extends PartialProgressTask<TermCollection> {
+	private final String text;
+	private final Dict dict;
+
+	public Analyzer(String text, Dict dict) {
+		super(3);
+		this.text = text;
+		this.dict = dict;
 	}
 
-	public static TermCollection analyze(String text, Dict dict) {
-		List<Sentence> sentences = Analyzer.preprocess(text);
-		List<List<Tag>> tags = Analyzer.tag(sentences, dict);
-		return Analyzer.buildTerms(tags, dict);
+	@Override
+	protected TermCollection call() throws Exception {
+		updateMessage("Preprocessing Text...");
+		List<Sentence> sentences = preprocess();
+		procedureDone();
+
+		updateMessage("Tagging Words in Text...");
+		List<List<Tag>> tags = tag(sentences);
+		procedureDone();
+
+		updateMessage("Building Terms from Text...");
+		TermCollection res = buildTerms(tags);
+		procedureDone();
+		return res;
 	}
 
-	static List<Sentence> preprocess(String text) {
+	private List<Sentence> preprocess() {
 		// I'm sure there must be a better way to do this
 		// Maybe there's something you could do with streams to make this more readable
 		// but Java certainly doesn't make it easy to do any of this shit ffs
@@ -36,7 +51,8 @@ public class Analyzer {
 		char[] chars = text.toCharArray();
 		StringBuilder currentWord = new StringBuilder();
 
-		for (char c : chars) {
+		for (int i = 0; i < chars.length; i++) {
+			char c = chars[i];
 			// ignore whitespace
 			if (Character.isWhitespace(c)) {
 				if (!currentWord.isEmpty() && !splitLastWord) {
@@ -72,6 +88,8 @@ public class Analyzer {
 				currentWord.append(c);
 				splitLastWord = false;
 			}
+
+			updateProgress((double) i / chars.length);
 		}
 
 		if (!currentWord.isEmpty()) {
@@ -83,7 +101,7 @@ public class Analyzer {
 		return sentences;
 	}
 
-	static int capitalizedCount(String str) {
+	private int capitalizedCount(String str) {
 		int count = 0;
 		for (char c : str.toCharArray()) {
 			if (Character.isUpperCase(c)) {
@@ -93,19 +111,22 @@ public class Analyzer {
 		return count;
 	}
 
-	static List<List<Tag>> tag(List<Sentence> sentences, Dict dict) {
+	private List<List<Tag>> tag(List<Sentence> sentences) {
 		List<List<Tag>> tags = new ArrayList<>();
 
-		for (Sentence sentence : sentences) {
+		int sentencesAmount = sentences.size();
+		for (int i = 0; i < sentencesAmount; i++) {
+			Sentence sentence = sentences.get(i);
 			List<Tag> currentTags = new ArrayList<>();
 
-			for (int i = 0; i < sentence.size(); i++) {
-				String word = sentence.get(i);
+			double wordsAmount = sentence.size();
+			for (int j = 0; j < wordsAmount; j++) {
+				String word = sentence.get(j);
 				Tag tag;
 
 				// If it's not the first word in the sentence and is capitalized, it's a noun
 				// this check can only be trusted on, if not every word is capitalized
-				if (i != 0 && Analyzer.capitalizedCount(word) == 1) {
+				if (j != 0 && capitalizedCount(word) == 1) {
 					tag = new Tag(word, TagType.Noun);
 				} // Otherwise, let the dictionary tag the word
 				else {
@@ -113,18 +134,25 @@ public class Analyzer {
 				}
 
 				currentTags.add(tag);
+
+				updateProgress((i + (j / wordsAmount)) / sentencesAmount);
 			}
 			tags.add(currentTags);
 		}
 		return tags;
 	}
 
-	static TermCollection buildTerms(List<List<Tag>> tags, Dict dict) {
+	private TermCollection buildTerms(List<List<Tag>> tags) {
 		Map<String, TermVariations<NounTerm>> nounVariations = new HashMap<>();
 		Map<String, TermVariations<VerbTerm>> verbVariations = new HashMap<>();
 
-		for (List<Tag> sentenceTags : tags) {
-			for (Tag t : sentenceTags) {
+		int sentencesAmount = tags.size();
+		for (int i = 0; i < sentencesAmount; i++) {
+			List<Tag> sentenceTags = tags.get(i);
+			double tagsAmount = sentenceTags.size();
+
+			for (int j = 0; j < tagsAmount; j++) {
+				Tag t = sentenceTags.get(j);
 				if (!t.is(TagType.Other)) {
 
 					if (t.is(TagType.Noun)) {
@@ -148,6 +176,7 @@ public class Analyzer {
 					}
 				}
 
+				updateProgress((i + (j / tagsAmount)) / sentencesAmount);
 			}
 		}
 		return new TermCollection(dict, nounVariations, verbVariations);
