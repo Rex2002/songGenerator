@@ -42,35 +42,35 @@ public class Controller implements Initializable {
 
 	double progress = 0;
 	@FXML
-	private Button settingPaneBack;
+	private Button setting_pane_back;
 	@FXML
-	private CheckBox settingPaneMetrics;
+	private CheckBox setting_pane_metrics;
 	@FXML
-	private Label settingPaneGenre;
+	private Label setting_pane_genre;
 	@FXML
-	private Label loadPaneDrag;
+	private Label load_pane_drag;
 	@FXML
-	private Button loadPaneLoad;
+	private Button load_pane_load;
 	@FXML
-	private Label loadPanePath;
+	private Label load_pane_path;
 	@FXML
-	private Label loadPaneLabel;
+	private Label load_pane_label;
 	@FXML
-	private Label settingPaneBpm;
+	private Label setting_pane_bpm;
 	@FXML
-	private Button loadPaneSettings;
+	private Button load_pane_settings;
 	@FXML
-	private Slider settingPaneSlider;
+	private Slider setting_pane_slider;
 	@FXML
-	private ChoiceBox<String> settingPaneCb;
+	private ChoiceBox<String> setting_pane_cb;
 	@FXML
-	private ProgressBar generatePaneProgress;
+	private ProgressBar generate_pane_progress;
 	@FXML
-	private Label generatePaneProgressLbl;
+	private Label generate_pane_progressLbl;
 	@FXML
-	private Button songGenerate;
+	private Button song_generate;
 	@FXML
-	private Button songSave;
+	private Button song_save;
 
 	/**
 	 * opens native file explorer and stores selected file in file
@@ -78,10 +78,10 @@ public class Controller implements Initializable {
 	@FXML
 	void loadClicked() {
 		file = fileChooser.showOpenDialog(new Stage());
-		if (file != null) loadPanePath.setText(file.getPath());
+		if (file != null) load_pane_path.setText(file.getPath());
 
 		// generating song now enabled
-		songGenerate.setDisable(false);
+		song_generate.setDisable(false);
 	}
 
 	/**
@@ -89,20 +89,20 @@ public class Controller implements Initializable {
 	 */
 	@FXML
 	void toggleClicked() {
-		boolean showLoad = loadPanePath.isVisible();
+		boolean showLoad = load_pane_path.isVisible();
 
-		loadPanePath.setVisible(!showLoad);
-		loadPaneLoad.setVisible(!showLoad);
-		loadPaneLabel.setVisible(!showLoad);
-		loadPaneSettings.setVisible(!showLoad);
-		loadPaneDrag.setVisible(!showLoad);
+		load_pane_path.setVisible(!showLoad);
+		load_pane_load.setVisible(!showLoad);
+		load_pane_label.setVisible(!showLoad);
+		load_pane_settings.setVisible(!showLoad);
+		load_pane_drag.setVisible(!showLoad);
 
-		settingPaneBpm.setVisible(showLoad);
-		settingPaneSlider.setVisible(showLoad);
-		settingPaneMetrics.setVisible(showLoad);
-		settingPaneBack.setVisible(showLoad);
-		settingPaneGenre.setVisible(showLoad);
-		settingPaneCb.setVisible(showLoad);
+		setting_pane_bpm.setVisible(showLoad);
+		setting_pane_slider.setVisible(showLoad);
+		setting_pane_metrics.setVisible(showLoad);
+		setting_pane_back.setVisible(showLoad);
+		setting_pane_genre.setVisible(showLoad);
+		setting_pane_cb.setVisible(showLoad);
 	}
 
 	/**
@@ -121,12 +121,12 @@ public class Controller implements Initializable {
 
 	@FXML
 	void toggleUseMetrics() {
-		if (settingPaneMetrics.isSelected()) {
-			settingPaneSlider.setDisable(true);
-			settingPaneBpm.setText("BPM");
+		if (setting_pane_metrics.isSelected()) {
+			setting_pane_slider.setDisable(true);
+			setting_pane_bpm.setText("BPM");
 		} else {
-			settingPaneSlider.setDisable(false);
-			settingPaneBpm.setText("BPM: " + bpm);
+			setting_pane_slider.setDisable(false);
+			setting_pane_bpm.setText("BPM: " + bpm);
 		}
 	}
 
@@ -146,17 +146,17 @@ public class Controller implements Initializable {
 	void dropFile(DragEvent event) {
 		Dragboard dB = event.getDragboard();
 		file = dB.getFiles().get(0);
-		loadPanePath.setText(file.getPath());
+		load_pane_path.setText(file.getPath());
 
 		// generating song now enabled
-		songGenerate.setDisable(false);
+		song_generate.setDisable(false);
 	}
 
 	/**
 	 * event handler for genre drop-down selector
 	 */
 	public void setGenre() {
-		genre = Genre.valueOf(settingPaneCb.getValue());
+		genre = Genre.valueOf(setting_pane_cb.getValue());
 	}
 
 	/**
@@ -165,25 +165,25 @@ public class Controller implements Initializable {
 	@FXML
 	void generateSong() {
 		progress = 0;
-		generatePaneProgress.setProgress(0);
+		generate_pane_progress.setProgress(0);
 
 		// show progressbar
-		generatePaneProgress.setVisible(true);
-		songSave.setVisible(true);
-		generatePaneProgressLbl.setVisible(true);
+		generate_pane_progress.setVisible(true);
+		song_save.setVisible(true);
+		generate_pane_progressLbl.setVisible(true);
 
 		if (file != null) {
 
-			Settings settings = new Settings(file.getAbsolutePath(), genre, settingPaneMetrics.isSelected() ? -1 : bpm);
+			Settings settings = new Settings(file.getAbsolutePath(), genre, setting_pane_metrics.isSelected() ? -1 : bpm);
 			songGenerator = new SongGenerator(settings);
-			generatePaneProgress.progressProperty().bind(songGenerator.progressProperty());
-			songGenerator.messageProperty().addListener((observable, oldVal, newVal) -> generatePaneProgressLbl.setText(newVal));
+			generate_pane_progress.progressProperty().bind(songGenerator.progressProperty());
+			songGenerator.messageProperty().addListener((observable, oldVal, newVal) -> generate_pane_progressLbl.setText(newVal));
 
 			Thread th = new Thread(songGenerator);
 			th.setDaemon(true);
 			th.start();
 
-			songSave.setDisable(false);
+			song_save.setDisable(false);
 		}
 	}
 
@@ -197,7 +197,7 @@ public class Controller implements Initializable {
 			if (saveSong != null) {
 				try {
 					songGenerator.getSeq().createFile(String.valueOf(saveSong.toPath()));
-					((Stage) settingPaneCb.getScene().getWindow()).close();
+					((Stage) setting_pane_cb.getScene().getWindow()).close();
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -224,21 +224,21 @@ public class Controller implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		// hide setting elements on launch
-		settingPaneBpm.setVisible(false);
-		settingPaneSlider.setVisible(false);
-		settingPaneBack.setVisible(false);
-		settingPaneGenre.setVisible(false);
-		settingPaneCb.setVisible(false);
-		settingPaneMetrics.setVisible(false);
+		setting_pane_bpm.setVisible(false);
+		setting_pane_slider.setVisible(false);
+		setting_pane_back.setVisible(false);
+		setting_pane_genre.setVisible(false);
+		setting_pane_cb.setVisible(false);
+		setting_pane_metrics.setVisible(false);
 
 		// can not generate or save song unless a file is loaded
-		songGenerate.setDisable(true);
-		songSave.setDisable(true);
+		song_generate.setDisable(true);
+		song_save.setDisable(true);
 
 		// progress not visible on launch
-		generatePaneProgress.setVisible(false);
-		songSave.setVisible(false);
-		generatePaneProgressLbl.setVisible(false);
+		generate_pane_progress.setVisible(false);
+		song_save.setVisible(false);
+		generate_pane_progressLbl.setVisible(false);
 
 		// allow only pdf/txt-filter
 		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter(".txt or .pdf", "*.txt", "PDF", "*.pdf"));
@@ -260,15 +260,15 @@ public class Controller implements Initializable {
 		// fileSaver.setInitialDirectory(new File("C:/Users/" + userName + "/Desktop"));
 
 		// handle slider changes
-		settingPaneSlider.valueProperty().addListener((ObservableValue<? extends Number> num, Number oldVal, Number newVal) -> {
-			settingPaneBpm.setText("BPM: " + newVal.intValue());
+		setting_pane_slider.valueProperty().addListener((ObservableValue<? extends Number> num, Number oldVal, Number newVal) -> {
+			setting_pane_bpm.setText("BPM: " + newVal.intValue());
 			bpm = newVal.intValue();
 		});
 
 		// set choice options (genres) for choiceBox
-		settingPaneCb.getItems().addAll(genres);
-		settingPaneCb.setValue(genre.toString());
+		setting_pane_cb.getItems().addAll(genres);
+		setting_pane_cb.setValue(genre.toString());
 
-		settingPaneCb.setOnAction(actionEvent -> setGenre());
+		setting_pane_cb.setOnAction(actionEvent -> setGenre());
 	}
 }
