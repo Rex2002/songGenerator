@@ -54,7 +54,6 @@ public class SongGenerator extends PartialProgressTask<MidiSequence> {
 
 			updateMessage("Done");
 			updateProgress(100, 100);
-			this.seq = seq;
 			return seq;
 		} catch (IOException e) {
 			updateMessage("Something went wrong reading a file...");
