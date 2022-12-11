@@ -21,12 +21,12 @@
 #1
 length: 12
 strophe:
-  - "Ich bin traurig $v,11,1,10$|machen mich gluecklich"
-  - "Eure $v,12,1,10$|machen mich gluecklich"
-  - "Unsere $n,f,p,n,13,2,10$|machen mich gluecklich"
-  - "Keiner $n,f,p,n,14,2,10$|machen mich gluecklich"
-  - "Unsere $n,f,p,n,13,2,10$|machen mich gluecklich"
-  - "Keiner $n,f,p,n,14,2,10$|machen mich gluecklich"
+  - "Ich bin traurig $v,11,1,10$|machen mich glücklich"
+  - "Eure $v,12,1,10$|machen mich glücklich"
+  - "Unsere $n,f,p,n,13,2,10$|machen mich glücklich"
+  - "Keiner $n,f,p,n,14,2,10$|machen mich glücklich"
+  - "Unsere $n,f,p,n,13,2,10$|machen mich glücklich"
+  - "Keiner $n,f,p,n,14,2,10$|machen mich glücklich"
 ---
 #2
 length: 24
