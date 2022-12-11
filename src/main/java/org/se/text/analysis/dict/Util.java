@@ -2,7 +2,6 @@ package org.se.text.analysis.dict;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
@@ -11,18 +10,14 @@ import java.util.function.Predicate;
 public class Util {
 	public static <T> boolean any(Iterable<T> items, Predicate<? super T> f) {
 		for (T item : items) {
-			if (f.test(item)) {
-				return true;
-			}
+			if (f.test(item)) return true;
 		}
 		return false;
 	}
 
 	public static <T> boolean all(Iterable<T> items, Predicate<? super T> f) {
 		for (T item : items) {
-			if (!f.test(item)) {
-				return false;
-			}
+			if (!f.test(item)) return false;
 		}
 		return true;
 	}

@@ -9,6 +9,7 @@ import java.util.*;
  * consists of a list with the existing parts, the order of these
  * and the name of the basePart.
  * It also stores the key, the speed and the genre of the structure
+ * 
  * @author Malte Richert
  * @reviewer Benjamin Frahm
  */

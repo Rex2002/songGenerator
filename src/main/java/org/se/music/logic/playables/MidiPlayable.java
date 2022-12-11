@@ -1,15 +1,13 @@
 package org.se.music.logic.playables;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * <p>
  * This is the base class that is used to construct objects,
  * which can be interpreted and translated to actual midi by the MidiSequence-class
  * </p>
+ *
  * @author Benjamin Frahm
  * @reviewer Malte Richert
  */
@@ -19,7 +17,7 @@ public abstract class MidiPlayable {
 	private int bar;
 	private Map<Integer, List<Integer[]>> content = new HashMap<>();
 
-	public MidiPlayable(int trackNo, int bar) {
+	protected MidiPlayable(int trackNo, int bar) {
 		this.bar = bar;
 		this.trackNo = trackNo;
 	}

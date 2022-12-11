@@ -1,15 +1,12 @@
 package org.se.text.analysis.dict;
 
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
-
-import org.se.text.analysis.model.AffixType;
-import org.se.text.analysis.model.CompoundPart;
+import java.util.function.*;
+import org.se.text.analysis.model.*;
 
 /**
  * @author Val Richter
+ * @reviewer Jakob Kautz
  */
 public class WordStemmer {
 	private String stem = "";
@@ -20,7 +17,7 @@ public class WordStemmer {
 	private List<WordWithData> suffixes = new LinkedList<>();
 	final String baseKey;
 
-	final static String DEFAULT_BASE_KEY = "radix";
+	static final String DEFAULT_BASE_KEY = "radix";
 
 	// Constructors:
 
@@ -57,7 +54,7 @@ public class WordStemmer {
 
 	public int affixesCount() {
 		int count = suffixes.size() + prefixes.size();
-		if (grammartizedSuffix != null && !grammartizedSuffix.radix.equals("")) count += 1;
+		if (grammartizedSuffix != null && !grammartizedSuffix.getRadix().equals("")) count += 1;
 		return count;
 	}
 
@@ -98,8 +95,6 @@ public class WordStemmer {
 				final String scopy = s.substring(0, s.length() - suffix.getRadix().length());
 
 				if (scopy.length() >= minStemLength) {
-					// TODO: Refactor to remove duplicated code
-					// With added prefixes
 					for (T prefix : prefixes) {
 						if (scopy.length() - prefix.getRadix().length() >= minStemLength && scopy.startsWith(prefix.getRadix())) {
 							WordStemmer w = new WordStemmer(baseKey, scopy.substring(prefix.getRadix().length()), prefix, suffix);
@@ -129,8 +124,7 @@ public class WordStemmer {
 		List<WordStemmer> res = new LinkedList<>(nextCompounds);
 
 		for (WordStemmer w : nextCompounds) {
-			List<WordStemmer> furtherCompounds = w.findCompounds(terms, minStemLength, addableCompoundParts, subtractableCompoundParts, diphthongs
-			);
+			List<WordStemmer> furtherCompounds = w.findCompounds(terms, minStemLength, addableCompoundParts, subtractableCompoundParts, diphthongs);
 			res.addAll(furtherCompounds);
 		}
 
@@ -178,7 +172,7 @@ public class WordStemmer {
 
 	private List<WordStemmer> findAffixes(WordList affixes, int minStemLength, WordList diphtongs, boolean firstCall, boolean getPrefixes) {
 		List<WordStemmer> res = new LinkedList<>();
-		List<WordStemmer> nextAffixes = findNextAffix(affixes, minStemLength, diphtongs);
+		List<WordStemmer> nextAffixes = findNextAffix(affixes, minStemLength, diphtongs, getPrefixes);
 
 		if (firstCall) res.add(this);
 		res.addAll(nextAffixes);
@@ -196,13 +190,13 @@ public class WordStemmer {
 		return res;
 	}
 
-	private List<WordStemmer> findNextAffix(WordList affixes, int minStemLength, WordList diphthongs) {
+	private List<WordStemmer> findNextAffix(WordList affixes, int minStemLength, WordList diphthongs, boolean getPrefixes) {
 		int initialIndex;
 		Predicate<? super Integer> condition;
 		Consumer<? super Integer> afterIteration;
 		Function<WordStemmer, List<WordWithData>> getWordAffixes;
 		Predicate<Tuple<Integer, char[]>> additionalDiphthongCheck;
-		if (false) {
+		if (getPrefixes) {
 			initialIndex = 0;
 			condition = i -> i < stem.length() - minStemLength;
 			afterIteration = i -> i++;
@@ -227,9 +221,9 @@ public class WordStemmer {
 		return findNextAffix(affixes, diphthongs, initialIndex, condition, afterIteration, getWordAffixes, additionalDiphthongCheck);
 	}
 
-	private List<WordStemmer> findNextAffix(WordList affixes, WordList diphtongs, int initialIndex,
-											Predicate<? super Integer> condition, Consumer<? super Integer> afterIteration, Function<WordStemmer, List<WordWithData>> getWordAffixes,
-											Predicate<Tuple<Integer, char[]>> additionalDiphtongCheck) {
+	private List<WordStemmer> findNextAffix(WordList affixes, WordList diphtongs, int initialIndex, Predicate<? super Integer> condition,
+			Consumer<? super Integer> afterIteration, Function<WordStemmer, List<WordWithData>> getWordAffixes,
+			Predicate<Tuple<Integer, char[]>> additionalDiphtongCheck) {
 		List<WordStemmer> res = new ArrayList<>();
 		char[] chars = stem.toCharArray();
 		StringBuilder currentStringPart = new StringBuilder();
@@ -245,12 +239,9 @@ public class WordStemmer {
 			// To do so, first check that there even is another character after this one
 			Integer iCopy = initialIndex;
 			afterIteration.accept(iCopy);
-			if (condition.test(iCopy)) {
-				if (diphtongs.has(chars[iCopy] + "" + chars[initialIndex])) {
-					if (additionalDiphtongCheck == null || additionalDiphtongCheck.test(new Tuple<>(initialIndex, chars))) {
-						isPartOfDiphtong = true;
-					}
-				}
+			if (condition.test(iCopy) && diphtongs.has(chars[iCopy] + "" + chars[initialIndex])
+					&& (additionalDiphtongCheck == null || additionalDiphtongCheck.test(new Tuple<>(initialIndex, chars)))) {
+				isPartOfDiphtong = true;
 			}
 
 			String str = currentStringPart.toString();

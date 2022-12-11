@@ -1,14 +1,13 @@
 package org.se.text.analysis.model;
 
 import java.util.*;
-import org.se.text.analysis.dict.TermAffix;
 
 /**
  * @author Val Richter
  */
 public class Conjugation extends TermAffix {
-	public Person person;
-	public Tense tense;
+	private Person person;
+	private Tense tense;
 
 	public Conjugation() {
 	}

@@ -1,9 +1,8 @@
 package org.se.text.generation;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.*;
+
 /**
  * @author Olivier Stenzel
  */
@@ -21,13 +20,13 @@ public class TextTemplate {
 	public String[] getStrophe() {
 		return strophe;
 	}
-	public int getLength() {return length; 	}
+
+	public int getLength() {
+		return length;
+	}
 
 	@Override
 	public String toString() {
-		return "Template{" +
-				"strophe=" + Arrays.toString(strophe) +
-				", length=" + length +
-				'}';
+		return "Template{" + "strophe=" + Arrays.toString(strophe) + ", length=" + length + '}';
 	}
 }

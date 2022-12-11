@@ -12,11 +12,12 @@ import org.se.text.analysis.model.Numerus;
 
 /**
  * @author Val Richter
+ * @reviewer Jakob Kautz
  */
 public class TermVariations<T extends Term> {
-	public Map<Integer, T> variations;
-	public Integer frequency;
-	public String radix;
+	private Map<Integer, T> variations;
+	private Integer frequency;
+	private String radix;
 	private Random rand = new Random();
 
 	public TermVariations(T term) {
@@ -31,9 +32,7 @@ public class TermVariations<T extends Term> {
 	}
 
 	public void add(T term) {
-		if (this.radix.isEmpty()) {
-			this.radix = term.radix;
-		}
+		if (this.radix.isEmpty()) this.radix = term.radix;
 
 		if (this.has(term)) {
 			this.variations.get(term.hashData()).increaseFrequency();

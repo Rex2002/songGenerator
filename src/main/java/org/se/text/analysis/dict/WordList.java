@@ -2,7 +2,6 @@ package org.se.text.analysis.dict;
 
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * @author Val Richter
@@ -68,7 +67,7 @@ public class WordList implements Iterable<WordWithData> {
 
 		h.put(baseKey, h.get(baseKey).toLowerCase());
 		store.add(h);
-    }
+	}
 
 	public void sort() {
 		store.sort((o1, o2) -> o1.get(baseKey).compareTo(o2.get(baseKey)));
@@ -92,17 +91,14 @@ public class WordList implements Iterable<WordWithData> {
 		return insert(h);
 	}
 
-	public void insertAll(WordList list) {
+	public boolean insertAll(WordList list) {
 		boolean res = true;
 		for (WordWithData h : list.store) {
-			if (!Objects.equals(list.baseKey, this.baseKey)) {
-				h.put(this.baseKey, h.get(list.baseKey));
-			}
-			if (!insert(h)) {
-				res = false;
-			}
+			if (!Objects.equals(list.baseKey, this.baseKey)) h.put(this.baseKey, h.get(list.baseKey));
+			if (!insert(h)) res = false;
 		}
-    }
+		return res;
+	}
 
 	public Optional<WordWithData> find(Predicate<? super WordWithData> f) {
 		for (WordWithData w : store) {

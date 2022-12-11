@@ -4,11 +4,17 @@ import java.util.*;
 
 /**
  * @author Val Richter
+ * @reviewer Jakob Kautz
  */
 public class WordWithData extends HashMap<String, String> {
-	private final String baseKey = "radix";
+	private final String baseKey;
 
 	public WordWithData() {
+		this.baseKey = "radix";
+	}
+
+	public WordWithData(String baseKey) {
+		this.baseKey = baseKey;
 	}
 
 	public String get() {

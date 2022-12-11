@@ -7,11 +7,11 @@ import org.se.music.logic.playables.MidiPlayable;
 import org.se.music.model.*;
 import org.se.text.analysis.TermCollection;
 import org.se.text.generation.SongTextGenerator;
-
 import java.util.*;
 
 /**
  * Generates a full song based on the provided inputs
+ *
  * @author Malte Richert
  * @author Benjamin Frahm
  */
@@ -21,18 +21,19 @@ public class StructureGenerator {
 
 	public static MidiSequence generateStructure(Settings settings, TermCollection terms) {
 		Random ran = new Random();
-		structure = Config.getStructures().get(0);//ran.nextInt(Config.getStructures().size()));
+		structure = Config.getStructures().get(0);// ran.nextInt(Config.getStructures().size()));
 		structure.setGenre(settings.getGenre());
 		structure.setKey(new MusicalKey());
 		structure.setTempo(settings.getTempo());
 		System.out.println(structure);
 
 		SongTextGenerator textGenerator = new SongTextGenerator();
-		HashMap<String,List<String[][]>> songText = textGenerator.generateSongText(structure, terms);
+		Map<String, List<String[][]>> songText = textGenerator.generateSongText(structure, terms);
 
 		MidiSequence seq = initMidiSequence(structure);
 
-		structure.getPart(structure.getBasePartKey()).fillRandomly(structure.getKey(), trackMapping, structure.getGenre() == Genre.POP ? 4 : 12, songText.get(structure.getBasePartKey()).get(0));
+		structure.getPart(structure.getBasePartKey()).fillRandomly(structure.getKey(), trackMapping, structure.getGenre() == Genre.POP ? 4 : 12,
+				songText.get(structure.getBasePartKey()).get(0));
 
 		for (String partName : structure.getParts().keySet()) {
 			if (partName.equals(structure.getBasePartKey())) {
@@ -61,16 +62,18 @@ public class StructureGenerator {
 				m.setBar(m.getBar() - barOffset);
 			}
 			seq.addText(barOffset * 4, 0, partName);
-			if(partContainsVocal(structure.getPart(partName))){
+			if (partContainsVocal(structure.getPart(partName))) {
 				Part p = structure.getPart(partName);
 				MidiText t;
-				for(int bar = 0; bar < p.getLength(); bar++){
+				for (int bar = 0; bar < p.getLength(); bar++) {
 					t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get("vocals")), bar + barOffset,
 							songText.get(partName).get(0)[bar][0]);
-					System.out.println("adding text: " + partName+ ", " + Arrays.deepToString(songText.get(partName).get(0)) + ", " + bar);
+					System.out.println("adding text: " + partName + ", " + Arrays.deepToString(songText.get(partName).get(0)) + ", " + bar);
 					seq.addMidiText(t);
 				}
-				if(!partName.contains("horus")){songText.get(partName).remove(0);}
+				if (!partName.contains("horus")) {
+					songText.get(partName).remove(0);
+				}
 
 			}
 			for (MidiText t : structure.getPart(partName).getMidiTexts()) {
@@ -96,14 +99,14 @@ public class StructureGenerator {
 
 		MidiSequence seq = new MidiSequence(currentTrackNo);
 		List<Integer> drumInstrs = getDrumInstrNo();
-		for (Integer instr : trackMapping.keySet()) {
-			if (drumInstrs.contains(instr)) {
-				seq.setInstrument(instr, trackMapping.get(instr), true);
+		for (Map.Entry<Integer, Integer> instr : trackMapping.entrySet()) {
+			if (drumInstrs.contains(instr.getKey())) {
+				seq.setInstrument(instr.getKey(), instr.getValue(), true);
 			} else {
-				seq.setInstrument(instr, trackMapping.get(instr));
+				seq.setInstrument(instr.getKey(), instr.getValue());
 			}
-			seq.setKey(structure.getKey().getBase(), trackMapping.get(instr));
-			// seq.addNote(60, 0, 24, trackMapping.get(instr));
+			seq.setKey(structure.getKey().getBase(), instr.getValue());
+			// seq.addNote(60, 0, 24, instr.getValue());
 		}
 		seq.setBPM(structure.getTempo());
 		return seq;
@@ -112,7 +115,7 @@ public class StructureGenerator {
 	private static int putTrackNo(int currentTrackNo, InstrumentEnum instrument) {
 		if (!trackMapping.containsKey(Config.getInstrumentMapping().get(instrument.toString()))) {
 			trackMapping.put(Config.getInstrumentMapping().get(instrument.toString()), currentTrackNo);
-			if (instrument.equals(InstrumentEnum.chords) || instrument.equals(InstrumentEnum.chords2)) {
+			if (instrument.equals(InstrumentEnum.CHORDS) || instrument.equals(InstrumentEnum.CHORDS2)) {
 				currentTrackNo++;
 			}
 			currentTrackNo++;
@@ -130,7 +133,9 @@ public class StructureGenerator {
 
 	/**
 	 * Returns most important chords by ordering: 0,4,3,2,1,5,6
-	 * @param chords any list of chords in chord_progression template format
+	 *
+	 * @param chords
+	 *            any list of chords in chord_progression template format
 	 * @return list of two most important of the input chords
 	 */
 	private static List<String> getImportantChords(List<List<String>> chords) {

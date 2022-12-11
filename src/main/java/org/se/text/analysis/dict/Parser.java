@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -18,28 +17,17 @@ public class Parser {
 	 * Supported types are: Integer, Boolean, List, GrammaticalCase, Person, Tense, Gender, Numerus
 	 */
 	public static <T> Optional<T> parse(String s, Class<T> cls) {
-		if (cls == String.class)
-			return Optional.ofNullable(cls.cast(s));
-		else if (cls == GrammaticalCase.class)
-			return Optional.ofNullable(cls.cast(parseGrammaticalCase(s)));
-		else if (cls == Person.class)
-			return Optional.ofNullable(cls.cast(parsePerson(s)));
-		else if (cls == Tense.class)
-			return Optional.ofNullable(cls.cast(parseTense(s)));
-		else if (cls == Gender.class)
-			return Optional.ofNullable(cls.cast(parseGender(s)));
-		else if (cls == Numerus.class)
-			return Optional.ofNullable(cls.cast(parseNumerus(s)));
-		else if (cls == CompoundPart.class)
-			return Optional.ofNullable(cls.cast(parseCompoundPart(s)));
-		else if (cls == AffixType.class)
-			return Optional.ofNullable(cls.cast(parseAffixType(s)));
-		else if (cls == Boolean.class)
-			return Optional.of(cls.cast(parseBool(s)));
-		else if (cls == Integer.class)
-			return Optional.ofNullable(cls.cast(parseInt(s)));
-		else if (cls == List.class)
-			return Optional.of(cls.cast(parseList(s)));
+		if (cls == String.class) return Optional.ofNullable(cls.cast(s));
+		else if (cls == GrammaticalCase.class) return Optional.ofNullable(cls.cast(parseGrammaticalCase(s)));
+		else if (cls == Person.class) return Optional.ofNullable(cls.cast(parsePerson(s)));
+		else if (cls == Tense.class) return Optional.ofNullable(cls.cast(parseTense(s)));
+		else if (cls == Gender.class) return Optional.ofNullable(cls.cast(parseGender(s)));
+		else if (cls == Numerus.class) return Optional.ofNullable(cls.cast(parseNumerus(s)));
+		else if (cls == CompoundPart.class) return Optional.ofNullable(cls.cast(parseCompoundPart(s)));
+		else if (cls == AffixType.class) return Optional.ofNullable(cls.cast(parseAffixType(s)));
+		else if (cls == Boolean.class) return Optional.of(cls.cast(parseBool(s)));
+		else if (cls == Integer.class) return Optional.ofNullable(cls.cast(parseInt(s)));
+		else if (cls == List.class) return Optional.of(cls.cast(parseList(s)));
 
 		return Optional.empty();
 	}
@@ -170,9 +158,7 @@ public class Parser {
 
 					if (s != null) {
 						Optional<?> val = parse(s, field.getType());
-						if (val.isPresent()) {
-							field.set(t, val.get());
-						}
+						if (val.isPresent()) field.set(t, val.get());
 					}
 				}
 
@@ -187,5 +173,9 @@ public class Parser {
 	public static void readCSV(Path filepath, WordList list) throws IOException {
 		parseCSV(filepath, list::uncheckedInsert);
 		list.sort();
+	}
+
+	public static void readCSV(Path filepath, List<WordWithData> list) throws IOException {
+		parseCSV(filepath, list::add);
 	}
 }

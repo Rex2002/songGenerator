@@ -9,6 +9,7 @@ import org.se.music.model.Genre;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
+
 /**
  * @author Olivier Stenzel
  */
@@ -21,21 +22,21 @@ public class TemplateImporter {
 	 */
 	public List<TextTemplate> getTemplates(Genre genre) {
 		YAMLParser yamlParser;
-			// load Templates from yml
-			try {
-				if(genre == Genre.POP) {
-					yamlParser = yaml.createParser(new File("./src/main/resources/text/text_templates_pop.yml"));
-				} else{
-					yamlParser = yaml.createParser(new File("./src/main/resources/text/text_templates_blues.yml"));
-				}
-				return mapper.readValues(yamlParser, TextTemplate.class).readAll();
-
-			} catch (IOException e) {
-				System.out.println("Encountered exception while trying to read " + genre + "-Template.");
-				e.printStackTrace();
-
-				return List.of();
+		// load Templates from yml
+		try {
+			if (genre == Genre.POP) {
+				yamlParser = yaml.createParser(new File("./src/main/resources/text/text_templates_pop.yml"));
+			} else {
+				yamlParser = yaml.createParser(new File("./src/main/resources/text/text_templates_blues.yml"));
 			}
+			return mapper.readValues(yamlParser, TextTemplate.class).readAll();
+
+		} catch (IOException e) {
+			System.out.println("Encountered exception while trying to read " + genre + "-Template.");
+			e.printStackTrace();
+
+			return List.of();
+		}
 
 	}
 }

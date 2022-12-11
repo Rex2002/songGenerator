@@ -8,7 +8,6 @@ import org.se.music.logic.playables.ChordContainer;
 import org.se.music.Config;
 import org.se.music.logic.playables.MidiPlayable;
 import org.se.music.logic.playables.PitchedPlayable;
-
 import java.util.*;
 
 /**
@@ -16,6 +15,7 @@ import java.util.*;
  * Consists of a length, required instruments, optional instruments
  * and methods to fill the part with MidiPlayables according to the
  * specifications provided
+ *
  * @author Malte Richert
  * @author Benjamin Frahm
  */
@@ -47,9 +47,12 @@ public class Part {
 	/**
 	 * method for filling a part based on a given chord progression
 	 *
-	 * @param chordProgression the chord progression that is meant to be used
-	 * @param key the key of the part
-	 * @param trackMapping the instrument-track-mapping of the sequence
+	 * @param chordProgression
+	 *            the chord progression that is meant to be used
+	 * @param key
+	 *            the key of the part
+	 * @param trackMapping
+	 *            the instrument-track-mapping of the sequence
 	 */
 	public void fillPart(List<List<String>> chordProgression, MusicalKey key, Map<Integer, Integer> trackMapping, int themeLength, String[][] text) {
 		this.chordProgression = chordProgression;
@@ -62,8 +65,8 @@ public class Part {
 		MidiPlayable m;
 		PitchedPlayable p;
 		MidiText t;
-		for(InstrumentEnum instr : optInsts){
-			if(ran.nextInt(3) == 0){
+		for (InstrumentEnum instr : optInsts) {
+			if (ran.nextInt(3) == 0) {
 				reqInsts.add(instr);
 			}
 		}
@@ -74,9 +77,9 @@ public class Part {
 							chordProgression.get(bar % chordProgression.size()));
 					midiPlayables.add(p);
 					for (int chordNo = 0; chordNo < p.getInflatedChords().length; chordNo++) {
-						if(chordNo == 0 || p.getInflatedChords()[chordNo] != p.getInflatedChords()[chordNo-1]) {
-							t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar, p.getInflatedChords()[chordNo],
-									chordNo);
+						if (chordNo == 0 || p.getInflatedChords()[chordNo] != p.getInflatedChords()[chordNo - 1]) {
+							t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar,
+									p.getInflatedChords()[chordNo], chordNo);
 							midiTexts.add(t);
 						}
 					}
@@ -105,7 +108,8 @@ public class Part {
 					if (instr.toString().equals("melody2")) {
 						m = new ThemeVariation(theme, trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar, false);
 					} else {
-						m = new ThemeVariation(theme, trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar, Arrays.copyOfRange(text, bar, bar+theme.getLengthInBars()));
+						m = new ThemeVariation(theme, trackMapping.get(Config.getInstrumentMapping().get(instr.toString())), bar,
+								Arrays.copyOfRange(text, bar, bar + theme.getLengthInBars()));
 					}
 					midiPlayables.add(m);
 				}

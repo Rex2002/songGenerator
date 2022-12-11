@@ -9,13 +9,14 @@ import java.util.Random;
  * Provides methods to get the notes of the corresponding scale,
  * check if a note is in the corresponding scale
  * and translate midi note numbers to human-readable strings
+ *
  * @author Benjamin Frahm
  * @reviewer Malte Richert
  */
 
 public class MusicalKey {
 
-	public static final int[] keyMaj = { 0, 2, 4, 5, 7, 9, 11 };
+	protected static final int[] keyMaj = { 0, 2, 4, 5, 7, 9, 11 };
 	private final int baseNote;
 	private final String base;
 

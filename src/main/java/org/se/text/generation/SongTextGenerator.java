@@ -2,18 +2,10 @@ package org.se.text.generation;
 
 import org.se.music.model.Genre;
 import org.se.music.model.Structure;
-import org.se.text.analysis.NounTerm;
-import org.se.text.analysis.Term;
-import org.se.text.analysis.TermCollection;
-import org.se.text.analysis.VerbTerm;
-import org.se.text.analysis.model.Gender;
-import org.se.text.analysis.model.GrammaticalCase;
-import org.se.text.analysis.model.Numerus;
+import org.se.text.analysis.*;
+import org.se.text.analysis.model.*;
 import org.se.text.metric.Hyphenizer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author Olivier Stenzel
@@ -25,14 +17,14 @@ public class SongTextGenerator {
 
 	// text
 	private TermCollection termCollection;
-	private final HashMap<Integer, String> usedWords = new HashMap<>(); // to check if a Term was used in the Song
-																		// before
+	private final Map<Integer, String> usedWords = new HashMap<>(); // to check if a Term was used in the Song before
+	private final Random ran = new Random();
 
 	/**
 	 * returns a Hashmap which contains the Songtext split into parts with the
 	 * number of syllable in each part
 	 */
-	public HashMap<String, List<String[][]>> generateSongText(Structure structure, TermCollection termCollection) {
+	public Map<String, List<String[][]>> generateSongText(Structure structure, TermCollection termCollection) {
 
 		List<String[]> songText = new ArrayList<>();
 		this.termCollection = termCollection;
@@ -66,9 +58,7 @@ public class SongTextGenerator {
 	 * retuns a strophe-template which was not yet used in the songtext
 	 */
 	private TextTemplate getUnusedStrophe(int partLength, Genre genre) {
-		Random ran = new Random();
-		if (unusedTextTemplateList.size() == 0)
-			unusedTextTemplateList = templateImporter.getTemplates(genre);
+		if (unusedTextTemplateList.isEmpty()) unusedTextTemplateList = templateImporter.getTemplates(genre);
 		TextTemplate textTemplate = unusedTextTemplateList.get(ran.nextInt(unusedTextTemplateList.size()));
 		for (int i = 0; i < 1000; i++) {
 			textTemplate = getRandomNotUsedValue(genre);// get random template
@@ -84,9 +74,7 @@ public class SongTextGenerator {
 	 * ähhh....I don't know what to do either
 	 */
 	private TextTemplate getRandomNotUsedValue(Genre genre) {
-		Random ran = new Random();
-
-		if (unusedTextTemplateList.size() == 0) {
+		if (unusedTextTemplateList.isEmpty()) {
 			unusedTextTemplateList = templateImporter.getTemplates(genre);
 		}
 		TextTemplate pTemplate = unusedTextTemplateList.get(ran.nextInt(unusedTextTemplateList.size()));
@@ -104,8 +92,7 @@ public class SongTextGenerator {
 		int end = rawString.indexOf('$', beginning + 1);
 
 		// if ther's no variable Word in the verse
-		if (end < 0)
-			return rawString;
+		if (end < 0) return rawString;
 
 		String requirementsVariableString = rawString.substring(beginning + 1, end);
 		String[] strArr = getStringArrFromRequirementsVariableString(requirementsVariableString);
@@ -119,8 +106,7 @@ public class SongTextGenerator {
 	private String getTerm(String[] requirements) {
 		int id = getIdFromRequirements(requirements);
 		// if id was already used
-		if (usedWords.containsKey(id))
-			return usedWords.get(id);
+		if (usedWords.containsKey(id)) return usedWords.get(id);
 
 		List<? extends Term> termList;
 
@@ -150,8 +136,7 @@ public class SongTextGenerator {
 		String[] strArr = new String[] { "", "", "", "", "", "", "" }; // to have empty (not null) values in String[]
 		int index = 0;
 		while (requirementsVariableString.length() > 0) {
-			if (requirementsVariableString.charAt(0) == ',')
-				index++;
+			if (requirementsVariableString.charAt(0) == ',') index++;
 			else {
 				strArr[index] = strArr[index] + requirementsVariableString.charAt(0); // String builder
 			}
@@ -188,14 +173,12 @@ public class SongTextGenerator {
 	 * returns a Hashmap which contains the song text split into parts with the
 	 * number of syllable in each part, based on the given song text
 	 */
-	private HashMap<String, List<String[][]>> getPartText(List<String> order, List<String[]> songText) {
-		HashMap<String, List<String[][]>> partTextMap = new HashMap<>();
+	private Map<String, List<String[][]>> getPartText(List<String> order, List<String[]> songText) {
+		Map<String, List<String[][]>> partTextMap = new HashMap<>();
 		for (int i = 0; i < order.size(); i++) {
 			// for example the second verse
 			String partName = order.get(i);
-			if (!partTextMap.containsKey(partName)) {
-				partTextMap.put(partName, new ArrayList<>());
-			}
+			partTextMap.computeIfAbsent(partName, k -> new ArrayList<>());
 			partTextMap.get(partName).add(getPartSyllConcatenation(songText.get(i)));
 		}
 		return partTextMap;
@@ -224,7 +207,7 @@ public class SongTextGenerator {
 		String[] words = s.split(" ");
 
 		for (String word : words) {
-			sylCounter += Hyphenizer.CountSyllables(word);
+			sylCounter += Hyphenizer.countSyllables(word);
 		}
 		return sylCounter;
 	}
@@ -321,8 +304,7 @@ public class SongTextGenerator {
 	private int getIdFromRequirements(String[] requirements) {
 		int position = 1;
 		// for nouns
-		if (isNoun(requirements))
-			position = 4;
+		if (isNoun(requirements)) position = 4;
 		try {
 			return Integer.parseInt(requirements[position]);
 		} catch (NumberFormatException ex) {
@@ -335,7 +317,6 @@ public class SongTextGenerator {
 	 * returns returns the position of a word not yet used
 	 */
 	private int getCorrectPosition(List<? extends Term> termList) {
-		Random ran = new Random();
 		int termListSize = termList.size();
 
 		for (int i = 0; i < termListSize; i++) {

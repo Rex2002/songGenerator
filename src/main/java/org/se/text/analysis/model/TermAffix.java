@@ -1,18 +1,15 @@
-package org.se.text.analysis.dict;
+package org.se.text.analysis.model;
 
 import java.util.*;
-
-import org.se.text.analysis.model.AffixType;
-import org.se.text.analysis.model.Numerus;
 
 /**
  * @author Val Richter
  */
 public class TermAffix {
-	public String radix;
-	public Numerus numerus;
-	public AffixType type;
-	public Boolean toUmlaut;
+	protected String radix;
+	protected Numerus numerus;
+	protected AffixType type;
+	protected Boolean toUmlaut;
 
 	public TermAffix() {
 	}

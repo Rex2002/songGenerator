@@ -2,22 +2,22 @@ package org.se.music.logic.playables;
 
 import org.se.music.model.Chord;
 import org.se.music.model.MusicalKey;
-
 import java.util.List;
 
 /**
  * Base-class for pitched instruments providing methods
  * to work with chords, inflate chords to fit length, etc.
+ *
  * @author Benjamin Frahm
  * @reviewer Malte Richert
  */
-abstract public class PitchedPlayable extends MidiPlayable {
+public abstract class PitchedPlayable extends MidiPlayable {
 
 	protected final Chord[] chords;
 	protected Chord[] inflatedChords;
 	protected final MusicalKey key;
 
-	public PitchedPlayable(int trackNo, int bar, MusicalKey key, List<String> chord) {
+	protected PitchedPlayable(int trackNo, int bar, MusicalKey key, List<String> chord) {
 		super(trackNo, bar);
 		this.key = key;
 		this.chords = parseChordString(chord);

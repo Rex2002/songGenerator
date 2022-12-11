@@ -1,10 +1,10 @@
 package org.se.music.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Models a chord as a combination of rootNote and chordModifier.
+ *
  * @author Benjamin Frahm
  * @reviewer Malte Richert
  */
@@ -13,7 +13,7 @@ public class Chord {
 	private final int rootNote;
 	private final String chordModifierString;
 	private final ArrayList<Integer> chordModifier;
-	public static HashMap<String, ArrayList<Integer>> chordModifiers;
+	protected static Map<String, ArrayList<Integer>> chordModifiers;
 
 	public Chord(int rootNote, String chordMod) {
 
@@ -37,7 +37,7 @@ public class Chord {
 		return rootNote;
 	}
 
-	public ArrayList<Integer> getChord() {
+	public List<Integer> getChord() {
 		ArrayList<Integer> k = new ArrayList<>();
 		for (int modifier : chordModifier) {
 			k.add(rootNote + modifier);
@@ -46,7 +46,7 @@ public class Chord {
 
 	}
 
-	public static void setChordModifiers(HashMap<String, ArrayList<Integer>> chordModifiers) {
+	public static void setChordModifiers(Map<String, ArrayList<Integer>> chordModifiers) {
 		Chord.chordModifiers = chordModifiers;
 	}
 

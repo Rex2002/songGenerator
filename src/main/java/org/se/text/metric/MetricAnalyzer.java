@@ -32,31 +32,20 @@ public class MetricAnalyzer {
 		 * 160 bpm average short
 		 * 180 bpm short short
 		 */
-		if (averageH <= 1 && averageS <= 9) {
-			return 180;
+		if (averageH <= 1 && averageS <= 9) return 180;
+		else if (averageH <= 3) {
+			if (averageS <= 9) return 160;
+			else if (averageS <= 18) return 140;
+			else return 120;
+		} else {
+			if (averageS <= 9) return 180;
+			else if (averageS <= 18) return 80;
+			else return 60;
 		}
-		if ((averageH == 2 || averageH == 3) && averageS <= 9) {
-			return 160;
-		}
-		if ((averageH == 2 || averageH == 3) && averageS <= 18) {
-			return 140;
-		}
-		if (averageH == 2 || averageH == 3) {
-			return 120;
-		}
-		if (averageH >= 4 && averageS <= 9) {
-			return 100;
-		}
-		if (averageH >= 4 && averageS <= 18) {
-			return 80;
-		}
-		if (averageH >= 4) {
-			return 60;
-		}
-		return 120;
 	}
+
 	/*
-	 * Berechnet durchschnittliche Silbenlänge
+	 * Calculates average syllable length
 	 */
 	public static int averageHyphen(TermCollection terms) {
 		totalHyphens = 0;
@@ -66,7 +55,7 @@ public class MetricAnalyzer {
 	}
 
 	/*
-	 * Berechnet durchschnittliche Satzlänge
+	 * Calculates average sentence length
 	 */
 	public static int averageSentence(String content) {
 		int[] termAndSentences = WordCounter.countWords(content);

@@ -3,7 +3,6 @@ package org.se.music.logic;
 import org.se.music.logic.playables.MidiPlayable;
 import org.se.music.model.MidiText;
 import org.se.music.model.MusicalKey;
-
 import javax.sound.midi.*;
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +13,7 @@ import java.util.Map;
  * masterclass of actually handling Midi.
  * Provides methods to set speed, title, track numbers, etc. of a midi sequence
  * and add MidiPlayables or MidiText to the midi sequence.
+ *
  * @author Benjamin Frahm
  * @reviewer Malte Richert
  */
@@ -42,20 +42,20 @@ public class MidiSequence {
 	 * The mps value is stored in three bytes as part of a meta-midi-message.
 	 * the weird line byte[] bt = ... does not have to be understood.
 	 *
-	 * @param BPM
+	 * @param bpm
 	 *            specifies the BPM for the final file
 	 */
-	public void setBPM(int BPM) {
+	public void setBPM(int bpm) {
 		// speed calculation:
 		// midi tempo message consists of three bytes, which contain the number of microseconds per quarter (mpq)
-		// 60_000_000 / mpq = BPM
-		// mpq = 60_000_000 / BPM
+		// 60_000_000 / mpq = bpm
+		// mpq = 60_000_000 / bpm
 		// masking is done to split the value to its three 2-byte pairs
 		try {
-			BPM = 60_000_000 / BPM;
+			bpm = 60_000_000 / bpm;
 			MetaMessage mt = new MetaMessage();
-			// byte[] bt = {0x07, (byte) 0xA1, 0x20}; 120 BPM
-			byte[] bt = { (byte) ((BPM & 0xFF0000) >> 16), (byte) ((BPM & 0x00FF00) >> 8), (byte) ((BPM & 0x0000FF)) };
+			// byte[] bt = {0x07, (byte) 0xA1, 0x20}; 120 bpm
+			byte[] bt = { (byte) ((bpm & 0xFF0000) >> 16), (byte) ((bpm & 0x00FF00) >> 8), (byte) (bpm & 0x0000FF) };
 			mt.setMessage(0x51, bt, 3);
 			MidiEvent me = new MidiEvent(mt, 0);
 			for (Track track : t) {
@@ -172,9 +172,9 @@ public class MidiSequence {
 		Map<Integer, List<Integer[]>> content = m.getContent();
 		int bar = m.getBar();
 		int track = m.getTrackNo();
-		for (int instrNo : content.keySet()) {
-			for (Integer[] o : content.get(instrNo)) {
-				addNote(instrNo, bar * 96L + o[0].longValue(), o[1].longValue(), track);
+		for (Map.Entry<Integer, List<Integer[]>> instr : content.entrySet()) {
+			for (Integer[] o : instr.getValue()) {
+				addNote(instr.getKey(), bar * 96L + o[0].longValue(), o[1].longValue(), track);
 			}
 		}
 	}

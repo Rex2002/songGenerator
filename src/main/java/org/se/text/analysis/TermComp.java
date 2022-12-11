@@ -4,6 +4,7 @@ import java.util.*;
 
 /**
  * @author Val Richter
+ * @reviewer Jakob Kautz
  */
 class TermComp<T extends Term> implements Comparator<T> {
 	private final Map<String, TermVariations<T>> terms;

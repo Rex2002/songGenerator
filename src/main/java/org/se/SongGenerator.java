@@ -28,7 +28,6 @@ public class SongGenerator extends PartialProgressTask<MidiSequence> {
 		try {
 			updateProgress(0);
 			updateMessage("Setting everything up...");
-			updateProgress(0, 100);
 			Dict dict = Dict.getDefault();
 			Config.loadConfig(settings.getGenre());
 			procedureDone();
@@ -45,7 +44,8 @@ public class SongGenerator extends PartialProgressTask<MidiSequence> {
 			TermCollection terms = analyzer.get();
 			int metrics = MetricAnalyzer.metricsGet(content, terms);
 			procedureDone();
-			if(settings.tempo == -1){settings.tempo = metrics;}
+			if (settings.getTempo() == -1) settings.setTempo(metrics);
+
 			if (isCancelled()) return null;
 
 			updateMessage("Writing your Song...");
@@ -53,7 +53,7 @@ public class SongGenerator extends PartialProgressTask<MidiSequence> {
 			procedureDone();
 
 			updateMessage("Done");
-			updateProgress(100, 100);
+			updateProgress(1);
 			return seq;
 		} catch (IOException e) {
 			updateMessage("Something went wrong reading a file...");

@@ -3,6 +3,7 @@ package org.se.music.model;
 /**
  * This class can be passed to an instance of the MidiSequence-class,
  * the text will then be displayed in the midi at the specified locations
+ * 
  * @author Benjamin Frahm
  * @reviewer Malte Richert
  */
@@ -22,10 +23,14 @@ public class MidiText {
 
 	/**
 	 *
-	 * @param trackNo - the track number under which the text is supposed to appear
-	 * @param bar - the bar in which the text is meant to appear
-	 * @param chord - the chord whose name is meant to appear
-	 * @param relativeOffset - the offset inside the bar in quarter notes from the beginning
+	 * @param trackNo
+	 *            - the track number under which the text is supposed to appear
+	 * @param bar
+	 *            - the bar in which the text is meant to appear
+	 * @param chord
+	 *            - the chord whose name is meant to appear
+	 * @param relativeOffset
+	 *            - the offset inside the bar in quarter notes from the beginning
 	 */
 	public MidiText(int trackNo, int bar, Chord chord, int relativeOffset) {
 		this.bar = bar;

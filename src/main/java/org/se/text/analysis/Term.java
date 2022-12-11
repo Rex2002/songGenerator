@@ -7,6 +7,7 @@ import org.se.text.metric.Hyphenizer;
 
 /**
  * @author Val Richter
+ * @reviewer Jakob Kautz
  */
 public class Term {
 	protected int frequency;
@@ -28,7 +29,7 @@ public class Term {
 		this.radix = radix;
 		this.word = word;
 		this.numerus = numerus;
-		this.syllableAmount = Hyphenizer.CountSyllables(word);
+		this.syllableAmount = Hyphenizer.countSyllables(word);
 	}
 
 	public void increaseFrequency() {
@@ -40,8 +41,8 @@ public class Term {
 	}
 
 	public String toStringHelper() {
-		return " frequency='" + getFrequency() + "'" + ", radix='" + getRadix() + "'" + ", word='" + getWord() + "'"
-				+ ", syllableAmount='" + getSyllableAmount() + "'" + ", numerus='" + getNumerus() + "'";
+		return " frequency='" + getFrequency() + "'" + ", radix='" + getRadix() + "'" + ", word='" + getWord() + "'" + ", syllableAmount='"
+				+ getSyllableAmount() + "'" + ", numerus='" + getNumerus() + "'";
 	}
 
 	@Override
@@ -72,8 +73,7 @@ public class Term {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this)
-			return true;
+		if (o == this) return true;
 		if (!(o instanceof Term term)) {
 			return false;
 		}

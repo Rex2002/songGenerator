@@ -2,15 +2,12 @@ package org.se.music.logic.playables;
 
 import org.se.music.model.Chord;
 import org.se.music.model.MusicalKey;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Midi-playable model of a bass line.
  * Bass lines are generated as eights, repeating the current chord's root or playing transition notes before changing chords.
+ * 
  * @author Malte Richert
  * @reviewer Benjamin Frahm
  */
@@ -57,7 +54,7 @@ public class BassContainer extends PitchedPlayable {
 				descaler.put(scale[index] % 12, index);
 			}
 			// get distance to next chord's root
-			int distance = (descaler.get(nextChord.getRootNote()%12) - descaler.get(rootNote)) % 7;
+			int distance = (descaler.get(nextChord.getRootNote() % 12) - descaler.get(rootNote)) % 7;
 			if (distance > 3) {
 				distance -= 7;
 			} else if (distance < -3) {
@@ -76,7 +73,7 @@ public class BassContainer extends PitchedPlayable {
 			}
 			if (distance == -2 || (distance == -3 && chordEights - indexInChord == 2)) {
 				int scalar = (descaler.get(rootNote) - 1) % 7;
-				addNoteToContent(count, scale[scalar>=0 ? scalar : scalar+7]);
+				addNoteToContent(count, scale[scalar >= 0 ? scalar : scalar + 7]);
 				continue;
 			}
 			if (distance == 3) {
@@ -85,18 +82,20 @@ public class BassContainer extends PitchedPlayable {
 			}
 			if (distance == -3) {
 				int scalar = (descaler.get(rootNote) - 2) % 7;
-				addNoteToContent(count, scale[scalar>=0 ? scalar : scalar+7]);
+				addNoteToContent(count, scale[scalar >= 0 ? scalar : scalar + 7]);
 			}
 		}
 	}
 
 	/**
-	 * @param count current eighth between 0 and 7 (inclusive)
-	 * @param pitch pitch of note to be added, octave is ignored
+	 * @param count
+	 *            current eighth between 0 and 7 (inclusive)
+	 * @param pitch
+	 *            pitch of note to be added, octave is ignored
 	 */
 	private void addNoteToContent(int count, int pitch) {
 		pitch = pitch % 12 + 36;
-		Integer[] posAndLen = new Integer[]{count *12, 12};
+		Integer[] posAndLen = new Integer[] { count * 12, 12 };
 		if (super.getContent().containsKey(pitch)) {
 			super.getContent().get(pitch).add(posAndLen);
 		} else {

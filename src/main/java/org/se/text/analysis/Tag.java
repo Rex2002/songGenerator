@@ -6,11 +6,12 @@ import org.se.text.analysis.model.TagType;
 
 /**
  * @author Val Richter
+ * @reviewer Jakob Kautz
  */
 public class Tag {
-	public TagType type;
-	public String word;
-	public Optional<WordStemmer> data;
+	private TagType type;
+	private String word;
+	private Optional<WordStemmer> data;
 
 	public Tag(String word, TagType type) {
 		this.word = word;

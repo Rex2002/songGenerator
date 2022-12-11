@@ -2,13 +2,13 @@ package org.se.music.logic.playables;
 
 import org.se.music.Config;
 import org.se.music.model.MusicalKey;
-
 import java.util.*;
 
 /**
  * Midi-playable model of a Chord. If isBassTrack is not set,
  * the given chords will be distributed equally among the 4 quarters of the bar
  * If isBassTrack is set, the root-note of the given chords will be distributed equally among the 4 quarters
+ *
  * @author Benjamin Frahm
  * @reviewer Malte Richert
  */
@@ -55,9 +55,9 @@ public class ChordContainer extends PitchedPlayable {
 			for (Integer note : singleChord) {
 				Integer[] posAndLen;
 				if (isBassTrack && count == 3) {
-					posAndLen = new Integer[]{count * 24 + 12, 12};
+					posAndLen = new Integer[] { count * 24 + 12, 12 };
 				} else {
-					posAndLen = new Integer[]{count*24, 24};
+					posAndLen = new Integer[] { count * 24, 24 };
 				}
 				if (content.containsKey(note)) {
 					content.get(note).add(posAndLen);

@@ -6,6 +6,7 @@ import java.util.Map;
 /**
  * Class modelling a parsed drumbeat.
  * Parsing is done by the BeatData-class
+ * 
  * @author Malte Richert
  * @reviewer Benjamin Frahm
  */
@@ -15,9 +16,7 @@ public class Beat {
 	final Map<String, List<Integer[]>> bigFill;
 	final Map<String, List<Integer[]>> smallFill;
 
-	public Beat(Map<String, List<Integer[]>> mainPattern,
-				Map<String, List<Integer[]>> bigFill,
-				Map<String, List<Integer[]>> smallFill) {
+	public Beat(Map<String, List<Integer[]>> mainPattern, Map<String, List<Integer[]>> bigFill, Map<String, List<Integer[]>> smallFill) {
 
 		this.mainPattern = mainPattern;
 		this.bigFill = bigFill;

@@ -8,8 +8,8 @@ import org.se.text.analysis.model.*;
 
 /**
  * @author Val Richter
+ * @reviewer Jakob Kautz
  */
-// TODO: Extending Task means that the Analyzer can only be used with the UI
 public class Analyzer extends PartialProgressTask<TermCollection> {
 	private final String text;
 	private final Dict dict;
@@ -27,7 +27,7 @@ public class Analyzer extends PartialProgressTask<TermCollection> {
 		procedureDone();
 
 		updateMessage("Tagging Words in Text...");
-		List<List<Tag>> tags = tag(sentences);
+		List<Tag> tags = tag(sentences);
 		procedureDone();
 
 		updateMessage("Building Terms from Text...");
@@ -37,11 +37,6 @@ public class Analyzer extends PartialProgressTask<TermCollection> {
 	}
 
 	private List<Sentence> preprocess() {
-		// I'm sure there must be a better way to do this
-		// Maybe there's something you could do with streams to make this more readable
-		// but Java certainly doesn't make it easy to do any of this shit ffs
-		// I hate Java so fucking much, I'd rather be using C at this point
-		// aaaaaaaaaaaarrrrrgggggghhhhhhhhh
 		String wordSplitter = "-_";
 		boolean splitLastWord = false;
 		String sentenceEnds = ".!?";
@@ -111,13 +106,16 @@ public class Analyzer extends PartialProgressTask<TermCollection> {
 		return count;
 	}
 
-	private List<List<Tag>> tag(List<Sentence> sentences) {
-		List<List<Tag>> tags = new ArrayList<>();
+	private boolean isCapitalized(String word) {
+		return capitalizedCount(word) == 1 && Character.isUpperCase(word.charAt(0));
+	}
+
+	private List<Tag> tag(List<Sentence> sentences) {
+		List<Tag> tags = new ArrayList<>();
 
 		int sentencesAmount = sentences.size();
 		for (int i = 0; i < sentencesAmount; i++) {
 			Sentence sentence = sentences.get(i);
-			List<Tag> currentTags = new ArrayList<>();
 
 			double wordsAmount = sentence.size();
 			for (int j = 0; j < wordsAmount; j++) {
@@ -126,58 +124,50 @@ public class Analyzer extends PartialProgressTask<TermCollection> {
 
 				// If it's not the first word in the sentence and is capitalized, it's a noun
 				// this check can only be trusted on, if not every word is capitalized
-				if (j != 0 && capitalizedCount(word) == 1) {
-					tag = new Tag(word, TagType.Noun);
+				if (j != 0 && isCapitalized(word)) {
+					tag = new Tag(word, TagType.NOUN);
 				} // Otherwise, let the dictionary tag the word
 				else {
 					tag = dict.tagWord(word);
 				}
 
-				currentTags.add(tag);
-
+				tags.add(tag);
 				updateProgress((i + (j / wordsAmount)) / sentencesAmount);
 			}
-			tags.add(currentTags);
 		}
 		return tags;
 	}
 
-	private TermCollection buildTerms(List<List<Tag>> tags) {
+	private TermCollection buildTerms(List<Tag> tags) {
 		Map<String, TermVariations<NounTerm>> nounVariations = new HashMap<>();
 		Map<String, TermVariations<VerbTerm>> verbVariations = new HashMap<>();
 
-		int sentencesAmount = tags.size();
-		for (int i = 0; i < sentencesAmount; i++) {
-			List<Tag> sentenceTags = tags.get(i);
-			double tagsAmount = sentenceTags.size();
+		int tagsAmount = tags.size();
+		for (int i = 0; i < tagsAmount; i++) {
+			Tag t = tags.get(i);
+			if (!t.is(TagType.OTHER)) {
 
-			for (int j = 0; j < tagsAmount; j++) {
-				Tag t = sentenceTags.get(j);
-				if (!t.is(TagType.Other)) {
-
-					if (t.is(TagType.Noun)) {
-						Optional<NounTerm> term = dict.buildNounTerm(t);
-						if (term.isPresent()) {
-							if (nounVariations.containsKey(term.get().getRadix())) {
-								nounVariations.get(term.get().getRadix()).add(term.get());
-							} else {
-								nounVariations.put(term.get().getRadix(), new TermVariations<>(term.get()));
-							}
+				if (t.is(TagType.NOUN)) {
+					Optional<NounTerm> term = dict.buildNounTerm(t);
+					if (term.isPresent()) {
+						if (nounVariations.containsKey(term.get().getRadix())) {
+							nounVariations.get(term.get().getRadix()).add(term.get());
+						} else {
+							nounVariations.put(term.get().getRadix(), new TermVariations<>(term.get()));
 						}
-					} else {
-						Optional<VerbTerm> term = dict.buildVerbTerm(t);
-						if (term.isPresent()) {
-							if (verbVariations.containsKey(term.get().getRadix())) {
-								verbVariations.get(term.get().getRadix()).add(term.get());
-							} else {
-								verbVariations.put(term.get().getRadix(), new TermVariations<>(term.get()));
-							}
+					}
+				} else {
+					Optional<VerbTerm> term = dict.buildVerbTerm(t);
+					if (term.isPresent()) {
+						if (verbVariations.containsKey(term.get().getRadix())) {
+							verbVariations.get(term.get().getRadix()).add(term.get());
+						} else {
+							verbVariations.put(term.get().getRadix(), new TermVariations<>(term.get()));
 						}
 					}
 				}
-
-				updateProgress((i + (j / tagsAmount)) / sentencesAmount);
 			}
+			updateProgress((i / tagsAmount));
 		}
 		return new TermCollection(dict, nounVariations, verbVariations);
 	}

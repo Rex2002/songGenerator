@@ -2,14 +2,12 @@ package org.se.text.analysis.model;
 
 import java.util.Objects;
 
-import org.se.text.analysis.dict.TermAffix;
-
 /**
  * @author Val Richter
  */
 public class Declination extends TermAffix {
-	public GrammaticalCase grammaticalCase;
-	public Gender gender;
+	private GrammaticalCase grammaticalCase;
+	private Gender gender;
 
 	public Declination(String radix, GrammaticalCase grammaticalCase, Gender gender, Numerus numerus, AffixType type, boolean toUmlaut) {
 		super(radix, numerus, type, toUmlaut);

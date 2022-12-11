@@ -7,10 +7,10 @@ import org.se.music.model.Genre;
  * @author Val Richter
  */
 public class Settings {
-	public String filepath;
-	public Genre genre;
-	public Integer tempo;
-	public boolean nsfw = false;
+	private String filepath;
+	private Genre genre;
+	private Integer tempo;
+	private boolean nsfw = false;
 
 	public Settings() {
 	}
@@ -62,26 +62,6 @@ public class Settings {
 
 	public void setNsfw(boolean nsfw) {
 		this.nsfw = nsfw;
-	}
-
-	public Settings filepath(String filepath) {
-		setFilepath(filepath);
-		return this;
-	}
-
-	public Settings genre(Genre genre) {
-		setGenre(genre);
-		return this;
-	}
-
-	public Settings tempo(Integer tempo) {
-		setTempo(tempo);
-		return this;
-	}
-
-	public Settings nsfw(boolean nsfw) {
-		setNsfw(nsfw);
-		return this;
 	}
 
 	@Override

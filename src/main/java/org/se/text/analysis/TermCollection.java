@@ -1,23 +1,19 @@
 package org.se.text.analysis;
 
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.function.*;
 import java.util.stream.Collectors;
-
 import org.se.text.analysis.dict.Dict;
-import org.se.text.analysis.model.Gender;
-import org.se.text.analysis.model.GrammaticalCase;
-import org.se.text.analysis.model.Numerus;
+import org.se.text.analysis.model.*;
 
-//TODO check whether unused methods can be removed
 /**
  * @author Val Richter
+ * @reviewer Jakob Kautz
  */
 public class TermCollection {
-	public Map<String, TermVariations<NounTerm>> nouns;
-	public Map<String, TermVariations<VerbTerm>> verbs;
+	// TODO: Change nouns/verbs to lists
+	private Map<String, TermVariations<NounTerm>> nouns;
+	private Map<String, TermVariations<VerbTerm>> verbs;
 	private final Dict dict;
 	static final Random rand = new Random();
 
@@ -39,8 +35,7 @@ public class TermCollection {
 		this.dict = dict;
 	}
 
-	public TermCollection(Dict dict, Map<String, TermVariations<NounTerm>> nouns,
-			Map<String, TermVariations<VerbTerm>> verbs) {
+	public TermCollection(Dict dict, Map<String, TermVariations<NounTerm>> nouns, Map<String, TermVariations<VerbTerm>> verbs) {
 		this.nouns = nouns;
 		this.verbs = verbs;
 		this.dict = dict;
@@ -130,16 +125,14 @@ public class TermCollection {
 
 	// Query Functions
 
-	public List<NounTerm> query(GrammaticalCase grammaticalCase, Gender gender, Numerus numerus, Integer syllableMin,
-			Integer syllableMax) {
+	public List<NounTerm> query(GrammaticalCase grammaticalCase, Gender gender, Numerus numerus, Integer syllableMin, Integer syllableMax) {
 		List<NounTerm> res = new ArrayList<>();
 
 		nouns.values().forEach(x -> {
 			Optional<NounTerm> t = TermVariations.createTerm(x, gender, grammaticalCase, numerus, dict);
 			if (t.isPresent()) {
 				int syllableAmount = t.get().getSyllableAmount();
-				if (syllableMin <= syllableAmount && syllableAmount <= syllableMax)
-					res.add(t.get());
+				if (syllableMin <= syllableAmount && syllableAmount <= syllableMax) res.add(t.get());
 			}
 		});
 
@@ -209,15 +202,12 @@ public class TermCollection {
 
 	// Static Query Functions
 
-	public static <T extends Term> List<T> queryBySyllableRange(Map<String, TermVariations<T>> terms,
-			Integer minSyllableAmount,
+	public static <T extends Term> List<T> queryBySyllableRange(Map<String, TermVariations<T>> terms, Integer minSyllableAmount,
 			Integer maxSyllableAmount) {
-		return TermCollection.queryBy(terms,
-				x -> minSyllableAmount <= x.syllableAmount && x.syllableAmount <= maxSyllableAmount);
+		return TermCollection.queryBy(terms, x -> minSyllableAmount <= x.syllableAmount && x.syllableAmount <= maxSyllableAmount);
 	}
 
-	public static <T extends Term> List<T> queryBySyllableAmount(Map<String, TermVariations<T>> terms,
-			Integer syllableAmount) {
+	public static <T extends Term> List<T> queryBySyllableAmount(Map<String, TermVariations<T>> terms, Integer syllableAmount) {
 		return TermCollection.queryBy(terms, x -> Objects.equals(x.syllableAmount, syllableAmount));
 	}
 
@@ -241,15 +231,14 @@ public class TermCollection {
 	}
 
 	public static <T extends Term> List<T> mostCommonTerms(Map<String, TermVariations<T>> terms) {
-		List<T> res = terms.values().stream().map(x -> x.variations.values().stream()).flatMap(Function.identity())
-				.collect(Collectors.toList());
+		List<T> res = terms.values().stream().map(x -> x.getVariations().values().stream()).flatMap(Function.identity()).collect(Collectors.toList());
 		res.sort(new TermComp<>(terms));
 		return res.subList(0, 10);
 	}
 
 	public static <T extends Term> T getRandomTerm(List<TermVariations<T>> terms) {
 		int i = rand.nextInt(terms.size());
-		Collection<T> ts = terms.get(i).variations.values();
+		Collection<T> ts = terms.get(i).getVariations().values();
 		int j = rand.nextInt(ts.size());
 		return ts.stream().toList().get(j);
 	}
@@ -274,8 +263,7 @@ public class TermCollection {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == this)
-			return true;
+		if (o == this) return true;
 		if (!(o instanceof TermCollection termCollection)) {
 			return false;
 		}

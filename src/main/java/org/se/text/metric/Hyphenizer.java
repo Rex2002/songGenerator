@@ -4,7 +4,7 @@ package org.se.text.metric;
  * @author Jakob Kautz
  */
 public class Hyphenizer {
-	public static int CountSyllables(String terms) {
+	public static int countSyllables(String terms) {
 		int count = 0;
 		terms = terms.toLowerCase();
 

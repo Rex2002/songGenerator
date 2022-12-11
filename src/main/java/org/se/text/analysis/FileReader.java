@@ -35,16 +35,16 @@ public class FileReader {
 	}
 
 	public static String readPdf(String path) throws IOException {
-		StringBuffer buff = new StringBuffer();
+		StringBuilder builder = new StringBuilder();
 		try {
 			PdfReader reader = new PdfReader(path);
 			int numberOfPages = reader.getNumberOfPages();
 			String s;
 			for (int i = 1; i <= numberOfPages; i++) {
 				s = PdfTextExtractor.getTextFromPage(reader, i);
-				buff.append(s).append("\n");
+				builder.append(s).append("\n");
 			}
-			return buff.toString();
+			return builder.toString();
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw e;
