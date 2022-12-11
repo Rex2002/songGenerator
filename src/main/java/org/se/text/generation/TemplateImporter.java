@@ -19,7 +19,7 @@ public class TemplateImporter {
 	/**
 	 * returns all templates based on the genre
 	 */
-	public List<TextTemplate> getTemplate(Genre genre) {
+	public List<TextTemplate> getTemplates(Genre genre) {
 		YAMLParser yamlParser;
 			// load Templates from yml
 			try {

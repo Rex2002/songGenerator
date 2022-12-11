@@ -37,7 +37,7 @@ public class SongTextGenerator {
 		List<String[]> songText = new ArrayList<>();
 		this.termCollection = termCollection;
 		List<String> order = structure.getOrder();
-		unusedTextTemplateList = templateImporter.getTemplate(structure.getGenre());
+		unusedTextTemplateList = templateImporter.getTemplates(structure.getGenre());
 
 		for (String s : order) {
 			songText.add(generateStrophe(structure.getGenre(), structure.getParts().get(s).getLength()));
@@ -68,7 +68,7 @@ public class SongTextGenerator {
 	private TextTemplate getUnusedStrophe(int partLength, Genre genre) {
 		Random ran = new Random();
 		if (unusedTextTemplateList.size() == 0)
-			unusedTextTemplateList = templateImporter.getTemplate(genre);
+			unusedTextTemplateList = templateImporter.getTemplates(genre);
 		TextTemplate textTemplate = unusedTextTemplateList.get(ran.nextInt(unusedTextTemplateList.size()));
 		for (int i = 0; i < 1000; i++) {
 			textTemplate = getRandomNotUsedValue(genre);// get random template
@@ -87,7 +87,7 @@ public class SongTextGenerator {
 		Random ran = new Random();
 
 		if (unusedTextTemplateList.size() == 0) {
-			unusedTextTemplateList = templateImporter.getTemplate(genre);
+			unusedTextTemplateList = templateImporter.getTemplates(genre);
 		}
 		TextTemplate pTemplate = unusedTextTemplateList.get(ran.nextInt(unusedTextTemplateList.size()));
 		unusedTextTemplateList.remove(pTemplate);
