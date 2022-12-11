@@ -46,6 +46,9 @@ public class Controller implements Initializable {
 	private Button setting_pane_back;
 
 	@FXML
+	private CheckBox setting_pane_metrics;
+
+	@FXML
 	private Label setting_pane_genre;
 
 	@FXML
@@ -127,6 +130,7 @@ public class Controller implements Initializable {
 
 		setting_pane_bpm.setVisible(showLoad);
 		setting_pane_slider.setVisible(showLoad);
+		setting_pane_metrics.setVisible(showLoad);
 		setting_pane_back.setVisible(showLoad);
 		setting_pane_genre.setVisible(showLoad);
 		setting_pane_cb.setVisible(showLoad);
@@ -144,6 +148,18 @@ public class Controller implements Initializable {
 		int i = fileName.lastIndexOf('.');
 		if (i >= 0) fileType = fileName.substring(i + 1);
 		return fileType.equals("txt") || fileType.equals("pdf");
+	}
+
+	@FXML
+	void toggleUseMetrics(){
+		if(setting_pane_metrics.isSelected()){
+			setting_pane_slider.setDisable(true);
+			setting_pane_bpm.setText("BPM");
+		}
+		else{
+			setting_pane_slider.setDisable(false);
+			setting_pane_bpm.setText("BPM: " + bpm);
+		}
 	}
 
 	/**
@@ -173,7 +189,6 @@ public class Controller implements Initializable {
 	 */
 	public void setGenre() {
 		genre = Genre.valueOf(setting_pane_cb.getValue());
-		setting_pane_genre.setText("Genre: " + genre);
 	}
 
 	/**
@@ -190,7 +205,8 @@ public class Controller implements Initializable {
 		generate_pane_progressLbl.setVisible(true);
 
 		if (file != null) {
-			Settings settings = new Settings(file.getAbsolutePath(), genre, bpm);
+
+			Settings settings = new Settings(file.getAbsolutePath(), genre, setting_pane_metrics.isSelected()? -1 : bpm);
 			songGenerator = new SongGenerator(settings);
 			generate_pane_progress.progressProperty().bind(songGenerator.progressProperty());
 			songGenerator.messageProperty().addListener((observable, oldVal, newVal) -> generate_pane_progressLbl.setText(newVal));
@@ -245,6 +261,7 @@ public class Controller implements Initializable {
 		setting_pane_back.setVisible(false);
 		setting_pane_genre.setVisible(false);
 		setting_pane_cb.setVisible(false);
+		setting_pane_metrics.setVisible(false);
 
 		// can not generate or save song unless a file is loaded
 		song_generate.setDisable(true);
@@ -276,14 +293,13 @@ public class Controller implements Initializable {
 
 		// handle slider changes
 		setting_pane_slider.valueProperty().addListener((ObservableValue<? extends Number> num, Number oldVal, Number newVal) -> {
-			setting_pane_bpm.setText("bpm: " + newVal.intValue());
+			setting_pane_bpm.setText("BPM: " + newVal.intValue());
 			bpm = newVal.intValue();
 		});
 
 		// set choice options (genres) for choiceBox
 		setting_pane_cb.getItems().addAll(genres);
 		setting_pane_cb.setValue(genre.toString());
-		setting_pane_genre.setText("Genre: " + genre.toString());
 
 		setting_pane_cb.setOnAction(actionEvent -> setGenre());
 	}

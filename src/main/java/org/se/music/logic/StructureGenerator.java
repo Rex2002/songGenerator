@@ -19,16 +19,12 @@ public class StructureGenerator {
 	private static Structure structure;
 	private static final Map<Integer, Integer> trackMapping = new HashMap<>();
 
-	public static MidiSequence generateStructure(Settings settings, Map<String, Integer> metrics, TermCollection terms) {
+	public static MidiSequence generateStructure(Settings settings, TermCollection terms) {
 		Random ran = new Random();
 		structure = Config.getStructures().get(0);//ran.nextInt(Config.getStructures().size()));
 		structure.setGenre(settings.getGenre());
 		structure.setKey(new MusicalKey());
-		if (settings.getTempo() != null) {
-			structure.setTempo(settings.getTempo());
-		} else {
-			structure.setTempo(metrics.get("tempo"));
-		}
+		structure.setTempo(settings.getTempo());
 		System.out.println(structure);
 
 		SongTextGenerator textGenerator = new SongTextGenerator();
