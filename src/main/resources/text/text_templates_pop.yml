@@ -233,7 +233,7 @@ strophe:
 #20
 length: 16
 moods:
-    -angry
+    - 'angry'
 strophe:
     - '$n,f,s,g,201,2,6$  es ist nicht deine Schuld | dass du bist wie du bist'
     - 'Aber es ist deine Schuld | wenn du so bleibst'
@@ -247,7 +247,7 @@ strophe:
 #21
 length: 16
 moods:
-    -horny
+    - 'horny'
 strophe:
     - '$n,f,s,n,211,2,6$ sei heut ganz meins | sei heut meins dann bleib ich deins'
     - 'Heute Nacht | heute Nacht'
@@ -261,7 +261,7 @@ strophe:
 #22
 length: 16
 moods:
-    -happy
+    - 'happy'
 strophe:
     - 'Ein $n,n,s,a,221,2,6$ | der deinen Namen trägt'
     - '$n,n,s,a,222,2,6$ immer dabei| so wahrlich toll und frei'
