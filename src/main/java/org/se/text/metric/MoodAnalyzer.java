@@ -1,4 +1,4 @@
-package org.se.text.generation;
+package org.se.text.metric;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,7 +20,7 @@ import org.se.text.analysis.model.Sentence;
 public class MoodAnalyzer {
 	private static final String NEWLINE_REGEX = "\\r?\\n";
 
-	public MoodType getMood(List<Sentence> sentences) throws IOException {
+	public static MoodType getMood(List<Sentence> sentences) throws IOException {
 		/*
 		 * Global variables
 		 * Counter to figure out how many words of each mood r in the text
@@ -72,7 +72,7 @@ public class MoodAnalyzer {
 	 * Like the fucker u have for Lists but not for Stringarrays cuz Java sucks:/
 	 */
 
-	public boolean containsWord(String[] arr, String s) {
+	public static boolean containsWord(String[] arr, String s) {
 		for (String t : arr) {
 			if (t.equalsIgnoreCase(s)) return true;
 		}

@@ -5,6 +5,7 @@ import org.se.music.Config;
 import org.se.music.logic.playables.ChordContainer;
 import org.se.music.logic.playables.MidiPlayable;
 import org.se.music.model.*;
+import org.se.text.MoodType;
 import org.se.text.analysis.TermCollection;
 import org.se.text.generation.SongTextGenerator;
 import java.util.*;
@@ -19,7 +20,7 @@ public class StructureGenerator {
 	private static Structure structure;
 	private static final Map<Integer, Integer> trackMapping = new HashMap<>();
 
-	public static MidiSequence generateStructure(Settings settings, TermCollection terms) {
+	public static MidiSequence generateStructure(Settings settings, TermCollection terms, MoodType mood) {
 		Random ran = new Random();
 		structure = Config.getStructures().get(ran.nextInt(Config.getStructures().size()));
 		structure.setGenre(settings.getGenre());
@@ -28,7 +29,7 @@ public class StructureGenerator {
 		System.out.println(structure);
 
 		SongTextGenerator textGenerator = new SongTextGenerator();
-		Map<String, List<String[][]>> songText = textGenerator.generateSongText(structure, terms);
+		Map<String, List<String[][]>> songText = textGenerator.generateSongText(structure, terms, mood);
 
 		MidiSequence seq = initMidiSequence(structure);
 

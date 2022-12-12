@@ -1,15 +1,19 @@
 package org.se.text.metric;
 
-import org.se.text.analysis.NounTerm;
-import org.se.text.analysis.TermCollection;
-import org.se.text.analysis.TermVariations;
-import org.se.text.analysis.VerbTerm;
+import java.io.IOException;
+import java.util.List;
+import org.se.text.analysis.*;
+import org.se.text.analysis.model.Sentence;
 
 /**
  * @author Jakob Kautz
  */
 public class MetricAnalyzer {
-	public static int metricsGet(String content, TermCollection terms) {
+	public static Metrics getMetrics(String content, List<Sentence> sentences, TermCollection terms) throws IOException {
+		return new Metrics(getTempo(content, terms), MoodAnalyzer.getMood(sentences));
+	}
+
+	public static int getTempo(String content, TermCollection terms) {
 		// Find average length for sentences and hyphen in order to determine text speed
 		int averageH = averageHyphen(terms);
 		int averageS = averageSentence(content);

@@ -11,21 +11,17 @@ import org.se.text.analysis.model.*;
  * @reviewer Jakob Kautz
  */
 public class Analyzer extends PartialProgressTask<TermCollection> {
-	private final String text;
+	private final List<Sentence> sentences;
 	private final Dict dict;
 
-	public Analyzer(String text, Dict dict) {
-		super(3);
-		this.text = text;
+	public Analyzer(List<Sentence> sentences, Dict dict) {
+		super(2);
+		this.sentences = sentences;
 		this.dict = dict;
 	}
 
 	@Override
 	protected TermCollection call() throws Exception {
-		updateMessage("Preprocessing Text...");
-		List<Sentence> sentences = preprocess();
-		procedureDone();
-
 		updateMessage("Tagging Words in Text...");
 		List<Tag> tags = tag(sentences);
 		procedureDone();
@@ -34,66 +30,6 @@ public class Analyzer extends PartialProgressTask<TermCollection> {
 		TermCollection res = buildTerms(tags);
 		procedureDone();
 		return res;
-	}
-
-	private List<Sentence> preprocess() {
-		String wordSplitter = "-_";
-		boolean splitLastWord = false;
-		String sentenceEnds = ".!?";
-		String otherPunctuation = ",;:-";
-		List<Sentence> sentences = new ArrayList<>();
-		Sentence currentSentence = new Sentence();
-		char[] chars = text.toCharArray();
-		StringBuilder currentWord = new StringBuilder();
-
-		for (int i = 0; i < chars.length; i++) {
-			char c = chars[i];
-			// ignore whitespace
-			if (Character.isWhitespace(c)) {
-				if (!currentWord.isEmpty() && !splitLastWord) {
-					currentSentence.add(currentWord.toString());
-					currentWord.delete(0, currentWord.length());
-				}
-			}
-			// End sentence at specific punctuation (e.g. at .!?)
-			else if (sentenceEnds.indexOf(c) != -1) {
-				if (!currentWord.isEmpty()) {
-					currentSentence.add(currentWord.toString());
-					currentWord.delete(0, currentWord.length());
-				}
-				splitLastWord = false;
-				Sentence copiedSentence = new Sentence(currentSentence);
-				sentences.add(copiedSentence);
-				currentSentence.clear();
-			}
-			// Current word gets split
-			else if (!currentWord.isEmpty() && !splitLastWord && wordSplitter.indexOf(c) != -1) {
-				splitLastWord = true;
-			}
-			// punctuation that doesn't end a sentence
-			else if (otherPunctuation.indexOf(c) != -1) {
-				if (!currentWord.isEmpty()) {
-					currentSentence.add(currentWord.toString());
-					currentWord.delete(0, currentWord.length());
-				}
-				splitLastWord = false;
-			}
-			// otherwise we just have another character for the word
-			else {
-				currentWord.append(c);
-				splitLastWord = false;
-			}
-
-			updateProgress((double) i / chars.length);
-		}
-
-		if (!currentWord.isEmpty()) {
-			currentSentence.add(currentWord.toString());
-		}
-		if (!currentSentence.isEmpty()) {
-			sentences.add(currentSentence);
-		}
-		return sentences;
 	}
 
 	private int capitalizedCount(String str) {

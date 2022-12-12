@@ -2,6 +2,7 @@ package org.se.text.generation;
 
 import org.se.music.model.Genre;
 import org.se.music.model.Structure;
+import org.se.text.MoodType;
 import org.se.text.analysis.*;
 import org.se.text.analysis.model.*;
 import org.se.text.metric.Hyphenizer;
@@ -24,7 +25,7 @@ public class SongTextGenerator {
 	 * returns a Hashmap which contains the Songtext split into parts with the
 	 * number of syllable in each part
 	 */
-	public Map<String, List<String[][]>> generateSongText(Structure structure, TermCollection termCollection) {
+	public Map<String, List<String[][]>> generateSongText(Structure structure, TermCollection termCollection, MoodType mood) {
 
 		List<String[]> songText = new ArrayList<>();
 		this.termCollection = termCollection;
