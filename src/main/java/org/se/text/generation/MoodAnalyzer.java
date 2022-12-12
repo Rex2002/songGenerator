@@ -38,9 +38,9 @@ public class MoodAnalyzer {
 /*
  * Traversing through String[] (input sentences from original text input after preopocessor)
  */
-        for(String[] s : s){
+        for(int i = 0; i<s.length;i++){
             /*counting happy words, if negation its not happy anymore */
-            for(String happy : s){
+            for(int j = 0; j<s[i];j++){
                 if(containsWord(s, happy)){
                     if(containsWord(s, negation)){
                        sadCounter++;
@@ -49,11 +49,7 @@ public class MoodAnalyzer {
                         happyCounter++;
                     }
                  }
-            }
-
-            /*counting sad words, if negation its not sad anymore */
-            for(String sad : String[] s){
-                if(containsWord(s, sad)){
+                 if(containsWord(s, sad)){
                     if(containsWord(s, negation)){
                        happyCounter++;
                     }
@@ -61,18 +57,10 @@ public class MoodAnalyzer {
                         sadCounter++;
                     }
                  }
-            }
-
-            /*counting angry words */
-            for(String angry : s){
-                if(containsWord(s, angry)){
+                 if(containsWord(s, angry)){
                     hulkCounter++;
                  }
-            }
-
-            /*counting horny words */
-            for(String horny : s){
-                if(containsWord(s, horny)){
+                 if(containsWord(s, horny)){
                     thirstyyyCounter++;
                  }
             }
@@ -102,16 +90,16 @@ public class MoodAnalyzer {
 
     public String andUrGoddamnFuckingResultIs(int ha, int s, int a, int ho){
         if(ha>s && ha>a && ha>ho){
-            String mood = 'happy';
+            String mood = "happy";
         }
         else if(s>ha && s>a && s>ho){
-            String mood = 'sad';
+            String mood = "sad";
         }
         else if(a>s && a>ha && a>ho){
-            String mood = 'angry';
+            String mood = "angry";
         }
         else if(ho>s && ho>a && ho>ha){
-            String mood = 'horny';
+            String mood = "horny";
         }
         return mood;
     }
