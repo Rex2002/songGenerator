@@ -81,12 +81,10 @@ public class Controller implements Initializable {
 		file = fileChooser.showOpenDialog(new Stage());
 		if (file != null) {
 			load_pane_path.setText(file.getPath());
-			load_pane_load.setDisable(true);
 			song_generate.setDisable(false);
 		}
-		else{
-			load_pane_load.setDisable(false);
-		}
+		load_pane_load.setDisable(false);
+
 
 		// generating song now enabled
 
