@@ -13,4 +13,4 @@ if exist dist\src @RD /S /Q dist\src
 robocopy src\main\resources dist\src\main\resources /E /njh /njs /ndl /nc /ns >NUL
 
 @REM Write executable into the distributable
-echo java\bin\java.exe --add-modules "javafx.base,javafx.controls,javafx.fxml,javafx.graphics" -jar SongGenerator.jar > dist/exec.bat
+echo java\bin\java.exe --add-modules "javafx.base,javafx.controls,javafx.fxml,javafx.graphics" -jar SongGenerator.jar > dist/SongGenerator.bat
