@@ -252,11 +252,11 @@ strophe:
     - '$n,f,s,n,211,2,6$ sei heut ganz meins | sei heut meins dann bleib ich deins'
     - 'Heute Nacht | heute Nacht'
     - 'heute Nacht | heute Nacht ich liebe dich'
-    - 'Das Geräusch der $n,n,s,g,212,2,6$ kollidiert'
-    - 'Das Geräusch der $n,n,s,g,212,2,6$ kollidiert'
-    - 'Das Geräusch der $n,n,s,g,212,2,6$ kollidiert'
-    - 'heute Nacht reiten wir | oh yeah'
-    - 'heut reiten wir | oh yeah'
+    - 'Das Geräusch | der $n,n,s,g,212,2,6$ kollidiert'
+    - 'Nur unsere Liebe regiert |'
+    - 'Das Geräusch | der $n,n,s,g,212,2,6$ kollidiert'
+    - 'heute Nacht bleib ich bei dir | wir bleiben hier'
+    - 'heut Nacht gibt es nur dich | lass mich nicht im stich'
 
 #22
 length: 16
