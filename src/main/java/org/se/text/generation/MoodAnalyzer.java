@@ -1,5 +1,9 @@
 package org.se.text.generation;
 
+import org.se.text.analysis.FileReader;
+
+import java.io.IOException;
+
 /**
  * @author Jakob Kautz
  */
@@ -28,11 +32,17 @@ public class MoodAnalyzer {
          int hulkCounter = 0;
          int thirstyyyCounter = 0;
          int sadCounter = 0;
-         String negation = FileReader.main(new File("./src/main/resources/text/WordNegations.txt"));
-         String happy = FileReader.main(new File("./src/main/resources/text/HappyMood.txt"));
-         String sad = FileReader.main(new File("./src/main/resources/text/SadMood.txt"));
-         String angry = FileReader.main(new File("./src/main/resources/text/HulkMood.txt"));
-         String horny = FileReader.main(new File("./src/main/resources/text/ThirstyyyMood.txt"));
+        String negation = null;
+        try {
+            negation = FileReader.main("./src/main/resources/text/WordNegations.txt");
+            String happy = FileReader.main("./src/main/resources/text/HappyMood.txt");
+            String sad = FileReader.main("./src/main/resources/text/SadMood.txt");
+            String angry = FileReader.main("./src/main/resources/text/HulkMood.txt");
+            String horny = FileReader.main("./src/main/resources/text/ThirstyyyMood.txt");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 
 
 /*

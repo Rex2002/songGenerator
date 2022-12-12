@@ -16,7 +16,7 @@ Thereafter some set-up work is done, like determining the number of tracks neede
 After the structure and the texts have been selected the actual music generation starts.
 This is done by iterating over the parts (like intro, chorus, verse, etc.) of the structure and generating the tones that are to be played by the instruments specified in the part.
 The different instruments are treated as follows:
-- Chords: play the chord progression of the part in the right hand, play rootnote if the chord in the left hand.
+- Chords: play the chord progression of the part in the right hand, play rootnote of the chord in the left hand.
 - Bass: play a bassline that contains transitions between the chords of the part's progression
 - Drum: play a drumbeat selected from the drumBeat-templates
 - Melody: Every part has a 4 or 12 bar theme, which is then varied and applied in slightly different versions
