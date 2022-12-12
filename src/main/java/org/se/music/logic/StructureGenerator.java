@@ -69,7 +69,6 @@ public class StructureGenerator {
 				for (int bar = 0; bar < p.getLength(); bar++) {
 					t = new MidiText(trackMapping.get(Config.getInstrumentMapping().get("vocals")), bar + barOffset,
 							songText.get(partName).get(0)[bar][0]);
-					System.out.println("adding text: " + partName + ", " + Arrays.deepToString(songText.get(partName).get(0)) + ", " + bar);
 					seq.addMidiText(t);
 				}
 				if (!partName.contains("horus")) {
