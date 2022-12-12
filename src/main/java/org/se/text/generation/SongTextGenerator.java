@@ -70,7 +70,7 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * ähhh....I don't know what to do either
+	 * returns a random not used value
 	 */
 	private TextTemplate getRandomNotUsedValue(Genre genre, MoodType mood) {
 		if (unusedTextTemplateList.isEmpty()) {
@@ -198,7 +198,7 @@ public class SongTextGenerator {
 
 		for (int i = 0; i < stropheText.length; i++) {
 			textSyllConcatenation[i][0] = stropheText[i];
-			textSyllConcatenation[i][1] = Integer.toString(countSyllables(stropheText[i])); // TODO order
+			textSyllConcatenation[i][1] = Integer.toString(countSyllables(stropheText[i]));
 		}
 
 		return textSyllConcatenation;
@@ -255,7 +255,7 @@ public class SongTextGenerator {
 			numerus = Numerus.SINGULAR; // in case of a false Input singular is selected
 		}
 
-		// detect Grammatical case//TODO
+
 		grammaticalCase = switch (requirements[3]) {
 			case "a" -> GrammaticalCase.ACCUSATIVE;
 			case "d" -> GrammaticalCase.DATIVE;
