@@ -1,13 +1,16 @@
-@REM @RD /S /Q target\java-runtime
-@REM @RD /S /Q target\installer
+@echo off
 
-jlink --no-header-files --no-man-pages --compress=2 --strip-debug --module-path "C:\\Program Files\\Java\\javafx-sdk-19\\lib" --add-modules "javafx.base,javafx.controls,javafx.fxml,javafx.graphics" --bind-services --output dist/java
+if not exist dist mkdir dist
+if exist SongGenerator.jar copy SongGenerator.jar dist\SongGenerator.jar >NUL
+if not exist dist\SongGenerator.jar echo "Missing jar-file. Make sure you have the jar-file either in the current directory or in the dist directory."
 
-@REM jpackage --dest target/installer --name SongGenerator --main-class org.se.Main --runtime-image target/java-runtime --icon icon.ico --main-jar SongGenerator.jar --input target/lib --type msi --resource-dir src/main/resources --win-console
+@REM Build Java Runtime
+if exist dist\java @RD /S /Q dist\java
+jlink --no-header-files --no-man-pages --compress=2 --strip-debug --module-path "C:\\Program Files\\Java\\javafx-sdk-19\\lib" --add-modules "javafx.base,javafx.controls,javafx.fxml,javafx.graphics" --bind-services --output dist\java
 
-@REM jpackage --name SongGenerator --input . --main-jar SongGenerator.jar --jlink-options --bind-services --module-path "C:\\Program Files\\Java\\javafx-sdk-19\\lib" --add-modules "javafx.base,javafx.controls,javafx.fxml,javafx.graphics" --icon icon.ico --type msi --dest target/installer --install-dir SongGenerator --win-console
+@REM Copy resources into the distributable
+if exist dist\src @RD /S /Q dist\src
+robocopy src\main\resources dist\src\main\resources /E /njh /njs /ndl /nc /ns >NUL
 
-@REM target\installer\SongGenerator-1.0.msi
-
-@REM mkdir "\Program Files\SongGenerator\src\main"
-@REM move /Y "\Program Files\SongGenerator\app\src\main\resources" "\Program Files\SongGenerator\src\main\resources"
+@REM Write executable into the distributable
+echo java\bin\java.exe --add-modules "javafx.base,javafx.controls,javafx.fxml,javafx.graphics" -jar SongGenerator.jar > dist/exec.bat
