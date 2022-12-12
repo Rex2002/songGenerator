@@ -18,18 +18,7 @@
 #-----------------------------
 # | sagt neuer Takt anfangen
 
-#1
-length: 12
-moods:
-    - 'happy'
-strophe:
-    - 'Ich bin traurig $v,11,1,10$|machen mich glücklich'
-    - 'Eure $v,12,1,10$|machen mich glücklich'
-    - 'Unsere $n,f,p,n,13,2,10$|machen mich glücklich'
-    - 'Keiner $n,f,p,n,14,2,10$|machen mich glücklich'
-    - 'Unsere $n,f,p,n,13,2,10$|machen mich glücklich'
-    - 'Keiner $n,f,p,n,14,2,10$|machen mich glücklich'
----
+
 #2
 length: 24
 moods:
@@ -85,15 +74,4 @@ strophe:
     - 'Doch jetzt weiß ichs besser | habe neues gelernt'
     - 'Wenn alle lügen und betrügen | dann hat nur mein eigenes Wort gewähr'
 
----
-#5
-length: 12
-moods:
-    - 'happy'
-strophe:
-    - 'uns geht gut | wir haben keine Sorgen'
-    - 'uns gehts gut | wir denken nur an $n,m,s,a,51,2,4$'
-    - 'uns gehts gut | wir haben nur $n,m,s,a,52,2,4$ im Sinn'
-    - 'wir wollen $v,53,2,4$ |von dem $n,m,s,d,54,2,4$'
-    - 'und dann gehn wir neim | $n,m,s,d,55,2,4$ mit'
-    - 'wo solln wir anders hin |'
+
