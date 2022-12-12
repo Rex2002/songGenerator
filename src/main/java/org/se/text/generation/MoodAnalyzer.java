@@ -40,7 +40,7 @@ public class MoodAnalyzer {
  */
         for(int i = 0; i<s.length;i++){
             /*counting happy words, if negation its not happy anymore */
-            for(int j = 0; j<s[i];j++){
+            for(int j = 0; j<s[i];j++){ //Iteration sucks but its 1:30am and my brain stopped working
                 if(containsWord(s, happy)){
                     if(containsWord(s, negation)){
                        sadCounter++;
@@ -89,17 +89,18 @@ public class MoodAnalyzer {
  */
 
     public String andUrGoddamnFuckingResultIs(int ha, int s, int a, int ho){
+        String mood = ""; //das muss so viel schöner gehen rip
         if(ha>s && ha>a && ha>ho){
-            String mood = "happy";
+            mood = "happy";
         }
         else if(s>ha && s>a && s>ho){
-            String mood = "sad";
+            mood = "sad";
         }
         else if(a>s && a>ha && a>ho){
-            String mood = "angry";
+            mood = "angry";
         }
         else if(ho>s && ho>a && ho>ha){
-            String mood = "horny";
+            mood = "horny";
         }
         return mood;
     }
