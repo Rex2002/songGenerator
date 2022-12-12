@@ -38,9 +38,9 @@ public class MoodAnalyzer {
 /*
  * Traversing through String[] (input sentences from original text input after preopocessor)
  */
-        for(int i = 0; i<s.length;i++){
+        for(String thisOne : s){
             /*counting happy words, if negation its not happy anymore */
-            for(int j = 0; j<s[i];j++){ //Iteration sucks but its 1:30am and my brain stopped working
+            for(int j = 0; j<thisOne.length();j++){ //Iteration sucks but its 1:30am and my brain stopped working
                 if(containsWord(s, happy)){
                     if(containsWord(s, negation)){
                        sadCounter++;
