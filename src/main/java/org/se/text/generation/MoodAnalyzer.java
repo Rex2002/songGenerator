@@ -1,5 +1,11 @@
 package org.se.text.generation;
 
+import java.io.IOException;
+import java.util.List;
+import org.se.text.MoodType;
+import org.se.text.analysis.FileReader;
+import org.se.text.analysis.model.Sentence;
+
 /**
  * @author Jakob Kautz
  */
@@ -12,98 +18,64 @@ package org.se.text.generation;
  */
 
 public class MoodAnalyzer {
-/*
- * I need input as String array of sentences
- * preprocess String from input data
- * ask Val for help cuz im lost
- */
+	private static final String NEWLINE_REGEX = "\\r?\\n";
 
-    public String getMood(String[] sentences){
-/*
- * Global variables
- * Counter to figure out how many words of each mood r in the text
- * Strings that contain mood Words
- */
-         int happyCounter = 0;
-         int hulkCounter = 0;
-         int thirstyyyCounter = 0;
-         int sadCounter = 0;
-         String negation = FileReader.main(new File("./src/main/resources/text/WordNegations.txt"));
-         String happy = FileReader.main(new File("./src/main/resources/text/HappyMood.txt"));
-         String sad = FileReader.main(new File("./src/main/resources/text/SadMood.txt"));
-         String angry = FileReader.main(new File("./src/main/resources/text/HulkMood.txt"));
-         String horny = FileReader.main(new File("./src/main/resources/text/ThirstyyyMood.txt"));
+	public MoodType getMood(List<Sentence> sentences) throws IOException {
+		/*
+		 * Global variables
+		 * Counter to figure out how many words of each mood r in the text
+		 * Strings that contain mood Words
+		 */
+		int happyCounter = 0;
+		int hulkCounter = 0;
+		int thirstyyyCounter = 0;
+		int sadCounter = 0;
+		String[] negation = FileReader.main("./src/main/resources/text/WordNegations.txt").split(NEWLINE_REGEX);
+		String[] happy = FileReader.main("./src/main/resources/text/HappyMood.txt").split(NEWLINE_REGEX);
+		String[] sad = FileReader.main("./src/main/resources/text/SadMood.txt").split(NEWLINE_REGEX);
+		String[] angry = FileReader.main("./src/main/resources/text/HulkMood.txt").split(NEWLINE_REGEX);
+		String[] horny = FileReader.main("./src/main/resources/text/ThirstyyyMood.txt").split(NEWLINE_REGEX);
 
+		/*
+		 * Traversing through Sentences (input sentences from original text input after preopocessor)
+		 */
+		for (Sentence sentence : sentences) {
+			boolean isInverted = false;
+			for (String word : sentence) {
+				if (containsWord(negation, word)) {
+					isInverted = true;
+				} else if (containsWord(happy, word)) {
+					if (isInverted) sadCounter++;
+					else happyCounter++;
+					isInverted = false;
+				} else if (containsWord(sad, word)) {
+					if (isInverted) happyCounter++;
+					else sadCounter++;
+					isInverted = false;
+				} else if (containsWord(angry, word)) {
+					if (isInverted) isInverted = false;
+					else hulkCounter++;
+				} else if (containsWord(horny, word)) {
+					if (isInverted) isInverted = false;
+					else thirstyyyCounter++;
+				}
+			}
+		}
 
-/*
- * Traversing through String[] (input sentences from original text input after preopocessor)
- */
-        for(String thisOne : s){
-            /*counting happy words, if negation its not happy anymore */
-            for(int j = 0; j<thisOne.length();j++){ //Iteration sucks but its 1:30am and my brain stopped working
-                if(containsWord(s, happy)){
-                    if(containsWord(s, negation)){
-                       sadCounter++;
-                    }
-                    else{
-                        happyCounter++;
-                    }
-                 }
-                 if(containsWord(s, sad)){
-                    if(containsWord(s, negation)){
-                       happyCounter++;
-                    }
-                    else{
-                        sadCounter++;
-                    }
-                 }
-                 if(containsWord(s, angry)){
-                    hulkCounter++;
-                 }
-                 if(containsWord(s, horny)){
-                    thirstyyyCounter++;
-                 }
-            }
-        }
+		if (happyCounter >= sadCounter && happyCounter >= hulkCounter && happyCounter >= thirstyyyCounter) return MoodType.HAPPY;
+		else if (sadCounter >= happyCounter && sadCounter >= hulkCounter && sadCounter >= thirstyyyCounter) return MoodType.SAD;
+		else if (hulkCounter >= sadCounter && hulkCounter >= happyCounter && hulkCounter >= thirstyyyCounter) return MoodType.ANGRY;
+		else return MoodType.HORNY;
+	}
+	/*
+	 * Function to traverse through StringArray and check if it contains word from anoher String
+	 * Like the fucker u have for Lists but not for Stringarrays cuz Java sucks:/
+	 */
 
-        String mood = andUrGoddamnFuckingResultIs(happyCounter, sadCounter, hulkCounter, thirstyyyCounter);
-        return mood;
-    }
-/*
- * Function to traverse through StringArray and check if it contains word from anoher String
- * Like the fucker u have for Lists but not for Stringarrays cuz Java sucks:/
- */
-
-    public boolean containsWord(String[] arr, String s) {
-        for (String t : arr) {
-            if (t.equalsIgnoreCase(s)) return true;
-        }
-        return false;
-    }
-
-/*
- * Function for final mood
- * Compares counts
- * sets max count as mood
- * This is probably way easier i just dont know how and cant check cuz my wifi is being a fuckin snowflake again
- */
-
-    public String andUrGoddamnFuckingResultIs(int ha, int s, int a, int ho){
-        String mood = ""; //das muss so viel schöner gehen rip
-        if(ha>s && ha>a && ha>ho){
-            mood = "happy";
-        }
-        else if(s>ha && s>a && s>ho){
-            mood = "sad";
-        }
-        else if(a>s && a>ha && a>ho){
-            mood = "angry";
-        }
-        else if(ho>s && ho>a && ho>ha){
-            mood = "horny";
-        }
-        return mood;
-    }
-
+	public boolean containsWord(String[] arr, String s) {
+		for (String t : arr) {
+			if (t.equalsIgnoreCase(s)) return true;
+		}
+		return false;
+	}
 }
-
