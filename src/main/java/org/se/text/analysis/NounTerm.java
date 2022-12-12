@@ -8,10 +8,18 @@ import org.se.text.analysis.model.*;
  * @author Val Richter
  * @reviewer Jakob Kautz
  */
-public class NounTerm extends Term {
+public class NounTerm extends Term<NounTerm> {
 	private final GrammaticalCase grammaticalCase;
 	private final Gender gender;
 	private final boolean changeableGender;
+
+	public NounTerm(String radix, String word, Numerus numerus, GrammaticalCase grammaticalCase, Gender gender, boolean changeableGender,
+			TermVariations<NounTerm> variations) {
+		super(capitalize(radix), word, numerus, variations);
+		this.grammaticalCase = grammaticalCase;
+		this.gender = gender;
+		this.changeableGender = changeableGender;
+	}
 
 	public NounTerm(String radix, String word, Numerus numerus, GrammaticalCase grammaticalCase, Gender gender, boolean changeableGender) {
 		super(capitalize(radix), word, numerus);

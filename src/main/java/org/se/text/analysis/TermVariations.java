@@ -48,7 +48,7 @@ public class TermVariations<T extends Term> {
 	}
 
 	public List<T> queryBy(Predicate<? super T> f) {
-		return this.variations.values().stream().filter(f).collect(Collectors.toList());
+		return this.variations.values().stream().filter(f).toList();
 	}
 
 	public void add(TermVariations<T> variations) {

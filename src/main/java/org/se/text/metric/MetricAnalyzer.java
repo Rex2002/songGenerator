@@ -1,13 +1,14 @@
 package org.se.text.metric;
 
+import org.se.text.analysis.NounTerm;
 import org.se.text.analysis.TermCollection;
+import org.se.text.analysis.TermVariations;
+import org.se.text.analysis.VerbTerm;
 
 /**
  * @author Jakob Kautz
  */
 public class MetricAnalyzer {
-	static int totalHyphens = 0;
-
 	public static int metricsGet(String content, TermCollection terms) {
 		// Find average length for sentences and hyphen in order to determine text speed
 		int averageH = averageHyphen(terms);
@@ -48,10 +49,19 @@ public class MetricAnalyzer {
 	 * Calculates average syllable length
 	 */
 	public static int averageHyphen(TermCollection terms) {
-		totalHyphens = 0;
-		terms.flatIter(term -> totalHyphens += term.getSyllableAmount());
+		int totalHyphens = 0;
+		int termsAmount = 0;
+		for (TermVariations<NounTerm> variations : terms.getNouns()) {
+			totalHyphens += variations.getRandomTerm().getSyllableAmount() * variations.getFrequency();
+			termsAmount += variations.getFrequency();
+		}
+		for (TermVariations<VerbTerm> variations : terms.getVerbs()) {
+			totalHyphens += variations.getRandomTerm().getSyllableAmount() * variations.getFrequency();
+			termsAmount += variations.getFrequency();
+		}
 
-		return totalHyphens / terms.size();
+		if (termsAmount == 0) return 0;
+		return totalHyphens / termsAmount;
 	}
 
 	/*

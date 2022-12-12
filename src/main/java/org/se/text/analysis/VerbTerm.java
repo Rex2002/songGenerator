@@ -8,8 +8,13 @@ import org.se.text.analysis.model.Numerus;
  * @author Val Richter
  * @reviewer Jakob Kautz
  */
-public class VerbTerm extends Term {
+public class VerbTerm extends Term<VerbTerm> {
 	String infinitive;
+
+	public VerbTerm(String radix, String word, Numerus numerus, String infinitive, TermVariations<VerbTerm> variations) {
+		super(radix, word, numerus, variations);
+		this.infinitive = infinitive;
+	}
 
 	public VerbTerm(String radix, String word, Numerus numerus, String infinitive) {
 		super(radix, word, numerus);

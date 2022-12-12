@@ -6,10 +6,11 @@ import java.util.*;
  * @author Val Richter
  */
 public class TermAffix {
-	protected String radix;
-	protected Numerus numerus;
-	protected AffixType type;
-	protected Boolean toUmlaut;
+	// Attributes must be public for the CSV-Parser to access them
+	public String radix;
+	public Numerus numerus;
+	public AffixType type;
+	public Boolean toUmlaut;
 
 	public TermAffix() {
 	}
