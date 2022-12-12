@@ -166,6 +166,7 @@ public class SongTextGenerator {
 
 		for (int i = 0; i < partText.length; i++) {
 			int partEnd = allVerses.indexOf("|");
+			if (partEnd < 0) partEnd = allVerses.length();
 			partText[i] = allVerses.substring(0, partEnd);
 			allVerses = new StringBuilder(allVerses.substring(partEnd + 1));
 		}
