@@ -19,6 +19,7 @@ public class MoodAnalyzer {
  */
 
     public String getMood(String[] sentences){
+        String[] s = sentences;
 /*
  * Global variables
  * Counter to figure out how many words of each mood r in the text
