@@ -1,17 +1,11 @@
 package org.se.text.analysis.dict;
 
-import org.se.text.analysis.NounTerm;
-import org.se.text.analysis.Tag;
-import org.se.text.analysis.TermVariations;
-import org.se.text.analysis.VerbTerm;
+import org.se.text.analysis.*;
 import org.se.text.analysis.model.*;
-
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 /**

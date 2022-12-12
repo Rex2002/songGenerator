@@ -68,6 +68,7 @@ public class SongGenerator extends PartialProgressTask<MidiSequence> {
 			updateProgress(1);
 			return seq;
 		} catch (Exception e) {
+			e.printStackTrace();
 			updateMessage("Something went wrong...");
 			updateValue(null);
 			return null;
