@@ -1,9 +1,7 @@
 package org.se.music;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLParser;
 import java.io.File;
@@ -46,7 +44,7 @@ public class Config {
 
 		// load beat templates into BeatContainer
 		try {
-			YAMLParser yamlParser = yaml.createParser(new File("./src/main/resources/music/beat_templates_pop.yml"));
+			YAMLParser yamlParser = yaml.createParser(new File("./src/main/resources/music/beat_templates.yml"));
 			List<BeatData> beatDataList = mapper.readValues(yamlParser, BeatData.class).readAll();
 
 			List<Beat> outBeats = new ArrayList<>();
