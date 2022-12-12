@@ -21,6 +21,8 @@
 
 #4
 length: 8
+moods:
+    - 'sad'
 strophe:
     - '$n,m,s,n,41,4,4$ ist ganz mein Thema| hier bekommt ihr mich nicht weg'
     - "Alles was ich brauch im Leb'n|mit $n,m,s,n,42,1,1$ und $n,f,s,n,43,1,1$ hat es ein' Zweck"
@@ -30,6 +32,8 @@ strophe:
 ---
 #5
 length: 16
+moods:
+    - 'sad'
 strophe:
     - "Ich lieb meinen $n,m,s,n,51,1,4$|geh' hier nicht weg"
     - 'Genau wo ich bin|da ist mein Platz'
@@ -43,6 +47,8 @@ strophe:
 ---
 #6
 length: 16
+moods:
+    - 'sad'
 strophe:
     - 'Ich weiß, ich weiß was die $n,f,s,n,61,2,8$ wirklich heißt|und doch steh ich vor Verständnislosigkeit'
     - '$v,n,s,n,62,1,8$, $v,n,s,n,63,2,8$| versteh nicht was ihr seid'
@@ -56,6 +62,8 @@ strophe:
 ---
 #7
 length: 8
+moods:
+    - 'sad'
 strophe:
     - "neunundneunzig $n,m,p,n,71,3,8$|$v,n,s,n,72,1,8$ über'm $n,m,s,n,73,2,8$"
     - "Man hielt ihn für $n,n,s,n,74,2,8$ aus dem $n,m,s,n,75,3,8$| So schickte man ein' $n,m,s,n,76,3,8$"
@@ -65,6 +73,8 @@ strophe:
 ---
 #8
 length: 16
+moods:
+    - 'sad'
 strophe:
     - 'Alle meine $n,m,p,n,81,2,8$ | $v,m,s,n,82,2,8$ auf dem $n,m,s,n,83,2,8$'
     - '$v,m,s,n,82,2,8$ auf dem |$n,m,s,n,83,2,8$'
@@ -78,6 +88,8 @@ strophe:
 ---
 #9
 length: 8
+moods:
+    - 'sad'
 strophe:
     - 'Hallo, mein $n,m,s,n,91,2,8$| ich $v,m,s,n,92,2,8$ Dich.'
     - 'Du bist die $n,f,s,n,93,2,8$| für mich.'
@@ -87,15 +99,19 @@ strophe:
 ---
 #10
 length: 8
+moods:
+    - 'sad'
 strophe:
-    - 'Ich lieb meinen $n,m,s,n,101,2,8$| Lalalala Lalala'
-    - 'Ich lieb meinen $n,m,s,n,101,2,8$| Lalalala Lalala'
-    - 'Ich lieb meinen $n,m,s,n,101,2,8$| Lalalala Lalala'
+    - 'Ich lieb meinen $n,m,s,a,101,2,8$| Lalalala Lalala'
+    - 'Ich lieb meinen $n,m,s,a,101,2,8$| Lalalala Lalala'
+    - 'Ich lieb meinen $n,m,s,a,101,2,8$| Lalalala Lalala'
     - 'Ja ich lieb dich|yeah yeah'
 
 ---
 #11
 length: 8
+moods:
+    - 'sad'
 strophe:
     - 'Ich sitze bei meinem $n,n,s,d,112,1,3$ | und ich starre zu dem $n,m,s,d,113,2,4$'
     - 'Und ich wünsche dir $n,f,p,n,110,2,5$ | an den Hals'
@@ -105,6 +121,8 @@ strophe:
 ---
 #12
 length: 8
+moods:
+    - 'sad'
 strophe:
     - "Und ich sitz' schon | wieder"
     - 'Barfuß am $n,m,s,n,120,2,4$ | '
@@ -114,6 +132,8 @@ strophe:
 ---
 #13
 length: 16
+moods:
+    - 'sad'
 strophe:
     - "Ich glaub', ich mach' heut | $n,m,p,n,135,2,5$"
     - "Ich glaub', ich mach' heut | $n,f,s,n,139,1,3$"
@@ -127,6 +147,8 @@ strophe:
 ---
 #14
 length: 8
+moods:
+    - 'sad'
 strophe:
     - 'Wir lieben $n,m,p,a,148,3,5$! | '
     - 'ay ay ay ay! | '
@@ -135,6 +157,8 @@ strophe:
 ---
 #15
 length: 16
+moods:
+    - 'sad'
 strophe:
     - "Ich wär' so gern | dabei gewesen"
     - "Doch ich hab' | viel zu viel zu tun"
@@ -147,6 +171,8 @@ strophe:
 ---
 #16
 length: 16
+moods:
+    - 'sad'
 strophe:
     - 'Muss nur noch kurz die $n,f,s,a,163,1,2$ retten | '
     - 'Danach komm ich zu dir | '
@@ -160,6 +186,8 @@ strophe:
 ---
 #17
 length: 16
+moods:
+    - 'sad'
 strophe:
     - 'Bist du okay? | '
     - 'Oder sind das | in deinen Augen etwa $n,f,p,n,174,2,3$'
@@ -173,6 +201,8 @@ strophe:
 ---
 #18
 length: 16
+moods:
+    - 'sad'
 strophe:
     - 'Du führst ein Leben ohne $n,f,p,a,185,2,2$ | '
     - 'Vierundzwanzig Stunden, sieben Tage | nichts gefunden'
@@ -186,6 +216,8 @@ strophe:
 ---
 #19
 length: 16
+moods:
+    - 'sad'
 strophe:
     - 'Und wenn ich grad nicht | sicher bin'
     - 'Dann weiß ich ganz genau |'

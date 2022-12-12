@@ -33,7 +33,7 @@ public class SongTextGenerator {
 		unusedTextTemplateList = templateImporter.getTemplates(structure.getGenre());
 
 		for (String s : order) {
-			songText.add(generateStrophe(structure.getGenre(), structure.getParts().get(s).getLength()));
+			songText.add(generateStrophe(structure.getGenre(), structure.getParts().get(s).getLength(), mood));
 		}
 
 		return getPartText(order, songText);
@@ -42,8 +42,8 @@ public class SongTextGenerator {
 	/**
 	 * returns a Text (strophe) split into parts (Bars)
 	 */
-	private String[] generateStrophe(Genre genre, int partLength) {
-		TextTemplate textTemplate = getUnusedStrophe(partLength, genre);// 1000 just for the feeling
+	private String[] generateStrophe(Genre genre, int partLength, MoodType mood) {
+		TextTemplate textTemplate = getUnusedStrophe(partLength, genre, mood);// 1000 just for the feeling
 
 		// go through the strophe and store the verses
 		String[] verse = new String[partLength / 2];
@@ -56,11 +56,11 @@ public class SongTextGenerator {
 	/**
 	 * retuns a strophe-template which was not yet used in the songtext
 	 */
-	private TextTemplate getUnusedStrophe(int partLength, Genre genre) {
+	private TextTemplate getUnusedStrophe(int partLength, Genre genre, MoodType mood) {
 		if (unusedTextTemplateList.isEmpty()) unusedTextTemplateList = templateImporter.getTemplates(genre);
 		TextTemplate textTemplate = unusedTextTemplateList.get(ran.nextInt(unusedTextTemplateList.size()));
 		for (int i = 0; i < 100; i++) {
-			textTemplate = getRandomNotUsedValue(genre);// get random template
+			textTemplate = getRandomNotUsedValue(genre, mood);// get random template
 
 			if (textTemplate.getLength() == partLength) {
 				return textTemplate;
@@ -72,11 +72,20 @@ public class SongTextGenerator {
 	/**
 	 * ähhh....I don't know what to do either
 	 */
-	private TextTemplate getRandomNotUsedValue(Genre genre) {
+	private TextTemplate getRandomNotUsedValue(Genre genre, MoodType mood) {
 		if (unusedTextTemplateList.isEmpty()) {
 			unusedTextTemplateList = templateImporter.getTemplates(genre);
 		}
-		TextTemplate pTemplate = unusedTextTemplateList.get(ran.nextInt(unusedTextTemplateList.size()));
+		List<TextTemplate> filteredUnusedTextTemplates = unusedTextTemplateList.stream().filter(template -> {
+			for (String s : template.getMoods()) {
+				if (s.toUpperCase().startsWith(mood.toString())) return true;
+			}
+			return false;
+		}).toList();
+
+		TextTemplate pTemplate;
+		if (filteredUnusedTextTemplates.isEmpty()) pTemplate = unusedTextTemplateList.get(ran.nextInt(unusedTextTemplateList.size()));
+		else pTemplate = filteredUnusedTextTemplates.get(ran.nextInt(filteredUnusedTextTemplates.size()));
 		unusedTextTemplateList.remove(pTemplate);
 		return pTemplate;
 
@@ -105,12 +114,12 @@ public class SongTextGenerator {
 		// if id was already used
 		if (usedWords.containsKey(id)) return usedWords.get(id);
 
-		List<? extends Term> termList;
+		List<? extends Term<?>> termList;
 
 		if (isNoun(requirements)) {
 			termList = getNounsTermListFromRequirements(requirements);
 		} else {
-			termList = getVerbsTermListFromRequirements(requirements);// for testing purpose only with nouns TODO!!
+			termList = getVerbsTermListFromRequirements(requirements);
 
 		}
 
@@ -315,7 +324,7 @@ public class SongTextGenerator {
 	/**
 	 * returns returns the position of a word not yet used
 	 */
-	private int getCorrectPosition(List<? extends Term> termList) {
+	private int getCorrectPosition(List<? extends Term<?>> termList) {
 		int termListSize = termList.size();
 
 		for (int i = 0; i < termListSize; i++) {

@@ -3,18 +3,14 @@ package org.se.text.analysis;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
 import org.se.text.analysis.dict.Dict;
-import org.se.text.analysis.model.Gender;
-import org.se.text.analysis.model.GrammaticalCase;
-import org.se.text.analysis.model.Numerus;
+import org.se.text.analysis.model.*;
 
 /**
  * @author Val Richter
  * @reviewer Jakob Kautz
  */
-public class TermVariations<T extends Term> {
+public class TermVariations<T extends Term<T>> {
 	private Map<Integer, T> variations;
 	private Integer frequency;
 	private String radix;
@@ -66,10 +62,10 @@ public class TermVariations<T extends Term> {
 		this.frequency++;
 	}
 
-	public Term getRandomTerm() {
+	public Term<T> getRandomTerm() {
 		int i = rand.nextInt(variations.size());
 		Object[] arr = variations.values().toArray();
-		return (Term) arr[i];
+		return (Term<T>) arr[i];
 	}
 
 	// Static Functions specifically for Nouns

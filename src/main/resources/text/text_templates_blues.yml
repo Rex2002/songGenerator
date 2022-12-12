@@ -20,6 +20,8 @@
 
 #1
 length: 12
+moods:
+    - 'sad'
 strophe:
     - 'Ich bin traurig $v,11,1,10$|machen mich glücklich'
     - 'Eure $v,12,1,10$|machen mich glücklich'
@@ -30,6 +32,8 @@ strophe:
 ---
 #2
 length: 24
+moods:
+    - 'sad'
 strophe:
     - 'Traurig $n,m,s,n,21,1,10$ |macht mich traurig!'
     - 'Sie $n,m,s,n,22,1,10$ |macht mich auch traurig'
