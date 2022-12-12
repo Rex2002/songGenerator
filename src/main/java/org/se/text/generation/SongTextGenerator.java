@@ -156,15 +156,12 @@ public class SongTextGenerator {
 	 */
 	private String[] getPartsInString(String[] verse, int partNumber) {
 		StringBuilder allVerses = new StringBuilder();
-		System.out.println("verse:" + Arrays.toString(verse));
-		System.out.println("partNumber: " + partNumber);
 		for (String s : verse) {
 			if (s == null) {
 				break;
 			}
 			allVerses.append(s).append("|");
 		}
-		System.out.println("all verses: " + allVerses);
 		String[] partText = new String[partNumber];
 
 		for (int i = 0; i < partText.length; i++) {
@@ -172,7 +169,6 @@ public class SongTextGenerator {
 			partText[i] = allVerses.substring(0, partEnd);
 			allVerses = new StringBuilder(allVerses.substring(partEnd + 1));
 		}
-		System.out.println("partText: " + Arrays.toString(partText));
 		return partText;
 
 	}
