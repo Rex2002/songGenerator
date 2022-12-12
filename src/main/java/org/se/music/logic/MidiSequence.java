@@ -119,7 +119,6 @@ public class MidiSequence {
 	public void setEnd(int bars) {
 		// length of the track in bars, converted to ticks with 4 quarters per bar and 24 ticks per quarter
 		if (endIsSet) {
-			System.out.println("end is already set");
 			return;
 		}
 		try {

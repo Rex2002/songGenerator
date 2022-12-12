@@ -26,7 +26,6 @@ public class StructureGenerator {
 		structure.setGenre(settings.getGenre());
 		structure.setKey(new MusicalKey());
 		structure.setTempo(settings.getTempo());
-		System.out.println(structure);
 
 		SongTextGenerator textGenerator = new SongTextGenerator();
 		Map<String, List<String[][]>> songText = textGenerator.generateSongText(structure, terms, mood);
@@ -106,7 +105,6 @@ public class StructureGenerator {
 				seq.setInstrument(instr.getKey(), instr.getValue());
 			}
 			seq.setKey(structure.getKey().getBase(), instr.getValue());
-			// seq.addNote(60, 0, 24, instr.getValue());
 		}
 		seq.setBPM(structure.getTempo());
 		return seq;

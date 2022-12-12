@@ -12,7 +12,6 @@ import org.se.text.analysis.model.Sentence;
 import org.se.text.metric.MetricAnalyzer;
 import org.se.text.metric.Metrics;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -28,7 +27,7 @@ public class SongGenerator extends PartialProgressTask<MidiSequence> {
 	}
 
 	@Override
-	protected MidiSequence call() throws Exception {
+	protected MidiSequence call() {
 		try {
 			updateProgress(0);
 			updateMessage("Setting everything up...");

@@ -3,7 +3,6 @@ package org.se.text.analysis.dict;
 import org.se.text.analysis.*;
 import org.se.text.analysis.model.*;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Function;
