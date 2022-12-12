@@ -80,8 +80,8 @@ strophe:
 length: 8
 strophe:
     - 'Hallo, mein $n,m,s,n,91,2,8$| ich $v,m,s,n,92,2,8$ Dich.'
-    - 'Du bist die $n,m,s,n,93,2,8$| für mich.'
-    - 'Die anderen $n,m,s,n,94,2,8$|sind alle alle doof'
+    - 'Du bist die $n,f,s,n,93,2,8$| für mich.'
+    - 'Die anderen $n,f,s,n,94,2,8$|sind alle alle doof'
     - 'deswegen mach ich Dir| den Hof.'
 
 ---
@@ -95,7 +95,7 @@ strophe:
 
 ---
 #11
-length: 16
+length: 8
 strophe:
     - 'Ich sitze bei meinem $n,n,s,d,112,1,3$ | und ich starre zu dem $n,m,s,d,113,2,4$'
     - 'Und ich wünsche dir $n,f,p,n,110,2,5$ | an den Hals'

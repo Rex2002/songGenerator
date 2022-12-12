@@ -42,7 +42,6 @@ public class SongTextGenerator {
 	 * returns a Text (strophe) split into parts (Bars)
 	 */
 	private String[] generateStrophe(Genre genre, int partLength) {
-
 		TextTemplate textTemplate = getUnusedStrophe(partLength, genre);// 1000 just for the feeling
 
 		// go through the strophe and store the verses
@@ -51,7 +50,6 @@ public class SongTextGenerator {
 			verse[i] = getVerse(textTemplate.getStrophe()[i]);
 		}
 		return getPartsInString(verse, partLength);
-
 	}
 
 	/**
@@ -60,7 +58,7 @@ public class SongTextGenerator {
 	private TextTemplate getUnusedStrophe(int partLength, Genre genre) {
 		if (unusedTextTemplateList.isEmpty()) unusedTextTemplateList = templateImporter.getTemplates(genre);
 		TextTemplate textTemplate = unusedTextTemplateList.get(ran.nextInt(unusedTextTemplateList.size()));
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 100; i++) {
 			textTemplate = getRandomNotUsedValue(genre);// get random template
 
 			if (textTemplate.getLength() == partLength) {
@@ -87,7 +85,6 @@ public class SongTextGenerator {
 	 * returns a variable-free-verse based on the A verse from the template
 	 */
 	private String getVerse(String rawString) {
-
 		int beginning = rawString.indexOf('$');
 		int end = rawString.indexOf('$', beginning + 1);
 
@@ -96,7 +93,6 @@ public class SongTextGenerator {
 
 		String requirementsVariableString = rawString.substring(beginning + 1, end);
 		String[] strArr = getStringArrFromRequirementsVariableString(requirementsVariableString);
-
 		return (getVerse(rawString.substring(0, beginning)) + getTerm(strArr) + getVerse(rawString.substring(end + 1)));
 	}
 
@@ -150,13 +146,15 @@ public class SongTextGenerator {
 	 */
 	private String[] getPartsInString(String[] verse, int partNumber) {
 		StringBuilder allVerses = new StringBuilder();
-
-		int index = 0;
-		while (index < verse.length && verse[index] != null) {
-			allVerses.append(verse[index]).append("|");
-			index++;
+		System.out.println("verse:" + Arrays.toString(verse));
+		System.out.println("partNumber: " + partNumber);
+		for (String s : verse) {
+			if (s == null) {
+				break;
+			}
+			allVerses.append(s).append("|");
 		}
-
+		System.out.println("all verses: " + allVerses);
 		String[] partText = new String[partNumber];
 
 		for (int i = 0; i < partText.length; i++) {
@@ -164,7 +162,7 @@ public class SongTextGenerator {
 			partText[i] = allVerses.substring(0, partEnd);
 			allVerses = new StringBuilder(allVerses.substring(partEnd + 1));
 		}
-
+		System.out.println("partText: " + Arrays.toString(partText));
 		return partText;
 
 	}
