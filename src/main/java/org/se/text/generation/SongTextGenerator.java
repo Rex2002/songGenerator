@@ -23,7 +23,7 @@ public class SongTextGenerator {
 
 	/**
 	 * returns a Hashmap which contains the Songtext split into parts with the
-	 * number of syllable in each part
+	 * number of syllables in each part
 	 */
 	public Map<String, List<String[][]>> generateSongText(Structure structure, TermCollection termCollection, MoodType mood) {
 
@@ -40,7 +40,7 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * returns a Text (strophe) split into parts (Bars)
+	 * returns a text (strophe) split into parts (bars)
 	 */
 	private String[] generateStrophe(Genre genre, int partLength, MoodType mood) {
 		TextTemplate textTemplate = getUnusedStrophe(partLength, genre, mood);// 1000 just for the feeling
@@ -54,7 +54,7 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * retuns a strophe-template which was not yet used in the songtext
+	 * returns a strophe-template which was not yet used in the song
 	 */
 	private TextTemplate getUnusedStrophe(int partLength, Genre genre, MoodType mood) {
 		if (unusedTextTemplateList.isEmpty()) unusedTextTemplateList = templateImporter.getTemplates(genre);
@@ -70,7 +70,7 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * returns a random not used value
+	 * returns a random unused textTemplate
 	 */
 	private TextTemplate getRandomNotUsedValue(Genre genre, MoodType mood) {
 		if (unusedTextTemplateList.isEmpty()) {
@@ -98,7 +98,7 @@ public class SongTextGenerator {
 		int beginning = rawString.indexOf('$');
 		int end = rawString.indexOf('$', beginning + 1);
 
-		// if ther's no variable Word in the verse
+		// if there's no variable Word in the verse
 		if (end < 0) return rawString;
 
 		String requirementsVariableString = rawString.substring(beginning + 1, end);
@@ -136,7 +136,7 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * returns String Arr based on RequirementsVariableString
+	 * returns String Array based on requirementsVariableString
 	 */
 	private String[] getStringArrFromRequirementsVariableString(String requirementsVariableString) {
 		String[] strArr = new String[] { "", "", "", "", "", "", "" }; // to have empty (not null) values in String[]
@@ -152,7 +152,7 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * returns all the parts which where in the verse
+	 * returns all the parts which were in the verse
 	 */
 	private String[] getPartsInString(String[] verse, int partNumber) {
 		StringBuilder allVerses = new StringBuilder();
@@ -176,7 +176,7 @@ public class SongTextGenerator {
 
 	/**
 	 * returns a Hashmap which contains the song text split into parts with the
-	 * number of syllable in each part, based on the given song text
+	 * number of syllables in each part, based on the given song text
 	 */
 	private Map<String, List<String[][]>> getPartText(List<String> order, List<String[]> songText) {
 		Map<String, List<String[][]>> partTextMap = new HashMap<>();
@@ -218,7 +218,7 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * print song text in the console
+	 * print song text to console
 	 */
 	private void printSongtext(List<String[]> songText, List<String> order) {
 		for (int j = 0; j < songText.size(); j++) {
@@ -234,7 +234,7 @@ public class SongTextGenerator {
 	 * returns a noun based on the requirements
 	 */
 	private List<NounTerm> getNounsTermListFromRequirements(String[] requirements) {
-		// requirements looks like [n,f,p,n,1,1,10]
+		// requirements look like [n,f,p,n,1,1,10]
 		// [Noun,Gender,Plural,Case,id,syllMin,syllMax]
 		GrammaticalCase grammaticalCase;
 		Gender gender;
@@ -248,7 +248,7 @@ public class SongTextGenerator {
 			default -> Gender.NEUTRAL; // in case of a false Input, neutral is selected
 		};
 
-		// detect if is Plural
+		// detect numerus
 		if ("p".equals(requirements[2])) {
 			numerus = Numerus.PLURAL;
 		} else {
@@ -319,7 +319,7 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * returns returns the position of a word not yet used
+	 * returns the position of a word not used so far
 	 */
 	private int getCorrectPosition(List<? extends Term<?>> termList) {
 		int termListSize = termList.size();
@@ -334,7 +334,7 @@ public class SongTextGenerator {
 	}
 
 	/**
-	 * check whether searched word is a noun
+	 * checks whether searched word is a noun
 	 */
 	private boolean isNoun(String[] requirements) {
 		return (requirements[0].equals("n"));

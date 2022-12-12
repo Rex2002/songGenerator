@@ -24,18 +24,18 @@ length: 24
 moods:
     - 'sad'
 strophe:
-    - 'Traurig $n,m,s,n,21,1,10$ |macht mich traurig!'
-    - 'Sie $n,m,s,n,22,1,10$ |macht mich auch traurig'
+    - '$n,m,s,n,21,1,10$ |macht mich traurig!'
+    - 'Ihr $n,m,s,n,22,1,10$ |macht mich auch traurig'
     - 'Die $n,f,p,n,23,1,10$ |machen mich ebenfalls traurig'
-    - 'Diese $n,f,s,2n,3,1,10$ |macht mich auch traurig'
-    - 'Traurig $n,m,s,n,21,1,10$ |macht mich traurig!'
-    - 'Sie $n,m,s,n,22,1,10$ |macht mich auch traurig'
+    - 'Diese $n,f,s,24,3,1,10$ |macht mich auch traurig'
+    - 'Traurige $n,m,p,n,21,1,10$ |machen mich traurig!'
+    - 'Ihr $n,m,s,n,22,1,10$ |macht mich auch traurig'
     - 'Die $n,f,p,n,23,1,10$ |machen mich ebenfalls traurig'
-    - 'Diese $n,f,s,2n,3,1,10$ |macht mich auch traurig'
-    - 'Traurig $n,m,s,n,21,1,10$ |macht mich traurig!'
-    - 'Sie $n,m,s,n,22,1,10$ |macht mich auch traurig'
+    - 'Diese $n,f,s,24,3,1,10$ |macht mich auch traurig'
+    - 'Traurige $n,m,p,n,21,1,10$ |machen mich traurig!'
+    - 'Ihr $n,m,s,n,22,1,10$ |macht mich auch traurig'
     - 'Die $n,f,p,n,23,1,10$ |machen mich ebenfalls traurig'
-    - 'Diese $n,f,s,2n,3,1,10$ |macht mich auch traurig'
+    - 'Diese $n,f,s,24,3,1,10$ |macht mich auch traurig'
 
 ---
 #3
@@ -43,16 +43,16 @@ length: 24
 moods:
     - 'sad'
 strophe:
-    - 'ich warte| ich warte und weiß nicht worauf'
+    - 'Ich warte ich warte | und weiß nicht worauf'
     - 'warte jede Stunde| warte jede Sekunde'
-    - 'warte darauf, das| ... warte auf was?'
-    - 'Es ist als stände ich am Bahnsteig | warte und warte,'
+    - 'warte darauf, dass | ... warte auf was?'
+    - 'Es ist als stünde ich am Bahnsteig | warte und warte,'
     - 'aber mein Einblick in $n,m,s,n,31,2,4$ | kommt doch wieder nicht'
     - 'Ob ich warte oder $v,32,2,2$, | starte oder $v,33,2,2$'
-    - 'Am Ende steh ich wieder hier und warte | warte und weiß nicht worauf'
+    - "Am Ende steh' ich wieder hier und warte | warte und weiß nicht worauf"
     - 'warte jede Stunde| warte jede Sekunde'
-    - 'warte darauf, das| ... warte auf was?'
-    - 'Es ist als stände ich am Bahnsteig | warte und warte,'
+    - 'warte darauf, dass | ... warte auf was?'
+    - 'Es ist als stünde ich am Bahnsteig | warte und warte,'
     - '$n,m,s,a,34,2,4$ warte ich wirklich auf dich? | Letztendlich lässt du mich doch nur im Stich'
     - 'Und doch bleibe ich hier und warte | Warte immer auf dich'
 ---
@@ -61,17 +61,17 @@ length: 24
 moods:
     - 'angry'
 strophe:
-    - 'Ich habe rausgefunden das $n,m,s,n,41,2,2$ lügen | $n,m,s,n,42,2,4$ trügen und Worte nie genügen'
+    - 'Ich habe rausgefunden dass $n,m,s,n,41,2,2$ lügen | $n,m,s,n,42,2,4$ trügen und Worte nie genügen'
     - 'Habe rausgefunden was ich lernte ist nicht wahr | und war wohl auch niemals da'
-    - 'Die $n,m,s,n,43,2,4$ fand ich nur durchs schauen | konnte $n,m,s,a,44,2,4$ nur durch mich selber aufbauen'
-    - 'Dem $n,m,s,d,45,2,4$ ist das ziemlich egal | Doch der Weg hier hin war eine Qual'
-    - 'Ich dachte einst ich könne $n,m,s,d,46,2,4$ vertrauen | und ließ mir fast meinen weg verbauen'
-    - 'Doch jetzt weiß ichs besser | habe neues gelernt'
-    - 'Habe rausgefunden das $n,m,s,n,41,2,2$ lügen | $n,m,s,n,42,2,4$ trügen und Worte nie genügen'
+    - 'Die $n,m,s,n,43,2,4$ fand ich nur durch Schauen | konnte $n,m,s,a,44,2,4$ nur durch mich selbst aufbauen'
+    - 'Dem $n,m,s,d,45,2,4$ ist das ziemlich egal | Doch der Weg hierher war eine Qual'
+    - 'Ich dachte einst ich könnte $n,m,s,d,46,2,4$ vertrauen | und ließ mir fast meinen Weg verbauen'
+    - "Doch jetzt weiß ich's besser | habe Neues gelernt"
+    - 'Habe rausgefunden dass $n,m,s,n,41,2,2$ lügen | $n,m,s,n,42,2,4$ trügen und Worte nie genügen'
     - 'Habe rausgefunden was ich lernte ist nicht wahr | und war wohl auch niemals da'
     - 'Heute habe ich $n,m,s,a,41,2,4$ verschmissen | das Band zu ihm gerissen'
-    - 'Ich dachte zwar ich könne $n,m,s,d,41,2,4$ vertrauen | doch ließ mir nur den Tag vergrauen'
-    - 'Doch jetzt weiß ichs besser | habe neues gelernt'
-    - 'Wenn alle lügen und betrügen | dann hat nur mein eigenes Wort gewähr'
+    - 'Ich dachte zwar ich könnte $n,m,s,d,41,2,4$ vertrauen | doch ließ mir nur den Tag vergrauen'
+    - "Doch jetzt weiß ich's besser | habe Neues gelernt"
+    - 'Wenn alle lügen und betrügen | dann hat nur mein eigenes Wort Gewähr'
 
 
