@@ -34,6 +34,7 @@ strophe:
 length: 16
 moods:
     - 'sad'
+    - 'happy'
 strophe:
     - "Ich lieb meinen $n,m,s,n,51,1,4$|geh' hier nicht weg"
     - 'Genau wo ich bin|da ist mein Platz'
@@ -48,7 +49,7 @@ strophe:
 #6
 length: 16
 moods:
-    - 'sad'
+    - 'angry'
 strophe:
     - 'Ich weiß, ich weiß was die $n,f,s,n,61,2,8$ wirklich heißt|und doch steh ich vor Verständnislosigkeit'
     - '$v,n,s,n,62,1,8$, $v,n,s,n,63,2,8$| versteh nicht was ihr seid'
@@ -63,18 +64,18 @@ strophe:
 #7
 length: 8
 moods:
-    - 'sad'
+    - 'happy'
 strophe:
     - "neunundneunzig $n,m,p,n,71,3,8$|$v,n,s,n,72,1,8$ über'm $n,m,s,n,73,2,8$"
     - "Man hielt ihn für $n,n,s,n,74,2,8$ aus dem $n,m,s,n,75,3,8$| So schickte man ein' $n,m,s,n,76,3,8$"
     - 'und noch ne $n,m,s,n,77,1,4$ dazu|hoffte auf ein Rendezvous'
-    - 'Doch leider passierte nichts| denn wie das Thema ist dieses Lied ein Witz'
+    - 'Doch leider passierte nichts| denn dafür bräucht man etwas grips'
 
 ---
 #8
 length: 16
 moods:
-    - 'sad'
+    - 'happy'
 strophe:
     - 'Alle meine $n,m,p,n,81,2,8$ | $v,m,s,n,82,2,8$ auf dem $n,m,s,n,83,2,8$'
     - '$v,m,s,n,82,2,8$ auf dem |$n,m,s,n,83,2,8$'
@@ -89,7 +90,7 @@ strophe:
 #9
 length: 8
 moods:
-    - 'sad'
+    - 'horny'
 strophe:
     - 'Hallo, mein $n,m,s,n,91,2,8$| ich $v,m,s,n,92,2,8$ Dich.'
     - 'Du bist die $n,f,s,n,93,2,8$| für mich.'
@@ -100,7 +101,8 @@ strophe:
 #10
 length: 8
 moods:
-    - 'sad'
+    - 'horny'
+    - 'happy'
 strophe:
     - 'Ich lieb meinen $n,m,s,a,101,2,8$| Lalalala Lalala'
     - 'Ich lieb meinen $n,m,s,a,101,2,8$| Lalalala Lalala'
@@ -111,7 +113,7 @@ strophe:
 #11
 length: 8
 moods:
-    - 'sad'
+    - 'angry'
 strophe:
     - 'Ich sitze bei meinem $n,n,s,d,112,1,3$ | und ich starre zu dem $n,m,s,d,113,2,4$'
     - 'Und ich wünsche dir $n,f,p,n,110,2,5$ | an den Hals'
@@ -148,7 +150,7 @@ strophe:
 #14
 length: 8
 moods:
-    - 'sad'
+    - 'happy'
 strophe:
     - 'Wir lieben $n,m,p,a,148,3,5$! | '
     - 'ay ay ay ay! | '
@@ -172,7 +174,7 @@ strophe:
 #16
 length: 16
 moods:
-    - 'sad'
+    - 'happy'
 strophe:
     - 'Muss nur noch kurz die $n,f,s,a,163,1,2$ retten | '
     - 'Danach komm ich zu dir | '
@@ -227,3 +229,45 @@ strophe:
     - 'Kann jetzt $n,n,s,a,192,2,6$ bedienen | '
     - 'Bin safe mit mir | egal was ist '
     - 'Nur drei Prozent halt nicht |'
+
+#20
+length: 16
+moods:
+    -angry
+strophe:
+    - '$n,f,s,g,201,2,6$  es ist nicht deine Schuld | dass du bist wie du bist'
+    - 'Aber es ist deine Schuld | wenn du so bleibst'
+    - 'Mit deinen $n,n,s,n,202,2,3$ | und $n,n,s,n,203,2,3$ '
+    - 'Wer denkst du wer du bist | wenn du so bleibst'
+    - '$n,n,s,n,204,2,3$ ist lächerlich | wünschte nur ich kenn dich nicht'
+    - 'Kann $n,n,s,n,205,2,6$ nicht mehr sehn | kann dich nicht ausstehen'
+    - 'Wenn du bleibst wie du bist | egal was ist '
+    - 'Denn es ist nicht deine Schuld dass du so bist | aber deine Schuld das du so bleibst'
+
+#21
+length: 16
+moods:
+    -horny
+strophe:
+    - '$n,f,s,n,211,2,6$ sei heut ganz meins | sei heut meins dann bleib ich deins'
+    - 'Heute Nacht | heute Nacht'
+    - 'heute Nacht | heute Nacht ich liebe dich'
+    - 'Das Geräusch der $n,n,s,g,212,2,6$ kollidiert'
+    - 'Das Geräusch der $n,n,s,g,212,2,6$ kollidiert'
+    - 'Das Geräusch der $n,n,s,g,212,2,6$ kollidiert'
+    - 'heute Nacht reiten wir | oh yeah'
+    - 'heut reiten wir | oh yeah'
+
+#22
+length: 16
+moods:
+    -happy
+strophe:
+    - 'Ein $n,n,s,a,221,2,6$ | der deinen Namen trägt'
+    - '$n,n,s,a,222,2,6$ immer dabei| so wahrlich toll und frei'
+    - 'Ein $n,n,s,a,221,2,6$ | der deinen Namen trägt'
+    - '$n,n,s,a,222,2,6$ immer dabei| das wünsch ich mir herbei'
+    - 'Weiß was ich will und | wo ich steh'
+    - 'Brauch nur noch dich bei mir | brauch nur noch dich jetzt hier'
+    - 'KMit die all Zeit verbring | jeden Tag sowie die Nacht'
+    - 'Das was mich glücklich macht | '
