@@ -230,6 +230,7 @@ strophe:
     - 'Bin safe mit mir | egal was ist '
     - 'Nur drei Prozent halt nicht |'
 
+---
 #20
 length: 16
 moods:
@@ -244,6 +245,7 @@ strophe:
     - 'Wenn du bleibst wie du bist | egal was ist '
     - 'Denn es ist nicht deine Schuld dass du so bist | aber deine Schuld das du so bleibst'
 
+---
 #21
 length: 16
 moods:
@@ -258,15 +260,16 @@ strophe:
     - 'heute Nacht bleib ich bei dir | wir bleiben hier'
     - 'heut Nacht gibt es nur dich | lass mich nicht im stich'
 
+---
 #22
 length: 16
 moods:
     - 'happy'
 strophe:
-    - 'Ein $n,n,s,a,221,2,6$ | der deinen Namen trägt'
-    - '$n,n,s,a,222,2,6$ immer dabei| so wahrlich toll und frei'
-    - 'Ein $n,n,s,a,221,2,6$ | der deinen Namen trägt'
-    - '$n,n,s,a,222,2,6$ immer dabei| das wünsch ich mir herbei'
+    - 'Ein $n,n,s,n,221,2,6$ | der deinen Namen trägt'
+    - '$n,n,s,n,222,2,6$ immer dabei| so wahrlich toll und frei'
+    - 'Ein $n,n,s,n,221,2,6$ | der deinen Namen trägt'
+    - '$n,n,s,n,222,2,6$ immer dabei| das wünsch ich mir herbei'
     - 'Weiß was ich will und | wo ich steh'
     - 'Brauch nur noch dich bei mir | brauch nur noch dich jetzt hier'
     - 'KMit die all Zeit verbring | jeden Tag sowie die Nacht'
