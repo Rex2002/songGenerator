@@ -81,6 +81,7 @@ public class Controller implements Initializable {
 		if (file != null) load_pane_path.setText(file.getPath());
 
 		// generating song now enabled
+		load_pane_load.setDisable(true);
 		song_generate.setDisable(false);
 	}
 
@@ -172,6 +173,14 @@ public class Controller implements Initializable {
 		song_save.setVisible(true);
 		generate_pane_progressLbl.setVisible(true);
 
+		song_generate.setDisable(true);
+		setting_pane_bpm.setDisable(true);
+		setting_pane_slider.setDisable(true);
+		setting_pane_back.setDisable(true);
+		setting_pane_genre.setDisable(true);
+		setting_pane_metrics.setDisable(true);
+		setting_pane_cb.setDisable(true);
+
 		if (file != null) {
 
 			Settings settings = new Settings(file.getAbsolutePath(), genre, setting_pane_metrics.isSelected() ? -1 : bpm);
@@ -192,6 +201,7 @@ public class Controller implements Initializable {
 	 */
 	@FXML
 	void saveFile() {
+		song_save.setDisable(true);
 		if (songGenerator.getSeq() != null) {
 			File saveSong = fileSaver.showSaveDialog(new Stage());
 			if (saveSong != null) {
@@ -202,6 +212,9 @@ public class Controller implements Initializable {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+			}
+			else{
+				song_save.setDisable(false);
 			}
 		}
 	}
