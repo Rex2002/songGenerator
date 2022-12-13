@@ -132,7 +132,7 @@ public class SongTextGenerator {
 			usedWords.put(id, termList.get(position).getWord());
 			return termList.get(position).getWord();
 		} else {
-			return "DaPasstWohlNichts";
+			return "Computer";
 		}
 	}
 
