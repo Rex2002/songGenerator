@@ -21,7 +21,7 @@ public class Term<T extends Term<T>> {
 		this.frequency = 1;
 		this.radix = word;
 		this.word = word;
-		this.syllableAmount = 1;
+		this.syllableAmount = Hyphenizer.countSyllables(word);
 		this.numerus = Numerus.SINGULAR;
 	}
 
