@@ -12,7 +12,7 @@ nouns = list()
 verbs = list()
 
 
-forbiddenNouns = ("der", "die", "das", "ich", "du", "er", "sie", "es", "wir", "ihr", "sie", "bei", "in", "im", "am", "um", "als", "hart", "habe", "hab", "oder", "und")
+forbiddenNouns = ("der", "die", "das", "ich", "du", "er", "sie", "es", "wir", "ihr", "sie", "bei", "in", "im", "am", "um", "als", "hart", "habe", "hab")
 forbiddenVerbs = ("ein", "hab", "sein", "könn", "woll")
 forbiddenSymbols = ("’", " ", "ǃ")
 forbiddenStarts = ("\"", "'", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-")
