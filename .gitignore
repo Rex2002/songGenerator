@@ -4,3 +4,4 @@ target/
 *.mid
 *.mp3
 *.iml
+dist/
