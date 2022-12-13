@@ -277,7 +277,14 @@ public class SongTextGenerator {
 			syllMax = 15;
 		}
 
-		return termCollection.query(grammaticalCase, gender, numerus, syllMin, syllMax);
+		List<NounTerm> res = termCollection.query(grammaticalCase, gender, numerus, syllMin, syllMax);
+		if (res.isEmpty()) {
+			for (int i = 1; i < 20; i++) {
+				res = termCollection.query(grammaticalCase, gender, numerus, 0, syllMax + i);
+				if (!res.isEmpty()) return res;
+			}
+		}
+		return res;
 	}
 
 	/**
@@ -299,8 +306,9 @@ public class SongTextGenerator {
 			syllMax = 15;
 		}
 
-		return termCollection.queryVerbsBySyllableRange(syllMin, syllMax);
-
+		List<VerbTerm> res = termCollection.queryVerbsBySyllableRange(syllMin, syllMax);
+		if (res.isEmpty()) res = termCollection.queryVerbsBySyllableRange(0, Integer.MAX_VALUE);
+		return res;
 	}
 
 	/**

@@ -176,7 +176,7 @@ length: 16
 moods:
     - 'happy'
 strophe:
-    - 'Muss nur noch kurz die $n,f,s,a,163,1,2$ retten | '
+    - 'Muss nur noch kurz die $n,f,s,a,163,1,4$ retten | '
     - 'Danach komm ich zu dir | '
     - 'Noch 148 $n,f,p,n,166,2,3$ checken |'
     - 'Wer weiß | '
@@ -197,7 +197,7 @@ strophe:
     - "Ich kam zurück | und hab' von Weitem schon geseh'n"
     - 'Dass du dich quälst, sag, | bist du okay?'
     - 'Oder sind das | in deinen Augen etwa $n,f,p,n,174,2,3$?'
-    - "Ich kam zurück | und hab' von Weitem schon gеseh'n"
+    - "Ich kam zurück | und hab' von Weitem schon geseh'n"
     - 'Dass du dich quälst, sag, | bist du okay?'
 
 ---
