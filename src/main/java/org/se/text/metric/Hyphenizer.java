@@ -4,6 +4,8 @@ package org.se.text.metric;
  * @author Jakob Kautz
  */
 public class Hyphenizer {
+	private static final String VOWELS = "aeiouäöü";
+
 	public static int countSyllables(String terms) {
 		int count = 0;
 		terms = terms.toLowerCase();
@@ -19,7 +21,7 @@ public class Hyphenizer {
 		boolean isPrevVowel = false;
 
 		for (int j = 0; j < terms.length(); j++) {
-			if (terms.contains("a") || terms.contains("e") || terms.contains("i") || terms.contains("o") || terms.contains("u")) {
+			if (VOWELS.indexOf(terms.substring(j, j + 1)) != -1) {
 				// checking if character is a vowel and if the last letter of the word is 'e' or not
 				if (isVowel(terms.charAt(j)) && !((terms.charAt(j) == 'e') && (j == terms.length() - 1))) {
 					if (!isPrevVowel) {
