@@ -1,101 +1,47 @@
 <!--
   * @author Val Richter
-  * TODO: The description below is outdated (though roughly still correct)
  -->
 
 # Text-Analysis
 
-Table of Contents:
+This sub-component of the Text-component takes care of analyzing the input-text. From the outside, this package is a black box, taking a text as input and outputting a collection of most common terms in the input. We will first take a look at the logic used in the Analysis and then provide an overview over the file structure here, to allow for better code-navigation.
 
-- [Text-Analysis](#text-analysis)
-	- [Explanations](#explanations)
-		- [Term](#term)
-		- [Tag](#tag)
-	- [Overview](#overview)
-		- [Preprocessing](#preprocessing)
-		- [Tagging](#tagging)
-		- [Term-building](#term-building)
-		- [Determining Term-Frequency](#determining-term-frequency)
-		- [Specifying the TermCollection](#specifying-the-termcollection)
+## Logic
 
-This sub-component of the Text-component takes care of analyzing the input-text. From the outside, this package is a black box, taking a text as input and outputting a collection of most common terms in the input.
+Internally, we achieve this via a three-step process. First, we read and preprocess the text. Then we tag each word and lastly we transform each word that was tagged as a Noun or Verb into a Term.
 
-Internally, we achieve this aim via the following process:
+Reading and preprocessing of the text are both done outside of the Analyzer class, as their outputs are also used elsewhere.
 
-1. Preprocessing of the input
-2. Tagging words in the text
-3. Building Terms from tags
-4. Determining Term-Frequency
-5. Collecting all Terms in the aptly named "TermCollection"
+For tagging words, we currently use two methods. Firstly, if the word is capitalized and isn't the first word in the sentence, we know that it's a noun. Secondly, we try all combinations of splittin suffixes and prefixes from the word, to see if the word's stem/radix (used synonymously here) are found in our dictionary of nouns or verbs. If so, then we know what type of word it is.
 
-In the following, we will both give a more detailed description of each of these parts and an [explanation](#explanations) of the vocabulary and names used here.
+We also store all the grammatical data associated with the suffixes, prefixes and word's stem that we found, because when we build the terms, we do the exact same process again. If we already stored said data, we avoid doing the same procedure again of course.
 
-## Explanations
+We collect all noun-terms and verb-terms in respective lists and store the amount of times that they appeared with them. However, if we find two words in different grammatical forms, but with the same radix, then we store them together in a so-called TermVariation. When the SongTextGenerator then needs a specific form of a word, we first check for each term if we already saw it in said grammatical form. If not, we use certain rules stored in the dictionary, to create said grammatical form. Often the result is correct, but due to german's complex rules and its many edge-cases, it's inevitable, that we won't always be able to create the exact correct form of the word.
 
-### Term
+## File Structure
 
-TBD
+The `FileReader` and `Preprocessor` are both called first from outside. Their output serves as an input to the `Analyzer`, who takes care of tagging the words and building the terms.
 
-### Tag
+The `TermCollection` class is used as the Analyzer's output and internally stores lists of `TermVariation`s for the verbs and nouns, that were found. The `TermVariaton` in turn, stores a map of terms, where each term is associated with a key. Said key reflects the grammatical form of the Term, allowing us to quickly search for a specific variation and to check if one such variation already exists.
 
-TBD
+When building the terms, we create a new `Term` object, where the `Term` is the parent class of the `VerbTerm` and `NounTerm` class. Semantically it makes sense to have both as children of the `Term`-class and since both share some attributes, it also reduces the code-duplication.
 
-## Overview
+Lastly, in the top directory here, we only have the `Tag` class, which primarily stores the type of its word (i.e. Noun, Verb, Other), the `TermComp` class, which is simply used to sort terms to have the most common ones at the top of the list, and the `Util` class, which offers some utility functionality, that is used in some classes here.
 
-### Preprocessing
+### Model
 
-Nearly always when analyzing some data, it needs to be normalized in some way or other in a preprocessing step. So let's take a look at the data, we receive as input: Text. To be more precise, the text is assumed to be grammatically correct, german language text. Due to accepting both PDF- and Text-Files we can't take the formatting of the text into account (at least not uniformly). All we care about then is to analyze valid german sentences.
+The classes in the Model directory are only used to model certain data without associated functionality. Many of the classes in there are also Enums.
 
-A common preprocessing step in NLP is to convert the whole text to lower case. Since we will try to exploit german capitalization rules in our analysis later, we can't do that. We could also remove stopwords (such as "and", "the" etc.), instead however, we will simply ignore such words when building terms later on. The benefit of this approach is that we can ignore unnecesssary words very generally based on grammatical rules when building terms, instead of needing to use a big dictionary, that would most likely miss many words regardless.
+### Dict
 
-So what preprocessing do we do then?
+The dict-class stores all classes related to the dictionary and its functionality. These are of no importance to the outside, but vital for recognizing a word's grammatical form.
 
-1. We remove punctuation
+The `Dict` class itself is the dictionary. It reads in data from the resources and uses said data for finding a word's grammatical form and type. All data, that the dictionary reads, is stored in CSV-files. The parsing of these files is done via the `Parser`-class, which offers some convenience methods, like immediately adding each row to a list. The `Parser` also offers methods to parse a string into the correct type, which often is simply some Enum. For non-Enums, the Parser includes one method, that uses reflections, to recognize the type of each attribute, so it can parse each column accordingly.
 
-We will ignore the specific punctuation used (as we don't need that information for collecting common terms) and split the text into a list of sentences (each of which without punctuation).
+If no such parsing should be done, the row is simply stored as a `WordWithData` object, which is a wrapper around a Map from a String to a String.
 
-There are some risks associated with ignoring punctuation, of course, yet all of them are acceptable in our case.
+The `WordList` class is also a wrapper, here it's around a List of `WordWithData` objects. The WordList also guarantees to be lexicographically sorted at all times and thus offer quick searching. It is used for many of the lists of data read in by the dictionary.
 
-First, acronyms (which might be counted as terms) can be destroyed this way. Checking whether the dot is only one in a series of dots seperating only single-letter characters should probably circumvent this problem already. But even if the problem persists, it would only remove one term from our collection and would have no other side-effects on the workings of the program.
+However, the `WordList` specifically sorts after one value in the `WordWithData` object (usually called "radix"). When said radix can be duplicate in the list of data, we instead use a simple List and traverse it linearly. Since none of the lists with this caveat are very big, it shouldn't really be a performance overhead.
 
-Second, line-breaks between paragraphs are ignored. Paragraphs are a way of structuring text, which we would simply ignore. This is, however, acceptable, since we are only interested in collecting terms and not in analyzing their relationships in context. The semantics of the text's structure can therefore be ignored without issue.
-
-2. We remove `-` and line-breaks.
-
-Specifically in PDF-Files, we find words being seperated over line-breaks. Because we want to focus on a single sentence at once only, we want to remove line-breaks in sentences and restore the seperated words. This should be easy enough by checking if a `-` is followed by whitespace and line-break(s). However, words are also seperated for other reasons, especially for listings (e.g. "left- and right-associativity"). Checking for such word-seperations and restoring the full words again (e.g. "left-associativity and right-associativity") would be nice, but is not planned currently.
-
-As a last word on preprocessing, I want to mention normalizing unicode to ascii. Especially PDF-Files will use many symbols, that, at least in the text-extraction, get read as non-ascii characters, even though they could just as easily be represented by ascii characters (e.g. `’“` are different characters than `'"`).
-
-### Tagging
-
-Tagging in our context means to map each word in the text to a tag (often also called token), which hold certain metadata about the word. For now, the only information stored in the tag will be the type of the specified word (e.g. "noun", "adjective" etc.). This tag is crucial for building terms in the next step. Specifically, since we initially only plan to build terms out of nouns, we only need to tag if a word is a "noun" or "other".
-
-To figure out the correct tag for any one word, we use several techniques based in grammatical rules and dictionary-lookups. The simplest of these is to simply look the word up in a preconfigured dictionary, which stores a list of common german words with their specified tag. In many cases, however, this lookup will fail, even for very large dictionaries, as almost all german words change based on their case, gender, tempus, etc.
-
-Thus, instead of only using a dictionary, we also build in some simple and common grammatical rules of the german language, to recognize a word's type.
-
-The simplest of these rules tells us that capitalized words (at least if they're not at the start of the sentence) are usually nouns. Another rule tries to categorize words based on their pre- and suffixes. For example, in german, words ending in "-ung" or "-heit" are always nouns. More sophisticated rules would be nice, but are currently not planned.
-
-### Term-building
-
-Having tagged the entire text, we can now go through and build terms. We will initially define Terms as a sequence of at least one consecutive noun. If we find in our testing data, that we can tag adjectives and adverbs well too, then we would use the following linguistic filter for finding terms: `(adjective|adverb)*Noun+`.
-
-Let's say, as an example, that we would have three consecutive nouns `A B C`. We will then define any interval in-between `A` and `C` as a "term candidate" - in this case that would be the candidates `A`, `B`, `C`, `A B`, `B C`, `A B C`. All other words in the text, that aren't part of a term-candidate can be ignored.
-
-The simplest would be to either accept only the broadest interval for candidate terms (in our example only `A B C`) or to accept all intervals - which would have to be considered when determining Term-Frequency as well. However, we can do better as well, by checking whether certain intervals in a candidate appear more frequently in other candidates as well. This approach could even be extended to seperating compund words into their parts. There are more clever techniques, that could be used here as well, however, all of them increase runtime significantly by requiring further iterations through all possible term candidates. Before testing the efficacy of the simplest term-choosing algorithm then, we will not use more advanced algorithms for building terms yet.
-
-### Determining Term-Frequency
-
-We wish to know which terms appear most commonly in the text, to favor them when writing the lyrics. However, we cannot simply go through our list of terms and count how often any of them appears. The reason for that, is that words in natural languages are changed slightly based on many factors, making a simple comparison incorrect. Take as an example the words "Vorbereitung" and "Vorbereitungen". Both should clearly count for the same term, a simple string comparison would tell us otherwise, though.
-
-To avoid this problem, we need to radicalize (or stem) our terms, meaning to reduce all words to some common word-stem, to count diferent variations of a term as the same term, when determining its frequency. To stem the terms, we can use relatively simple rules of detecting certain suffixes or prefixes, which are usually added for grammatical purposes. In our example, the suffix "-en" is added for plural and the suffix "-ung" is added to make the word a noun. The common radix might then be "Vorbereit". This example shows also, that a word can have several suffixes added.
-
-### Specifying the TermCollection
-
-Lastly, we want to add all terms with certain metadata into a "TermCollection". This object is used to offer an easy-to-use API for the next parts of the application to use the collected terms and data about them. In this section, we will now specify the structure and information stored in the TermCollection and in which steps we best retrieve said information.
-
-Firstly, as in the last step, we want to have different variations of a single term collected under the same term. We thus store a list of variations rather than a list of terms themselves actually. This collection should also be ordered by the terms' frequency, as determined in the last step.
-
-Further, we want to know the amount of syllables for each variation of a term. Specifically, the syllables should be stored as a list of indices, so we know where each syllable starts and ends. This information is rather independent from all other steps and should thus be done when amount of words to iterate over is as small as possible. Thus we will collect said information at the end, after collecting variations of terms and counting their variations.
-
-Additionally, we also want to know the grammatical differences between variations of a term, to know when to use which, since lyrics should be mostly grammatically correct. To find what case a certain noun is in, we can again check for its suffixes. This can be done directly when comparing terms with possible variations. We aim to be more correct than complete here, meaning that we favor checking such cases than trying to declinate a given word into a new case. This preference protects us from building completely wrong words in the language.
+Lastly, the `WordStemmer` class offers a way to model a word split into its specific suffixes and prefixes. It's used as an intermediate model, before turning the words into `Term` objects.

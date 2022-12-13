@@ -16,6 +16,6 @@ class TermComp<T extends Term<T>> implements Comparator<T> {
 		TermVariations<T> v2 = t2.getVariations();
 		int x1 = t1.getFrequency() * specialVariationBias + (v1 != null ? v1.getFrequency() * generalTermBias : 0);
 		int x2 = t2.getFrequency() * specialVariationBias + (v2 != null ? v2.getFrequency() * generalTermBias : 0);
-		return Integer.compare(x1, x2);
+		return Integer.compare(x2, x1);
 	}
 }

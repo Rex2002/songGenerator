@@ -5,9 +5,10 @@ import org.se.music.Config;
 import org.se.music.logic.playables.ChordContainer;
 import org.se.music.logic.playables.MidiPlayable;
 import org.se.music.model.*;
-import org.se.text.MoodType;
 import org.se.text.analysis.TermCollection;
 import org.se.text.generation.SongTextGenerator;
+import org.se.text.metric.MoodType;
+
 import java.util.*;
 
 /**

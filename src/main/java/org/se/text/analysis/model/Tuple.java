@@ -1,4 +1,4 @@
-package org.se.text.analysis.dict;
+package org.se.text.analysis.model;
 
 import java.util.Objects;
 

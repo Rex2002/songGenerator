@@ -1,4 +1,4 @@
-package org.se.text;
+package org.se.text.analysis;
 
 import java.util.*;
 

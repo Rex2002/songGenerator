@@ -2,10 +2,11 @@ package org.se.text.generation;
 
 import org.se.music.model.Genre;
 import org.se.music.model.Structure;
-import org.se.text.MoodType;
 import org.se.text.analysis.*;
 import org.se.text.analysis.model.*;
 import org.se.text.metric.Hyphenizer;
+import org.se.text.metric.MoodType;
+
 import java.util.*;
 
 /**
@@ -254,7 +255,6 @@ public class SongTextGenerator {
 		} else {
 			numerus = Numerus.SINGULAR; // in case of a false Input singular is selected
 		}
-
 
 		grammaticalCase = switch (requirements[3]) {
 			case "a" -> GrammaticalCase.ACCUSATIVE;

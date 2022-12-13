@@ -2,7 +2,7 @@ package org.se.text.metric;
 
 import java.io.IOException;
 import java.util.List;
-import org.se.text.MoodType;
+
 import org.se.text.analysis.FileReader;
 import org.se.text.analysis.model.Sentence;
 

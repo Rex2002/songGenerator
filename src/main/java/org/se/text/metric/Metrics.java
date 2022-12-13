@@ -1,7 +1,6 @@
 package org.se.text.metric;
 
 import java.util.*;
-import org.se.text.MoodType;
 
 public class Metrics {
 	protected Integer tempo;
