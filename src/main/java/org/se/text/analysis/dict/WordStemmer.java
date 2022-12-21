@@ -54,7 +54,7 @@ public class WordStemmer {
 
 	public int affixesCount() {
 		int count = suffixes.size() + prefixes.size();
-		if (grammartizedSuffix != null && !grammartizedSuffix.getRadix().equals("")) count += 1;
+		if (grammartizedSuffix != null && grammartizedSuffix.getRadix() != null && !grammartizedSuffix.getRadix().equals("")) count += 1;
 		return count;
 	}
 
@@ -78,13 +78,6 @@ public class WordStemmer {
 		return res.toArray(new WordStemmer[0]);
 	}
 
-	// TODO: Optimize grammartizedAffixes storage
-	// Currently all grammartizedAffixes are stored in a list
-	// where many objects have the same radix
-	// specifically this means, that we have many duplicate calculations
-	// This could be optimized by storing a list of radixes
-	// mapping to a list of Declinations
-	// where no duplicate radixes are stored and the result is flattened
 	private static <T extends TermAffix> List<WordStemmer> findGrammartizedAffixes(String s, List<T> grammartizedAffixes, WordList umlautChanges,
 			int minStemLength, WordList diphtongs, String baseKey) {
 		List<WordStemmer> res = new ArrayList<>();
