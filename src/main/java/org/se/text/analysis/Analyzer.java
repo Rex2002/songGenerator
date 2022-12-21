@@ -87,18 +87,26 @@ public class Analyzer extends PartialProgressTask<TermCollection> {
 					Optional<NounTerm> term = dict.buildNounTerm(t);
 					if (term.isPresent()) {
 						if (nounVariations.containsKey(term.get().getRadix())) {
-							nounVariations.get(term.get().getRadix()).add(term.get());
+							TermVariations<NounTerm> variations = nounVariations.get(term.get().getRadix());
+							term.get().setVariations(variations);
+							variations.add(term.get());
 						} else {
-							nounVariations.put(term.get().getRadix(), new TermVariations<>(term.get()));
+							TermVariations<NounTerm> variations = new TermVariations<>(term.get());
+							term.get().setVariations(variations);
+							nounVariations.put(term.get().getRadix(), variations);
 						}
 					}
 				} else {
 					Optional<VerbTerm> term = dict.buildVerbTerm(t);
 					if (term.isPresent()) {
 						if (verbVariations.containsKey(term.get().getRadix())) {
-							verbVariations.get(term.get().getRadix()).add(term.get());
+							TermVariations<VerbTerm> variations = verbVariations.get(term.get().getRadix());
+							term.get().setVariations(variations);
+							variations.add(term.get());
 						} else {
-							verbVariations.put(term.get().getRadix(), new TermVariations<>(term.get()));
+							TermVariations<VerbTerm> variations = new TermVariations<>(term.get());
+							term.get().setVariations(variations);
+							verbVariations.put(term.get().getRadix(), variations);
 						}
 					}
 				}
