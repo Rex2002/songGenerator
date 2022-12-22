@@ -54,7 +54,7 @@ public class WordStemmer {
 
 	public int affixesCount() {
 		int count = suffixes.size() + prefixes.size();
-		if (grammartizedSuffix != null && !grammartizedSuffix.getRadix().equals("")) count += 1;
+		if (grammartizedSuffix != null && !"".equals(grammartizedSuffix.getRadix())) count += 1;
 		return count;
 	}
 

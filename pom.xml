@@ -21,6 +21,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
             </plugin>
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -30,6 +31,30 @@
                     <mainClass>gui.Main</mainClass>
                 </configuration>
             </plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+				<configuration>
+					<archive>
+					<manifest>
+						<addClasspath>true</addClasspath>
+						<mainClass>org.se.Main</mainClass>
+					</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+				</configuration>
+			</plugin>
         </plugins>
     </build>
 
