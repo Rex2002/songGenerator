@@ -20,6 +20,8 @@ copy target\SongGenerator-1.0-SNAPSHOT-jar-with-dependencies.jar dist\%jar-name%
 echo Building Runtime...
 robocopy %javafx-path% dist\javafx %robocopy-params%
 call jlink --no-header-files --no-man-pages --compress=2 --strip-debug --module-path dist\javafx\lib --add-modules "javafx.base,javafx.controls,javafx.fxml,javafx.graphics" --bind-services --output dist\java
+robocopy dist\javafx\bin dist\java\bin %robocopy-params%
+@RD /S /Q dist\javafx\bin
 
 @REM Copy resources into the distributable
 echo Building Resources...
