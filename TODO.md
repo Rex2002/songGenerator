@@ -1,7 +1,7 @@
 # TODOs:
 
--   [ ] Fix Export
-    -   [ ] Exported Java-Runtime was missing `d3d, ws`, seemingly because not all necessary DLLs were copied from the JavaFX Sdk to the runtime
+-   [x] Fix Export
+    -   [x] Exported Java-Runtime was missing `d3d, ws`, seemingly because not all necessary DLLs were copied from the JavaFX Sdk to the runtime
 -   [ ] Package Export to a single Launcher
     -   [ ] Find some way to package the distributable into a single launcher executable
     -   [ ] Best way is probably by letting the launcher create a temporary directory with all the files and calling them then (wouldn't fuck up paths)
@@ -19,3 +19,4 @@
     -   [ ] Currently it seems to mark all nouns as having 2 syllables
 -   [ ] Add Templates
 -   [ ] Add proper Error Handling
+-   [x] Update Nouns-Dictionary

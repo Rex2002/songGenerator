@@ -26,6 +26,7 @@ robocopy dist\javafx\bin dist\java\bin %robocopy-params%
 @REM Copy resources into the distributable
 echo Building Resources...
 cd dictionary-creation
+call %py-cmd% forbiddenNouns.py
 call %py-cmd% generateDict.py
 cd ..
 robocopy src\main\resources dist\src\main\resources %robocopy-params%
