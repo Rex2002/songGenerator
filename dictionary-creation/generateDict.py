@@ -12,9 +12,11 @@ nouns = list()
 verbs = list()
 
 
-forbiddenNouns = ("der", "die", "das", "ich", "du", "er", "sie", "es", "wir", "ihr", "sie", "bei", "in", "im", "am", "um", "als", "hart", "habe", "hab", "viel", "ist", "von")
+forbiddenNouns = list()
+with open("./forbidden-nouns.txt", "r", encoding="utf8") as file:
+	forbiddenNouns = file.read().splitlines()
 forbiddenVerbs = ("ein", "hab", "sein", "könn", "woll")
-forbiddenSymbols = ("’", " ", "ǃ")
+forbiddenSymbols = ("’", " ", "ǃ", "é", "í", "ø", "Å", "Æ", "Î", "Ç", "É", "À", "ł", "ë")
 forbiddenStarts = ("\"", "'", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-")
 changeableGenderNouns = ("arzt")
 
@@ -72,15 +74,15 @@ with open("./nouns.csv", encoding="utf8") as csvFile:
 
 		for p in pos:
 			p = p.lower()
-			if p.startswith("suffix") or p.startswith("gebundenes lexem"):
+			if p.startswith(("suffix", "lexem")):
 				pos = "nounSuffix"
 				break
 			elif p.startswith("substantiv") and not radix.startswith("-"):
-				isName = False
+				toIgnore = False
 				for p in pos:
-					if p.strip().endswith("name"):
-						isName = True
-				if not isName:
+					if p.strip().endswith(("name", "toponym", "buchstabe", "adjektiv", "symbol", "klassifikator", "redewendung")):
+						toIgnore = True
+				if not toIgnore:
 					pos = "noun"
 				break
 
