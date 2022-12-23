@@ -19,6 +19,7 @@ with open("../src/main/resources/dictionary/nounsDict.csv", "r", encoding="utf8"
 				forbidden.append(x)
 
 forbidden = [*set(forbidden)]
+forbidden.sort()
 
 with open("./forbidden-nouns.txt", "w", encoding="utf8") as file:
 	file.write("\n".join(forbidden))
