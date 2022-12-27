@@ -277,9 +277,12 @@ public class SongTextGenerator {
 			syllMax = 15;
 		}
 
+		System.out.println(grammaticalCase + ", " + gender + ", " + numerus + ", " + syllMin + ", " + syllMax);
 		List<NounTerm> res = termCollection.query(grammaticalCase, gender, numerus, syllMin, syllMax);
+		System.out.println(res);
+		System.out.println("\n\n\n");
 		if (res.isEmpty()) {
-			for (int i = 1; i < 20; i++) {
+			for (int i = 1; i < 10; i++) {
 				res = termCollection.query(grammaticalCase, gender, numerus, 0, syllMax + i);
 				if (!res.isEmpty()) return res;
 			}
