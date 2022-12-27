@@ -143,9 +143,10 @@ public class WordStemmer {
 							str = str.substring(0, str.length() - addable.get().length());
 						}
 						str += subtractable.get();
-						if (terms.has(str)) {
-							res.add(new WordStemmer(stem.substring(i + 1), terms.get(str).get(), grammartizedPrefix, grammartizedSuffix, prefixes,
-									suffixes, baseKey));
+						Optional<WordWithData> term = terms.get(str);
+						if (term.isPresent()) {
+							res.add(new WordStemmer(stem.substring(i + 1), term.get(), grammartizedPrefix, grammartizedSuffix, prefixes, suffixes,
+									baseKey));
 						}
 					}
 				}

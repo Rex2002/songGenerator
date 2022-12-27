@@ -59,7 +59,7 @@ public class Analyzer extends PartialProgressTask<TermCollection> {
 				Tag tag;
 
 				// If it's not the first word in the sentence and is capitalized, it's a noun
-				// this check can only be trusted on, if not every word is capitalized
+				// this check can only be trusted on, if only nouns are capitalized
 				if (j != 0 && isCapitalized(word)) {
 					tag = new Tag(word, TagType.NOUN);
 				} // Otherwise, let the dictionary tag the word

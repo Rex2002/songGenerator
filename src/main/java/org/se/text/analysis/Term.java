@@ -92,7 +92,7 @@ public class Term<T extends Term<T>> {
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) return true;
-		if (!(o instanceof Term term)) {
+		if (!(o instanceof Term<?> term)) {
 			return false;
 		}
 		return frequency == term.frequency && Objects.equals(radix, term.radix) && Objects.equals(word, term.word)
