@@ -85,9 +85,6 @@ public class TermCollection {
 		});
 
 		res.sort(new TermComp<>());
-		System.out.println(res.get(0));
-		System.out.println(res.get(res.size() - 1));
-		System.out.println();
 		return res;
 	}
 

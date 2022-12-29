@@ -129,8 +129,9 @@ public class SongTextGenerator {
 		int position; // default 0
 		if (termListSize != 0) {
 			position = getCorrectPosition(termList);
-			usedWords.put(id, termList.get(position).getWord());
-			return termList.get(position).getWord();
+			String word = termList.get(position).getWord();
+			usedWords.put(id, word);
+			return word;
 		} else {
 			return "Computer";
 		}
@@ -277,10 +278,7 @@ public class SongTextGenerator {
 			syllMax = 15;
 		}
 
-		System.out.println(grammaticalCase + ", " + gender + ", " + numerus + ", " + syllMin + ", " + syllMax);
 		List<NounTerm> res = termCollection.query(grammaticalCase, gender, numerus, syllMin, syllMax);
-		System.out.println(res);
-		System.out.println("\n\n\n");
 		if (res.isEmpty()) {
 			for (int i = 1; i < 10; i++) {
 				res = termCollection.query(grammaticalCase, gender, numerus, 0, syllMax + i);

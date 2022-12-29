@@ -20,7 +20,7 @@ public class Chord {
 		if (0 <= rootNote && rootNote < 128) {
 			this.rootNote = rootNote;
 		} else {
-			System.out.println("invalid rootNote, change to 60 (C)");
+			// invalid rootNote, change to 60 (C)
 			this.rootNote = 60;
 		}
 
