@@ -52,7 +52,7 @@ public class Term<T extends Term<T>> {
 
 	public String toStringHelper() {
 		return " frequency='" + getFrequency() + "'" + ", radix='" + getRadix() + "'" + ", word='" + getWord() + "'" + ", syllableAmount='"
-				+ getSyllableAmount() + "'" + ", numerus='" + getNumerus() + "'" + ", variations='" + getVariations() + "'";
+				+ getSyllableAmount() + "'" + ", numerus='" + getNumerus() + "'" + ", variations='[" + variations.getVariations().size() + "]'";
 	}
 
 	@Override
