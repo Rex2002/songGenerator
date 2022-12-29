@@ -292,6 +292,7 @@ denglisch
 denken
 der
 derwisch
+des
 didoisch
 die
 dolomitenladinisch
@@ -310,6 +311,7 @@ eibisch
 eichen
 einatmen
 eindringen
+einer
 einhalten
 einschließen
 einschreiben
@@ -408,6 +410,7 @@ färingisch
 färöisch
 fühlen
 füllen
+für
 füßeln
 gagausisch
 galicisch
@@ -441,6 +444,17 @@ gilbertesisch
 glauben
 globalesisch
 goidelisch
+goliathfrosch
+golle
+gols
+golßen
+gomel
+gomera
+gommern
+gon
+gonade
+gondel
+gondoliere
 graben
 grauen
 grausen
