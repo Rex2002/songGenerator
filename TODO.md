@@ -2,9 +2,6 @@
 
 -   [x] Fix Export
     -   [x] Exported Java-Runtime was missing `d3d, ws`, seemingly because not all necessary DLLs were copied from the JavaFX Sdk to the runtime
--   [ ] Package Export to a single Launcher
-    -   [ ] Find some way to package the distributable into a single launcher executable
-    -   [ ] Best way is probably by letting the launcher create a temporary directory with all the files and calling them then (wouldn't fuck up paths)
 -   [x] Fix Umlaut-changes
     -   [x] Only the last vowel/diphtong in a word should have its umlaut changed
 -   [x] Check Term-Sorting
@@ -12,11 +9,8 @@
 -   [x] createTerm fails for certain inputs
     -   [x] in first test, it especially failed for male-accusative-plural
     -   [x] go through with Debugger, to fix it
--   [ ] Offer randomized querying
-    -   [ ] Build random query
-    -   [ ] Use the randomized query in the songGenerator.
 -   [x] Check if Hyphenizer works correctly
     -   [x] Currently it seems to mark all nouns as having 2 syllables
--   [ ] Add Templates
--   [ ] Add proper Error Handling
 -   [x] Update Nouns-Dictionary
+-   [ ] Add Templates
+-   [ ] Test the various bugfixes
