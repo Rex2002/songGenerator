@@ -7,16 +7,16 @@
     -   [ ] Best way is probably by letting the launcher create a temporary directory with all the files and calling them then (wouldn't fuck up paths)
 -   [x] Fix Umlaut-changes
     -   [x] Only the last vowel/diphtong in a word should have its umlaut changed
--   [ ] Check Term-Sorting
-    -   [ ] Make sure the terms are sorted correctly after calling `query`
--   [ ] createTerm fails for certain inputs
-    -   [ ] in first test, it especially failed for male-accusative-plural
-    -   [ ] go through with Debugger, to fix it
+-   [x] Check Term-Sorting
+    -   [x] Make sure the terms are sorted correctly after calling `query`
+-   [x] createTerm fails for certain inputs
+    -   [x] in first test, it especially failed for male-accusative-plural
+    -   [x] go through with Debugger, to fix it
 -   [ ] Offer randomized querying
     -   [ ] Build random query
     -   [ ] Use the randomized query in the songGenerator.
--   [ ] Check if Hyphenizer works correctly
-    -   [ ] Currently it seems to mark all nouns as having 2 syllables
+-   [x] Check if Hyphenizer works correctly
+    -   [x] Currently it seems to mark all nouns as having 2 syllables
 -   [ ] Add Templates
 -   [ ] Add proper Error Handling
 -   [x] Update Nouns-Dictionary
