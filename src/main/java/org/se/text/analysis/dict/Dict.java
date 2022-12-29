@@ -231,7 +231,7 @@ public class Dict {
 
 		NounTerm tmp = ((NounTerm) variations.getRandomTerm());
 		if (tmp.getGender().equals(gender)) {
-			return Optional.ofNullable(createNounTermHelper(variations, radix, null, gender, grammaticalCase, numerus));
+			return createNounTermHelper(variations, radix, null, gender, grammaticalCase, numerus);
 		} else if (tmp.getChangeableGender()) {
 			Optional<WordWithData> genderChangeSuffix = genderChangeSuffixes.find(suffix -> {
 				Optional<Gender> suffixGender = suffix.get(GENDER_KEY, Gender.class);
@@ -239,21 +239,31 @@ public class Dict {
 			});
 
 			if (genderChangeSuffix.isPresent()) {
-				return Optional.ofNullable(createNounTermHelper(variations, radix, genderChangeSuffix.get(), gender, grammaticalCase, numerus));
+				return createNounTermHelper(variations, radix, genderChangeSuffix.get(), gender, grammaticalCase, numerus);
 			}
 		}
 		return Optional.empty();
 	}
 
-	private NounTerm createNounTermHelper(TermVariations<NounTerm> variations, final String radix, WordWithData genderChangeSuffix, Gender gender,
-			GrammaticalCase grammaticalCase, Numerus numerus) {
-		List<Declination> suffixes = Util.findAll(declinatedAffixes,
-				s -> s.getGender() == gender && s.getGrammaticalCase() == grammaticalCase && s.getNumerus() == numerus
-						&& (s.getRadix().isEmpty() || (!radix.endsWith(s.getRadix()) && !radix.endsWith(s.getRadix().substring(0, 1)))));
+	private Optional<NounTerm> createNounTermHelper(TermVariations<NounTerm> variations, final String radix, WordWithData genderChangeSuffix,
+			Gender gender, GrammaticalCase grammaticalCase, Numerus numerus) {
+		List<Declination> possibleSuffixes = Util.findAll(declinatedAffixes,
+				s -> s.getGender() == gender && s.getGrammaticalCase() == grammaticalCase && s.getNumerus() == numerus);
+		Tuple<List<Declination>, List<Declination>> filteredSuffixes = Util.filter(possibleSuffixes,
+				s -> s.getRadix().isEmpty() || (!radix.endsWith(s.getRadix()) && !radix.endsWith(s.getRadix().substring(0, 1))));
 
-		if (!suffixes.isEmpty()) {
-			Declination suffix = suffixes.get(0);
-			boolean toUmlaut = suffix.getToUmlaut() || (genderChangeSuffix != null && genderChangeSuffix.get(TO_UMLAUT_KEY, Boolean.class).get());
+		if (!possibleSuffixes.isEmpty()) {
+			Declination suffix;
+			if (!filteredSuffixes.getY().isEmpty()) {
+				Declination s = filteredSuffixes.getY().get(0);
+				if (radix.endsWith(s.getRadix()))
+					suffix = new Declination("", s.getGrammaticalCase(), s.getGender(), s.getNumerus(), s.getType(), false);
+				else suffix = new Declination(s.getRadix().substring(0, s.getRadix().length() - 1), s.getGrammaticalCase(), s.getGender(),
+						s.getNumerus(), s.getType(), true);
+			} else suffix = filteredSuffixes.getX().get(0);
+
+			possibleSuffixes.get(0);
+			boolean toUmlaut = suffix.getToUmlaut() && (genderChangeSuffix == null || genderChangeSuffix.get(TO_UMLAUT_KEY, Boolean.class).get());
 
 			StringBuilder strbuilder = new StringBuilder(radix);
 			if (toUmlaut) strbuilder = new StringBuilder(changeUmlaut(umlautChanges, diphthongs, radix, true));
@@ -261,10 +271,10 @@ public class Dict {
 			strbuilder.append(suffix.getRadix());
 
 			String word = strbuilder.toString();
-			return new NounTerm(radix, word, numerus, grammaticalCase, gender, genderChangeSuffix != null, variations);
+			return Optional.of(new NounTerm(radix, word, numerus, grammaticalCase, gender, genderChangeSuffix != null, variations));
 		}
 
-		return null;
+		return Optional.empty();
 	}
 
 	public static String changeUmlaut(WordList umlautChanges, WordList diphtongs, String s, boolean addUmlaut) {

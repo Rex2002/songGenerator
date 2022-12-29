@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import org.se.text.analysis.model.Tuple;
+
 /**
  * @author Val Richter
  */
@@ -28,5 +30,15 @@ public class Util {
 			if (f.test(t)) res.add(t);
 		}
 		return res;
+	}
+
+	public static <T> Tuple<List<T>, List<T>> filter(Iterable<T> items, Predicate<? super T> f) {
+		List<T> x = new ArrayList<>();
+		List<T> y = new ArrayList<>();
+		for (T t : items) {
+			if (f.test(t)) x.add(t);
+			else y.add(t);
+		}
+		return new Tuple<>(x, y);
 	}
 }
