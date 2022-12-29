@@ -19,6 +19,7 @@ abciximab
 abdampfen
 abdrehen
 abendessen
+aber
 aberchen
 aberdeen
 abessinien
@@ -197,6 +198,7 @@ aufspüren
 aufstellen
 auftauchen
 auftreten
+aus
 auskommen
 ausschalten
 aussehen
@@ -293,6 +295,8 @@ denken
 der
 derwisch
 des
+dese
+deser
 didoisch
 die
 dolomitenladinisch
@@ -427,6 +431,8 @@ gedenken
 gefallen
 gefrierfleisch
 gefährden
+gege
+gegenüber
 gegisch
 gehen
 gehren
@@ -491,6 +497,7 @@ hawaianisch
 hawaiianisch
 hawaiisch
 headbangen
+hebei
 hebräisch
 heizen
 herunterfließen
@@ -620,6 +627,7 @@ kumükisch
 kurdisch
 kymrisch
 kängurufleisch
+können
 lachen
 laden
 ladinisch
@@ -634,6 +642,7 @@ lateinisch
 latschen
 laufen
 leben
+lehrschreiben
 leiden
 leimen
 leisten
@@ -646,6 +655,7 @@ lettgallisch
 letzeburgisch
 leuchten
 libysch-arabisch
+lich
 ligurisch
 limburgisch
 lispeln
@@ -653,6 +663,8 @@ litauisch
 livisch
 lombardisch
 lothringisch
+luder
+luderleben
 luwisch
 luxemburgisch
 lydisch
@@ -675,6 +687,7 @@ marrukinisch
 marshallesisch
 masturbieren
 matabisch
+matzen
 mauern
 mauscheln
 mazedonisch
@@ -737,6 +750,7 @@ norwegisch
 nutzen
 nähen
 nörgeln
+ob
 oberlausitzisch
 obersorbisch
 obersächsisch
@@ -954,6 +968,7 @@ trinken
 trocknen
 tropfen
 trotten
+trotz
 trudeln
 tschechisch
 tschetschenisch
@@ -978,6 +993,7 @@ umreißen
 umschließen
 und
 ungarisch
+unter
 unternehmen
 uralbanisch
 urartäisch
@@ -1037,9 +1053,11 @@ wecken
 wehklagen
 weiden
 weihnachten
+weil
 weißrussisch
 weißruthenisch
 wellfleisch
+wenn
 wepsisch
 werben
 werken
