@@ -111,7 +111,7 @@ public class Analyzer extends PartialProgressTask<TermCollection> {
 					}
 				}
 			}
-			updateProgress((i / tagsAmount));
+			updateProgress((double) i / tagsAmount);
 		}
 		return new TermCollection(dict, nounVariations, verbVariations);
 	}
