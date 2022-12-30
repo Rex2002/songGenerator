@@ -4,10 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+import org.se.text.analysis.model.Tuple;
+
 /**
  * @author Val Richter
  */
 public class Util {
+	public static String capitalize(String s) {
+		if (s.isEmpty()) return s;
+		else return Character.toUpperCase(s.charAt(0)) + s.substring(1).toLowerCase();
+	}
+
 	public static <T> boolean any(Iterable<T> items, Predicate<? super T> f) {
 		for (T item : items) {
 			if (f.test(item)) return true;
@@ -28,5 +35,15 @@ public class Util {
 			if (f.test(t)) res.add(t);
 		}
 		return res;
+	}
+
+	public static <T> Tuple<List<T>, List<T>> filter(Iterable<T> items, Predicate<? super T> f) {
+		List<T> x = new ArrayList<>();
+		List<T> y = new ArrayList<>();
+		for (T t : items) {
+			if (f.test(t)) x.add(t);
+			else y.add(t);
+		}
+		return new Tuple<>(x, y);
 	}
 }

@@ -1,0 +1,22 @@
+# TODOs:
+
+-   [x] Fix Export
+    -   [x] Exported Java-Runtime was missing `d3d, ws`, seemingly because not all necessary DLLs were copied from the JavaFX Sdk to the runtime
+-   [x] Fix Umlaut-changes
+    -   [x] Only the last vowel/diphtong in a word should have its umlaut changed
+-   [x] Check Term-Sorting
+    -   [x] Make sure the terms are sorted correctly after calling `query`
+-   [x] createTerm fails for certain inputs
+    -   [x] in first test, it especially failed for male-accusative-plural
+    -   [x] go through with Debugger, to fix it
+-   [x] Check if Hyphenizer works correctly
+    -   [x] Currently it seems to mark all nouns as having 2 syllables
+-   [x] Update Nouns-Dictionary
+-   [ ] Add Templates
+-   [x] Fix Grammar-Mistakes in Songtext-Templates
+-   [x] (Bug) TermBuilding Progress doesn't update correctly
+-   [x] (Bug) Wrong Verbs are built (probably because of compound-radices)
+-   [x] (Bug) Infinitive of VerbTerms are null
+-   [x] Various Improvements to TermBuilding & Analysis
+-   [x] Split Parantheses from words in Preprocessing
+-   [x] Test the various bugfixes

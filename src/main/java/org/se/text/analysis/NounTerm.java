@@ -15,29 +15,29 @@ public class NounTerm extends Term<NounTerm> {
 
 	public NounTerm(String radix, String word, Numerus numerus, GrammaticalCase grammaticalCase, Gender gender, boolean changeableGender,
 			TermVariations<NounTerm> variations) {
-		super(capitalize(radix), word, numerus, variations);
+		super(radix, word, numerus, variations);
 		this.grammaticalCase = grammaticalCase;
 		this.gender = gender;
 		this.changeableGender = changeableGender;
 	}
 
 	public NounTerm(String radix, String word, Numerus numerus, GrammaticalCase grammaticalCase, Gender gender, boolean changeableGender) {
-		super(capitalize(radix), word, numerus);
+		super(radix, word, numerus);
 		this.grammaticalCase = grammaticalCase;
 		this.gender = gender;
 		this.changeableGender = changeableGender;
 	}
 
 	public NounTerm(String radix, String word, Numerus numerus, GrammaticalCase grammaticalCase, Gender gender) {
-		super(capitalize(radix), word, numerus);
+		super(radix, word, numerus);
 		this.grammaticalCase = grammaticalCase;
 		this.gender = gender;
 		this.changeableGender = false;
 	}
 
-	public static String capitalize(String s) {
-		if (s.isEmpty()) return s;
-		else return Character.toUpperCase(s.charAt(0)) + s.substring(1);
+	@Override
+	public String forLyrics() {
+		return Util.capitalize(this.getWord());
 	}
 
 	@Override

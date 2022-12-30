@@ -18,7 +18,7 @@ public class Preprocessor extends PartialProgressTask<List<Sentence>> {
 		String wordSplitter = "-_";
 		boolean splitLastWord = false;
 		String sentenceEnds = ".!?";
-		String otherPunctuation = ",;:-";
+		String otherPunctuation = ",;:-()[]{}";
 		List<Sentence> sentences = new ArrayList<>();
 		Sentence currentSentence = new Sentence();
 		char[] chars = text.toCharArray();

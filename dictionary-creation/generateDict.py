@@ -12,9 +12,11 @@ nouns = list()
 verbs = list()
 
 
-forbiddenNouns = ("der", "die", "das", "ich", "du", "er", "sie", "es", "wir", "ihr", "sie", "bei", "in", "im", "am", "um", "als", "hart", "habe", "hab")
-forbiddenVerbs = ("ein", "hab", "sein", "könn", "woll")
-forbiddenSymbols = ("’", " ", "ǃ")
+forbiddenNouns = list()
+with open("./forbidden-nouns.txt", "r", encoding="utf8") as file:
+	forbiddenNouns = file.read().splitlines()
+forbiddenVerbs = ("ein", "hab", "sein", "könn", "woll", "werd", "mach", "soll")
+forbiddenSymbols = ("’", " ", "ǃ", "é", "í", "ø", "Å", "Æ", "Î", "Ç", "É", "À", "ł", "ë")
 forbiddenStarts = ("\"", "'", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-")
 changeableGenderNouns = ("arzt")
 
@@ -72,15 +74,15 @@ with open("./nouns.csv", encoding="utf8") as csvFile:
 
 		for p in pos:
 			p = p.lower()
-			if p.startswith("suffix") or p.startswith("gebundenes lexem"):
+			if p.startswith(("suffix", "lexem")):
 				pos = "nounSuffix"
 				break
 			elif p.startswith("substantiv") and not radix.startswith("-"):
-				isName = False
+				toIgnore = False
 				for p in pos:
-					if p.strip().endswith("name"):
-						isName = True
-				if not isName:
+					if p.strip().endswith(("name", "toponym", "buchstabe", "adjektiv", "symbol", "klassifikator", "redewendung")):
+						toIgnore = True
+				if not toIgnore:
 					pos = "noun"
 				break
 
@@ -154,7 +156,7 @@ with open(dir + "nounsDict.csv", encoding="utf8", mode="w") as csvFile:
 
 with open(dir + "verbsDict.csv", encoding="utf8", mode="w") as csvFile:
 	writer = csv.writer(csvFile, delimiter=",", lineterminator="\n")
-	writer.writerow(["radix", "infinitve", "1.pers-singular-präsens", "2.pers-singular-präsens", "3.pers-singular-präsens", "1.pers-singular-präteritum", "partizip 2", "1.pers-konjunktiv 2", "imperativ-singular", "imperativ-plural", "hilfsverb"])
+	writer.writerow(["radix", "infinitive", "1.pers-singular-präsens", "2.pers-singular-präsens", "3.pers-singular-präsens", "1.pers-singular-präteritum", "partizip 2", "1.pers-konjunktiv 2", "imperativ-singular", "imperativ-plural", "hilfsverb"])
 	writer.writerows(verbs)
 
 # with open(dir + "affixDict2.csv", encoding="utf8", mode="w") as csvFile:

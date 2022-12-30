@@ -5,8 +5,7 @@ import org.se.music.logic.*;
 import org.se.text.analysis.*;
 import org.se.text.analysis.dict.Dict;
 import org.se.text.analysis.model.Sentence;
-import org.se.text.metric.MetricAnalyzer;
-import org.se.text.metric.Metrics;
+import org.se.text.metric.*;
 
 import java.util.List;
 

@@ -7,7 +7,7 @@ import java.util.*;
  * @reviewer Jakob Kautz
  */
 class TermComp<T extends Term<T>> implements Comparator<T> {
-	private int generalTermBias = 1;
+	private int generalTermBias = 3;
 	private int specialVariationBias = 1;
 
 	@Override

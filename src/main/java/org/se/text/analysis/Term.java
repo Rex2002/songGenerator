@@ -21,7 +21,7 @@ public class Term<T extends Term<T>> {
 		this.frequency = 1;
 		this.radix = word;
 		this.word = word;
-		this.syllableAmount = 1;
+		this.syllableAmount = Hyphenizer.countSyllables(word);
 		this.numerus = Numerus.SINGULAR;
 	}
 
@@ -42,6 +42,10 @@ public class Term<T extends Term<T>> {
 		this.variations = variations;
 	}
 
+	public String forLyrics() {
+		return this.word;
+	}
+
 	public void increaseFrequency() {
 		this.frequency++;
 	}
@@ -52,7 +56,7 @@ public class Term<T extends Term<T>> {
 
 	public String toStringHelper() {
 		return " frequency='" + getFrequency() + "'" + ", radix='" + getRadix() + "'" + ", word='" + getWord() + "'" + ", syllableAmount='"
-				+ getSyllableAmount() + "'" + ", numerus='" + getNumerus() + "'" + ", variations='" + getVariations() + "'";
+				+ getSyllableAmount() + "'" + ", numerus='" + getNumerus() + "'" + ", variations='[" + variations.getVariations().size() + "]'";
 	}
 
 	@Override
@@ -92,7 +96,7 @@ public class Term<T extends Term<T>> {
 	@Override
 	public boolean equals(Object o) {
 		if (o == this) return true;
-		if (!(o instanceof Term term)) {
+		if (!(o instanceof Term<?> term)) {
 			return false;
 		}
 		return frequency == term.frequency && Objects.equals(radix, term.radix) && Objects.equals(word, term.word)
