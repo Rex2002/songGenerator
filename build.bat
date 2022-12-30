@@ -30,6 +30,7 @@ call %py-cmd% forbiddenNouns.py
 call %py-cmd% generateDict.py
 cd ..
 robocopy src\main\resources dist\src\main\resources %robocopy-params%
+copy DistReadme.txt dist\README.txt >NUL
 
 @REM Write executable into the distributable
 echo Writing Batch-Script...
