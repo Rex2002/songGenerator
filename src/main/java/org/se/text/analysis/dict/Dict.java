@@ -21,7 +21,10 @@ public class Dict {
 	WordList verbs = new WordList();
 	WordList diphthongs = new WordList();
 	WordList umlautChanges = new WordList();
-	WordList compoundParts = new WordList();
+	WordList addableNounCompParts = new WordList();
+	WordList subtractableNounCompParts = new WordList();
+	WordList addableVerbCompParts = new WordList();
+	WordList subtractableVerbCompParts = new WordList();
 	WordList genderChangeSuffixes = new WordList();
 	List<Declination> declinatedAffixes = new ArrayList<>();
 	List<Conjugation> conjugatedAffixes = new ArrayList<>();
@@ -39,8 +42,15 @@ public class Dict {
 		Parser.readCSV(dirPath.resolve("verbsDict"), this.verbs);
 		Parser.readCSV(dirPath.resolve("diphtongs"), this.diphthongs);
 		Parser.readCSV(dirPath.resolve("umlautChanges"), this.umlautChanges);
-		Parser.readCSV(dirPath.resolve("compoundParts"), this.compoundParts);
 		Parser.readCSV(dirPath.resolve("genderChangeSuffixes"), genderChangeSuffixes);
+		Parser.parseCSV(dirPath.resolve("compoundParts"), row -> {
+			switch (row.get("type")) {
+				case "nounAddition" -> addableNounCompParts.insert(row);
+				case "nounSubtraction" -> subtractableNounCompParts.insert(row);
+				case "verbAddition" -> addableVerbCompParts.insert(row);
+				case "verbSubtraction" -> subtractableVerbCompParts.insert(row);
+			}
+		});
 		Parser.parseCSV(dirPath.resolve("affixesDict"), row -> {
 			switch (row.get("type")) {
 				case "nounSuffix" -> nounSuffixes.insert(row);
@@ -60,16 +70,17 @@ public class Dict {
 	// Make word into a term
 
 	public List<WordStemmer> getPossibleNounStems(String s) {
-		return getPossibleStems(s, nouns, declinatedAffixes, nounSuffixes, nounPrefixes);
+		return getPossibleStems(s, nouns, declinatedAffixes, nounSuffixes, nounPrefixes, addableNounCompParts, subtractableNounCompParts);
 	}
 
 	public List<WordStemmer> getPossibleVerbStems(String s) {
-		return getPossibleStems(s, verbs, conjugatedAffixes, verbSuffixes, nounPrefixes);
+		return getPossibleStems(s, verbs, conjugatedAffixes, verbSuffixes, nounPrefixes, addableVerbCompParts, subtractableVerbCompParts);
 	}
 
-	private List<WordStemmer> getPossibleStems(String s, WordList terms, List<? extends TermAffix> termAffixes, WordList suffixes,
-			WordList prefixes) {
-		WordStemmer[] l = WordStemmer.radicalize(s, terms, termAffixes, suffixes, prefixes, compoundParts, 2, diphthongs, umlautChanges, baseKey);
+	private List<WordStemmer> getPossibleStems(String s, WordList terms, List<? extends TermAffix> termAffixes, WordList suffixes, WordList prefixes,
+			WordList addableCompParts, WordList subtractableCompParts) {
+		WordStemmer[] l = WordStemmer.radicalize(s, terms, termAffixes, suffixes, prefixes, addableCompParts, subtractableCompParts, 3, diphthongs,
+				umlautChanges, baseKey);
 		List<WordStemmer> res = new ArrayList<>();
 
 		for (WordStemmer w : l) {
@@ -96,8 +107,8 @@ public class Dict {
 
 		count += AFFIX_COUNT_BIAS * stem.affixesCount();
 
-		if (stem.getAdditionalCompounds().isEmpty()) count += NO_COMPOUNDS;
-		else if (Util.all(stem.getAdditionalCompounds(), compound -> dict.has(compound.get()))) count += ALL_COMPOUNDS_IN_DICTIONARY;
+		if (stem.getCompounds().isEmpty()) count += NO_COMPOUNDS;
+		else if (Util.all(stem.getCompounds(), compound -> dict.has(compound.get()))) count += ALL_COMPOUNDS_IN_DICTIONARY;
 
 		try {
 			if (areNouns) {
@@ -166,11 +177,12 @@ public class Dict {
 	}
 
 	public Tag tagWord(String s) {
+		Optional<WordStemmer> verb = getBestOfStems(getPossibleVerbStems(s), false);
+		if (verb.isPresent()) return new Tag(s, TagType.VERB, verb.get());
+
 		Optional<WordStemmer> noun = getBestOfStems(getPossibleNounStems(s), true);
 		if (noun.isPresent()) return new Tag(s, TagType.NOUN, noun.get());
 
-		Optional<WordStemmer> verb = getBestOfStems(getPossibleVerbStems(s), false);
-		if (verb.isPresent()) return new Tag(s, TagType.VERB, verb.get());
 		return new Tag(s, TagType.OTHER);
 	}
 
@@ -190,22 +202,22 @@ public class Dict {
 		try {
 			addWordStemmerData(t, true);
 
-			if (t.getData().isEmpty()) return Optional.empty();
+			if (t.getData().isPresent()) {
+				WordStemmer data = t.getData().get();
+				Declination declinatedSuffix = (Declination) data.getGrammartizedSuffix();
 
-			WordStemmer data = t.getData().get();
-			Declination declinatedSuffix = (Declination) data.getGrammartizedSuffix();
+				StringBuilder radixBuilder = new StringBuilder();
+				radixBuilder.append(data.getCompoundsStr());
+				radixBuilder.append(data.getStem());
 
-			StringBuilder radixBuilder = new StringBuilder();
-			for (WordWithData w : data.getAdditionalCompounds()) {
-				radixBuilder.append(w.get());
+				Numerus numerus = declinatedSuffix.getNumerus();
+				GrammaticalCase grammaticalCase = declinatedSuffix.getGrammaticalCase();
+				Gender gender = declinatedSuffix.getGender();
+
+				return Optional.of(new NounTerm(radixBuilder.toString(), t.getWord(), numerus, grammaticalCase, gender));
+			} else {
+				return Optional.empty();
 			}
-			radixBuilder.append(data.getStem());
-
-			Numerus numerus = declinatedSuffix.getNumerus();
-			GrammaticalCase grammaticalCase = declinatedSuffix.getGrammaticalCase();
-			Gender gender = declinatedSuffix.getGender();
-
-			return Optional.of(new NounTerm(radixBuilder.toString(), t.getWord(), numerus, grammaticalCase, gender));
 		} catch (Exception e) {
 			return Optional.empty();
 		}
@@ -258,8 +270,7 @@ public class Dict {
 				Declination s = filteredSuffixes.getY().get(0);
 				if (radix.endsWith(s.getRadix()))
 					suffix = new Declination("", s.getGrammaticalCase(), s.getGender(), s.getNumerus(), s.getType(), false);
-				else suffix = new Declination(s.getRadix().substring(0, s.getRadix().length() - 1), s.getGrammaticalCase(), s.getGender(),
-						s.getNumerus(), s.getType(), true);
+				else suffix = new Declination(s.getRadix().substring(1), s.getGrammaticalCase(), s.getGender(), s.getNumerus(), s.getType(), true);
 			} else suffix = filteredSuffixes.getX().get(0);
 
 			possibleSuffixes.get(0);
