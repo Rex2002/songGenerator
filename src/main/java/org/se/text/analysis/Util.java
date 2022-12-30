@@ -10,6 +10,11 @@ import org.se.text.analysis.model.Tuple;
  * @author Val Richter
  */
 public class Util {
+	public static String capitalize(String s) {
+		if (s.isEmpty()) return s;
+		else return Character.toUpperCase(s.charAt(0)) + s.substring(1).toLowerCase();
+	}
+
 	public static <T> boolean any(Iterable<T> items, Predicate<? super T> f) {
 		for (T item : items) {
 			if (f.test(item)) return true;

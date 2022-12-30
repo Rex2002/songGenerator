@@ -42,6 +42,10 @@ public class Term<T extends Term<T>> {
 		this.variations = variations;
 	}
 
+	public String forLyrics() {
+		return this.word;
+	}
+
 	public void increaseFrequency() {
 		this.frequency++;
 	}

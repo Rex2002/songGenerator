@@ -22,6 +22,11 @@ public class VerbTerm extends Term<VerbTerm> {
 	}
 
 	@Override
+	public String forLyrics() {
+		return this.infinitive.toLowerCase();
+	}
+
+	@Override
 	public String toString() {
 		return "{" + super.toStringHelper() + " infinitive='" + getInfinitive() + "'" + "}";
 	}

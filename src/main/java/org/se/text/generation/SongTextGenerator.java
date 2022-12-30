@@ -129,7 +129,7 @@ public class SongTextGenerator {
 		int position; // default 0
 		if (termListSize != 0) {
 			position = getCorrectPosition(termList);
-			String word = termList.get(position).getWord();
+			String word = termList.get(position).forLyrics();
 			usedWords.put(id, word);
 			return word;
 		} else {
