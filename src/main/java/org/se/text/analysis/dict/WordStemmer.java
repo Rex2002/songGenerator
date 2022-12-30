@@ -7,6 +7,15 @@ import org.se.text.analysis.model.*;
 /**
  * @author Val Richter
  * @reviewer Jakob Kautz
+ *
+ *           An intermediate representation of words before they are turned into {@link org.se.text.analysis.Term}
+ *           objects. Each {@link WordStemmer} object represents a possible way to interpret the given String as a Term.
+ *           The {@link Dict} class uses these objects to find whether a given Word can be a Noun/Verb and to build its
+ *           {@link org.se.text.analysis.Term} if possible.
+ *
+ * @implNote
+ *           Linked Lists are used for many of this class' attributes, because the elements are added to the lists more
+ *           frequently than they are accessed.
  */
 public class WordStemmer {
 	private String stem = "";
@@ -21,6 +30,7 @@ public class WordStemmer {
 	static final String DEFAULT_BASE_KEY = "radix";
 
 	// Constructors:
+	// (yes, each of them is actually used)
 
 	public WordStemmer(String baseKey, String stem) {
 		this.baseKey = baseKey;
@@ -60,6 +70,46 @@ public class WordStemmer {
 		return count;
 	}
 
+	/**
+	 * Create all possible {@link WordStemmer} objects from a given String with the given dictionary data. The function's
+	 * name comes from finding the String's stem or root, which is also called radix. Thus, to radicalize means to find its
+	 * root.
+	 *
+	 * @implNote
+	 *           Rather than taking the {@link Dict} object directly, only some attributes are taken as parameters here. The
+	 *           reason is that many of the parameters are different for nouns than for verbs.
+	 *
+	 * @implNote
+	 *           The Creation of all the possible {@link WordStemmer} objects is basically just an enumeration of all
+	 *           possible ways to split a word into its stem/radix and prefixes, suffixes and compounds. That enumeration is
+	 *           costly both in terms of time and space. The next step should thus be to filter the resulting list.
+	 *           Furthermore, this calculation shouldn't be done more than once for any word.
+	 *
+	 * @param s
+	 *            The String to build the possible {@link WordStemmer} objects from
+	 * @param terms
+	 *            A list of all possible Terms stored in the {@link Dict} object.
+	 * @param grammartizedAffixes
+	 *            A list of all possible affixes that come from declinating or conjugating a word stored in the {@link Dict}
+	 *            object.
+	 * @param suffixes
+	 *            A list of all possible suffixes stored in the {@link Dict} object.
+	 * @param prefixes
+	 *            A list of all possible prefixes stored in the {@link Dict} object.
+	 * @param addableCompParts
+	 *            A list of all possible compound parts, that are added stored, in the {@link Dict} object.
+	 * @param subtractabeCompParts
+	 *            A list of all possible compound parts, that are removed, stored in the {@link Dict} object.
+	 * @param minStemLength
+	 *            The minimum length that each seperate word must have when stripped of compounds, prefixes and suffixes.
+	 * @param diphtongs
+	 *            A list of all possible diphtongs stored in the {@link Dict} object.
+	 * @param umlautChanges
+	 *            A list of all possible umlaut changes stored in the {@link Dict} object.
+	 * @param baseKey
+	 *            The baseKey for all the {@link WordWithData} objects.
+	 * @return
+	 */
 	public static WordStemmer[] radicalize(String s, WordList terms, List<? extends TermAffix> grammartizedAffixes, WordList suffixes,
 			WordList prefixes, WordList addableCompParts, WordList subtractabeCompParts, int minStemLength, WordList diphtongs,
 			WordList umlautChanges, String baseKey) {
@@ -251,18 +301,6 @@ public class WordStemmer {
 	}
 
 	// Boilerplate
-
-	public WordStemmer(String stem, List<WordWithData> compounds, StringBuilder compoundStrBuilder, TermAffix grammartizedSuffix,
-			TermAffix grammartizedPrefix, List<WordWithData> prefixes, List<WordWithData> suffixes, String baseKey) {
-		this.stem = stem;
-		this.compounds = compounds;
-		this.compoundStrBuilder = compoundStrBuilder;
-		this.grammartizedSuffix = grammartizedSuffix;
-		this.grammartizedPrefix = grammartizedPrefix;
-		this.prefixes = prefixes;
-		this.suffixes = suffixes;
-		this.baseKey = baseKey;
-	}
 
 	public List<WordWithData> getCompounds() {
 		return this.compounds;

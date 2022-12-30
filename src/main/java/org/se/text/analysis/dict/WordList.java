@@ -5,6 +5,12 @@ import java.util.function.Predicate;
 
 /**
  * @author Val Richter
+ *
+ *         A sorted List of {@link WordWithData} objects. The objects are sorted lexicographically via their
+ *         radix-values. The capitalization of words is ignored.
+ *         Any value added to this List is automatically sorted into the list.
+ * 
+ * @implNote This class uses binary search internally to find elements to insert values at the right positions.
  */
 public class WordList implements Iterable<WordWithData> {
 	private List<WordWithData> store = new ArrayList<>();

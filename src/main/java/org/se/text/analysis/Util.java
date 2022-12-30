@@ -8,6 +8,10 @@ import org.se.text.analysis.model.Tuple;
 
 /**
  * @author Val Richter
+ *
+ *         A utility class that provides some useful functionality. Especially some functions that otherwise would only
+ *         be possible through {@link java.util.stream.Stream} objects are easily provided for all {@link Iterable}
+ *         objects.
  */
 public class Util {
 	public static String capitalize(String s) {

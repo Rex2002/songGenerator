@@ -1,12 +1,18 @@
 package org.se.text.analysis;
 
 import java.util.*;
+import org.se.text.analysis.dict.Dict;
 import org.se.text.analysis.dict.WordStemmer;
 import org.se.text.analysis.model.TagType;
 
 /**
  * @author Val Richter
  * @reviewer Jakob Kautz
+ *
+ *           Stores a word with its associated type (e.g. noun) and optionally stores some {@link WordStemmer} object
+ *           with it as well.
+ *           That data attribute is an optimization to avoid computing it twice. The {@link Dict} class would
+ *           otherwise compute the {@link WordStemmer} in two places, despite already having computed it.
  */
 public class Tag {
 	private TagType type;

@@ -5,6 +5,9 @@ import java.util.*;
 /**
  * @author Val Richter
  * @reviewer Jakob Kautz
+ * 
+ *           Comparator for comparing {@link Term} objects. Specifically, it compares them by their frequency and is
+ *           used to sort {@link Term} objects by their frequency.
  */
 class TermComp<T extends Term<T>> implements Comparator<T> {
 	private int generalTermBias = 3;

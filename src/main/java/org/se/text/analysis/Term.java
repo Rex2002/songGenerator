@@ -8,6 +8,13 @@ import org.se.text.metric.Hyphenizer;
 /**
  * @author Val Richter
  * @reviewer Jakob Kautz
+ *
+ *           This is the parent class for {@link NounTerm} and {@link VerbTerm}.
+ *
+ * @implNote
+ *           Because it can have a reference to the {@link TermVariations} object, that stores this {@link Term} object,
+ *           it needs the generic `T extends Term<T>`. Said reference is especially necessary for the {@link TermComp}
+ *           object to sort terms by their frequency.
  */
 public class Term<T extends Term<T>> {
 	protected int frequency;
@@ -16,14 +23,6 @@ public class Term<T extends Term<T>> {
 	protected final Integer syllableAmount;
 	protected final Numerus numerus;
 	protected TermVariations<T> variations = null;
-
-	public Term(String word) {
-		this.frequency = 1;
-		this.radix = word;
-		this.word = word;
-		this.syllableAmount = Hyphenizer.countSyllables(word);
-		this.numerus = Numerus.SINGULAR;
-	}
 
 	public Term(String radix, String word, Numerus numerus) {
 		this.frequency = 1;
@@ -42,6 +41,13 @@ public class Term<T extends Term<T>> {
 		this.variations = variations;
 	}
 
+	/**
+	 * This function is called by the {@link org.se.text.generation.SongTextGenerator} and should be overwritten by
+	 * children-classes.
+	 *
+	 * @return A normalized String-version of the Term. Here it's the same as `getWord`, but the {@link NounTerm} and
+	 *         {@link VerbTerm} class overwrite this method.
+	 */
 	public String forLyrics() {
 		return this.word;
 	}

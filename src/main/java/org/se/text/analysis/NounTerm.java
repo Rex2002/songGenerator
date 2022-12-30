@@ -21,13 +21,6 @@ public class NounTerm extends Term<NounTerm> {
 		this.changeableGender = changeableGender;
 	}
 
-	public NounTerm(String radix, String word, Numerus numerus, GrammaticalCase grammaticalCase, Gender gender, boolean changeableGender) {
-		super(radix, word, numerus);
-		this.grammaticalCase = grammaticalCase;
-		this.gender = gender;
-		this.changeableGender = changeableGender;
-	}
-
 	public NounTerm(String radix, String word, Numerus numerus, GrammaticalCase grammaticalCase, Gender gender) {
 		super(radix, word, numerus);
 		this.grammaticalCase = grammaticalCase;

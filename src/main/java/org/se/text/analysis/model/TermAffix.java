@@ -4,6 +4,8 @@ import java.util.*;
 
 /**
  * @author Val Richter
+ * 
+ *         Parent Class for the {@link Declination} and {@link Conjugation} classes.
  */
 public class TermAffix {
 	// Attributes must be public for the CSV-Parser to access them

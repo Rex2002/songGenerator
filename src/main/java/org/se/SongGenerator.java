@@ -6,7 +6,6 @@ import org.se.text.analysis.*;
 import org.se.text.analysis.dict.Dict;
 import org.se.text.analysis.model.Sentence;
 import org.se.text.metric.*;
-
 import java.util.List;
 
 /**

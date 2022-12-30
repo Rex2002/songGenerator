@@ -279,12 +279,11 @@ public class SongTextGenerator {
 		}
 
 		List<NounTerm> res = termCollection.query(grammaticalCase, gender, numerus, syllMin, syllMax);
-		if (res.isEmpty()) {
-			for (int i = 1; i < 10; i++) {
-				res = termCollection.query(grammaticalCase, gender, numerus, 0, syllMax + i);
-				if (!res.isEmpty()) return res;
-			}
+		// If an empty list was returned, incrementally check for less constrained syllable-ranges
+		for (int i = 1; res.isEmpty() && i < 10; i++) {
+			res = termCollection.query(grammaticalCase, gender, numerus, 0, syllMax + i);
 		}
+
 		return res;
 	}
 
@@ -308,7 +307,11 @@ public class SongTextGenerator {
 		}
 
 		List<VerbTerm> res = termCollection.queryVerbsBySyllableRange(syllMin, syllMax);
-		if (res.isEmpty()) res = termCollection.queryVerbsBySyllableRange(0, Integer.MAX_VALUE);
+		// If an empty list was returned, incrementally check for less constrained syllable-ranges
+		for (int i = 1; res.isEmpty() && i < 10; i++) {
+			res = termCollection.queryVerbsBySyllableRange(0, syllMax + i);
+		}
+
 		return res;
 	}
 

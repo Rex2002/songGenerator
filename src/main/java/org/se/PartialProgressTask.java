@@ -3,8 +3,8 @@ package org.se;
 import javafx.concurrent.Task;
 
 /**
- * A Wrapper around the {@link Task} from JavaFX to more easily update the progress, when several procedures have to be executed.
- * Each procedure commits the same amount to the total progress
+ * A Wrapper around the {@link Task} from JavaFX to more easily update the progress, when several procedures have to be
+ * executed. Each procedure commits the same amount to the total progress
  *
  * @author Val Richter
  */

@@ -14,7 +14,27 @@ import org.se.text.analysis.model.*;
  */
 public class Parser {
 	/**
-	 * Supported types are: Integer, Boolean, List, GrammaticalCase, Person, Tense, Gender, Numerus
+	 * Parse a String into a specified Class. The supported Classes are:
+	 * - {@link String}
+	 * - {@link GrammaticalCase}
+	 * - {@link Person}
+	 * - {@link Tense}
+	 * - {@link Gender}
+	 * - {@link Numerus}
+	 * - {@link CompoundPart}
+	 * - {@link AffixType}
+	 * - {@link Boolean}
+	 * - {@link Integer}
+	 * - {@link List}
+	 *
+	 * @param <T>
+	 *            The Type of the desired Class
+	 * @param s
+	 *            The String to parse.
+	 * @param cls
+	 *            The class of the desired Type
+	 * @return Returns an {@link Optional} value, that holds an object of Type `T` if it was successfully parsed and is
+	 *         empty otherwise.
 	 */
 	public static <T> Optional<T> parse(String s, Class<T> cls) {
 		if (cls == String.class) return Optional.ofNullable(cls.cast(s));
@@ -114,6 +134,20 @@ public class Parser {
 		return s.split("-");
 	}
 
+	/**
+	 * Parse a CSV File with a given function. The function is consumes each row of the CSV-File except for the first, which
+	 * is interpreted as the header-row
+	 *
+	 * The CSV-File is expected to have no commas or newline-characters inside of values.
+	 *
+	 * @param filepath
+	 *            The Path to the CSV-File
+	 * @param forEachRow
+	 *            The function that is executed on each row of the CSV-File. Its Input is a {@link WordWithData} object,
+	 *            which is a wrapper around a {@link java.util.HashMap} of Strings to Strings. In other words, each row is
+	 *            given as a map from the column's name to the cell's value.
+	 * @throws IOException
+	 */
 	public static void parseCSV(Path filepath, Consumer<? super WordWithData> forEachRow) throws IOException {
 		if (!filepath.toString().endsWith(".csv") && !Files.exists(filepath)) {
 			filepath = Path.of(filepath + ".csv");
@@ -132,11 +166,22 @@ public class Parser {
 		}
 	}
 
-	// This function uses generics to set the attributes in a given class with the
-	// parsed entries of a CSV file.
-	// For this to work, the field in the CSV has to have the same name as the
-	// corresponding attribute in the class. And the attribute has to be public
-	// (either exactly the same name, or the same as the lowercase attribute's name)
+	/**
+	 * This function uses generics to set the attributes in a given class with the parsed entries of a CSV file. For this to
+	 * work, the field in the CSV has to have the same name as the corresponding attribute in the class. And the attribute
+	 * has to be public (either exactly the same name, or the same as the lowercase attribute's name). This is also the
+	 * reason many Classes have public attributes in this project.
+	 *
+	 * @param <T>
+	 *            The Type that each row should be parsed into.
+	 * @param filepath
+	 *            The Path to the CSV-File
+	 * @param list
+	 *            The list which should be populated with the data in the CSV-File
+	 * @param cls
+	 *            The Class of Type `T`. This is necessary to use Java's reflection capabilities.
+	 * @throws IOException
+	 */
 	public static <T> void parseCSV(Path filepath, List<T> list, Class<T> cls) throws IOException {
 		parseCSV(filepath, row -> {
 			try {

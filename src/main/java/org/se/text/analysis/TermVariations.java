@@ -9,6 +9,19 @@ import org.se.text.analysis.model.*;
 /**
  * @author Val Richter
  * @reviewer Jakob Kautz
+ *
+ *           Stores all different variations of a {@link Term} that appeared in the text. A {@link Term} might appear in
+ *           two different grammatical cases in the text for example and while their strings are different, they still
+ *           represent the same term. Such different terms are all stored together in this class. Among other things,
+ *           that allows counting the frequency of a term with all its variations instead of simply counting the
+ *           frequencies of strings.
+ *
+ * @implNote The different variations are implemented using a {@link HashMap}. Their grammatical forms (i.e
+ *           {@link GrammaticalCase}, {@link Gender} and {@link Numerus}) are transformed efficiently into integers and
+ *           used as keys. The actual {@link Term} objects, which are of course different for different variations, are
+ *           used as values. The rationale behind this is that the main interaction with Terms occurs via the querying
+ *           methods of the {@link TermCollection}, which means that we frequently check if certain grammatical forms of
+ *           Term exist.
  */
 public class TermVariations<T extends Term<T>> {
 	private Map<Integer, T> variations;
@@ -79,10 +92,27 @@ public class TermVariations<T extends Term<T>> {
 		return Optional.empty();
 	}
 
-	// Same as getTerm, except it allows the program to automatically create the
-	// queried variation if necessary
-	// Automatically created variations can be very wrong and should be avoided if
-	// possible
+	/**
+	 * Same as getTerm, except it allows the program to automatically create the queried variation if necessary.
+	 *
+	 * @implNote The reason this is a static method is that it has to be specific to NounTerms, while the class in general
+	 *           is useful for both NounTerms and VerbTerms.
+	 *
+	 * @param nounVariations
+	 *            The {@link TermVariations} object, that holds the generally desired term that.
+	 * @param gender
+	 *            The desired {@link Gender} for the {@link Term}. If the {@link Term} cannot be coerced into said
+	 *            {@link Gender}, then an empty {@link Optional} will be returned.
+	 * @param grammaticalCase
+	 *            The desired {@link GrammaticalCase} for the {@link Term}.
+	 * @param numerus
+	 *            The desired {@link Numerus} for the {@link Term}.
+	 * @param dict
+	 *            The {@link Dict} object, that should be used to create the new variation if necessary.
+	 * @return The speciic variation of the term, if possible. If the term can't be coereced into any of the given
+	 *         constraints (usually this will be because of the given {@link Gender}), then an empty {@link Optional} is
+	 *         returned.
+	 */
 	public static Optional<NounTerm> createTerm(TermVariations<NounTerm> nounVariations, Gender gender, GrammaticalCase grammaticalCase,
 			Numerus numerus, Dict dict) {
 		Optional<NounTerm> res = getTerm(nounVariations, gender, grammaticalCase, numerus);

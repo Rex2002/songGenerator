@@ -32,6 +32,9 @@ public class Analyzer extends PartialProgressTask<TermCollection> {
 		return res;
 	}
 
+	/**
+	 * Count how many characters are capitalized in a given String
+	 */
 	private int capitalizedCount(String str) {
 		int count = 0;
 		for (char c : str.toCharArray()) {
@@ -42,10 +45,23 @@ public class Analyzer extends PartialProgressTask<TermCollection> {
 		return count;
 	}
 
+	/**
+	 * Checks whether the given word is capitalized. If `word` has more than one capitalized character, it is not considered
+	 * capitalized.
+	 */
 	private boolean isCapitalized(String word) {
 		return capitalizedCount(word) == 1 && Character.isUpperCase(word.charAt(0));
 	}
 
+	/**
+	 * Tag a list of sentences
+	 *
+	 * @param sentences
+	 *            A list of sentences, that should be tagged. Each word in each sentence has an associated Tag created. The
+	 *            tags show which type (noun, verb, etc.) the word is.
+	 * @return A list of Tags. Each tag also stores the associated word, so they don't need to be coupled with the words in
+	 *         `sentences` seperately again.
+	 */
 	private List<Tag> tag(List<Sentence> sentences) {
 		List<Tag> tags = new ArrayList<>();
 
@@ -74,6 +90,14 @@ public class Analyzer extends PartialProgressTask<TermCollection> {
 		return tags;
 	}
 
+	/**
+	 * Build Terms from the given Tags. The Terms are stored as {@link NounTerm} and {@link VerbTerm} inside a
+	 * {@link TermCollection} object.
+	 * 
+	 * @param tags
+	 *            The list of tags, that is created in this class' tag() method.
+	 * @return The {@link TermCollection}, that holds all nouns and verbs that were found in the text.
+	 */
 	private TermCollection buildTerms(List<Tag> tags) {
 		Map<String, TermVariations<NounTerm>> nounVariations = new HashMap<>();
 		Map<String, TermVariations<VerbTerm>> verbVariations = new HashMap<>();

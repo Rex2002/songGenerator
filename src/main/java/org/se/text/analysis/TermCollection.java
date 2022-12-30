@@ -8,24 +8,15 @@ import org.se.text.analysis.model.*;
 /**
  * @author Val Richter
  * @reviewer Jakob Kautz
+ *
+ *           A collection of all Terms offering an API to interact with and especially query these Terms according to
+ *           some constraints (like the term's numerus for example).
  */
 public class TermCollection {
 	private List<TermVariations<NounTerm>> nouns;
 	private List<TermVariations<VerbTerm>> verbs;
 	private final Dict dict;
 	static final Random rand = new Random();
-
-	public TermCollection(Dict dict) {
-		this.nouns = new ArrayList<>();
-		this.verbs = new ArrayList<>();
-		this.dict = dict;
-	}
-
-	public TermCollection(Dict dict, List<TermVariations<NounTerm>> nouns, List<TermVariations<VerbTerm>> verbs) {
-		this.nouns = nouns;
-		this.verbs = verbs;
-		this.dict = dict;
-	}
 
 	public TermCollection(Dict dict, Map<String, TermVariations<NounTerm>> nouns, Map<String, TermVariations<VerbTerm>> verbs) {
 		this.nouns = new ArrayList<>();
@@ -71,8 +62,40 @@ public class TermCollection {
 		verbs.forEach(variations -> variations.forEach(f));
 	}
 
-	// Query Functions
+	// Querying Methods
 
+	/**
+	 * Query all Nouns by constraning all attributes of a {@link NounTerm}. The resulting list is sorted according to the
+	 * terms' frequencies.
+	 *
+	 * @param grammaticalCase
+	 *            The {@link GrammaticalCase} that the Term must have. If the term wasn't already found with the correct
+	 *            {@link GrammaticalCase} in the text, it will be declinated into the desired {@link GrammaticalCase}. This
+	 *            happens along with the coercion into the desired {@link Numerus} as they are checked and declinated
+	 *            together.
+	 * @param gender
+	 *            The {@link Gender} that the Term must have. If the term wasn't already found with the correct
+	 *            {@link Gender} in the text, it is checked, whether the term can be coerced into the desired
+	 *            {@link Gender}. If not, the term is excluded.
+	 * @param numerus
+	 *            The {@link Numerus} that the Term must have. If the term wasn't already found with the correct
+	 *            {@link Numerus} in the text, it will be coerced into the desired {@link Numerus}. This happens along with
+	 *            the coercive declination for the {@link GrammaticalCase} as they are checked and declinated together.
+	 * @param syllableMin
+	 *            The minimum amount of syllables that the term should have after being coerced into the correct
+	 *            {@link GrammaticalCase}, {@link Gender} and {@link Numerus}.
+	 * @param syllableMax
+	 *            The maximum amount of syllables that the term should have after being coerced into the correct
+	 *            {@link GrammaticalCase}, {@link Gender} and {@link Numerus}.
+	 * @return A list of all terms, that fit the constraints outlined above. The resulting list is sorted according to the
+	 *         terms' frequencies.
+	 *
+	 * @implNote
+	 *           The frequencies compared between the terms when sorting the lists are determined by the {@link TermComp}
+	 *           object. It adds the frequency of the specific form of the term (which might have been newly created and
+	 *           thus have a frequency of 1) and the frequency of the general term (i.e. its {@link TermVariations}). Both
+	 *           measures are multiplied by a certain bias, which must be adjusted in the {@link TermComp} class.
+	 */
 	public List<NounTerm> query(GrammaticalCase grammaticalCase, Gender gender, Numerus numerus, Integer syllableMin, Integer syllableMax) {
 		List<NounTerm> res = new ArrayList<>();
 

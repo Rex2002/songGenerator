@@ -10,9 +10,12 @@ import java.util.function.Function;
 /**
  * @author Val Richter
  * @reviewer Jakob Kautz
+ *
+ *           This class stores a lot of data from the resources and offers much of the logic for interacting with said
+ *           data. Specifically, it also offers the ability to check the type of a word (i.e. is a noun/verb/other) and
+ *           to build a full {@link Term} object from a given word.
  */
 public class Dict {
-	// TODO: Refactor this to be a singleton
 	WordList nounSuffixes = new WordList();
 	WordList nounPrefixes = new WordList();
 	WordList nouns = new WordList();
@@ -35,6 +38,13 @@ public class Dict {
 	static final String DEFAULT_BASE_KEY = "radix";
 	static final String UMALUT_UPDATE_KEY = "with";
 
+	/**
+	 * Create a new {@link Dict} object. All the data will be read and parsed from the resource directory automatically.
+	 *
+	 * @param dirPath
+	 *            The path to the resource directory, where all of the files for the {@link Dict} can be found.
+	 * @throws IOException
+	 */
 	public Dict(Path dirPath) throws IOException {
 		this.baseKey = DEFAULT_BASE_KEY;
 
@@ -67,7 +77,7 @@ public class Dict {
 		return new Dict(Path.of("", "./src/main/resources/dictionary"));
 	}
 
-	// Make word into a term
+	// Make a word into a term
 
 	public List<WordStemmer> getPossibleNounStems(String s) {
 		return getPossibleStems(s, nouns, declinatedAffixes, nounSuffixes, nounPrefixes, addableNounCompParts, subtractableNounCompParts);
@@ -77,6 +87,11 @@ public class Dict {
 		return getPossibleStems(s, verbs, conjugatedAffixes, verbSuffixes, nounPrefixes, addableVerbCompParts, subtractableVerbCompParts);
 	}
 
+	/**
+	 * Get a list of all possible {@link WordStemmer} objects that can be formed from the given {@link String}.
+	 *
+	 * @implNote This calculation can take relatively long, so calling this function too often should be avoided.
+	 */
 	private List<WordStemmer> getPossibleStems(String s, WordList terms, List<? extends TermAffix> termAffixes, WordList suffixes, WordList prefixes,
 			WordList addableCompParts, WordList subtractableCompParts) {
 		WordStemmer[] l = WordStemmer.radicalize(s, terms, termAffixes, suffixes, prefixes, addableCompParts, subtractableCompParts, 3, diphthongs,
@@ -92,6 +107,7 @@ public class Dict {
 		return res;
 	}
 
+	// Biases for calculating a score for a given WordStemmer object. Specifically used in the heuristicForStemCmp function.
 	static final int AFFIX_COUNT_BIAS = -6;
 	static final int ALL_COMPOUNDS_IN_DICTIONARY = 100;
 	static final int NO_COMPOUNDS = 100;
@@ -102,6 +118,21 @@ public class Dict {
 	static final int STEM_NOUN_EXCEPTION_BIAS = -10;
 	static Gender tmpGender = null;
 
+	/**
+	 * Calculate a score for comparing {@link WordStemmer} objects with one another. The closer a given {@link WordStemmer}
+	 * object is to the original String the higher its score generally.
+	 *
+	 * @param stem
+	 *            The {@link WordStemmer} object for which the score should be calculated.
+	 * @param areNouns
+	 *            Whether the {@link WordStemmer} object represents a noun. Some calculations for the score are different
+	 *            based on whether a noun or a verb is being analyzed.
+	 * @param dict
+	 *            A reference to the {@link Dict} object
+	 * @return an integer that approximately measures how likely the given stem is to be the correct interpretation of the
+	 *         original string. The number only has a meaning when compared with the heuristic for other {@link WordStemmer}
+	 *         objects.
+	 */
 	private static int heuristicForStemCmp(WordStemmer stem, boolean areNouns, WordList dict) {
 		int count = 0;
 
@@ -148,7 +179,8 @@ public class Dict {
 	}
 
 	/**
-	 * Retrieve the best stem of a list of possible stems. The best stem is defined via a bunch of heuristics (see "heuristicForStemCmp").
+	 * Retrieve the best stem of a list of possible stems. The best stem is defined via a bunch of heuristics (see
+	 * "heuristicForStemCmp").
 	 * A Word is only considered, if its heuristic is positive and if it appears in the list of nouns/verbs.
 	 *
 	 * @param stems
@@ -176,6 +208,17 @@ public class Dict {
 		return best;
 	}
 
+	/**
+	 * Produce the Tag for a given word.
+	 *
+	 * @implNote This method tries to find the best {@link WordStemmer} representations for the word as a verb and then as a
+	 *           noun. These calculations are rather costly and its results are thus stored in the data attribute of the
+	 *           {@link Tag}. When building the Term later, that {@link WordStemmer} object is necessary and is only
+	 *           calculated again if it hasn't been cached in the Tag already.
+	 *
+	 * @param s
+	 *            The word to create the Tag for.
+	 */
 	public Tag tagWord(String s) {
 		Optional<WordStemmer> verb = getBestOfStems(getPossibleVerbStems(s), false);
 		if (verb.isPresent()) return new Tag(s, TagType.VERB, verb.get());
@@ -186,11 +229,17 @@ public class Dict {
 		return new Tag(s, TagType.OTHER);
 	}
 
+	/**
+	 * Add WordStemmer data in case it wasn't produced when tagging the word already. This can happen, when the Analyzer
+	 * tags the word before giving it to the Dictionary (specifically when the word is immediately recognized as a noun
+	 * because of its capitalization)
+	 *
+	 * @param t
+	 *            The given Tag
+	 * @param areNouns
+	 *            Whether the Word is supposed to be a noun
+	 */
 	private void addWordStemmerData(Tag t, boolean areNouns) {
-		// Add WordStemmer data,
-		// in case it wasn't produced when tagging the word already
-		// This can happen, when the Analyzer tags the word before giving it to the
-		// Dictionary (specifically because of capitalization of word)
 		if (t.getData().isEmpty()) {
 			Function<String, List<WordStemmer>> f = areNouns ? this::getPossibleNounStems : this::getPossibleVerbStems;
 			Optional<WordStemmer> stem = getBestOfStems(f.apply(t.getWord()), areNouns);
@@ -198,6 +247,10 @@ public class Dict {
 		}
 	}
 
+	/**
+	 * Try to build a {@link NounTerm} from a given {@link Tag}. If it's not possible to create a noun from the given word
+	 * (possibly because the word simply isn't a noun), then an empty {@link Optional} will be returned.
+	 */
 	public Optional<NounTerm> buildNounTerm(Tag t) {
 		try {
 			addWordStemmerData(t, true);
@@ -223,6 +276,10 @@ public class Dict {
 		}
 	}
 
+	/**
+	 * Try to build a {@link VerbTerm} from a given {@link Tag}. If it's not possible to create a verb from the given word
+	 * (possibly because the word simply isn't a verb), then an empty {@link Optional} will be returned.
+	 */
 	public Optional<VerbTerm> buildVerbTerm(Tag t) {
 		addWordStemmerData(t, false);
 
@@ -238,6 +295,25 @@ public class Dict {
 		return Optional.of(verb);
 	}
 
+	/**
+	 * Create a new variation of the Term. It is not checked whether the given variation of the term already exists in the
+	 * `variations` object. The new variation is added automatically to the `variations` object, to avoid calculating the
+	 * same variation again. If the given term couldn't be coerced into the desired grammatical form, an empty
+	 * {@link Optional} is returned.
+	 *
+	 * @param variations
+	 *            The {@link TermVariations} object to which this new variation will belong. The new variation is
+	 *            automaticaly added to this object.
+	 * @param gender
+	 *            The desired {@link Gender} for the new variation. Only some {@link Term} objects are allowed to change
+	 *            their gender (for example: "Lehrer" into "Lehrerin").
+	 * @param grammaticalCase
+	 *            The desired {@link GrammaticalCase} for the new variation.
+	 * @param numerus
+	 *            The desired {@link Numerus} for the new variation.
+	 * @return The new variation in form of a {@link NounTerm} or an empty {@link Optional} if the term couldn't be coerced
+	 *         into the desired form.
+	 */
 	public Optional<NounTerm> createNounTerm(TermVariations<NounTerm> variations, Gender gender, GrammaticalCase grammaticalCase, Numerus numerus) {
 		String radix = variations.getRadix();
 
@@ -282,12 +358,28 @@ public class Dict {
 			strbuilder.append(suffix.getRadix());
 
 			String word = strbuilder.toString();
-			return Optional.of(new NounTerm(radix, word, numerus, grammaticalCase, gender, genderChangeSuffix != null, variations));
+			NounTerm term = new NounTerm(radix, word, numerus, grammaticalCase, gender, genderChangeSuffix != null, variations);
+			variations.add(term);
+			return Optional.of(term);
 		}
 
 		return Optional.empty();
 	}
 
+	/**
+	 * Change the Umlaute of a word. Either adding or removing Umlaute. Only the last "a", "o" or "u" would be effected by
+	 * this change, as german words usually only change the last possible vowel to an Umlaut.
+	 * 
+	 * @param umlautChanges
+	 *            The list of possible umlaut changes. This is a list stored in the {@link Dict} object.
+	 * @param diphtongs
+	 *            The list of diphtongs. This is a list stored in the {@link Dict} object.
+	 * @param s
+	 *            The String that should be changed.
+	 * @param addUmlaut
+	 *            Whether to add or remove Umlaute from the word.
+	 * @return Returns the updated form of the String.
+	 */
 	public static String changeUmlaut(WordList umlautChanges, WordList diphtongs, String s, boolean addUmlaut) {
 		char[] chars = s.toCharArray();
 		boolean foundUmlaut = false;
