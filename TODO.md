@@ -13,4 +13,10 @@
     -   [x] Currently it seems to mark all nouns as having 2 syllables
 -   [x] Update Nouns-Dictionary
 -   [ ] Add Templates
--   [ ] Test the various bugfixes
+-   [x] Fix Grammar-Mistakes in Songtext-Templates
+-   [x] (Bug) TermBuilding Progress doesn't update correctly
+-   [x] (Bug) Wrong Verbs are built (probably because of compound-radices)
+-   [x] (Bug) Infinitive of VerbTerms are null
+-   [x] Various Improvements to TermBuilding & Analysis
+-   [x] Split Parantheses from words in Preprocessing
+-   [x] Test the various bugfixes
