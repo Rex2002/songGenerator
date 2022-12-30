@@ -1,4 +1,4 @@
-radix,infinitve,1.pers-singular-präsens,2.pers-singular-präsens,3.pers-singular-präsens,1.pers-singular-präteritum,partizip 2,1.pers-konjunktiv 2,imperativ-singular,imperativ-plural,hilfsverb
+radix,infinitive,1.pers-singular-präsens,2.pers-singular-präsens,3.pers-singular-präsens,1.pers-singular-präteritum,partizip 2,1.pers-konjunktiv 2,imperativ-singular,imperativ-plural,hilfsverb
 lieb,lieben,liebe,liebst,liebt,liebte,geliebt,liebte,liebe,liebt,haben
 klieb,klieben,kliebe,kliebst,kliebt,klob,gekloben,klöbe,kliebe,kliebt,haben
 belfer,belfern,belfere,belferst,belfert,belferte,gebelfert,belferte,belfere,belfert,haben
@@ -16,7 +16,6 @@ zerbrech,zerbrechen,zerbreche,zerbrichst,zerbricht,zerbrach,zerbrochen,zerbräch
 büffel,büffeln,büffele,büffelst,büffelt,büffelte,gebüffelt,büffelte,büffele,büffelt,haben
 oktroyier,oktroyieren,oktroyiere,oktroyierst,oktroyiert,oktroyierte,oktroyiert,oktroyierte,oktroyier,oktroyiert,haben
 wink,winken,winke,winkst,winkt,winkte,gewinkt,winkte,winke,winkt,haben
-mach,machen,mache,machst,macht,machte,gemacht,machte,mache,macht,haben
 schmeiß,schmeißen,schmeiße,schmeißt,schmeißt,schmiss,geschmissen,schmisse,schmeiß,schmeißt,haben
 besinn,besinnen,besinne,besinnst,besinnt,besann,besonnen,besänne,besinn,besinnt,haben
 untersuch,untersuchen,untersuche,untersuchst,untersucht,untersuchte,untersucht,untersuchte,untersuche,untersucht,haben
@@ -432,7 +431,6 @@ unterfertig,unterfertigen,unterfertige,unterfertigst,unterfertigt,unterfertigte,
 fluch,fluchen,fluche,fluchst,flucht,fluchte,geflucht,fluchte,fluche,flucht,haben
 überdenk,überdenken,überdenke,überdenkst,überdenkt,überdachte,überdacht,überdächte,überdenke,überdenkt,haben
 merk,merken,merke,merkst,merkt,merkte,gemerkt,merkte,merke,merkt,haben
-werd,werden,werde,wirst,wird,wurde,geworden,würde,werde,werdet,sein
 abbau,abbauen,baue ab,baust ab,baut ab,baute ab,abgebaut,baute ab,baue ab,bauet ab,haben
 abbestell,abbestellen,bestelle ab,bestellst ab,bestellt ab,bestellte ab,abbestellt,bestellte ab,bestell ab,bestellt ab,haben
 erleg,erlegen,erlege,erlegst,erlegt,erlegte,erlegt,erlegte,erleg,erlegt,haben
@@ -687,7 +685,6 @@ fehlschlag,fehlschlagen,—,—,schlägt fehl,schlug fehl,fehlgeschlagen,schlüg
 erhalt,erhalten,erhalte,erhältst,erhält,erhielt,erhalten,erhielte,erhalt,erhaltet,haben
 führ,führen,führe,führst,führt,führte,geführt,führte,führe,führt,haben
 abnippel,abnippeln,nippele ab,nippelst ab,nippelt ab,nippelte ab,abgenippelt,nippelte ab,nipple ab,nippelt ab,sein
-soll,sollen,soll,sollst,soll,sollte,gesollt,sollte,—,—,haben
 einschlaf,einschlafen,schlafe ein,schläfst ein,schläft ein,schlief ein,eingeschlafen,schliefe ein,schlaf ein,schlaft ein,sein
 bild,bilden,bilde,bildest,bildet,bildete,gebildet,bildete,bilde,bildet,haben
 befind,befinden,befinde,befindest,befindet,befand,befunden,befände,befinde,befindet,haben

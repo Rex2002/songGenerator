@@ -15,7 +15,7 @@ with open("../src/main/resources/dictionary/nounsDict.csv", "r", encoding="utf8"
 		l = line.split(",")
 		if len(l) > 0:
 			x = l[0].lower()
-			if (x.endswith(("isch", "ish")) and not x.endswith(("fisch", "tisch"))) or x in verbs:
+			if len(x) <= 2 or (x.endswith(("isch", "ish")) and not x.endswith(("fisch", "tisch"))) or x in verbs:
 				forbidden.append(x)
 
 forbidden = [*set(forbidden)]

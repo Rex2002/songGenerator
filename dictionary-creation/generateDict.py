@@ -15,7 +15,7 @@ verbs = list()
 forbiddenNouns = list()
 with open("./forbidden-nouns.txt", "r", encoding="utf8") as file:
 	forbiddenNouns = file.read().splitlines()
-forbiddenVerbs = ("ein", "hab", "sein", "könn", "woll")
+forbiddenVerbs = ("ein", "hab", "sein", "könn", "woll", "werd", "mach", "soll")
 forbiddenSymbols = ("’", " ", "ǃ", "é", "í", "ø", "Å", "Æ", "Î", "Ç", "É", "À", "ł", "ë")
 forbiddenStarts = ("\"", "'", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-")
 changeableGenderNouns = ("arzt")
@@ -156,7 +156,7 @@ with open(dir + "nounsDict.csv", encoding="utf8", mode="w") as csvFile:
 
 with open(dir + "verbsDict.csv", encoding="utf8", mode="w") as csvFile:
 	writer = csv.writer(csvFile, delimiter=",", lineterminator="\n")
-	writer.writerow(["radix", "infinitve", "1.pers-singular-präsens", "2.pers-singular-präsens", "3.pers-singular-präsens", "1.pers-singular-präteritum", "partizip 2", "1.pers-konjunktiv 2", "imperativ-singular", "imperativ-plural", "hilfsverb"])
+	writer.writerow(["radix", "infinitive", "1.pers-singular-präsens", "2.pers-singular-präsens", "3.pers-singular-präsens", "1.pers-singular-präteritum", "partizip 2", "1.pers-konjunktiv 2", "imperativ-singular", "imperativ-plural", "hilfsverb"])
 	writer.writerows(verbs)
 
 # with open(dir + "affixDict2.csv", encoding="utf8", mode="w") as csvFile:
