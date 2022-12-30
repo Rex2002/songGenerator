@@ -24,10 +24,10 @@ length: 8
 moods:
     - 'sad'
 strophe:
-    - '$n,m,s,n,41,4,4$ ist ganz mein Thema| hier bekommt ihr mich nicht weg'
-    - "Alles was ich brauch im Leb'n|mit $n,m,s,n,42,1,1$ und $n,f,s,n,43,1,1$ hat es ein' Zweck"
+    - '$n,f,s,n,41,4,4$ ist ganz mein Thema| hier bekommt ihr mich nicht weg'
+    - "Alles was ich brauch im Leb'n|mit $n,m,s,d,42,1,1$ und $n,f,s,d,43,1,1$ hat es ein' Zweck"
     - 'Jeder sagt mir lass es bleiben| das hat alles keinen Sinn'
-    - 'Doch wie soll ich sonst verbleiben|$n,f,s,n,44,1,10$ ist voll mein Ding'
+    - 'Doch wie soll ich sonst verbleiben|$n,f,s,n,41,4,4$ ist voll mein Ding'
 
 ---
 #5
@@ -36,13 +36,13 @@ moods:
     - 'sad'
     - 'happy'
 strophe:
-    - "Ich lieb meinen $n,m,s,n,51,1,4$|geh' hier nicht weg"
+    - "Ich lieb meinen $n,m,s,a,51,1,4$|geh' hier nicht weg"
     - 'Genau wo ich bin|da ist mein Platz'
-    - 'hier werd ich $v,n,p,n,52,1,4$| an diesem Fleck'
-    - "Ich lieb meinen $n,m,p,n,51,1,4$|ich geh' hier nicht weg"
-    - "Ich hab 'ne tolle $n,f,s,n,53,1,4$| meine $n,f,s,n,54,1,4$ im Gepäck"
+    - 'hier werd ich $v,52,1,4$| an diesem Fleck'
+    - "Ich lieb meinen $n,m,s,a,51,1,4$|ich geh' hier nicht weg"
+    - "Ich hab 'ne tolle $n,f,s,a,53,1,4$| meine $n,f,s,n,54,1,4$ im Gepäck"
     - 'und just in case für alle Fälle| mein eigenes Versteck'
-    - 'ich hab meinen $n,m,p,n,51,1,4$ | an diesem Ort'
+    - 'ich hab meinen $n,m,p,a,51,1,4$ | an diesem Ort'
     - "denkst ich bin hier doch ich bind dort|und begehe ab und zu ein' Mord"
 
 ---
@@ -51,13 +51,13 @@ length: 16
 moods:
     - 'angry'
 strophe:
-    - 'Ich weiß, ich weiß was die $n,f,s,n,61,2,8$ wirklich heißt|und doch steh ich vor Verständnislosigkeit'
-    - '$v,n,s,n,62,1,8$, $v,n,s,n,63,2,8$| versteh nicht was ihr seid'
+    - 'Ich weiß, ich weiß was $n,m,s,n,61,2,8$ wirklich heißt|und doch steh ich vor Verständnislosigkeit'
+    - '$v,62,1,8$, $v,63,2,8$| versteh nicht was ihr seid'
     - "Konnt' früher mal jeden Kniff|hab alles mir gemerkt"
     - "Doch jetzt, was älter frag ich mich|$n,m,s,n,66,2,8$ bist du's wirklich Wert"
-    - 'Immer nur noch neue Dinge|wann hört der Wahnsinn auf'
-    - '$v,n,s,n,67,1,8$ jedes mal aufs neue|bist nur noch der größte Graus'
-    - "Ich dachte dass ich wüsste was $n,m,s,n,61,2,8$ wirklich heißt|doch jeden Tag den seh' ich wieder"
+    - 'Immer nur noch neue $n,m,p,a,68,2,5$|wann hört der Wahnsinn auf'
+    - '$v,67,1,8$ jedes mal aufs neue|bist nur noch der größte Graus'
+    - "Ich dachte dass ich wüsste was $n,m,s,n,61,2,8$ wirklich heißt|doch jeden Tag seh' ich wieder"
     - 'dass ich keine Ahnung hab|$n,m,s,n,61,2,8$ du machst mich platt'
 
 ---
@@ -66,9 +66,9 @@ length: 8
 moods:
     - 'happy'
 strophe:
-    - "Neunundneunzig $n,m,p,n,71,3,8$|$v,n,s,n,72,1,8$ über'm $n,m,s,n,73,2,8$"
-    - "Man hielt ihn für $n,n,s,n,74,2,8$ aus dem $n,m,s,n,75,3,8$| So schickte man ein' $n,m,s,n,76,3,8$"
-    - 'und noch ne $n,m,s,n,77,1,4$ dazu|hoffte auf ein Rendezvous'
+    - "Neunundneunzig $n,m,p,n,71,3,5$|$v,72,1,8$ über'm $n,m,s,d,73,2,8$"
+    - "Man hielt ihn für $n,n,s,a,74,2,8$ aus dem $n,m,s,d,75,3,8$| So schickte man ein' $n,m,s,a,76,3,8$"
+    - 'und noch ne $n,f,s,a,77,1,4$ dazu|hoffte auf ein Rendezvous'
     - 'Doch leider passierte nichts| denn dafür bräucht man etwas grips'
 
 ---
@@ -77,14 +77,14 @@ length: 16
 moods:
     - 'happy'
 strophe:
-    - 'Alle meine $n,m,p,n,81,2,8$ | $v,m,s,n,82,2,8$ auf dem $n,m,s,n,83,2,8$'
-    - '$v,m,s,n,82,2,8$ auf dem |$n,m,s,n,83,2,8$'
-    - "$v,m,p,n,84,2,8$ in das Wasser | $n,m,p,n,85,2,8$ in die Höh'"
+    - 'Alle meine $n,m,p,n,81,2,5$ | $v,82,2,5$ auf dem $n,m,s,d,83,2,5$'
+    - '$v,82,2,8$ auf dem |$n,m,s,d,83,2,8$'
+    - "$v,84,2,8$ im $n,m,s,d,86,2,8$ | $n,m,p,a,85,2,8$ in die Höh'"
     - 'Alle zusammen, kommt singt mit| machen wir den Song zum Hit'
-    - 'Alle meine $n,m,p,n,81,2,8$ | $v,m,s,n,82,2,8$ auf dem $n,m,s,n,83,2,8$'
-    - '$v,m,s,n,82,2,8$ auf dem |$n,m,s,n,83,2,8$'
-    - "$v,m,p,n,84,2,8$ in das Wasser | $n,m,p,n,85,2,8$ in die Höh'"
-    - "Und jetzt nochmal seid bereit|jetzt ist's $n,m,s,n,81,2,8$ Zeit"
+    - 'Alle meine $n,m,p,n,81,2,5$ | $v,82,2,5$ auf dem $n,m,s,d,83,2,5$'
+    - '$v,82,2,8$ auf dem |$n,m,s,d,83,2,8$'
+    - "$v,84,2,8$ im $n,m,s,d,86,2,8$ | $n,m,p,a,85,2,8$ in die Höh'"
+    - "Und jetzt nochmal seid bereit|jetzt ist's $n,m,p,n,81,2,5$ Zeit"
 
 ---
 #9
@@ -92,9 +92,9 @@ length: 8
 moods:
     - 'horny'
 strophe:
-    - 'Hallo, mein $n,m,s,n,91,2,8$| ich $v,m,s,n,92,2,8$ Dich.'
-    - 'Du bist die $n,f,s,n,93,2,8$| für mich.'
-    - 'Die anderen $n,f,s,n,94,2,8$|sind alle alle doof'
+    - "Hallo, mein $n,m,s,n,91,2,4$| lass uns zusamm' $v,92,2,4$."
+    - 'Du bist die $n,f,s,a,93,2,4$| für mich.'
+    - 'Die anderen $n,f,p,a,94,2,4$|sind alle alle doof'
     - 'deswegen mach ich Dir| den Hof.'
 
 ---
@@ -104,9 +104,9 @@ moods:
     - 'horny'
     - 'happy'
 strophe:
-    - 'Ich lieb meinen $n,m,s,a,101,2,8$| Lalalala Lalala'
-    - 'Ich lieb meinen $n,m,s,a,101,2,8$| Lalalala Lalala'
-    - 'Ich lieb meinen $n,m,s,a,101,2,8$| Lalalala Lalala'
+    - 'Ich lieb meinen $n,m,s,a,101,3,5$| Lalalala Lalala'
+    - 'Ich lieb meinen $n,m,s,a,101,3,5$| Lalalala Lalala'
+    - 'Ich lieb meinen $n,m,s,a,101,3,5$| Lalalala Lalala'
     - 'Ja ich lieb dich|yeah yeah'
 
 ---
@@ -115,7 +115,7 @@ length: 8
 moods:
     - 'angry'
 strophe:
-    - 'Ich sitze bei meinem $n,n,s,d,112,1,3$ | und ich starre zu dem $n,m,s,d,113,2,4$'
+    - 'Ich sitze bei meinem $n,n,s,d,112,1,3$ | und ich starre auf den $n,m,s,a,113,2,4$'
     - 'Und ich wünsche dir $n,f,p,n,110,2,5$ | an den Hals'
     - 'Lässt mich hier $v,114,1,4$ | einfach so, aber vielleicht'
     - 'Vielleicht stirbst du ja | bald'
@@ -127,9 +127,9 @@ moods:
     - 'sad'
 strophe:
     - "Und ich sitz' schon | wieder"
-    - 'Barfuß am $n,m,s,n,120,2,4$ | '
-    - 'Ich träume | $n,f,p,a,122,3,5$'
-    - 'Und sing dabei von | Dir'
+    - 'Barfuß am $n,m,s,d,120,2,4$ | '
+    - 'Ich träume von | $n,f,p,d,122,3,5$'
+    - 'Und sing dabei von | $n,f,p,d,123,1,3$'
 
 ---
 #13
@@ -137,13 +137,13 @@ length: 16
 moods:
     - 'sad'
 strophe:
-    - "Ich glaub', ich mach' heut | $n,m,p,n,135,2,5$"
-    - "Ich glaub', ich mach' heut | $n,f,s,n,139,1,3$"
-    - "Ich glaub', ich les' heut' | $n,n,p,n,131,2,4$"
+    - "Ich glaub', ich mach' heut | $n,m,p,a,135,2,5$"
+    - "Ich glaub', ich mach' heut | $n,f,s,a,139,1,3$"
+    - "Ich glaub', ich les' heut' | $n,n,p,a,131,2,4$"
     - "Und bleib' allein zu- | haus"
-    - "Ich glaub', ich mach' heut | $n,m,p,n,135,2,5$"
-    - "Ich glaub', ich mach' heut | $n,f,s,n,139,1,3$"
-    - "Ich glaub', ich les' heut' | $n,n,p,n,131,2,4$"
+    - "Ich glaub', ich mach' heut | $n,m,p,a,135,2,5$"
+    - "Ich glaub', ich mach' heut | $n,f,s,a,139,1,3$"
+    - "Ich glaub', ich les' heut' | $n,n,p,a,131,2,4$"
     - "Und bleib' allein zu- | haus"
 
 ---
@@ -176,14 +176,14 @@ length: 16
 moods:
     - 'happy'
 strophe:
-    - 'Muss nur noch kurz die $n,f,s,a,163,1,4$ retten | '
+    - 'Muss nur noch kurz die $n,f,s,a,163,1,1$ retten | '
     - 'Danach komm ich zu dir | '
-    - 'Noch 148 $n,f,p,n,166,2,3$ checken |'
+    - 'Noch 148 $n,f,p,a,166,2,3$ checken |'
     - 'Wer weiß | '
     - 'was mir dann noch passiert | '
     - 'Denn es passiert so viel | '
-    - 'Muss nur noch kurz $n,f,s,a,163,1,2$ retten | '
-    - 'Und gleich danach bin ich | wieder bei dir'
+    - 'Muss nur noch kurz die $n,f,s,a,163,1,1$ retten | '
+    - 'Und gleich danach | bin ich wieder bei dir'
 
 ---
 #17
@@ -223,11 +223,11 @@ moods:
 strophe:
     - 'Und wenn ich grad nicht | sicher bin'
     - 'Dann weiß ich ganz genau |'
-    - "$n,n,s,n,193,2,3$ macht nur wirklich Sinn wenn ich | $n,f,s,n,196,2,3$ auch vertrau'"
+    - "$n,n,s,n,193,2,3$ macht nur wirklich Sinn wenn ich | der $n,f,s,d,196,2,3$ auch vertrau'"
     - "Weiß wer ich bin und | wo ich steh'"
-    - 'Hab viel von mir gelernt | '
-    - 'Kann jetzt $n,n,s,a,192,2,6$ bedienen | '
-    - 'Bin safe mit mir | egal was ist '
+    - 'Hab viel von dir gelernt | '
+    - 'Kann jetzt $n,n,s,a,192,3,6$ bedienen | '
+    - 'Bin safe mit dir | egal was ist '
     - 'Nur drei Prozent halt nicht |'
 
 ---
@@ -236,12 +236,12 @@ length: 16
 moods:
     - 'angry'
 strophe:
-    - '$n,f,s,g,201,2,6$ es ist nicht deine Schuld | dass du bist wie du bist'
-    - 'Aber es ist deine Schuld | wenn du so bleibst'
-    - 'Mit deinen $n,n,p,n,202,2,3$ | und $n,f,p,n,203,2,3$ '
+    - 'Es ist nicht die Schuld der $n,f,p,g,201,2,5$ | dass du bist wie du bist'
+    - 'Aber es ist deren Schuld | wenn du so bleibst'
+    - 'Mit deinen $n,n,p,d,202,2,3$ | und $n,f,p,d,203,3,4$ '
     - 'Wer denkst du wer du bist | wenn du so bleibst'
     - '$n,n,s,n,204,2,3$ ist lächerlich | wünschte nur ich kenn dich nicht'
-    - "Kann $n,m,p,n,205,2,6$ nicht mehr seh'n | kann dich nicht ausstehen"
+    - "Kann deine $n,m,p,a,205,2,6$ nicht mehr seh'n | kann dich nicht ausstehen"
     - 'Wenn du bleibst wie du bist | egal was ist '
     - 'Denn es ist nicht deine Schuld dass du so bist | aber deine Schuld dass du so bleibst'
 
@@ -251,12 +251,12 @@ length: 16
 moods:
     - 'horny'
 strophe:
-    - '$n,f,s,n,211,2,6$ sei heut ganz meins | sei heut meins dann bleib ich deins'
+    - '$n,f,s,n,211,2,4$ sei heut ganz meins | sei heut meins dann bleib ich deins'
     - 'Heute Nacht | heute Nacht'
-    - 'heute Nacht | heute Nacht ich liebe dich'
-    - 'Das Geräusch | der $n,n,p,g,212,2,6$ kollidiert'
+    - 'heute Nacht | will ich mit dir $v,215,2,5$'
+    - 'Das Geräusch | der $n,n,p,d,212,2,6$ kollidiert'
     - 'Nur unsere Liebe regiert |'
-    - 'Das Geräusch | der $n,n,p,g,212,2,6$ kollidiert'
+    - 'Das Geräusch | der $n,n,p,d,212,2,6$ kollidiert'
     - 'heute Nacht bleib ich bei dir | wir bleiben hier'
     - 'heut Nacht gibt es nur dich | lass mich nicht im Stich'
 
@@ -266,11 +266,11 @@ length: 16
 moods:
     - 'happy'
 strophe:
-    - 'Ein $n,n,s,n,221,2,6$ | der deinen Namen trägt'
-    - '$n,n,s,n,222,2,6$ immer dabei| so wahrlich toll und frei'
-    - 'Ein $n,n,s,n,221,2,6$ | der deinen Namen trägt'
-    - '$n,n,s,n,222,2,6$ immer dabei| das wünsch ich mir herbei'
+    - 'Ein $n,n,s,n,221,1,3$ | das deinen Namen trägt'
+    - '$n,n,s,n,222,2,4$ immer dabei| so wahrlich toll und frei'
+    - 'Ein $n,n,s,n,221,1,3$ | das deinen Namen trägt'
+    - '$n,n,s,n,222,2,4$ immer dabei| das wünsch ich mir herbei'
     - "Weiß was ich will und | wo ich steh'"
     - "Brauch' nur noch dich bei mir | brauch nur noch dich jetzt hier"
-    - "Mit dir alle Zeit verbring' | jeden Tag sowie die Nacht"
+    - "Mit dir alle Zeit verbring' | mit dir immerzu $v,224,2,6$"
     - 'Das was mich glücklich macht | '
