@@ -7,3 +7,6 @@ You can now load a Text or PDF-File into the SongGenerator. To do so, simply cli
 You can also change the default settings via the "Settings"-Button.
 
 To start generating your Song, you have to press the "Generate"-Button. As soon as it says "Done" above the Progress-Bar, the song is successfully generated and you can download it via the "Save"-Button.
+
+The downloaded file contains the generated song in the Midi-format. 
+The SongGenerator is optimized to generate midi-files that can be directly imported into and played by MusceScore 3. Using a different software may lead to optical issues with the text placement or slightly different instrument sounds( if the program uses a Soundbank that is different to the one used by MuseScore).
