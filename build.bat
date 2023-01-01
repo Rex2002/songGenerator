@@ -1,3 +1,5 @@
+@REM @author Val Richter
+
 @echo off
 set java-path="C:\Program Files\Java\jdk-19.0.1"
 set javafx-path="C:\Program Files\Java\javafx-sdk-19"

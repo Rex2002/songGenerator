@@ -1,3 +1,5 @@
+@REM @author Val Richter
+
 @echo off
 set "py-cmd=py"
 
