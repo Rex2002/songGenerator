@@ -1,7 +1,6 @@
 @echo off
-set javafx-path="C:\Program Files\Java\javafx-sdk-19"
 set java-path="C:\Program Files\Java\jdk-19.0.1"
-set "py-cmd=py"
+set javafx-path="C:\Program Files\Java\javafx-sdk-19"
 
 set "jar-name=SongGenerator.jar"
 set "robocopy-params=/E /njh /njs /ndl /nc /ns >NUL"
@@ -24,11 +23,7 @@ robocopy dist\javafx\bin dist\java\bin %robocopy-params%
 @RD /S /Q dist\javafx\bin
 
 @REM Copy resources into the distributable
-echo Building Resources...
-cd dictionary-creation
-call %py-cmd% forbiddenNouns.py
-call %py-cmd% generateDict.py
-cd ..
+echo Copying Resources...
 robocopy src\main\resources dist\src\main\resources %robocopy-params%
 copy DistReadme.txt dist\README.txt >NUL
 
