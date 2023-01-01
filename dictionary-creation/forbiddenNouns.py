@@ -1,3 +1,5 @@
+# @author Val Richter
+
 verbs = list()
 with open("../src/main/resources/dictionary/verbsDict.csv", "r", encoding="utf8") as file:
 	for line in file.readlines():
