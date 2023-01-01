@@ -2,10 +2,6 @@ import csv
 
 # @author Val Richter
 
-# TODO:
-# All filepaths are currently relative to the terminal's current working directory
-# instead they should be changed to be relative to this file's directory
-
 suffixes = list()
 prefixes = list()
 nouns = list()
